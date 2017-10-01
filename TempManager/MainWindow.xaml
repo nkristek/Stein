@@ -129,7 +129,7 @@
         </Grid>
 
         <Grid Grid.Row="4"
-              Visibility="{Binding CurrentInstallationProgress, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
+              Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="8"/>
@@ -144,10 +144,15 @@
                 </Grid.ColumnDefinitions>
                 
                 <Label Grid.Column="0" 
-                       Content="(Un)Installing..."/>
+                       Content="Installing..."
+                       Visibility="{Binding CurrentInstallation.Type, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
+                
+                <Label Grid.Column="0" 
+                       Content="Uninstalling..."
+                       Visibility="{Binding CurrentInstallation.Type, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
 
                 <Label Grid.Column="2"
-                       Content="{Binding CurrentInstallationName}"/>
+                       Content="{Binding CurrentInstallation.Name}"/>
             </Grid>
             
             <ProgressBar Grid.Row="2" 
@@ -155,7 +160,7 @@
                          Height="20"
                          Minimum="0"
                          Maximum="100"
-                         Value="{Binding CurrentInstallationProgress}"/>
+                         Value="{Binding CurrentInstallation.Progress}"/>
         </Grid>
     </Grid>
 </Window>

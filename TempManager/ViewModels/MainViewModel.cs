@@ -54,33 +54,18 @@ namespace TempManager.ViewModels
             }
         }
 
-        private int? _CurrentInstallationProgress;
+        private InstallationViewModel _CurrentInstallation;
 
-        public int? CurrentInstallationProgress
+        public InstallationViewModel CurrentInstallation
         {
             get
             {
-                return _CurrentInstallationProgress;
+                return _CurrentInstallation;
             }
 
             set
             {
-                SetProperty(ref _CurrentInstallationProgress, value);
-            }
-        }
-
-        private string _CurrentInstallationName;
-
-        public string CurrentInstallationName
-        {
-            get
-            {
-                return _CurrentInstallationName;
-            }
-
-            set
-            {
-                SetProperty(ref _CurrentInstallationName, value);
+                SetProperty(ref _CurrentInstallation, value);
             }
         }
     }

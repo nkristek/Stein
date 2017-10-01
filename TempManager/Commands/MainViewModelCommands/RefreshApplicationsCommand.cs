@@ -16,7 +16,7 @@ namespace TempManager.Commands.MainViewModelCommands
 
         public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
         {
-            return viewModel.CurrentInstallationProgress == null;
+            return viewModel.CurrentInstallation == null;
         }
 
         public override void Execute(MainViewModel viewModel, object view, object parameter)

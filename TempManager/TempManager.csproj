@@ -98,6 +98,7 @@
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Configuration\AppConfigurationService.cs" />
     <Compile Include="Configuration\SetupConfiguration.cs" />
+    <Compile Include="Converters\ObjectToStringEqualsParameterToVisibilityConverter.cs" />
     <Compile Include="Converters\IEnumerableNotNullOrEmptyToBoolConverter.cs" />
     <Compile Include="Converters\StringNotNullOrEmptyToVisibilityConverter.cs" />
     <Compile Include="Converters\ValueNotNullToBoolConverter.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Services\InstallService.cs" />
     <Compile Include="Services\ViewModelService.cs" />
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\InstallationViewModel.cs" />
     <Compile Include="ViewModels\InstallerViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\InstallerBundleViewModel.cs" />

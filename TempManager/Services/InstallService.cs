@@ -84,7 +84,7 @@ namespace TempManager.Services
                 };
 
                 var process = Process.Start(startInfo);
-                await process.WaitForExitAsync();
+                await process.WaitForExitAsync().ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -110,7 +110,7 @@ namespace TempManager.Services
                 };
 
                 var process = Process.Start(startInfo);
-                await process.WaitForExitAsync();
+                await process.WaitForExitAsync().ConfigureAwait(false);
             }
             catch (Exception exception)
             {

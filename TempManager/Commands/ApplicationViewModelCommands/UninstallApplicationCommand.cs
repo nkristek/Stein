@@ -22,14 +22,16 @@ namespace TempManager.Commands.ApplicationViewModelCommands
             if (viewModel == null)
                 return false;
 
-            return viewModel.InstallerBundles.Any() && viewModel.InstallerBundles.Any(ib => ib.Installers.Any(i => i.IsInstalled));
+            var mainViewModel = viewModel.Parent as MainViewModel;
+            if (mainViewModel == null)
+                return false;
+
+            return mainViewModel.CurrentInstallation == null && viewModel.InstallerBundles.Any() && viewModel.InstallerBundles.Any(ib => ib.Installers.Any(i => i.IsInstalled));
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
             var mainViewModel = viewModel.Parent as MainViewModel;
-            if (mainViewModel == null)
-                return;
 
             var installerBundle = viewModel.InstallerBundles.LastOrDefault(ib => ib.Installers.Any(i => i.IsInstalled));
             var installers = installerBundle.Installers.Where(i => i.IsInstalled);
@@ -37,18 +39,22 @@ namespace TempManager.Commands.ApplicationViewModelCommands
             var installerCount = installers.Count();
             var currentInstaller = 0;
 
+            mainViewModel.CurrentInstallation = new InstallationViewModel()
+            {
+                Type = InstallationViewModel.InstallationType.Uninstall
+            };
+
             foreach (var installer in installers)
             {
-                mainViewModel.CurrentInstallationName = installer.Name;
-                mainViewModel.CurrentInstallationProgress = ((currentInstaller * 100) / installerCount);
+                mainViewModel.CurrentInstallation.Name = installer.Name;
+                mainViewModel.CurrentInstallation.Progress = ((currentInstaller * 100) / installerCount);
                 currentInstaller++;
 
                 Debug.WriteLine("Uninstalling " + installer.Name);
                 await InstallService.Uninstall(installer);
             }
             
-            mainViewModel.CurrentInstallationName = null;
-            mainViewModel.CurrentInstallationProgress = null;
+            mainViewModel.CurrentInstallation = null;
         }
     }
 }

@@ -17,6 +17,11 @@ namespace TempManager.Commands.MainViewModelCommands
     {
         public AddApplicationCommand(MainViewModel parent, object view = null) : base(parent, view) { }
 
+        public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
+        {
+            return viewModel.CurrentInstallation == null;
+        }
+
         public override void Execute(MainViewModel viewModel, object view, object parameter)
         {
             using (var dialog = new FolderBrowserDialog())
