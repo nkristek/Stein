@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using WpfBase.ViewModels;
@@ -8,12 +10,34 @@ using WpfBase.ViewModels;
 namespace WpfBase.Commands
 {
     public abstract class AsyncViewModelCommand<TViewModel>
-        : AsyncCommand where TViewModel : ViewModel
+        : AsyncCommand, INotifyPropertyChanged where TViewModel : ViewModel
     {
         public AsyncViewModelCommand(TViewModel parent, object view = null)
         {
             Parent = parent;
             View = view;
+        }
+
+        public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
+        {
+            return true;
+        }
+
+        public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
+
+        private bool _IsWorking;
+
+        public bool IsWorking
+        {
+            get
+            {
+                return _IsWorking;
+            }
+
+            set
+            {
+                SetProperty(ref _IsWorking, value);
+            }
         }
 
         private WeakReference<TViewModel> _Parent;
@@ -50,13 +74,6 @@ namespace WpfBase.Commands
             }
         }
 
-        public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
-        {
-            return true;
-        }
-
-        public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
-
         public Type AcceptedViewModelType
         {
             get
@@ -67,7 +84,7 @@ namespace WpfBase.Commands
 
         public sealed override bool CanExecute(object parameter)
         {
-            return CanExecute(Parent, View, parameter);
+            return !IsWorking && CanExecute(Parent, View, parameter);
         }
         
         public sealed override async Task ExecuteAsync(object parameter)
@@ -75,7 +92,32 @@ namespace WpfBase.Commands
             if (!CanExecute(Parent, View, parameter))
                 throw new InvalidOperationException("canexecute");
 
+            if (IsWorking)
+                throw new InvalidOperationException("isworking");
+
+            IsWorking = true;
+            RaiseCanExecuteChanged();
+
             await ExecuteAsync(Parent, View, parameter);
+
+            IsWorking = false;
+            RaiseCanExecuteChanged();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+                return false;
+            storage = value;
+            OnPropertyChanged(propertyName);
+            return true;
         }
     }
 }

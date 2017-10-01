@@ -12,8 +12,7 @@
         MinHeight="300"
         Width="500"
         MinWidth="400">
-    <Grid Margin="8"
-          IsEnabled="{Binding CurrentInstallationProgress, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
+    <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>
@@ -99,7 +98,8 @@
                                     </Grid>
 
                                     <!-- Selection Column -->
-                                    <Grid Grid.Column="4">
+                                    <Grid Grid.Column="4"
+                                          IsEnabled="{Binding Parent.CurrentInstallation, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                             <RowDefinition Height="8"/>

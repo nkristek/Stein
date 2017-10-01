@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using TempManager.Commands.MainViewModelCommands;
 using WpfBase.Commands;
 using WpfBase.ViewModels;
@@ -65,7 +66,8 @@ namespace TempManager.ViewModels
 
             set
             {
-                SetProperty(ref _CurrentInstallation, value);
+                if (SetProperty(ref _CurrentInstallation, value))
+                    CommandManager.InvalidateRequerySuggested();
             }
         }
     }

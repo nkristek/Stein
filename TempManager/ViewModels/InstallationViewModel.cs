@@ -19,6 +19,21 @@ namespace TempManager.ViewModels
             Uninstall
         }
 
+        private InstallationType _Type;
+
+        public InstallationType Type
+        {
+            get
+            {
+                return _Type;
+            }
+
+            set
+            {
+                SetProperty(ref _Type, value);
+            }
+        }
+
         private double _Progress;
 
         public double Progress
@@ -46,21 +61,6 @@ namespace TempManager.ViewModels
             set
             {
                 SetProperty(ref _Name, value);
-            }
-        }
-        
-        private InstallationType _Type;
-
-        public InstallationType Type
-        {
-            get
-            {
-                return _Type;
-            }
-
-            set
-            {
-                SetProperty(ref _Type, value);
             }
         }
     }
