@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TempManager.Configuration;
+using TempManager.Services;
 using TempManager.ViewModels;
 
 namespace TempManager
@@ -25,7 +27,10 @@ namespace TempManager
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel(null, this);
+            var viewModel = new MainViewModel(null, this);
+            DataContext = viewModel;
+
+            viewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

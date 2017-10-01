@@ -7,10 +7,10 @@ using WpfBase.ViewModels;
 
 namespace WpfBase.Commands
 {
-    public abstract class ViewModelCommand<TViewModel>
-        : Command where TViewModel : ViewModel
+    public abstract class AsyncViewModelCommand<TViewModel>
+        : AsyncCommand where TViewModel : ViewModel
     {
-        public ViewModelCommand(TViewModel parent, object view = null)
+        public AsyncViewModelCommand(TViewModel parent, object view = null)
         {
             Parent = parent;
             View = view;
@@ -55,7 +55,7 @@ namespace WpfBase.Commands
             return true;
         }
 
-        public abstract void Execute(TViewModel viewModel, object view, object parameter);
+        public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
 
         public Type AcceptedViewModelType
         {
@@ -69,13 +69,13 @@ namespace WpfBase.Commands
         {
             return CanExecute(Parent, View, parameter);
         }
-
-        public sealed override void Execute(object parameter)
+        
+        public sealed override async Task ExecuteAsync(object parameter)
         {
             if (!CanExecute(Parent, View, parameter))
                 throw new InvalidOperationException("canexecute");
 
-            Execute(Parent, View, parameter);
+            await ExecuteAsync(Parent, View, parameter);
         }
     }
 }

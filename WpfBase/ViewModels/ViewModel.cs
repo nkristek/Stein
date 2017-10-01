@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,10 +10,10 @@ namespace WpfBase.ViewModels
     public abstract class ViewModel
         : ComputedBindableBase
     {
-        public ViewModel(ViewModel parentViewModel, object parentView)
+        public ViewModel(ViewModel parent = null, object view = null)
         {
-            ParentViewModel = parentViewModel;
-            ParentView = parentView;
+            Parent = parent;
+            View = view;
         }
 
         private bool _IsDirty;
@@ -28,51 +29,51 @@ namespace WpfBase.ViewModels
             {
                 if (SetProperty(ref _IsDirty, value))
                 {
-                    if (ParentViewModel != null && value)
-                        ParentViewModel.IsDirty = true;
+                    if (Parent != null && value)
+                        Parent.IsDirty = true;
                 }
             }
         }
 
-        private WeakReference<ViewModel> _parentViewModel;
+        private WeakReference<ViewModel> _Parent;
 
-        public ViewModel ParentViewModel
+        public ViewModel Parent
         {
             get
             {
-                if (_parentViewModel != null && _parentViewModel.TryGetTarget(out ViewModel parentViewModel))
-                    return parentViewModel;
+                if (_Parent != null && _Parent.TryGetTarget(out ViewModel parent))
+                    return parent;
                 return null;
             }
 
-            private set
+            set
             {
-                _parentViewModel = value != null ? new WeakReference<ViewModel>(value) : null;
+                _Parent = value != null ? new WeakReference<ViewModel>(value) : null;
             }
         }
 
-        private WeakReference<object> _parentView;
+        private WeakReference<object> _View;
 
-        public object ParentView
+        public object View
         {
             get
             {
-                if (_parentView != null && _parentView.TryGetTarget(out object parentView))
-                    return parentView;
-                return null;
+                if (_View != null && _View.TryGetTarget(out object view))
+                    return view;
+                return Parent?.View;
             }
 
-            private set
+            set
             {
-                _parentView = value != null ? new WeakReference<object>(value) : null;
+                _View = value != null ? new WeakReference<object>(value) : null;
             }
         }
 
-        public ViewModel TopMostViewModel
+        public ViewModel TopMost
         {
             get
             {
-                return ParentViewModel?.TopMostViewModel ?? this;
+                return Parent?.TopMost ?? this;
             }
         }
 

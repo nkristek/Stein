@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AsyncCommand.cs" />
+    <Compile Include="Commands\AsyncViewModelCommand.cs" />
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\ViewModelCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,9 +4,158 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempManager"
+        xmlns:viewmodels="clr-namespace:TempManager.ViewModels"
+        xmlns:converters="clr-namespace:TempManager.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Temp Manager" 
+        Height="400" 
+        MinHeight="300"
+        Width="500"
+        MinWidth="400">
+    <Grid Margin="8"
+          IsEnabled="{Binding CurrentInstallationProgress, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Command="{Binding AddApplicationCommand}"
+                    Content="Add Folder"/>
+            
+            <Button Grid.Column="3"
+                    Command="{Binding RefreshApplicationsCommand}"
+                    Content="Refresh"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl Grid.IsSharedSizeScope="True"
+                          ItemsSource="{Binding Applications}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type viewmodels:ApplicationViewModel}">
+                            <Border BorderThickness="1" 
+                                CornerRadius="3" 
+                                Padding="8" 
+                                Margin="0,4" 
+                                SnapsToDevicePixels="True"
+                                BorderBrush="LightGray"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="SelectionColumn" MinWidth="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="DeleteButtonColumn"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Label Column -->
+                                    <Grid Grid.Column="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
+                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Label Grid.Row="0" 
+                                               Content="{Binding Name}" />
+
+                                        <Label Grid.Row="2"
+                                               Content="{Binding Path}" />
+                                    </Grid>
+
+                                    <!-- Button Column -->
+                                    <Grid Grid.Column="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
+                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Button Grid.Row="0"
+                                                Content="Install"
+                                                Command="{Binding InstallApplicationCommand}"/>
+
+                                        <Button Grid.Row="2"
+                                                Content="Uninstall"
+                                                Command="{Binding UninstallApplicationCommand}"/>
+                                    </Grid>
+
+                                    <!-- Selection Column -->
+                                    <Grid Grid.Column="4">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
+                                            <RowDefinition Height="8"/>
+                                            <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
+                                        </Grid.RowDefinitions>
+
+                                        <ComboBox Grid.Row="0"
+                                                  ItemsSource="{Binding InstallerBundles}"
+                                                  SelectedItem="{Binding SelectedInstallerBundle}"
+                                                  IsEnabled="{Binding InstallerBundles, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"/>
+                                    </Grid>
+
+                                    <!-- Delete Button Column -->
+                                    <Grid Grid.Column="7">
+                                        <Button Content="Delete"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding Parent.DeleteApplicationCommand}"
+                                                CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid Grid.Row="4"
+              Visibility="{Binding CurrentInstallationProgress, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0" 
+                       Content="(Un)Installing..."/>
+
+                <Label Grid.Column="2"
+                       Content="{Binding CurrentInstallationName}"/>
+            </Grid>
+            
+            <ProgressBar Grid.Row="2" 
+                         HorizontalAlignment="Stretch"
+                         Height="20"
+                         Minimum="0"
+                         Maximum="100"
+                         Value="{Binding CurrentInstallationProgress}"/>
+        </Grid>
     </Grid>
 </Window>
