@@ -12,10 +12,9 @@ namespace WpfBase.Commands
     public abstract class AsyncViewModelCommand<TViewModel>
         : AsyncCommand, INotifyPropertyChanged where TViewModel : ViewModel
     {
-        public AsyncViewModelCommand(TViewModel parent, object view = null)
+        public AsyncViewModelCommand(TViewModel parent)
         {
             Parent = parent;
-            View = view;
         }
 
         public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
@@ -57,23 +56,6 @@ namespace WpfBase.Commands
             }
         }
 
-        private WeakReference<object> _View;
-
-        private object View
-        {
-            get
-            {
-                if (_View != null && _View.TryGetTarget(out object view))
-                    return view;
-                return Parent?.View;
-            }
-
-            set
-            {
-                _View = value != null ? new WeakReference<object>(value) : null;
-            }
-        }
-
         public Type AcceptedViewModelType
         {
             get
@@ -84,12 +66,12 @@ namespace WpfBase.Commands
 
         public sealed override bool CanExecute(object parameter)
         {
-            return !IsWorking && CanExecute(Parent, View, parameter);
+            return !IsWorking && CanExecute(Parent, Parent?.View, parameter);
         }
         
         public sealed override async Task ExecuteAsync(object parameter)
         {
-            if (!CanExecute(Parent, View, parameter))
+            if (!CanExecute(Parent, Parent?.View, parameter))
                 throw new InvalidOperationException("canexecute");
 
             if (IsWorking)
@@ -98,7 +80,7 @@ namespace WpfBase.Commands
             IsWorking = true;
             RaiseCanExecuteChanged();
 
-            await ExecuteAsync(Parent, View, parameter);
+            await ExecuteAsync(Parent, Parent?.View, parameter);
 
             IsWorking = false;
             RaiseCanExecuteChanged();

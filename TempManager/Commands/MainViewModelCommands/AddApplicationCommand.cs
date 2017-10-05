@@ -15,7 +15,7 @@ namespace TempManager.Commands.MainViewModelCommands
     class AddApplicationCommand
         : ViewModelCommand<MainViewModel>
     {
-        public AddApplicationCommand(MainViewModel parent, object view = null) : base(parent, view) { }
+        public AddApplicationCommand(MainViewModel parent) : base(parent) { }
 
         public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
         {

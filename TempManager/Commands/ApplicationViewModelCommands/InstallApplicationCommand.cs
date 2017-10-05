@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace TempManager.Commands.ApplicationViewModelCommands
     public class InstallApplicationCommand
         :  AsyncViewModelCommand<ApplicationViewModel>
     {
-        public InstallApplicationCommand(ApplicationViewModel parent, object view = null) : base(parent, view) { }
+        public InstallApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
         public override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
         {
@@ -24,7 +24,7 @@ namespace TempManager.Commands.ApplicationViewModelCommands
             if (viewModel.SelectedInstallerBundle == null)
                 return false;
 
-            var mainViewModel = viewModel.Parent as MainViewModel;
+            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
             if (mainViewModel == null)
                 return false;
             
@@ -33,13 +33,12 @@ namespace TempManager.Commands.ApplicationViewModelCommands
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainViewModel = viewModel.Parent as MainViewModel;
-            
             var installers = viewModel.SelectedInstallerBundle.Installers;
 
             var installerCount = installers.Count();
             var currentInstaller = 0;
 
+            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
             mainViewModel.CurrentInstallation = new InstallationViewModel()
             {
                 Type = InstallationViewModel.InstallationType.Install
@@ -52,7 +51,7 @@ namespace TempManager.Commands.ApplicationViewModelCommands
                 currentInstaller++;
 
                 Debug.WriteLine("Installing " + installer.Name);
-                await InstallService.Install(installer);
+                await InstallService.InstallAsync(installer);
             }
 
             mainViewModel.CurrentInstallation = null;

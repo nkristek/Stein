@@ -15,14 +15,14 @@ namespace TempManager.Commands.ApplicationViewModelCommands
     public class UninstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
-        public UninstallApplicationCommand(ApplicationViewModel parent, object view = null) : base(parent, view) { }
+        public UninstallApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
         public override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
         {
             if (viewModel == null)
                 return false;
 
-            var mainViewModel = viewModel.Parent as MainViewModel;
+            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>(); ;
             if (mainViewModel == null)
                 return false;
 
@@ -31,14 +31,13 @@ namespace TempManager.Commands.ApplicationViewModelCommands
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainViewModel = viewModel.Parent as MainViewModel;
-
             var installerBundle = viewModel.InstallerBundles.LastOrDefault(ib => ib.Installers.Any(i => i.IsInstalled));
             var installers = installerBundle.Installers.Where(i => i.IsInstalled);
 
             var installerCount = installers.Count();
             var currentInstaller = 0;
 
+            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
             mainViewModel.CurrentInstallation = new InstallationViewModel()
             {
                 Type = InstallationViewModel.InstallationType.Uninstall
@@ -51,7 +50,7 @@ namespace TempManager.Commands.ApplicationViewModelCommands
                 currentInstaller++;
 
                 Debug.WriteLine("Uninstalling " + installer.Name);
-                await InstallService.Uninstall(installer);
+                await InstallService.UninstallAsync(installer);
             }
             
             mainViewModel.CurrentInstallation = null;

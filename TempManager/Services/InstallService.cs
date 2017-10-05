@@ -74,7 +74,7 @@ namespace TempManager.Services
             }
         }
 
-        public static async Task Install(InstallerViewModel installer)
+        public static async Task InstallAsync(InstallerViewModel installer)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace TempManager.Services
             }
         }
 
-        public static async Task Uninstall(InstallerViewModel installer)
+        public static async Task UninstallAsync(InstallerViewModel installer)
         {
             try
             {

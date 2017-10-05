@@ -12,7 +12,7 @@ namespace TempManager.Commands.MainViewModelCommands
     public class DeleteApplicationCommand
         : ViewModelCommand<MainViewModel>
     {
-        public DeleteApplicationCommand(MainViewModel parent, object view = null) : base(parent, view) { }
+        public DeleteApplicationCommand(MainViewModel parent) : base(parent) { }
 
         public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
         {

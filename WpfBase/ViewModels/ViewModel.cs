@@ -52,6 +52,15 @@ namespace WpfBase.ViewModels
             }
         }
 
+        public T FirstParentOfType<T>() where T : ViewModel
+        {
+            if (_Parent != null && _Parent.TryGetTarget(out ViewModel parent))
+            {
+                return parent as T ?? parent.FirstParentOfType<T>();
+            }
+            return null;
+        }
+
         private WeakReference<object> _View;
 
         public object View

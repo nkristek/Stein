@@ -12,10 +12,9 @@ namespace WpfBase.Commands
     public abstract class ViewModelCommand<TViewModel>
         : Command, INotifyPropertyChanged where TViewModel : ViewModel
     {
-        public ViewModelCommand(TViewModel parent, object view = null)
+        public ViewModelCommand(TViewModel parent)
         {
             Parent = parent;
-            View = view;
         }
         
         public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
@@ -56,23 +55,6 @@ namespace WpfBase.Commands
                 _Parent = value != null ? new WeakReference<TViewModel>(value) : null;
             }
         }
-
-        private WeakReference<object> _View;
-
-        private object View
-        {
-            get
-            {
-                if (_View != null && _View.TryGetTarget(out object view))
-                    return view;
-                return Parent?.View;
-            }
-
-            set
-            {
-                _View = value != null ? new WeakReference<object>(value) : null;
-            }
-        }
         
         public Type AcceptedViewModelType
         {
@@ -84,12 +66,12 @@ namespace WpfBase.Commands
 
         public sealed override bool CanExecute(object parameter)
         {
-            return !IsWorking && CanExecute(Parent, View, parameter);
+            return !IsWorking && CanExecute(Parent, Parent?.View, parameter);
         }
 
         public sealed override void Execute(object parameter)
         {
-            if (!CanExecute(Parent, View, parameter))
+            if (!CanExecute(Parent, Parent?.View, parameter))
                 throw new InvalidOperationException("canexecute");
 
             if (IsWorking)
@@ -98,7 +80,7 @@ namespace WpfBase.Commands
             IsWorking = true;
             RaiseCanExecuteChanged();
 
-            Execute(Parent, View, parameter);
+            Execute(Parent, Parent?.View, parameter);
 
             IsWorking = false;
             RaiseCanExecuteChanged();

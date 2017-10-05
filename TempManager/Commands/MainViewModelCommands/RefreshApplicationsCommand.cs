@@ -12,7 +12,7 @@ namespace TempManager.Commands.MainViewModelCommands
     public class RefreshApplicationsCommand
         : ViewModelCommand<MainViewModel>
     {
-        public RefreshApplicationsCommand(MainViewModel parent, object view = null) : base(parent, view) { }
+        public RefreshApplicationsCommand(MainViewModel parent) : base(parent) { }
 
         public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
         {
