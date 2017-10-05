@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TempManager.ViewModels;
+using WpfBase.Extensions;
 
 namespace TempManager.Services
 {
@@ -32,9 +33,7 @@ namespace TempManager.Services
 
         public static void RefreshInstalledPrograms()
         {
-            if (_InstalledPrograms != null)
-                foreach (var installedProgram in _InstalledPrograms)
-                    installedProgram.Dispose();
+            _InstalledPrograms?.ForEach(program => program.Dispose());
             _InstalledPrograms = ReadInstalledPrograms();
         }
 
