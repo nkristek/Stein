@@ -23,8 +23,8 @@ namespace TempManager.Commands.MainViewModelCommands
         {
             viewModel.Applications.Clear();
 
-            foreach (var applicationViewModel in ViewModelService.CreateApplicationViewModels(viewModel))
-                viewModel.Applications.Add(applicationViewModel);
+            foreach (var application in ViewModelService.CreateApplicationViewModels(viewModel))
+                viewModel.Applications.Add(application);
         }
     }
 }
