@@ -35,7 +35,8 @@ namespace WpfBase.Commands
 
             set
             {
-                SetProperty(ref _IsWorking, value);
+                if (SetProperty(ref _IsWorking, value))
+                    RaiseCanExecuteChanged();
             }
         }
 
@@ -52,7 +53,9 @@ namespace WpfBase.Commands
 
             set
             {
+                if (Parent == value) return;
                 _Parent = value != null ? new WeakReference<TViewModel>(value) : null;
+                OnPropertyChanged();
             }
         }
 
@@ -66,7 +69,7 @@ namespace WpfBase.Commands
 
         public sealed override bool CanExecute(object parameter)
         {
-            return !IsWorking && CanExecute(Parent, Parent?.View, parameter);
+            return Parent != null && !IsWorking && CanExecute(Parent, Parent?.View, parameter);
         }
         
         public sealed override async Task ExecuteAsync(object parameter)
@@ -78,12 +81,10 @@ namespace WpfBase.Commands
                 throw new InvalidOperationException("isworking");
 
             IsWorking = true;
-            RaiseCanExecuteChanged();
 
             await ExecuteAsync(Parent, Parent?.View, parameter);
 
             IsWorking = false;
-            RaiseCanExecuteChanged();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

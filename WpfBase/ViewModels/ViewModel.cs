@@ -48,7 +48,9 @@ namespace WpfBase.ViewModels
 
             set
             {
+                if (Parent == value) return;
                 _Parent = value != null ? new WeakReference<ViewModel>(value) : null;
+                OnPropertyChanged();
             }
         }
 
@@ -74,7 +76,9 @@ namespace WpfBase.ViewModels
 
             set
             {
+                if (View == value) return;
                 _View = value != null ? new WeakReference<object>(value) : null;
+                OnPropertyChanged();
             }
         }
 
