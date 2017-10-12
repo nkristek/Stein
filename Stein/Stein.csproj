@@ -93,9 +93,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\MainViewModelCommands\RefreshApplicationsCommand.cs" />
-    <Compile Include="Commands\MainViewModelCommands\AddApplicationCommand.cs" />
-    <Compile Include="Commands\MainViewModelCommands\DeleteApplicationCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
     <Compile Include="Configuration\AppConfiguration.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="ViewModels\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\InstallationViewModel.cs" />
     <Compile Include="ViewModels\InstallerViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\InstallerBundleViewModel.cs" />
     <Compile Include="Views\SelectInstallersDialog.xaml.cs">
       <DependentUpon>SelectInstallersDialog.xaml</DependentUpon>

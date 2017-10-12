@@ -22,14 +22,14 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (viewModel.SelectedInstallerBundle == null)
                 return false;
 
-            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
-            return mainViewModel != null && mainViewModel.CurrentInstallation == null && viewModel.InstallerBundles.Any() && !viewModel.InstallerBundles.Any(ib => ib.Installers.Any(i => i.IsInstalled));
+            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            return mainWindowViewModel != null && mainWindowViewModel.CurrentInstallation == null && viewModel.InstallerBundles.Any() && !viewModel.InstallerBundles.Any(ib => ib.Installers.Any(i => i.IsInstalled));
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
-            mainViewModel.CurrentInstallation = new InstallationViewModel(mainViewModel)
+            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
                 Type = InstallationViewModel.InstallationType.Install,
                 InstallerCount = 0,
@@ -39,13 +39,13 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (ViewModelService.ShowDialog(viewModel.SelectedInstallerBundle) == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsInstalled);
-                mainViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
+                mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
 
                 var currentInstaller = 1;
                 foreach (var installer in installersToInstall)
                 {
-                    mainViewModel.CurrentInstallation.Name = installer.Name;
-                    mainViewModel.CurrentInstallation.CurrentIndex = currentInstaller;
+                    mainWindowViewModel.CurrentInstallation.Name = installer.Name;
+                    mainWindowViewModel.CurrentInstallation.CurrentIndex = currentInstaller;
 
                     Debug.WriteLine("Installing " + installer.Name);
                     await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
@@ -53,8 +53,8 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 }
             }
 
-            mainViewModel.CurrentInstallation = null;
-            mainViewModel.RefreshApplicationsCommand.Execute(null);
+            mainWindowViewModel.CurrentInstallation = null;
+            mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

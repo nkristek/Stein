@@ -7,27 +7,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Stein.Commands.MainViewModelCommands;
+using Stein.Commands.MainWindowViewModelCommands;
 using WpfBase.Commands;
 using WpfBase.ViewModels;
 
 namespace Stein.ViewModels
 {
-    public class MainViewModel
+    public class MainWindowViewModel
         : ViewModel
     {
-        public MainViewModel(ViewModel parent = null, object view = null) : base(parent, view)
+        public MainWindowViewModel(ViewModel parent = null, object view = null) : base(parent, view)
         {
             RefreshApplicationsCommand = new RefreshApplicationsCommand(this);
             AddApplicationCommand = new AddApplicationCommand(this);
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
         }
 
-        public ViewModelCommand<MainViewModel> AddApplicationCommand { get; private set; }
+        public ViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; private set; }
 
-        public ViewModelCommand<MainViewModel> DeleteApplicationCommand { get; private set; }
+        public ViewModelCommand<MainWindowViewModel> DeleteApplicationCommand { get; private set; }
         
-        public AsyncViewModelCommand<MainViewModel> RefreshApplicationsCommand { get; private set; }
+        public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; private set; }
         
         private ObservableCollection<ApplicationViewModel> _Applications = new ObservableCollection<ApplicationViewModel>();
 

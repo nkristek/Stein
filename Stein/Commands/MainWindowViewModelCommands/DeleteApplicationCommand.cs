@@ -7,19 +7,19 @@ using Stein.Configuration;
 using Stein.ViewModels;
 using WpfBase.Commands;
 
-namespace Stein.Commands.MainViewModelCommands
+namespace Stein.Commands.MainWindowViewModelCommands
 {
     public class DeleteApplicationCommand
-        : ViewModelCommand<MainViewModel>
+        : ViewModelCommand<MainWindowViewModel>
     {
-        public DeleteApplicationCommand(MainViewModel parent) : base(parent) { }
+        public DeleteApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
+        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override void Execute(MainViewModel viewModel, object view, object parameter)
+        public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
         {
             var applicationToDelete = parameter as ApplicationViewModel;
             if (applicationToDelete == null)

@@ -11,19 +11,19 @@ using Stein.ViewModels;
 using WpfBase.Commands;
 using WpfBase.Extensions;
 
-namespace Stein.Commands.MainViewModelCommands
+namespace Stein.Commands.MainWindowViewModelCommands
 {
     class AddApplicationCommand
-        : ViewModelCommand<MainViewModel>
+        : ViewModelCommand<MainWindowViewModel>
     {
-        public AddApplicationCommand(MainViewModel parent) : base(parent) { }
+        public AddApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
+        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override void Execute(MainViewModel viewModel, object view, object parameter)
+        public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
         {
             using (var dialog = new FolderBrowserDialog())
             {

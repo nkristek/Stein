@@ -9,19 +9,19 @@ using Stein.ViewModels;
 using WpfBase.Commands;
 using System.Windows.Input;
 
-namespace Stein.Commands.MainViewModelCommands
+namespace Stein.Commands.MainWindowViewModelCommands
 {
     public class RefreshApplicationsCommand
-        : AsyncViewModelCommand<MainViewModel>
+        : AsyncViewModelCommand<MainWindowViewModel>
     {
-        public RefreshApplicationsCommand(MainViewModel parent) : base(parent) { }
+        public RefreshApplicationsCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainViewModel viewModel, object view, object parameter)
+        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override async Task ExecuteAsync(MainViewModel viewModel, object view, object parameter)
+        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             viewModel.Applications.Clear();
             

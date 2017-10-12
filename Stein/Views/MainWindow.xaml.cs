@@ -27,7 +27,7 @@ namespace Stein
         {
             InitializeComponent();
 
-            var viewModel = new MainViewModel(null, this);
+            var viewModel = new MainWindowViewModel(null, this);
             DataContext = viewModel;
 
             viewModel.RefreshApplicationsCommand.Execute(null);
