@@ -13,7 +13,7 @@ using WpfBase.Commands;
 namespace Stein.Commands.ApplicationViewModelCommands
 {
     public class InstallApplicationCommand
-        :  AsyncViewModelCommand<ApplicationViewModel>
+        : AsyncViewModelCommand<ApplicationViewModel>
     {
         public InstallApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 

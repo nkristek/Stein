@@ -10,7 +10,7 @@ using WpfBase.Commands;
 namespace Stein.Commands.MainWindowViewModelCommands
 {
     public class DeleteApplicationCommand
-        : ViewModelCommand<MainWindowViewModel>
+        : AsyncViewModelCommand<MainWindowViewModel>
     {
         public DeleteApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
@@ -19,7 +19,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
             return viewModel.CurrentInstallation == null;
         }
 
-        public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
+        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             var applicationToDelete = parameter as ApplicationViewModel;
             if (applicationToDelete == null)
@@ -29,11 +29,16 @@ namespace Stein.Commands.MainWindowViewModelCommands
             if (setupToDelete == null)
                 return;
 
-            AppConfigurationService.CurrentConfiguration.Setups.Remove(setupToDelete);
-            if (!AppConfigurationService.SaveConfiguration())
-                return;
+            var success = await Task.Run(() =>
+            {
+                AppConfigurationService.CurrentConfiguration.Setups.Remove(setupToDelete);
+                return AppConfigurationService.SaveConfiguration();
+            });
 
-            viewModel.Applications.Remove(applicationToDelete);
+            if (success)
+                viewModel.Applications.Remove(applicationToDelete);
+            else
+                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
         }
     }
 }

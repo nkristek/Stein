@@ -23,9 +23,9 @@ namespace Stein.ViewModels
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
         }
 
-        public ViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; private set; }
 
-        public ViewModelCommand<MainWindowViewModel> DeleteApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<MainWindowViewModel> DeleteApplicationCommand { get; private set; }
         
         public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; private set; }
         

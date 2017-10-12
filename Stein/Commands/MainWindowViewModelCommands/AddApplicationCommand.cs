@@ -14,7 +14,7 @@ using WpfBase.Extensions;
 namespace Stein.Commands.MainWindowViewModelCommands
 {
     class AddApplicationCommand
-        : ViewModelCommand<MainWindowViewModel>
+        : AsyncViewModelCommand<MainWindowViewModel>
     {
         public AddApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
@@ -23,7 +23,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
             return viewModel.CurrentInstallation == null;
         }
 
-        public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
+        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             using (var dialog = new FolderBrowserDialog())
             {
@@ -43,11 +43,20 @@ namespace Stein.Commands.MainWindowViewModelCommands
                     Path = dialog.SelectedPath,
                     EnableSilentInstallation = true
                 };
-                AppConfigurationService.CurrentConfiguration.Setups.Add(setupConfiguration);
-                if (!AppConfigurationService.SaveConfiguration())
-                    return;
 
-                viewModel.Applications.Add(ViewModelService.CreateApplicationViewModel(setupConfiguration, viewModel));
+                var application = await Task.Run(() =>
+                {
+                    AppConfigurationService.CurrentConfiguration.Setups.Add(setupConfiguration);
+                    if (!AppConfigurationService.SaveConfiguration())
+                        return null;
+
+                    return ViewModelService.CreateApplicationViewModel(setupConfiguration, viewModel);
+                });
+
+                if (application != null)
+                    viewModel.Applications.Add(application);
+                else
+                    await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
             }
         }
     }
