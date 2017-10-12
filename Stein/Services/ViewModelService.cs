@@ -94,16 +94,15 @@ namespace Stein.Services
                 if (Path.GetExtension(fileName) != ".msi")
                     continue;
 
-                var properties = InstallService.GetPropertiesFromMsi(fileName);
+                var msiDatabase = InstallService.GetMsiDatabase(fileName);
 
                 yield return new InstallerViewModel()
                 {
-                    Name = Path.GetFileName(fileName),
+                    Name = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.ProductName),
                     Path = fileName,
-                    MsiProperties = properties,
-                    Culture = GetCultureTagFromMsiProperties(properties),
-                    Version = GetVersionFromMsiProperties(properties),
-                    IsInstalled = IsMsiInstalled(properties),
+                    Culture = GetCultureTagFromMsiDatabase(msiDatabase),
+                    Version = GetVersionFromMsiDatabase(msiDatabase),
+                    IsInstalled = IsMsiInstalled(msiDatabase),
                     IsEnabled = true,
                     Created = new FileInfo(fileName).CreationTime
                 };
@@ -114,14 +113,15 @@ namespace Stein.Services
          * https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
          */
 
-        private static string GetCultureTagFromMsiProperties(Dictionary<string, string> properties)
+        private static string GetCultureTagFromMsiDatabase(Database msiDatabase)
         {
-            if (!properties.ContainsKey("ProductLanguage"))
-                return null;
-
             try
             {
-                var cultureId = int.Parse(properties["ProductLanguage"]);
+                var cultureIdProperty = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.ProductLanguage);
+                if (String.IsNullOrEmpty(cultureIdProperty))
+                    return null;
+
+                var cultureId = int.Parse(cultureIdProperty);
                 var culture = new CultureInfo(cultureId);
                 return culture.IetfLanguageTag;
             }
@@ -131,14 +131,15 @@ namespace Stein.Services
             }
         }
 
-        private static Version GetVersionFromMsiProperties(Dictionary<string, string> properties)
+        private static Version GetVersionFromMsiDatabase(Database msiDatabase)
         {
-            if (!properties.ContainsKey("ProductVersion"))
-                return null;
-
             try
             {
-                return new Version(properties["ProductVersion"]);
+                var versionProperty = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.ProductVersion);
+                if (String.IsNullOrEmpty(versionProperty))
+                    return null;
+
+                return new Version(versionProperty);
             }
             catch
             {
@@ -146,26 +147,24 @@ namespace Stein.Services
             }
         }
 
-        private static bool IsMsiInstalled(Dictionary<string, string> msiProperties)
+        private static bool IsMsiInstalled(Database msiDatabase)
         {
+            var productVersion = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.ProductVersion);
+            var productName = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.ProductName);
+            var manufacturer = InstallService.GetPropertyFromMsiDatabase(msiDatabase, InstallService.MsiPropertyName.Manufacturer);
+
             return InstallService.InstalledPrograms.Any(p =>
             {
                 var found = false;
-                if (!String.IsNullOrEmpty(p.DisplayName) && msiProperties.ContainsKey("ProductName"))
-                {
-                    if (p.DisplayName == msiProperties["ProductName"])
-                        found = true;
-                    else
-                        found = false;
-                }
 
-                if (found && !String.IsNullOrEmpty(p.DisplayVersion) && msiProperties.ContainsKey("ProductVersion"))
-                    if (p.DisplayVersion != msiProperties["ProductVersion"])
-                        found = false;
+                if (!String.IsNullOrEmpty(p.DisplayName))
+                    found = p.DisplayName == productName;
 
-                if (found && !String.IsNullOrEmpty(p.Publisher) && msiProperties.ContainsKey("Manufacturer"))
-                    if (p.Publisher != msiProperties["Manufacturer"])
-                        found = false;
+                if (found && !String.IsNullOrEmpty(p.DisplayVersion))
+                    found = p.DisplayVersion == productVersion;
+
+                if (found && !String.IsNullOrEmpty(p.Publisher))
+                    found = p.Publisher == manufacturer;
 
                 return found;
             });

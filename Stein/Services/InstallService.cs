@@ -28,14 +28,14 @@ namespace Stein.Services
 
             private set
             {
+                _InstalledPrograms?.ForEach(program => program.Dispose());
                 _InstalledPrograms = value;
             }
         }
 
         public static void RefreshInstalledPrograms()
         {
-            _InstalledPrograms?.ForEach(program => program.Dispose());
-            _InstalledPrograms = ReadInstalledPrograms();
+            InstalledPrograms = ReadInstalledPrograms();
         }
 
         private static IEnumerable<InstalledProgram> ReadInstalledPrograms()
@@ -153,8 +153,9 @@ namespace Stein.Services
             else
                 argumentsBuilder.Append("/I ");
 
-            if (installer.MsiProperties.ContainsKey("ProductCode") && !String.IsNullOrEmpty(installer.MsiProperties["ProductCode"]))
-                argumentsBuilder.Append(installer.MsiProperties["ProductCode"]);
+            var productCode = GetPropertyFromMsi(installer.Path, MsiPropertyName.ProductCode);
+            if (!String.IsNullOrEmpty(productCode))
+                argumentsBuilder.Append(productCode);
             else
                 argumentsBuilder.Append(installer.Path?.Quoted());
 
@@ -170,24 +171,25 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
 
+        public enum MsiPropertyName
+        {
+            ProductLanguage,
+            ProductVersion,
+            ProductCode,
+            ProductName,
+            Manufacturer
+        }
+
         public static Dictionary<string, string> GetPropertiesFromMsi(string fileName)
         {
-            // Get the type of the Windows Installer object 
-            var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
+            return GetPropertiesFromMsiDatabase(GetMsiDatabase(fileName));
+        }
 
-            // Create the Windows Installer object 
-            var installer = Activator.CreateInstance(installerType) as Installer;
-
-            // Open the MSI database in the input file 
-            var database = installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
-
-            // Open a view on the Property table for the version property 
+        public static Dictionary<string, string> GetPropertiesFromMsiDatabase(Database database)
+        {
             var view = database.OpenView("SELECT * FROM Property");
-
-            // Execute the view query 
             view.Execute(null);
 
-            // Get the records from the view 
             var properties = new Dictionary<string, string>();
 
             var record = view.Fetch();
@@ -203,6 +205,28 @@ namespace Stein.Services
             }
 
             return properties;
+        }
+
+        public static string GetPropertyFromMsi(string fileName, MsiPropertyName propertyName)
+        {
+            return GetPropertyFromMsiDatabase(GetMsiDatabase(fileName), propertyName);
+        }
+
+        public static string GetPropertyFromMsiDatabase(Database database, MsiPropertyName propertyName)
+        {
+            var query = String.Format("SELECT * FROM Property WHERE Property='{0}'", propertyName.ToString());
+            var view = database.OpenView(query);
+            view.Execute(null);
+
+            var record = view.Fetch();
+            return record?.get_StringData(2);
+        }
+
+        public static Database GetMsiDatabase(string fileName)
+        {
+            var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
+            var installer = Activator.CreateInstance(installerType) as Installer;
+            return installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
         }
     }
 }

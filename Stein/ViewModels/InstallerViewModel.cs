@@ -88,21 +88,6 @@ namespace Stein.ViewModels
             }
         }
 
-        private Dictionary<string, string> _MsiProperties;
-
-        public Dictionary<string, string> MsiProperties
-        {
-            get
-            {
-                return _MsiProperties;
-            }
-
-            set
-            {
-                SetProperty(ref _MsiProperties, value);
-            }
-        }
-
         private bool _IsEnabled;
 
         public bool IsEnabled
