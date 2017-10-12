@@ -102,5 +102,35 @@ namespace Stein.ViewModels
                 SetProperty(ref _MsiProperties, value);
             }
         }
+
+        private bool _IsEnabled;
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return _IsEnabled;
+            }
+
+            set
+            {
+                SetProperty(ref _IsEnabled, value);
+            }
+        }
+
+        private DateTime _Created;
+
+        public DateTime Created
+        {
+            get
+            {
+                return _Created;
+            }
+
+            set
+            {
+                SetProperty(ref _Created, value);
+            }
+        }
     }
 }

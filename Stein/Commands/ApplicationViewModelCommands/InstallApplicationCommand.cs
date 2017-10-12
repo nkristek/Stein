@@ -28,26 +28,21 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var installers = viewModel.SelectedInstallerBundle.Installers.Where(i => !i.IsInstalled);
-            
             var mainViewModel = viewModel.FirstParentOfType<MainViewModel>();
             mainViewModel.CurrentInstallation = new InstallationViewModel(mainViewModel)
             {
                 Type = InstallationViewModel.InstallationType.Install,
-                InstallerCount = installers.Count(),
+                InstallerCount = 0,
                 CurrentIndex = 0
             };
-
-            const string caption = "Confirm install";
-            var questionBuilder = new StringBuilder();
-            questionBuilder.AppendLine("Do you want to install the following installers:");
-            foreach (var installer in installers)
-                questionBuilder.AppendLine(installer.Name);
             
-            if (MessageBox.Show(questionBuilder.ToString(), caption, MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (ViewModelService.ShowDialog(viewModel.SelectedInstallerBundle) == true)
             {
+                var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsInstalled);
+                mainViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
+
                 var currentInstaller = 1;
-                foreach (var installer in installers)
+                foreach (var installer in installersToInstall)
                 {
                     mainViewModel.CurrentInstallation.Name = installer.Name;
                     mainViewModel.CurrentInstallation.CurrentIndex = currentInstaller;

@@ -1,0 +1,107 @@
+﻿<Window x:Class="Stein.Views.SelectInstallersDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stein.Views"
+        xmlns:viewmodels="clr-namespace:Stein.ViewModels"
+        xmlns:converters="clr-namespace:Stein.Converters"
+        mc:Ignorable="d"
+        Title="SelectInstallersDialog" 
+        Height="300" 
+        MinHeight="200"
+        Width="500"
+        MinWidth="400"
+        WindowStartupLocation="CenterOwner">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Content="Please select on which installers to proceed:"/>
+
+        <ScrollViewer Grid.Row="2" 
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Installers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:InstallerViewModel}">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsEnabled}">
+                                <Label Content="{Binding Name}"/>
+                            </CheckBox>
+
+                            <Label Grid.Column="3"
+                                   Content="is installed"
+                                   VerticalAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   IsEnabled="False"
+                                   Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"/>
+
+                            <Label Grid.Column="3"
+                                   Content="is not installed"
+                                   VerticalAlignment="Center"
+                                   VerticalContentAlignment="Center"
+                                   IsEnabled="False"
+                                   Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToNotVisibilityConverter.Instance}}"/>
+
+                            <Grid Grid.Column="5"
+                                  Visibility="{Binding Created, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       Content="Created:"/>
+                                <Label Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       Content="{Binding Created, Converter={x:Static converters:DateTimeToStringConverter.Instance}}"/>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Grid Grid.Row="4"
+              Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" 
+                    Content="Ok"
+                    Padding="16,4"
+                    Click="OnDialogOkButtonClick"/>
+
+            <Button Grid.Column="3" 
+                    Content="Cancel"
+                    Padding="16,4"
+                    Click="OnDialogCancelButtonClick"/>
+        </Grid>
+    </Grid>
+</Window>

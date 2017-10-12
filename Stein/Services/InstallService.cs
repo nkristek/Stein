@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Stein.ViewModels;
 using WpfBase.Extensions;
+using WindowsInstaller;
 
 namespace Stein.Services
 {
@@ -167,6 +168,41 @@ namespace Stein.Services
             };
 
             return Process.Start(startInfo);
+        }
+
+        public static Dictionary<string, string> GetPropertiesFromMsi(string fileName)
+        {
+            // Get the type of the Windows Installer object 
+            var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
+
+            // Create the Windows Installer object 
+            var installer = Activator.CreateInstance(installerType) as Installer;
+
+            // Open the MSI database in the input file 
+            var database = installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
+
+            // Open a view on the Property table for the version property 
+            var view = database.OpenView("SELECT * FROM Property");
+
+            // Execute the view query 
+            view.Execute(null);
+
+            // Get the records from the view 
+            var properties = new Dictionary<string, string>();
+
+            var record = view.Fetch();
+            while (record != null)
+            {
+                var key = record.get_StringData(1);
+                var value = record.get_StringData(2);
+
+                if (!String.IsNullOrEmpty(key) && !properties.ContainsKey(key))
+                    properties.Add(key, value);
+
+                record = view.Fetch();
+            }
+
+            return properties;
         }
     }
 }

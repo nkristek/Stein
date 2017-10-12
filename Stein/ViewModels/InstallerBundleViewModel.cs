@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfBase.Commands;
 using WpfBase.ViewModels;
 
 namespace Stein.ViewModels
@@ -12,7 +13,7 @@ namespace Stein.ViewModels
         : ViewModel
     {
         public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
-
+        
         private string _Name;
 
         public string Name

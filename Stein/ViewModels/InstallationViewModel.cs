@@ -65,11 +65,12 @@ namespace Stein.ViewModels
             }
         }
 
-        [PropertySource(nameof(InstallerCount), nameof(CurrentIndex))]
+        [PropertySource(nameof(CurrentIndex), nameof(InstallerCount))]
         public string ProgressString
         {
             get
             {
+                if (CurrentIndex == 0 || InstallerCount == 0) return null;
                 return String.Join(String.Empty, CurrentIndex.ToString(), "/", InstallerCount.ToString());
             }
         }

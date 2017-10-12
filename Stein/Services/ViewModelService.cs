@@ -10,11 +10,33 @@ using Stein.Configuration;
 using Stein.ViewModels;
 using WindowsInstaller;
 using WpfBase.ViewModels;
+using System.Windows;
+using Stein.Views;
 
 namespace Stein.Services
 {
     public static class ViewModelService
     {
+        public static bool? ShowDialog(ViewModel dialogViewModel)
+        {
+            Window dialog;
+            switch (dialogViewModel.GetType().ToString())
+            {
+                case "Stein.ViewModels.InstallerBundleViewModel":
+                    dialog = new SelectInstallersDialog();
+                    break;
+
+                default:
+                    throw new NotSupportedException("No view found for viewmodel");
+            }
+            dialog.DataContext = dialogViewModel;
+            dialog.Owner = dialogViewModel.Parent?.View as Window;
+
+            dialogViewModel.View = dialog;
+
+            return dialog.ShowDialog();
+        }
+
         public static IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent = null)
         {
             foreach (var setup in AppConfigurationService.CurrentConfiguration.Setups)
@@ -69,16 +91,18 @@ namespace Stein.Services
                 if (Path.GetExtension(fileName) != ".msi")
                     continue;
 
-                var properties = GetPropertiesFromMsi(fileName);
-                
+                var properties = InstallService.GetPropertiesFromMsi(fileName);
+
                 yield return new InstallerViewModel()
                 {
                     Name = Path.GetFileName(fileName),
                     Path = fileName,
                     MsiProperties = properties,
-                    Culture = GetCultureFromMsiProperties(properties),
+                    Culture = GetCultureTagFromMsiProperties(properties),
                     Version = GetVersionFromMsiProperties(properties),
-                    IsInstalled = GetInstalledProgram(properties) != null
+                    IsInstalled = IsMsiInstalled(properties),
+                    IsEnabled = true,
+                    Created = new FileInfo(fileName).CreationTime
                 };
             }
         }
@@ -87,7 +111,7 @@ namespace Stein.Services
          * https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
          */
 
-        private static string GetCultureFromMsiProperties(Dictionary<string, string> properties)
+        private static string GetCultureTagFromMsiProperties(Dictionary<string, string> properties)
         {
             if (!properties.ContainsKey("ProductLanguage"))
                 return null;
@@ -119,64 +143,29 @@ namespace Stein.Services
             }
         }
 
-        private static InstalledProgram GetInstalledProgram(Dictionary<string, string> properties)
+        private static bool IsMsiInstalled(Dictionary<string, string> msiProperties)
         {
-            return InstallService.InstalledPrograms.FirstOrDefault(p =>
+            return InstallService.InstalledPrograms.Any(p =>
             {
                 var found = false;
-                if (!String.IsNullOrEmpty(p.DisplayName) && properties.ContainsKey("ProductName"))
+                if (!String.IsNullOrEmpty(p.DisplayName) && msiProperties.ContainsKey("ProductName"))
                 {
-                    if (p.DisplayName == properties["ProductName"])
+                    if (p.DisplayName == msiProperties["ProductName"])
                         found = true;
                     else
                         found = false;
                 }
 
-                if (found && !String.IsNullOrEmpty(p.DisplayVersion) && properties.ContainsKey("ProductVersion"))
-                    if (p.DisplayVersion != properties["ProductVersion"])
+                if (found && !String.IsNullOrEmpty(p.DisplayVersion) && msiProperties.ContainsKey("ProductVersion"))
+                    if (p.DisplayVersion != msiProperties["ProductVersion"])
                         found = false;
 
-                if (found && !String.IsNullOrEmpty(p.Publisher) && properties.ContainsKey("Manufacturer"))
-                    if (p.Publisher != properties["Manufacturer"])
+                if (found && !String.IsNullOrEmpty(p.Publisher) && msiProperties.ContainsKey("Manufacturer"))
+                    if (p.Publisher != msiProperties["Manufacturer"])
                         found = false;
 
                 return found;
             });
-        }
-
-        private static Dictionary<string, string> GetPropertiesFromMsi(string fileName)
-        {
-            // Get the type of the Windows Installer object 
-            var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
-
-            // Create the Windows Installer object 
-            var installer = Activator.CreateInstance(installerType) as Installer;
-
-            // Open the MSI database in the input file 
-            var database = installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
-
-            // Open a view on the Property table for the version property 
-            var view = database.OpenView("SELECT * FROM Property");
-
-            // Execute the view query 
-            view.Execute(null);
-
-            // Get the records from the view 
-            var properties = new Dictionary<string, string>();
-
-            var record = view.Fetch();
-            while (record != null)
-            {
-                var key = record.get_StringData(1);
-                var value = record.get_StringData(2);
-
-                if (!String.IsNullOrEmpty(key) && !properties.ContainsKey(key))
-                    properties.Add(key, value);
-
-                record = view.Fetch();
-            }
-
-            return properties;
         }
     }
 }
