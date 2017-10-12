@@ -69,10 +69,10 @@
                                     <ColumnDefinition Width="8"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                                     <ColumnDefinition Width="8"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="SelectionColumn" MinWidth="100"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="SelectionColumn"/>
                                     <ColumnDefinition Width="8"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="DeleteButtonColumn"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Label Column -->
@@ -133,13 +133,13 @@
                                 </Grid>
 
                                 <!-- Delete Button Column -->
-                                <Button Grid.Column="7"
-                                        Content="Delete"
-                                        Padding="16,4"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding Parent.DeleteApplicationCommand}"
-                                        CommandParameter="{Binding}"/>
+                                <Grid Grid.Column="7">
+                                    <Button Content="Delete"
+                                            Padding="16,4"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding Parent.DeleteApplicationCommand}"
+                                            CommandParameter="{Binding}"/>
+                                </Grid>
                             </Grid>
                         </Border>
                     </DataTemplate>
