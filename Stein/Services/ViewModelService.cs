@@ -17,18 +17,21 @@ namespace Stein.Services
 {
     public static class ViewModelService
     {
+        private static readonly IReadOnlyDictionary<Type, Type> ViewModelsToViewsMapping = new Dictionary<Type, Type>
+        {
+            { typeof(InstallerBundleViewModel), typeof(SelectInstallersDialog) }
+        };
+
         public static bool? ShowDialog(ViewModel dialogViewModel)
         {
-            Window dialog;
-            switch (dialogViewModel.GetType().ToString())
-            {
-                case "Stein.ViewModels.InstallerBundleViewModel":
-                    dialog = new SelectInstallersDialog();
-                    break;
+            var viewModelType = dialogViewModel.GetType();
+            if (!ViewModelsToViewsMapping.ContainsKey(viewModelType))
+                throw new NotSupportedException("No view found for viewmodel");
+            
+            var dialog = Activator.CreateInstance(ViewModelsToViewsMapping[viewModelType]) as Window;
+            if (dialog == null)
+                throw new ArgumentException("view for viewmodel is no window");
 
-                default:
-                    throw new NotSupportedException("No view found for viewmodel");
-            }
             dialog.DataContext = dialogViewModel;
             dialog.Owner = dialogViewModel.Parent?.View as Window;
 
