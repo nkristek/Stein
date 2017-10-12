@@ -35,34 +35,32 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="8"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
                             <CheckBox Grid.Column="0"
-                                      VerticalAlignment="Center"
+                                      VerticalAlignment="Bottom"
                                       VerticalContentAlignment="Center"
                                       IsChecked="{Binding IsEnabled}">
                                 <Label Content="{Binding Name}"/>
                             </CheckBox>
 
-                            <Label Grid.Column="3"
+                            <Label Grid.Column="2"
                                    Content="is installed"
                                    VerticalAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    IsEnabled="False"
                                    Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"/>
 
-                            <Label Grid.Column="3"
+                            <Label Grid.Column="2"
                                    Content="is not installed"
                                    VerticalAlignment="Center"
                                    VerticalContentAlignment="Center"
                                    IsEnabled="False"
                                    Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToNotVisibilityConverter.Instance}}"/>
 
-                            <Grid Grid.Column="5"
+                            <Grid Grid.Column="3"
                                   Visibility="{Binding Created, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
