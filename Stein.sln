@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein", "Stein\Stein.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBase", "WpfBase\WpfBase.csproj", "{4D3661A8-A1CA-45A3-87E6-160859D9F896}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CE3354E6-BA26-4396-BA2D-FB741666F21E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|x64.ActiveCfg = Release|Any CPU
 		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|x64.Build.0 = Release|Any CPU
+		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|Any CPU.ActiveCfg = Debug
+		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|x64.ActiveCfg = Debug
+		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Release|Any CPU.ActiveCfg = Release
+		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
