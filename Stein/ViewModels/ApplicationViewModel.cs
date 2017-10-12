@@ -8,6 +8,7 @@ using Stein.Commands.ApplicationViewModelCommands;
 using Stein.Configuration;
 using WpfBase.Commands;
 using WpfBase.ViewModels;
+using System.Windows.Input;
 
 namespace Stein.ViewModels
 {
@@ -109,7 +110,8 @@ namespace Stein.ViewModels
 
             set
             {
-                SetProperty(ref _SelectedInstallerBundle, value);
+                if (SetProperty(ref _SelectedInstallerBundle, value))
+                    CommandManager.InvalidateRequerySuggested();
             }
         }
     }
