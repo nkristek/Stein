@@ -25,7 +25,7 @@ namespace Stein.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is Visibility && ((Visibility)value == Visibility.Visible || ((Visibility)value == Visibility.Hidden));
+            return value is Visibility && ((Visibility)value == Visibility.Collapsed);
         }
     }
 }
