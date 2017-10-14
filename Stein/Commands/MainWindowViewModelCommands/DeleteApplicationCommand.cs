@@ -24,13 +24,13 @@ namespace Stein.Commands.MainWindowViewModelCommands
             var applicationToDelete = parameter as ApplicationViewModel;
             if (applicationToDelete == null)
                 return;
-
-            var setupToDelete = AppConfigurationService.CurrentConfiguration.Setups.FirstOrDefault(s => s.Path == applicationToDelete.Path);
-            if (setupToDelete == null)
-                return;
-
+            
             var success = await Task.Run(() =>
             {
+                var setupToDelete = AppConfigurationService.CurrentConfiguration.Setups.FirstOrDefault(s => s.Path == applicationToDelete.Path);
+                if (setupToDelete == null)
+                    return false;
+
                 AppConfigurationService.CurrentConfiguration.Setups.Remove(setupToDelete);
                 return AppConfigurationService.SaveConfiguration();
             });

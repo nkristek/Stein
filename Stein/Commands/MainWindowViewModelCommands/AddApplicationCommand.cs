@@ -25,39 +25,42 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
+            string selectedPath;
             using (var dialog = new FolderBrowserDialog())
             {
                 var result = dialog.ShowDialog();
                 if (result != DialogResult.OK)
                     return;
 
-                if (String.IsNullOrWhiteSpace(dialog.SelectedPath) || dialog.SelectedPath.ContainsInvalidPathChars())
-                {
-                    MessageBox.Show("Selected path is not valid!");
-                    return;
-                }
-
-                var setupConfiguration = new SetupConfiguration()
-                {
-                    Name = new DirectoryInfo(dialog.SelectedPath).Name,
-                    Path = dialog.SelectedPath,
-                    EnableSilentInstallation = true
-                };
-
-                var application = await Task.Run(() =>
-                {
-                    AppConfigurationService.CurrentConfiguration.Setups.Add(setupConfiguration);
-                    if (!AppConfigurationService.SaveConfiguration())
-                        return null;
-
-                    return ViewModelService.CreateApplicationViewModel(setupConfiguration, viewModel);
-                });
-
-                if (application != null)
-                    viewModel.Applications.Add(application);
-                else
-                    await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+                selectedPath = dialog.SelectedPath;
             }
+
+            if (String.IsNullOrWhiteSpace(selectedPath) || selectedPath.ContainsInvalidPathChars())
+            {
+                MessageBox.Show("Selected path is not valid!");
+                return;
+            }
+
+            var setupConfiguration = new SetupConfiguration()
+            {
+                Name = new DirectoryInfo(selectedPath).Name,
+                Path = selectedPath,
+                EnableSilentInstallation = true
+            };
+
+            var application = await Task.Run(() =>
+            {
+                AppConfigurationService.CurrentConfiguration.Setups.Add(setupConfiguration);
+                if (!AppConfigurationService.SaveConfiguration())
+                    return null;
+
+                return ViewModelService.CreateApplicationViewModel(setupConfiguration, viewModel);
+            });
+
+            if (application != null)
+                viewModel.Applications.Add(application);
+            else
+                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
         }
     }
 }
