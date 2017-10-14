@@ -21,14 +21,15 @@ namespace Stein.ViewModels
             UninstallApplicationCommand = new UninstallApplicationCommand(this);
         }
         
+        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; private set; }
-        
+
+        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
 
         public SetupConfiguration AssociatedSetup { get; set; }
 
         private string _Name;
-
         public string Name
         {
             get
@@ -47,7 +48,6 @@ namespace Stein.ViewModels
         }
 
         private string _Path;
-
         public string Path
         {
             get
@@ -66,7 +66,6 @@ namespace Stein.ViewModels
         }
 
         private bool _EnableSilentInstallation;
-
         public bool EnableSilentInstallation
         {
             get
@@ -84,23 +83,16 @@ namespace Stein.ViewModels
             }
         }
 
-        private ObservableCollection<InstallerBundleViewModel> _InstallerBundles = new ObservableCollection<InstallerBundleViewModel>();
-
+        private readonly ObservableCollection<InstallerBundleViewModel> _InstallerBundles = new ObservableCollection<InstallerBundleViewModel>();
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles
         {
             get
             {
                 return _InstallerBundles;
             }
-
-            set
-            {
-                SetProperty(ref _InstallerBundles, value);
-            }
         }
 
         private InstallerBundleViewModel _SelectedInstallerBundle;
-
         public InstallerBundleViewModel SelectedInstallerBundle
         {
             get
@@ -110,8 +102,7 @@ namespace Stein.ViewModels
 
             set
             {
-                if (SetProperty(ref _SelectedInstallerBundle, value))
-                    CommandManager.InvalidateRequerySuggested();
+                SetProperty(ref _SelectedInstallerBundle, value);
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WpfBase.Commands;
 
 namespace WpfBase.ViewModels
 {
@@ -12,8 +13,10 @@ namespace WpfBase.ViewModels
     {
         public ComputedBindableBase()
         {
-            var propertiesWithPropertiesToNotify = new Dictionary<string, HashSet<string>>();
             var declaredProperties = GetType().GetTypeInfo().DeclaredProperties;
+
+            // PropertySourceAttribute
+            var propertiesWithPropertiesToNotify = new Dictionary<string, HashSet<string>>();
             foreach (var property in declaredProperties)
             {
                 // get the PropertySource attribute from the property, if it exists this property should be notified from the source properties listed in the attribute
@@ -31,17 +34,62 @@ namespace WpfBase.ViewModels
                     if (!propertiesWithPropertiesToNotify.ContainsKey(sourceName))
                         propertiesWithPropertiesToNotify[sourceName] = new HashSet<string>();
 
-                    // add the property to the list of property which get notified
+                    // add the property to the list of properties which get notified
                     propertiesWithPropertiesToNotify[sourceName].Add(property.Name);
+                }
+            }
+            
+            // CommandCanExecuteSourceAttribute
+            var propertiesWithCommandsToNotify = new Dictionary<string, HashSet<string>>();
+            foreach (var property in declaredProperties)
+            {
+                // get the CommandCanExecuteSource attribute from the property, if it exists this command should be notified from the source properties listed in the attribute
+                var computedAttribute = property.GetCustomAttribute<CommandCanExecuteSourceAttribute>();
+                if (computedAttribute == null)
+                    continue;
+
+                foreach (var sourceName in computedAttribute.Sources)
+                {
+                    // skip when there is no property with this name
+                    if (!declaredProperties.Select(p => p.Name).Contains(sourceName))
+                        continue;
+
+                    // create a new entry in the dictionary if this property doesn't notify another command already
+                    if (!propertiesWithCommandsToNotify.ContainsKey(sourceName))
+                        propertiesWithCommandsToNotify[sourceName] = new HashSet<string>();
+
+                    // add the command to the list of commands which get notified
+                    propertiesWithCommandsToNotify[sourceName].Add(property.Name);
                 }
             }
 
             PropertyChanged += (sender, e) => {
-                if (!propertiesWithPropertiesToNotify.ContainsKey(e.PropertyName))
-                    return;
+                if (propertiesWithPropertiesToNotify.ContainsKey(e.PropertyName))
+                {
+                    foreach (var propertyNameToNotify in propertiesWithPropertiesToNotify[e.PropertyName])
+                        OnPropertyChanged(propertyNameToNotify);
+                }
 
-                foreach (var propertyNameToNotify in propertiesWithPropertiesToNotify[e.PropertyName])
-                    OnPropertyChanged(propertyNameToNotify);
+                if (propertiesWithCommandsToNotify.ContainsKey(e.PropertyName))
+                {
+                    var type = GetType();
+                    foreach (var commandNameToNotify in propertiesWithCommandsToNotify[e.PropertyName])
+                    {
+                        try
+                        {
+                            var field = type.GetProperty(commandNameToNotify);
+                            if (field == null)
+                                continue;
+
+                            var value = field.GetValue(this);
+                            if (value is Command)
+                                (value as Command).RaiseCanExecuteChanged();
+                            else if (value is AsyncCommand)
+                                (value as AsyncCommand).RaiseCanExecuteChanged();
+                        }
+                        catch { }
+                    }
+                }
             };
         }
     }

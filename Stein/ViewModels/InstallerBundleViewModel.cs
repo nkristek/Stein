@@ -15,7 +15,6 @@ namespace Stein.ViewModels
         public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
         
         private string _Name;
-
         public string Name
         {
             get
@@ -30,7 +29,6 @@ namespace Stein.ViewModels
         }
 
         private string _Path;
-
         public string Path
         {
             get
@@ -70,18 +68,12 @@ namespace Stein.ViewModels
             }
         }
 
-        private ObservableCollection<InstallerViewModel> _Installers = new ObservableCollection<InstallerViewModel>();
-
+        private readonly ObservableCollection<InstallerViewModel> _Installers = new ObservableCollection<InstallerViewModel>();
         public ObservableCollection<InstallerViewModel> Installers
         {
             get
             {
                 return _Installers;
-            }
-
-            set
-            {
-                SetProperty(ref _Installers, value);
             }
         }
 

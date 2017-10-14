@@ -24,7 +24,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
         public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             viewModel.Applications.Clear();
-            
+
             var applications = await Task.Run(() =>
             {
                 AppConfigurationService.ReloadAppConfiguration();
@@ -34,8 +34,6 @@ namespace Stein.Commands.MainWindowViewModelCommands
             
             foreach (var application in applications)
                 viewModel.Applications.Add(application);
-
-            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

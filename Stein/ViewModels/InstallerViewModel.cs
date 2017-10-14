@@ -14,7 +14,6 @@ namespace Stein.ViewModels
         public InstallerViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
 
         private string _Name;
-
         public string Name
         {
             get
@@ -29,7 +28,6 @@ namespace Stein.ViewModels
         }
 
         private string _Path;
-
         public string Path
         {
             get
@@ -44,7 +42,6 @@ namespace Stein.ViewModels
         }
 
         private Version _Version;
-
         public Version Version
         {
             get
@@ -59,7 +56,6 @@ namespace Stein.ViewModels
         }
 
         private string _Culture;
-
         public string Culture
         {
             get
@@ -74,7 +70,6 @@ namespace Stein.ViewModels
         }
 
         private bool _IsInstalled;
-
         public bool IsInstalled
         {
             get
@@ -89,7 +84,6 @@ namespace Stein.ViewModels
         }
 
         private bool _IsEnabled;
-
         public bool IsEnabled
         {
             get
@@ -103,8 +97,8 @@ namespace Stein.ViewModels
             }
         }
 
-        private DateTime _Created;
 
+        private DateTime _Created;
         public DateTime Created
         {
             get

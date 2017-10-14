@@ -10,6 +10,8 @@ using System.Windows.Input;
 using Stein.Commands.MainWindowViewModelCommands;
 using WpfBase.Commands;
 using WpfBase.ViewModels;
+using Stein.Services;
+using System.Windows.Shell;
 
 namespace Stein.ViewModels
 {
@@ -23,29 +25,25 @@ namespace Stein.ViewModels
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
         }
 
+        [CommandCanExecuteSource(nameof(CurrentInstallation))]
         public AsyncViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; private set; }
 
+        [CommandCanExecuteSource(nameof(CurrentInstallation))]
         public AsyncViewModelCommand<MainWindowViewModel> DeleteApplicationCommand { get; private set; }
-        
+
+        [CommandCanExecuteSource(nameof(CurrentInstallation))]
         public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; private set; }
         
-        private ObservableCollection<ApplicationViewModel> _Applications = new ObservableCollection<ApplicationViewModel>();
-
+        private readonly ObservableCollection<ApplicationViewModel> _Applications = new ObservableCollection<ApplicationViewModel>();
         public ObservableCollection<ApplicationViewModel> Applications
         {
             get
             {
                 return _Applications;
             }
-
-            set
-            {
-                SetProperty(ref _Applications, value);
-            }
         }
 
         private InstallationViewModel _CurrentInstallation;
-
         public InstallationViewModel CurrentInstallation
         {
             get

@@ -21,7 +21,6 @@ namespace Stein.ViewModels
         }
 
         private InstallationType _Type;
-
         public InstallationType Type
         {
             get
@@ -36,7 +35,6 @@ namespace Stein.ViewModels
         }
         
         private int _InstallerCount;
-
         public int InstallerCount
         {
             get
@@ -51,7 +49,6 @@ namespace Stein.ViewModels
         }
 
         private int _CurrentIndex;
-
         public int CurrentIndex
         {
             get
@@ -76,7 +73,6 @@ namespace Stein.ViewModels
         }
 
         private string _Name;
-
         public string Name
         {
             get
