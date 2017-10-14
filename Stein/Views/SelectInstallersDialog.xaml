@@ -31,7 +31,7 @@
             <ItemsControl ItemsSource="{Binding Installers}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:InstallerViewModel}">
-                        <Grid >
+                        <Grid IsEnabled="{Binding IsDisabled, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
