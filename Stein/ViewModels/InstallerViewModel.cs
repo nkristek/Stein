@@ -97,6 +97,19 @@ namespace Stein.ViewModels
             }
         }
 
+        private bool _IsDisabled;
+        public bool IsDisabled
+        {
+            get
+            {
+                return _IsDisabled;
+            }
+
+            set
+            {
+                SetProperty(ref _IsDisabled, value);
+            }
+        }
 
         private DateTime _Created;
         public DateTime Created

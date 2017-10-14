@@ -19,40 +19,43 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
         public override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
         {
-            if (viewModel.SelectedInstallerBundle == null)
+            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
+            if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
-
-            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
-            return mainWindowViewModel != null && mainWindowViewModel.CurrentInstallation == null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled);
+            
+            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled);
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
                 Type = InstallationViewModel.InstallationType.Uninstall,
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
+
+            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
+                installer.IsDisabled = !installer.IsInstalled;
             
             if (ViewModelService.ShowDialog(viewModel.SelectedInstallerBundle) == true)
             {
-                var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && i.IsInstalled);
+                var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
                 mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
-
-                var currentInstaller = 1;
+                
                 foreach (var installer in installersToInstall)
                 {
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
-                    mainWindowViewModel.CurrentInstallation.CurrentIndex = currentInstaller;
+                    mainWindowViewModel.CurrentInstallation.CurrentIndex++;
                     
-                    Debug.WriteLine("Uninstalling " + installer.Name);
                     await InstallService.UninstallAsync(installer, viewModel.EnableSilentInstallation);
-                    currentInstaller++;
                 }
             }
-            
+
+            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
+                installer.IsDisabled = false;
+
             mainWindowViewModel.CurrentInstallation = null;
             mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
         }

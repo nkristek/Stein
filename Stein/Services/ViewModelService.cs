@@ -104,6 +104,7 @@ namespace Stein.Services
                     Version = GetVersionFromMsiDatabase(msiDatabase),
                     IsInstalled = IsMsiInstalled(msiDatabase),
                     IsEnabled = true,
+                    IsDisabled = false,
                     Created = new FileInfo(fileName).CreationTime
                 };
             }
