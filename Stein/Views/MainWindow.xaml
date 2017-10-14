@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stein"
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
-        xmlns:converters="clr-namespace:Stein.Converters"
+        xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="Stein - Silent Temp Installer" 
         Height="400" 

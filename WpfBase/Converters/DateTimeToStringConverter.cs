@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Stein.Converters
+namespace WpfBase.Converters
 {
     public class DateTimeToStringConverter
         : IValueConverter

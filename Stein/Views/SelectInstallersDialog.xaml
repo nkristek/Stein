@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stein.Views"
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
-        xmlns:converters="clr-namespace:Stein.Converters"
+        xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="SelectInstallersDialog" 
         Height="300" 

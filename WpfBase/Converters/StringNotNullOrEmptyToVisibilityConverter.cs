@@ -7,25 +7,28 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Stein.Converters
+namespace WpfBase.Converters
 {
-    public class BoolToNotVisibilityConverter
+    public class StringNotNullOrEmptyToVisibilityConverter
         : IValueConverter
     {
-        public static BoolToNotVisibilityConverter Instance = new BoolToNotVisibilityConverter();
+        public static StringNotNullOrEmptyToVisibilityConverter Instance = new StringNotNullOrEmptyToVisibilityConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (!String.IsNullOrEmpty(value as string))
+                return Visibility.Visible;
+
             switch (parameter as string)
             {
-                case "Hidden": return (value is bool && !(bool)value) ? Visibility.Hidden : Visibility.Collapsed;
-                default: return (value is bool && !(bool)value) ? Visibility.Visible : Visibility.Collapsed;
+                case "Hidden": return Visibility.Hidden;
+                default: return Visibility.Collapsed;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is Visibility && ((Visibility)value == Visibility.Collapsed);
+            throw new NotSupportedException();
         }
     }
 }

@@ -6,21 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Stein.Converters
+namespace WpfBase.Converters
 {
-    public class ValueNotNullToBoolConverter
+    public class IEnumerableNotNullOrEmptyToBoolConverter
         : IValueConverter
     {
-        public static ValueNotNullToBoolConverter Instance = new ValueNotNullToBoolConverter();
+        public static IEnumerableNotNullOrEmptyToBoolConverter Instance = new IEnumerableNotNullOrEmptyToBoolConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null;
+            var enumerable = value as IEnumerable<object>;
+            if (enumerable == null)
+                return false;
+            return enumerable.Any();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }

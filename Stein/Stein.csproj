@@ -100,17 +100,6 @@
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Configuration\AppConfigurationService.cs" />
     <Compile Include="Configuration\SetupConfiguration.cs" />
-    <Compile Include="Converters\AnyBoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\BoolToInverseBoolConverter.cs" />
-    <Compile Include="Converters\BoolToNotVisibilityConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\DateTimeToStringConverter.cs" />
-    <Compile Include="Converters\ObjectToStringEqualsParameterToVisibilityConverter.cs" />
-    <Compile Include="Converters\IEnumerableNotNullOrEmptyToBoolConverter.cs" />
-    <Compile Include="Converters\StringNotNullOrEmptyToVisibilityConverter.cs" />
-    <Compile Include="Converters\ValueNotNullToBoolConverter.cs" />
-    <Compile Include="Converters\ValueNotNullToVisibilityConverter.cs" />
-    <Compile Include="Converters\ValueNullToBoolConverter.cs" />
     <Compile Include="Services\InstalledProgram.cs" />
     <Compile Include="Services\InstallService.cs" />
     <Compile Include="Services\TaskbarService.cs" />

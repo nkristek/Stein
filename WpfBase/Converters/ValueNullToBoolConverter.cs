@@ -6,21 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Stein.Converters
+namespace WpfBase.Converters
 {
-    public class BoolToInverseBoolConverter
+    public class ValueNullToBoolConverter
         : IValueConverter
     {
-        public static BoolToInverseBoolConverter Instance = new BoolToInverseBoolConverter();
+        public static ValueNullToBoolConverter Instance = new ValueNullToBoolConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool ? !(bool)value : false; 
+            return value == null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool? !(bool)value : false;
+            throw new NotSupportedException();
         }
     }
 }
