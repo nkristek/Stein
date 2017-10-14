@@ -100,6 +100,7 @@
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Configuration\AppConfigurationService.cs" />
     <Compile Include="Configuration\SetupConfiguration.cs" />
+    <Compile Include="Converters\AnyBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToInverseBoolConverter.cs" />
     <Compile Include="Converters\BoolToNotVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />

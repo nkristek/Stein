@@ -25,28 +25,38 @@
         <Grid Grid.Row="0"
               Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1"
+            <Label Grid.Row="0" 
+               Content="Loading..."
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center">
+                <Label.Visibility>
+                    <MultiBinding Converter="{x:Static converters:AnyBoolToVisibilityConverter.Instance}">
+                        <MultiBinding.Bindings>
+                            <Binding Path="RefreshApplicationsCommand.IsWorking"/>
+                            <Binding Path="AddApplicationCommand.IsWorking"/>
+                            <Binding Path="DeleteApplicationCommand.IsWorking"/>
+                        </MultiBinding.Bindings>
+                    </MultiBinding>
+                </Label.Visibility>
+            </Label>
+
+            <Button Grid.Column="2"
                     Command="{Binding AddApplicationCommand}"
                     Content="Add Folder"
                     Padding="16,4"/>
-            
-            <Button Grid.Column="3"
+
+            <Button Grid.Column="4"
                     Command="{Binding RefreshApplicationsCommand}"
                     Content="Refresh"
                     Padding="16,4"/>
         </Grid>
-
-        <Label Grid.Row="2" 
-               Content="Loading..."
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Visibility="{Binding RefreshApplicationsCommand.IsWorking, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"/>
 
         <ScrollViewer Grid.Row="2" 
                       HorizontalScrollBarVisibility="Auto"
@@ -126,9 +136,8 @@
                                     <CheckBox Grid.Row="2"
                                               VerticalAlignment="Center"
                                               VerticalContentAlignment="Center"
-                                              IsChecked="{Binding EnableSilentInstallation}"
-                                              IsEnabled="{Binding Parent.CurrentInstallation, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
-                                        <Label Content="Silent installation"/>
+                                              IsChecked="{Binding EnableSilentInstallation}">
+                                        <Label Content="install with defaults"/>
                                     </CheckBox>
                                 </Grid>
 
