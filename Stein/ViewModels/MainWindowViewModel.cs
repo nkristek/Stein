@@ -54,22 +54,13 @@ namespace Stein.ViewModels
             set
             {
                 if (SetProperty(ref _CurrentInstallation, value))
-                {
-                    CommandManager.InvalidateRequerySuggested();
-
+                { 
                     if (View is Window window)
                     {
                         if (value != null)
-                        {
-                            window.TaskbarItemInfo = new System.Windows.Shell.TaskbarItemInfo()
-                            {
-                                ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate,
-                            };
-                        }
+                            TaskbarService.SetTaskbarProgressState(window, TaskbarItemProgressState.Indeterminate);
                         else
-                        {
-                            window.TaskbarItemInfo = null;
-                        }
+                            TaskbarService.SetTaskbarProgressState(window, TaskbarItemProgressState.None);
                     }
                 }
             }
