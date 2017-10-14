@@ -22,7 +22,7 @@ namespace Stein.Services
             { typeof(InstallerBundleViewModel), typeof(SelectInstallersDialog) }
         };
 
-        public static bool? ShowDialog(ViewModel dialogViewModel)
+        public static bool? ShowDialog(ViewModel dialogViewModel, string title = null)
         {
             var viewModelType = dialogViewModel.GetType();
             if (!ViewModelsToViewsMapping.ContainsKey(viewModelType))
@@ -32,6 +32,7 @@ namespace Stein.Services
             if (dialog == null)
                 throw new ArgumentException("view for viewmodel is no window");
 
+            dialog.Title = title ?? String.Empty;
             dialog.DataContext = dialogViewModel;
             dialog.Owner = dialogViewModel.Parent?.View as Window;
 
