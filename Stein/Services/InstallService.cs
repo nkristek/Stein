@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Stein.ViewModels;
 using WpfBase.Extensions;
 using WindowsInstaller;
+using System.Globalization;
 
 namespace Stein.Services
 {
@@ -227,6 +228,85 @@ namespace Stein.Services
             var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
             var installer = Activator.CreateInstance(installerType) as Installer;
             return installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
+        }
+
+        /*
+         * https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
+         */
+
+        public static bool IsMsiInstalled(string fileName)
+        {
+            var msiDatabase = GetMsiDatabase(fileName);
+            return IsMsiInstalled(msiDatabase);
+        }
+
+        public static bool IsMsiInstalled(Database msiDatabase)
+        {
+            var productVersion = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
+            var productName = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductName);
+            var manufacturer = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.Manufacturer);
+
+            return InstalledPrograms.Any(p =>
+            {
+                var found = false;
+
+                if (!String.IsNullOrEmpty(p.DisplayName))
+                    found = p.DisplayName == productName;
+
+                if (found && !String.IsNullOrEmpty(p.DisplayVersion))
+                    found = p.DisplayVersion == productVersion;
+
+                if (found && !String.IsNullOrEmpty(p.Publisher))
+                    found = p.Publisher == manufacturer;
+
+                return found;
+            });
+        }
+
+        public static string GetCultureTagFromMsi(string fileName)
+        {
+            var msiDatabase = GetMsiDatabase(fileName);
+            return GetCultureTagFromMsiDatabase(msiDatabase);
+        }
+
+        public static string GetCultureTagFromMsiDatabase(Database msiDatabase)
+        {
+            try
+            {
+                var cultureIdProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductLanguage);
+                if (String.IsNullOrEmpty(cultureIdProperty))
+                    return null;
+
+                var cultureId = int.Parse(cultureIdProperty);
+                var culture = new CultureInfo(cultureId);
+                return culture.IetfLanguageTag;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static Version GetVersionFromMsi(string fileName)
+        {
+            var msiDatabase = GetMsiDatabase(fileName);
+            return GetVersionFromMsiDatabase(msiDatabase);
+        }
+
+        public static Version GetVersionFromMsiDatabase(Database msiDatabase)
+        {
+            try
+            {
+                var versionProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
+                if (String.IsNullOrEmpty(versionProperty))
+                    return null;
+
+                return new Version(versionProperty);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
