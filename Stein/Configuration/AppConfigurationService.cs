@@ -55,7 +55,7 @@ namespace Stein.Configuration
             }
         }
 
-        private static string AppConfiguationPath
+        public static string AppConfigurationFolderPath
         {
             get
             {
@@ -65,8 +65,16 @@ namespace Stein.Configuration
                 if (!Directory.Exists(appConfigurationDirectoryPath))
                     Directory.CreateDirectory(appConfigurationDirectoryPath);
 
+                return appConfigurationDirectoryPath;
+            }
+        }
+
+        public static string AppConfiguationPath
+        {
+            get
+            {
                 var appConfigurationFileName = "Config.xml";
-                return Path.Combine(appConfigurationDirectoryPath, appConfigurationFileName);
+                return Path.Combine(AppConfigurationFolderPath, appConfigurationFileName);
             }
         }
 
