@@ -15,26 +15,26 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0716A621FBBFD5698A41149BDCB15353"
+        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EF3A2A6B6613009D9872C5DA635BD3EE"
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EF3A2A6B6613009D9872C5DA635BD3EE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "OwnerKey" = "8:_0716A621FBBFD5698A41149BDCB15353"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -132,14 +132,14 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EF3A2A6B6613009D9872C5DA635BD3EE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0716A621FBBFD5698A41149BDCB15353"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EF3A2A6B6613009D9872C5DA635BD3EE"
+                    "_0716A621FBBFD5698A41149BDCB15353"
                     {
                     "Name" = "8:WpfBase.dll"
                     "Attributes" = "3:512"
@@ -219,15 +219,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{A7929CC7-54F1-4F97-80D7-A55CCA7E775B}"
-        "PackageCode" = "8:{84202C6E-15F1-4F4C-9D67-52808B46124D}"
+        "ProductCode" = "8:{F9790F4C-90AE-41F8-B67B-F7FA69E58035}"
+        "PackageCode" = "8:{6BD7D9E4-29F0-4DDA-B652-B02B0B62916E}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.5"
+        "ProductVersion" = "8:0.6"
         "Manufacturer" = "8:nkristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
