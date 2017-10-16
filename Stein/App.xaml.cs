@@ -35,7 +35,6 @@ namespace Stein
         
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            ProcessError(e.Exception);
         }
 
         void ProcessError(Exception exception)
