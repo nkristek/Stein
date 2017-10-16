@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Stein"
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="Stein - Silent Temp Installer" 
         Height="400" 
         MinHeight="300"
-        Width="500"
+        Width="600"
         MinWidth="400"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="8">
@@ -137,7 +136,7 @@
                                               VerticalAlignment="Center"
                                               VerticalContentAlignment="Center"
                                               IsChecked="{Binding EnableSilentInstallation}">
-                                        <Label Content="install with defaults"/>
+                                        <Label Content="(un)install with defaults"/>
                                     </CheckBox>
                                 </Grid>
 
@@ -158,7 +157,6 @@
 
         <Grid Grid.Row="4"
               Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>
