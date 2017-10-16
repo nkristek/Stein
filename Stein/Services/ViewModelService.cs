@@ -95,8 +95,6 @@ namespace Stein.Services
                 if (Path.GetExtension(fileName) != ".msi")
                     continue;
 
-                var msiDatabase = InstallService.GetMsiDatabase(fileName);
-
                 yield return new InstallerViewModel()
                 {
                     Path = fileName,
