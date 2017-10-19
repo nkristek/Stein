@@ -8,10 +8,7 @@
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="SelectInstallersDialog" 
-        Height="300" 
-        MinHeight="200"
-        Width="500"
-        MinWidth="400"
+        SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
     <Grid Margin="8">
         <Grid.RowDefinitions>
