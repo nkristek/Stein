@@ -67,14 +67,24 @@ namespace Stein.Services
         
         public static IEnumerable<InstallerBundleViewModel> GetInstallerBundlesFromApplication(ApplicationViewModel application)
         {
-            foreach (var directoryFullName in Directory.GetDirectories(application.Path))
+            string[] directories;
+            try
             {
-                foreach (var installerGroup in GetInstallersFromPath(directoryFullName).GroupBy(i => i.Culture))
+                directories = Directory.GetDirectories(application.Path);
+            }
+            catch
+            {
+                directories = new string[0];
+            }
+
+            foreach (var directory in directories)
+            {
+                foreach (var installerGroup in GetInstallersFromPath(directory).GroupBy(i => i.Culture))
                 {
                     var installerBundle = new InstallerBundleViewModel(application)
                     {
-                        Name = new DirectoryInfo(directoryFullName).Name,
-                        Path = directoryFullName
+                        Name = new DirectoryInfo(directory).Name,
+                        Path = directory
                     };
 
                     foreach (var installer in installerGroup)
@@ -90,14 +100,24 @@ namespace Stein.Services
 
         public static IEnumerable<InstallerViewModel> GetInstallersFromPath(string path)
         {
-            foreach (var fileName in Directory.GetFiles(path))
+            string[] files;
+            try
             {
-                if (Path.GetExtension(fileName) != ".msi")
+                files = Directory.GetFiles(path);
+            }
+            catch
+            {
+                files = new string[0];
+            }
+
+            foreach (var file in files)
+            {
+                if (Path.GetExtension(file) != ".msi")
                     continue;
 
                 yield return new InstallerViewModel()
                 {
-                    Path = fileName,
+                    Path = file,
                     IsEnabled = true,
                     IsDisabled = false
                 };
