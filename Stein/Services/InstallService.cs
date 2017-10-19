@@ -242,24 +242,11 @@ namespace Stein.Services
 
         public static bool IsMsiInstalled(Database msiDatabase)
         {
-            var productVersion = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
-            var productName = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductName);
-            var manufacturer = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.Manufacturer);
+            var productCode = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductCode);
 
             return InstalledPrograms.Any(p =>
             {
-                var found = false;
-
-                if (!String.IsNullOrEmpty(p.DisplayName))
-                    found = p.DisplayName == productName;
-
-                if (found && !String.IsNullOrEmpty(p.DisplayVersion))
-                    found = p.DisplayVersion == productVersion;
-
-                if (found && !String.IsNullOrEmpty(p.Publisher))
-                    found = p.Publisher == manufacturer;
-
-                return found;
+                return !String.IsNullOrEmpty(p.UninstallString) && p.UninstallString.Contains(productCode);
             });
         }
 
