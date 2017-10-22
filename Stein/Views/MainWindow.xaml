@@ -7,6 +7,8 @@
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="Stein - Silent Temp Installer" 
+        MinWidth="600"
+        MinHeight="300"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="8">
