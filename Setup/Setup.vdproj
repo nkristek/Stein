@@ -139,11 +139,6 @@
             "AssemblyAsmDisplayName" = "8:WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_FE5E398EE9593E5D5810428DE1F1D2DD"
-                    {
-                    "Name" = "8:WpfBase.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:WpfBase.dll"
             "TargetName" = "8:"
@@ -219,15 +214,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{8B351EB7-8BA1-487D-8A7E-5942806C15DE}"
-        "PackageCode" = "8:{6E2CD435-012C-4BB8-AD43-8F211FF55DEF}"
+        "ProductCode" = "8:{FE0E70BE-CD8F-42EA-95A2-5AA81B550D80}"
+        "PackageCode" = "8:{967B7CEA-2F59-448A-843B-611A18E5B437}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.6.3"
+        "ProductVersion" = "8:0.6.4"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
