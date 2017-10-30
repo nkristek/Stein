@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfBase.ViewModels;
 
 namespace WpfBase.Commands
@@ -71,7 +72,7 @@ namespace WpfBase.Commands
         {
             return Parent != null && !IsWorking && CanExecute(Parent, Parent?.View, parameter);
         }
-        
+
         public sealed override async Task ExecuteAsync(object parameter)
         {
             if (!CanExecute(Parent, Parent?.View, parameter))
@@ -80,12 +81,21 @@ namespace WpfBase.Commands
             if (IsWorking)
                 throw new InvalidOperationException("isworking");
 
-            IsWorking = true;
-
-            await ExecuteAsync(Parent, Parent?.View, parameter);
-
-            IsWorking = false;
-        }
+            try
+            {
+                IsWorking = true;
+                await ExecuteAsync(Parent, Parent?.View, parameter);
+            }
+            catch (Exception exception)
+            {
+                // TODO: implement logging
+                MessageBox.Show(exception.Message);
+            }
+            finally
+            {
+                IsWorking = false;
+            }
+}
 
         public event PropertyChangedEventHandler PropertyChanged;
 
