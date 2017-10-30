@@ -23,7 +23,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
             
-            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled);
+            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled.HasValue && i.IsInstalled.Value);
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
@@ -36,8 +36,9 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 CurrentIndex = 0
             };
 
+            // disable installers which are not installed
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
-                installer.IsDisabled = !installer.IsInstalled;
+                installer.IsDisabled = installer.IsInstalled.HasValue && !installer.IsInstalled.Value;
             
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {

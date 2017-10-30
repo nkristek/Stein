@@ -23,7 +23,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
             
-            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => !i.IsInstalled);
+            return viewModel.SelectedInstallerBundle != null;
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
@@ -36,9 +36,6 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 CurrentIndex = 0
             };
 
-            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
-                installer.IsDisabled = installer.IsInstalled;
-
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
@@ -48,8 +45,11 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 {
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
-                    
-                    await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
+
+                    if (installer.IsInstalled.HasValue && installer.IsInstalled.Value)
+                        await InstallService.ReinstallAsync(installer, viewModel.EnableSilentInstallation);
+                    else
+                        await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
                 }
             }
 
