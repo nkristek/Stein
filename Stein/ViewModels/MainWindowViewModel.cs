@@ -60,7 +60,7 @@ namespace Stein.ViewModels
                         if (value != null)
                             TaskbarService.SetTaskbarProgressState(window, TaskbarItemProgressState.Indeterminate);
                         else
-                            TaskbarService.SetTaskbarProgressState(window, TaskbarItemProgressState.None);
+                            TaskbarService.UnsetTaskBarProgressState(window);
                     }
                 }
             }
