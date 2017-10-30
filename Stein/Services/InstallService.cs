@@ -23,7 +23,7 @@ namespace Stein.Services
             get
             {
                 if (_InstalledPrograms == null)
-                    _InstalledPrograms = ReadInstalledPrograms();
+                    RefreshInstalledPrograms();
                 return _InstalledPrograms;
             }
 
@@ -36,7 +36,14 @@ namespace Stein.Services
 
         public static void RefreshInstalledPrograms()
         {
-            InstalledPrograms = ReadInstalledPrograms();
+            try
+            {
+                InstalledPrograms = ReadInstalledPrograms();
+            }
+            catch
+            {
+                InstalledPrograms = Enumerable.Empty<InstalledProgram>();
+            }
         }
 
         private static IEnumerable<InstalledProgram> ReadInstalledPrograms()
@@ -77,36 +84,63 @@ namespace Stein.Services
 
         public static void Install(InstallerViewModel installer, bool quiet = true)
         {
-            try
-            {
-                var process = StartInstallProcess(installer, quiet);
-                process.WaitForExit();
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+            var process = StartInstallProcess(installer, quiet);
+            process.WaitForExit();
         }
 
         public static async Task InstallAsync(InstallerViewModel installer, bool quiet = true)
         {
-            try
-            {
-                var process = StartInstallProcess(installer, quiet);
-                await process.WaitForExitAsync().ConfigureAwait(false);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+            var process = StartInstallProcess(installer, quiet);
+            await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
         private static Process StartInstallProcess(InstallerViewModel installer, bool quiet = true)
         {
+            if (String.IsNullOrWhiteSpace(installer.Path))
+                throw new ArgumentException("Installer path is empty");
+
             var argumentsBuilder = new StringBuilder();
 
             argumentsBuilder.Append("/I ");
-            argumentsBuilder.Append(installer.Path?.Quoted());
+            argumentsBuilder.Append(installer.Path.Quoted());
+
+            if (quiet)
+                argumentsBuilder.Append(" /QN");
+
+            var startInfo = new ProcessStartInfo("msiexec.exe")
+            {
+                Arguments = argumentsBuilder.ToString()
+            };
+
+            return Process.Start(startInfo);
+        }
+
+        public static void Reinstall(InstallerViewModel installer, bool quiet = true)
+        {
+            var process = StartInstallProcess(installer, quiet);
+            process.WaitForExit();
+        }
+
+        public static async Task ReinstallAsync(InstallerViewModel installer, bool quiet = true)
+        {
+            var process = StartInstallProcess(installer, quiet);
+            await process.WaitForExitAsync().ConfigureAwait(false);
+        }
+
+        private static Process StartReinstallProcess(InstallerViewModel installer, bool quiet = true)
+        {
+            if (String.IsNullOrWhiteSpace(installer.Path))
+                throw new ArgumentException("Installer path is empty");
+
+            var argumentsBuilder = new StringBuilder();
+
+            argumentsBuilder.Append("/FAMUS ");
+
+            var productCode = GetPropertyFromMsi(installer.Path, MsiPropertyName.ProductCode);
+            if (!String.IsNullOrEmpty(productCode))
+                argumentsBuilder.Append(productCode);
+            else
+                argumentsBuilder.Append(installer.Path.Quoted());
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -121,44 +155,33 @@ namespace Stein.Services
 
         public static void Uninstall(InstallerViewModel installer, bool quiet = true)
         {
-            try
-            {
-                var process = StartUninstallProcess(installer, quiet);
-                process.WaitForExit();
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+            var process = StartUninstallProcess(installer, quiet);
+            process.WaitForExit();
         }
 
         public static async Task UninstallAsync(InstallerViewModel installer, bool quiet = true)
         {
-            try
-            {
-                var process = StartUninstallProcess(installer, quiet);
-                await process.WaitForExitAsync().ConfigureAwait(false);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+            var process = StartUninstallProcess(installer, quiet);
+            await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
         private static Process StartUninstallProcess(InstallerViewModel installer, bool quiet = true)
         {
+            if (String.IsNullOrWhiteSpace(installer.Path))
+                throw new ArgumentException("Installer path is empty");
+
             var argumentsBuilder = new StringBuilder();
 
-            if (quiet)
+            //if (quiet)
                 argumentsBuilder.Append("/X ");
-            else
-                argumentsBuilder.Append("/I ");
+            //else
+            //    argumentsBuilder.Append("/I ");
 
             var productCode = GetPropertyFromMsi(installer.Path, MsiPropertyName.ProductCode);
             if (!String.IsNullOrEmpty(productCode))
                 argumentsBuilder.Append(productCode);
             else
-                argumentsBuilder.Append(installer.Path?.Quoted());
+                argumentsBuilder.Append(installer.Path.Quoted());
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -181,12 +204,12 @@ namespace Stein.Services
             Manufacturer
         }
 
-        public static Dictionary<string, string> GetPropertiesFromMsi(string fileName)
+        public static Dictionary<string, string> GetAllPropertiesFromMsi(string fileName)
         {
-            return GetPropertiesFromMsiDatabase(GetMsiDatabase(fileName));
+            return GetAllPropertiesFromMsiDatabase(GetMsiDatabase(fileName));
         }
 
-        public static Dictionary<string, string> GetPropertiesFromMsiDatabase(Database database)
+        public static Dictionary<string, string> GetAllPropertiesFromMsiDatabase(Database database)
         {
             var view = database.OpenView("SELECT * FROM Property");
             view.Execute(null);
@@ -258,20 +281,13 @@ namespace Stein.Services
 
         public static string GetCultureTagFromMsiDatabase(Database msiDatabase)
         {
-            try
-            {
-                var cultureIdProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductLanguage);
-                if (String.IsNullOrEmpty(cultureIdProperty))
-                    return null;
-
-                var cultureId = int.Parse(cultureIdProperty);
-                var culture = new CultureInfo(cultureId);
-                return culture.IetfLanguageTag;
-            }
-            catch
-            {
+            var cultureIdProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductLanguage);
+            if (String.IsNullOrEmpty(cultureIdProperty))
                 return null;
-            }
+
+            var cultureId = int.Parse(cultureIdProperty);
+            var culture = new CultureInfo(cultureId);
+            return culture.IetfLanguageTag;
         }
 
         public static Version GetVersionFromMsi(string fileName)
@@ -282,18 +298,11 @@ namespace Stein.Services
 
         public static Version GetVersionFromMsiDatabase(Database msiDatabase)
         {
-            try
-            {
-                var versionProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
-                if (String.IsNullOrEmpty(versionProperty))
-                    return null;
-
-                return new Version(versionProperty);
-            }
-            catch
-            {
+            var versionProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
+            if (String.IsNullOrEmpty(versionProperty))
                 return null;
-            }
+
+            return new Version(versionProperty);
         }
     }
 }
