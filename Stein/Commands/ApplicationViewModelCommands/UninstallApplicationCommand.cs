@@ -39,7 +39,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.IsDisabled = !installer.IsInstalled;
             
-            if (ViewModelService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
+            if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
                 mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();

@@ -103,6 +103,7 @@
     <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Configuration\AppConfigurationService.cs" />
     <Compile Include="Configuration\SetupConfiguration.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\InstalledProgram.cs" />
     <Compile Include="Services\InstallService.cs" />
     <Compile Include="Services\TaskbarService.cs" />
