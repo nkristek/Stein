@@ -12,35 +12,12 @@ using WindowsInstaller;
 using WpfBase.ViewModels;
 using System.Windows;
 using Stein.Views;
+using System.Threading;
 
 namespace Stein.Services
 {
     public static class ViewModelService
     {
-        private static readonly IReadOnlyDictionary<Type, Type> ViewModelsToViewsMapping = new Dictionary<Type, Type>
-        {
-            { typeof(InstallerBundleViewModel), typeof(SelectInstallersDialog) }
-        };
-
-        public static bool? ShowDialog(ViewModel dialogViewModel, string title = null)
-        {
-            var viewModelType = dialogViewModel.GetType();
-            if (!ViewModelsToViewsMapping.ContainsKey(viewModelType))
-                throw new NotSupportedException("No view found for viewmodel");
-            
-            var dialog = Activator.CreateInstance(ViewModelsToViewsMapping[viewModelType]) as Window;
-            if (dialog == null)
-                throw new ArgumentException("view for viewmodel is no window");
-
-            dialog.Title = title ?? String.Empty;
-            dialog.DataContext = dialogViewModel;
-            dialog.Owner = dialogViewModel.Parent?.View as Window;
-
-            dialogViewModel.View = dialog;
-
-            return dialog.ShowDialog();
-        }
-
         public static IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent = null)
         {
             foreach (var setup in AppConfigurationService.CurrentConfiguration.Setups)
@@ -57,7 +34,17 @@ namespace Stein.Services
                 AssociatedSetup = setup
             };
 
-            foreach (var installerBundle in GetInstallerBundlesFromApplication(application))
+            IEnumerable<InstallerBundleViewModel> installerBundles;
+            try
+            {
+                installerBundles = GetInstallerBundlesFromApplication(application);
+            }
+            catch
+            {
+                installerBundles = Enumerable.Empty<InstallerBundleViewModel>();
+            }
+
+            foreach (var installerBundle in installerBundles)
                 application.InstallerBundles.Add(installerBundle);
 
             application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
@@ -67,25 +54,28 @@ namespace Stein.Services
         
         public static IEnumerable<InstallerBundleViewModel> GetInstallerBundlesFromApplication(ApplicationViewModel application)
         {
-            string[] directories;
-            try
-            {
-                directories = Directory.GetDirectories(application.Path);
-            }
-            catch
-            {
-                directories = new string[0];
-            }
+            if (!Directory.Exists(application.Path))
+                yield break;
 
-            foreach (var directory in directories)
+            foreach (var directoryName in Directory.EnumerateDirectories(application.Path))
             {
-                foreach (var installerGroup in GetInstallersFromPath(directory).GroupBy(i => i.Culture))
+                IEnumerable<InstallerViewModel> installers;
+                try
+                {
+                    installers = GetInstallersFromDirectory(directoryName);
+                } catch { continue; }
+
+                foreach (var installerGroup in installers.GroupBy(i => i.Culture))
                 {
                     var installerBundle = new InstallerBundleViewModel(application)
                     {
-                        Name = new DirectoryInfo(directory).Name,
-                        Path = directory
+                        Path = directoryName
                     };
+
+                    try
+                    {
+                        installerBundle.Name = new DirectoryInfo(directoryName).Name;
+                    } catch { }
 
                     foreach (var installer in installerGroup)
                     {
@@ -98,30 +88,41 @@ namespace Stein.Services
             }
         }
 
-        public static IEnumerable<InstallerViewModel> GetInstallersFromPath(string path)
+        private const string installerFileNamePattern = "*.msi";
+
+        public static IEnumerable<InstallerViewModel> GetInstallersFromDirectory(string directoryPath)
         {
-            string[] files;
-            try
-            {
-                files = Directory.GetFiles(path);
-            }
-            catch
-            {
-                files = new string[0];
-            }
+            if (!Directory.Exists(directoryPath))
+                yield break;
 
-            foreach (var file in files)
+            foreach (var fileName in Directory.EnumerateFiles(directoryPath, installerFileNamePattern))
             {
-                if (Path.GetExtension(file) != ".msi")
-                    continue;
-
-                yield return new InstallerViewModel()
+                var installer = new InstallerViewModel()
                 {
-                    Path = file,
+                    Path = fileName,
                     IsEnabled = true,
                     IsDisabled = false
                 };
+
+                ReadMsiProperties(installer);
+
+                yield return installer;
             }
+        }
+
+        private static void ReadMsiProperties(InstallerViewModel installer)
+        {
+            try
+            {
+                var database = InstallService.GetMsiDatabase(installer.Path);
+
+                installer.Name = InstallService.GetPropertyFromMsiDatabase(database, InstallService.MsiPropertyName.ProductName);
+                installer.Version = InstallService.GetVersionFromMsiDatabase(database);
+                installer.Culture = InstallService.GetCultureTagFromMsiDatabase(database);
+                installer.IsInstalled = InstallService.IsMsiInstalled(database);
+
+                installer.Created = new FileInfo(installer.Path).CreationTime;
+            } catch { }
         }
     }
 }
