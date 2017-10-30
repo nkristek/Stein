@@ -23,7 +23,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
             
-            return viewModel.SelectedInstallerBundle != null;
+            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
         }
 
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
