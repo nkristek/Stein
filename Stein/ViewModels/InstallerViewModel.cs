@@ -15,6 +15,9 @@ namespace Stein.ViewModels
         public InstallerViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
         
         private string _Path;
+        /// <summary>
+        /// FilePath of the installer
+        /// </summary>
         public string Path
         {
             get
@@ -29,6 +32,9 @@ namespace Stein.ViewModels
         }
 
         private bool _IsEnabled;
+        /// <summary>
+        /// If the installer is enabled by the user
+        /// </summary>
         public bool IsEnabled
         {
             get
@@ -43,6 +49,9 @@ namespace Stein.ViewModels
         }
 
         private bool _IsDisabled;
+        /// <summary>
+        /// If the installer is disabled by the system (for example when it isn't installed)
+        /// </summary>
         public bool IsDisabled
         {
             get
@@ -57,57 +66,87 @@ namespace Stein.ViewModels
         }
 
         private string _Name;
+        /// <summary>
+        /// Name of the installer (from the Msi-properties)
+        /// </summary>
         public string Name
         {
             get
             {
-                if (_Name == null)
-                    _Name = InstallService.GetPropertyFromMsi(Path, InstallService.MsiPropertyName.ProductName);
                 return _Name;
+            }
+
+            set
+            {
+                SetProperty(ref _Name, value);
             }
         }
 
         private Version _Version;
+        /// <summary>
+        /// Version of the installer (from the Msi-properties)
+        /// </summary>
         public Version Version
         {
             get
             {
-                if (_Version == null)
-                    _Version = InstallService.GetVersionFromMsi(Path);
                 return _Version;
+            }
+
+            set
+            {
+                SetProperty(ref _Version, value);
             }
         }
 
         private string _Culture;
+        /// <summary>
+        /// Culture in IetfLanguageTag-format of the installer (from the Msi-properties)
+        /// </summary>
         public string Culture
         {
             get
             {
-                if (_Culture == null)
-                    _Culture = InstallService.GetCultureTagFromMsi(Path);
                 return _Culture;
+            }
+
+            set
+            {
+                SetProperty(ref _Culture, value);
             }
         }
 
         private bool? _IsInstalled;
-        public bool IsInstalled
+        /// <summary>
+        /// If the installer is installed
+        /// </summary>
+        public bool? IsInstalled
         {
             get
             {
-                if (!_IsInstalled.HasValue)
-                    _IsInstalled = InstallService.IsMsiInstalled(Path);
-                return _IsInstalled.Value;
+                return _IsInstalled;
+            }
+
+            set
+            {
+                SetProperty(ref _IsInstalled, value);
             }
         }
 
-        private DateTime _Created;
-        public DateTime Created
+        private DateTime? _Created;
+        /// <summary>
+        /// When the installer file was created
+        /// </summary>
+        public DateTime? Created
         {
             get
             {
-                if (_Created == DateTime.MinValue)
-                    _Created = new FileInfo(Path).CreationTime;
                 return _Created;
+            }
+
+            set
+            {
+                SetProperty(ref _Created, value);
             }
         }
     }
