@@ -7,7 +7,8 @@
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
-        Title="SelectInstallersDialog" 
+        MinWidth="500"
+        MinHeight="250"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
     <Grid Margin="8">
