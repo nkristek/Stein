@@ -41,14 +41,8 @@ namespace Stein.Configuration
             {
                 return AppConfiguration.CreateFromXmlFile(AppConfiguationPath);
             }
-            catch (Exception exception)
+            catch
             {
-                var messageBuilder = new StringBuilder();
-                messageBuilder.AppendLine("Reading the configuration file failed. A new one will now be created.");
-                messageBuilder.AppendLine();
-                messageBuilder.AppendLine(exception.Message);
-                MessageBox.Show(messageBuilder.ToString());
-
                 var newConfiguration = new AppConfiguration();
                 SaveConfiguration(newConfiguration);
                 return newConfiguration;
