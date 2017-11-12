@@ -14,13 +14,12 @@ namespace Stein.Configuration
     public static class ConfigurationService
     {
         private static Configuration _Configuration;
-
         public static Configuration Configuration
         {
             get
             {
                 if (_Configuration == null)
-                    _Configuration = ReadConfiguration();
+                    LoadConfigurationFromDisk();
                 return _Configuration;
             }
 
@@ -31,13 +30,14 @@ namespace Stein.Configuration
             }
         }
 
-        private const string installerFileNamePattern = "*.msi";
-
         public static void SyncApplicationFolderWithDisk(ApplicationFolder applicationFolder)
         {
-            var subDirectoryNames = Directory.GetDirectories(applicationFolder.Path);
-            applicationFolder.SubFolders.RemoveAll(folder => !subDirectoryNames.Any(fileName => fileName == folder.Path));
-            foreach (var subDirectoryName in subDirectoryNames)
+            var subDirectorNames = Directory.GetDirectories(applicationFolder.Path);
+
+            // remove all directories which don't exist on the file system anymore
+            applicationFolder.SubFolders.RemoveAll(folder => !subDirectorNames.Any(fileName => fileName == folder.Path));
+
+            foreach (var subDirectoryName in subDirectorNames)
             {
                 var folder = applicationFolder.SubFolders.FirstOrDefault(sf => sf.Path == subDirectoryName);
                 if (folder == null)
@@ -55,7 +55,7 @@ namespace Stein.Configuration
 
         private static void SyncSubFolderWithDisk(SubFolder subFolder)
         {
-            var fileNames = Directory.GetFiles(subFolder.Path, installerFileNamePattern);
+            var fileNames = Directory.GetFiles(subFolder.Path, "*.msi");
 
             // remove all files which don't exist on the file system anymore
             subFolder.InstallerFiles.RemoveAll(i => !fileNames.Any(fileName => fileName == i.Path));
@@ -90,7 +90,10 @@ namespace Stein.Configuration
             }
 
             var subDirectoryNames = Directory.GetDirectories(subFolder.Path);
+
+            // remove all directories which don't exist on the file system anymore
             subFolder.SubFolders.RemoveAll(folder => !subDirectoryNames.Any(fileName => fileName == folder.Path));
+
             foreach (var subDirectoryName in subDirectoryNames)
             {
                 var folder = subFolder.SubFolders.FirstOrDefault(sf => sf.Path == subDirectoryName);
@@ -128,9 +131,7 @@ namespace Stein.Configuration
             }
             catch
             {
-                var newConfiguration = new Configuration();
-                SaveConfigurationToDisk(newConfiguration);
-                return newConfiguration;
+                return new Configuration();
             }
         }
 
@@ -147,9 +148,7 @@ namespace Stein.Configuration
             }
             catch
             {
-                var newConfiguration = new Configuration();
-                await SaveConfigurationToDiskAsync(newConfiguration);
-                return newConfiguration;
+                return new Configuration();
             }
         }
 
@@ -157,13 +156,12 @@ namespace Stein.Configuration
         {
             get
             {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                var configurationDirectoryName = "Stein";
-                var configurationDirectoryPath = Path.Combine(appDataPath, configurationDirectoryName);
-                if (!Directory.Exists(configurationDirectoryPath))
-                    Directory.CreateDirectory(configurationDirectoryPath);
+                var configurationFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
 
-                return configurationDirectoryPath;
+                if (!Directory.Exists(configurationFolderPath))
+                    Directory.CreateDirectory(configurationFolderPath);
+
+                return configurationFolderPath;
             }
         }
 
@@ -171,21 +169,15 @@ namespace Stein.Configuration
         {
             get
             {
-                var configurationFileName = "Config.xml";
-                return Path.Combine(ConfigurationFolderPath, configurationFileName);
+                return Path.Combine(ConfigurationFolderPath, "Config.xml");
             }
         }
 
         public static void SaveConfigurationToDisk()
         {
-            SaveConfigurationToDisk(Configuration);
-        }
-
-        private static void SaveConfigurationToDisk(Configuration configuration)
-        {
             try
             {
-                configuration?.ToXmlFile(ConfiguationPath);
+                Configuration.ToXmlFile(ConfiguationPath);
             }
             catch (Exception createException)
             {
@@ -195,14 +187,9 @@ namespace Stein.Configuration
 
         public static async Task SaveConfigurationToDiskAsync()
         {
-            await SaveConfigurationToDiskAsync(Configuration);
-        }
-
-        private static async Task SaveConfigurationToDiskAsync(Configuration configuration)
-        {
             try
             {
-                await configuration?.ToXmlFileAsync(ConfiguationPath);
+                await Configuration.ToXmlFileAsync(ConfiguationPath);
             }
             catch (Exception createException)
             {

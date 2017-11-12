@@ -59,35 +59,27 @@ namespace Stein.Services
             const string registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
             
             using (var key = Registry.LocalMachine.OpenSubKey(registryPath))
-            {
                 foreach (var program in GetInstalledProgramsFromKey(key))
                     yield return program;
-            }
 
             using (var key = Registry.CurrentUser.OpenSubKey(registryPath))
-            {
                 foreach (var program in GetInstalledProgramsFromKey(key))
                     yield return program;
-            }
 
             const string wow6432NodeRegistryPath = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
 
             using (var key = Registry.LocalMachine.OpenSubKey(wow6432NodeRegistryPath))
-            {
                 foreach (var program in GetInstalledProgramsFromKey(key))
                     yield return program;
-            }
         }
 
         private static IEnumerable<InstalledProgram> GetInstalledProgramsFromKey(RegistryKey key)
         {
             foreach (var subkeyName in key.GetSubKeyNames())
-            {
                 yield return new InstalledProgram
                 {
                     RegistryKey = key.OpenSubKey(subkeyName)
                 };
-            }
         }
 
         public static void Install(InstallerViewModel installer, bool quiet = true)
@@ -249,9 +241,7 @@ namespace Stein.Services
             var query = String.Format("SELECT * FROM Property WHERE Property='{0}'", propertyName.ToString());
             var view = database.OpenView(query);
             view.Execute(null);
-
-            var record = view.Fetch();
-            return record?.get_StringData(2);
+            return view.Fetch()?.get_StringData(2);
         }
 
         public static Database GetMsiDatabase(string fileName)
@@ -267,16 +257,12 @@ namespace Stein.Services
 
         public static bool IsProductCodeInstalled(string productCode)
         {
-            return InstalledPrograms.Any(p =>
-            {
-                return !String.IsNullOrEmpty(p.UninstallString) && p.UninstallString.Contains(productCode);
-            });
+            return InstalledPrograms.Any(p => !String.IsNullOrEmpty(p.UninstallString) && p.UninstallString.Contains(productCode));
         }
 
         public static string GetCultureTagFromMsi(string fileName)
         {
-            var msiDatabase = GetMsiDatabase(fileName);
-            return GetCultureTagFromMsiDatabase(msiDatabase);
+            return GetCultureTagFromMsiDatabase(GetMsiDatabase(fileName));
         }
 
         public static string GetCultureTagFromMsiDatabase(Database msiDatabase)
@@ -292,8 +278,7 @@ namespace Stein.Services
 
         public static string GetProductCodeFromMsi(string fileName)
         {
-            var msiDatabase = GetMsiDatabase(fileName);
-            return GetProductCodeFromMsiDatabase(msiDatabase);
+            return GetProductCodeFromMsiDatabase(GetMsiDatabase(fileName));
         }
 
         public static string GetProductCodeFromMsiDatabase(Database msiDatabase)
@@ -303,8 +288,7 @@ namespace Stein.Services
 
         public static Version GetVersionFromMsi(string fileName)
         {
-            var msiDatabase = GetMsiDatabase(fileName);
-            return GetVersionFromMsiDatabase(msiDatabase);
+            return GetVersionFromMsiDatabase(GetMsiDatabase(fileName));
         }
 
         public static Version GetVersionFromMsiDatabase(Database msiDatabase)
