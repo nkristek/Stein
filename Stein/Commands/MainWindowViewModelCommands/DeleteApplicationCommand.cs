@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Stein.Configuration;
 using Stein.ViewModels;
 using WpfBase.Commands;
+using System.Windows;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -25,20 +26,17 @@ namespace Stein.Commands.MainWindowViewModelCommands
             if (applicationToDelete == null)
                 return;
             
-            var success = await Task.Run(() =>
-            {
-                var setupToDelete = AppConfigurationService.CurrentConfiguration.Setups.FirstOrDefault(s => s.Path == applicationToDelete.Path);
-                if (setupToDelete == null)
-                    return false;
+            ConfigurationService.Configuration.ApplicationFolders.RemoveAll(af => af.Id == applicationToDelete.FolderId);
+            
+            await ConfigurationService.SaveConfigurationToDiskAsync();
 
-                AppConfigurationService.CurrentConfiguration.Setups.Remove(setupToDelete);
-                return AppConfigurationService.SaveConfiguration();
-            });
+            viewModel.Applications.Remove(applicationToDelete);
+        }
 
-            if (success)
-                viewModel.Applications.Remove(applicationToDelete);
-            else
-                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
+            viewModel.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
         }
     }
 }

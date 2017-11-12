@@ -12,8 +12,11 @@ namespace Stein.ViewModels
     public class InstallerBundleViewModel
         : ViewModel
     {
-        public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
-        
+        public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view)
+        {
+            Installers.CollectionChanged += Installers_CollectionChanged;
+        }
+
         private string _Name;
         public string Name
         {
@@ -77,6 +80,20 @@ namespace Stein.ViewModels
             }
         }
 
+        private void Installers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsDirty = true;
+        }
+
+        protected override void OnIsDirtyChanged(bool newValue)
+        {
+            if (newValue)
+                return;
+
+            foreach (var installer in Installers)
+                installer.IsDirty = false;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -85,10 +102,15 @@ namespace Stein.ViewModels
                 builder.Append(Name);
             else if (Version != null)
                 builder.Append(Version.ToString());
-            else if (!String.IsNullOrEmpty(Path))
-                builder.Append(Path);
             else
                 builder.Append("Error");
+
+            var dateRange = GetDateRangeOfInstallers();
+            if (!String.IsNullOrEmpty(dateRange))
+            {
+                builder.Append(" - ");
+                builder.Append(dateRange);
+            }
 
             if (Culture != null)
             {
@@ -97,6 +119,31 @@ namespace Stein.ViewModels
             }
 
             return builder.ToString();
+        }
+
+        private string GetDateRangeOfInstallers()
+        {
+            if (Installers.Any())
+                return String.Empty;
+
+            var minimum = Installers.Min(i => i.Created);
+            var maximum = Installers.Max(i => i.Created);
+            if (!minimum.HasValue && !maximum.HasValue)
+                return String.Empty;
+
+            var dateStringBuilder = new StringBuilder();
+
+            if (minimum.HasValue)
+                dateStringBuilder.Append(minimum.Value.ToShortDateString());
+
+            if (maximum.HasValue)
+            {
+                if (dateStringBuilder.Length > 0)
+                    dateStringBuilder.Append("-");
+                dateStringBuilder.Append(maximum.Value.ToShortDateString());
+            }
+
+            return dateStringBuilder.ToString();
         }
     }
 }

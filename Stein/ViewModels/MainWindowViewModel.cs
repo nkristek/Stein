@@ -23,6 +23,8 @@ namespace Stein.ViewModels
             RefreshApplicationsCommand = new RefreshApplicationsCommand(this);
             AddApplicationCommand = new AddApplicationCommand(this);
             DeleteApplicationCommand = new DeleteApplicationCommand(this);
+
+            Applications.CollectionChanged += Applications_CollectionChanged;
         }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
@@ -41,6 +43,20 @@ namespace Stein.ViewModels
             {
                 return _Applications;
             }
+        }
+
+        private void Applications_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsDirty = true;
+        }
+
+        protected override void OnIsDirtyChanged(bool newValue)
+        {
+            if (newValue)
+                return;
+
+            foreach (var application in Applications)
+                application.IsDirty = false;
         }
 
         private InstallationViewModel _CurrentInstallation;

@@ -8,6 +8,7 @@ using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
 using System.Windows.Input;
+using System.Windows;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -25,15 +26,24 @@ namespace Stein.Commands.MainWindowViewModelCommands
         {
             viewModel.Applications.Clear();
 
-            var applications = await Task.Run(() =>
-            {
-                AppConfigurationService.ReloadAppConfiguration();
-                InstallService.RefreshInstalledPrograms();
-                return ViewModelService.CreateApplicationViewModels(viewModel).ToList();
-            });
+            await ConfigurationService.LoadConfigurationFromDiskAsync();
+
+            foreach (var applicationFolder in ConfigurationService.Configuration.ApplicationFolders)
+                await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
+
+            await ConfigurationService.SaveConfigurationToDiskAsync();
+
+            await InstallService.RefreshInstalledProgramsAsync();
             
-            foreach (var application in applications)
+            foreach (var application in ViewModelService.CreateApplicationViewModels(viewModel))
                 viewModel.Applications.Add(application);
+
+            viewModel.IsDirty = false;
+        }
+
+        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
         }
     }
 }

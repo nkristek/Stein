@@ -36,6 +36,8 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 CurrentIndex = 0
             };
 
+            var didInstall = false;
+
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
@@ -51,13 +53,19 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     else
                         await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
                 }
+
+                didInstall = true;
             }
 
-            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
-                installer.IsDisabled = false;
-
             mainWindowViewModel.CurrentInstallation = null;
-            mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+
+            if (didInstall)
+                mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+        }
+
+        public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
         }
     }
 }

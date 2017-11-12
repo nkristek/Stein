@@ -19,16 +19,16 @@ namespace Stein.ViewModels
         {
             InstallApplicationCommand = new InstallApplicationCommand(this);
             UninstallApplicationCommand = new UninstallApplicationCommand(this);
+
+            InstallerBundles.CollectionChanged += InstallerBundles_CollectionChanged;
         }
-        
+
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; private set; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
-
-        public SetupConfiguration AssociatedSetup { get; set; }
-
+        
         private string _Name;
         public string Name
         {
@@ -39,11 +39,7 @@ namespace Stein.ViewModels
 
             set
             {
-                if (SetProperty(ref _Name, value) && AssociatedSetup != null)
-                {
-                    AssociatedSetup.Name = Name;
-                    AppConfigurationService.SaveConfiguration();
-                }
+                SetProperty(ref _Name, value);
             }
         }
 
@@ -57,11 +53,21 @@ namespace Stein.ViewModels
 
             set
             {
-                if (SetProperty(ref _Path, value) && AssociatedSetup != null)
-                {
-                    AssociatedSetup.Path = Path;
-                    AppConfigurationService.SaveConfiguration();
-                }
+                SetProperty(ref _Path, value);
+            }
+        }
+
+        private Guid _FolderId;
+        public Guid FolderId
+        {
+            get
+            {
+                return _FolderId;
+            }
+
+            set
+            {
+                SetProperty(ref _FolderId, value);
             }
         }
 
@@ -75,11 +81,7 @@ namespace Stein.ViewModels
 
             set
             {
-                if (SetProperty(ref _EnableSilentInstallation, value) && AssociatedSetup != null)
-                {
-                    AssociatedSetup.EnableSilentInstallation = EnableSilentInstallation;
-                    AppConfigurationService.SaveConfiguration();
-                }
+                SetProperty(ref _EnableSilentInstallation, value);
             }
         }
 
@@ -90,6 +92,20 @@ namespace Stein.ViewModels
             {
                 return _InstallerBundles;
             }
+        }
+
+        private void InstallerBundles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            IsDirty = true;
+        }
+
+        protected override void OnIsDirtyChanged(bool newValue)
+        {
+            if (newValue)
+                return;
+
+            foreach (var installerBundle in InstallerBundles)
+                installerBundle.IsDirty = false;
         }
 
         private InstallerBundleViewModel _SelectedInstallerBundle;

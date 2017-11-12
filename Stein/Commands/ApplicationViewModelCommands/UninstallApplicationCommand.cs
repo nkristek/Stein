@@ -39,7 +39,9 @@ namespace Stein.Commands.ApplicationViewModelCommands
             // disable installers which are not installed
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.IsDisabled = installer.IsInstalled.HasValue && !installer.IsInstalled.Value;
-            
+
+            var didUninstall = false;
+
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
@@ -52,13 +54,22 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     
                     await InstallService.UninstallAsync(installer, viewModel.EnableSilentInstallation);
                 }
+
+                didUninstall = true;
             }
 
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.IsDisabled = false;
 
             mainWindowViewModel.CurrentInstallation = null;
-            mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+
+            if (didUninstall)
+                mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+        }
+
+        public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
         }
     }
 }

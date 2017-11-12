@@ -46,6 +46,14 @@ namespace Stein.Services
             }
         }
 
+        public static async Task RefreshInstalledProgramsAsync()
+        {
+            await Task.Run(() =>
+            {
+                RefreshInstalledPrograms();
+            });
+        }
+
         private static IEnumerable<InstalledProgram> ReadInstalledPrograms()
         {
             const string registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
@@ -257,16 +265,8 @@ namespace Stein.Services
          * https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
          */
 
-        public static bool IsMsiInstalled(string fileName)
+        public static bool IsProductCodeInstalled(string productCode)
         {
-            var msiDatabase = GetMsiDatabase(fileName);
-            return IsMsiInstalled(msiDatabase);
-        }
-
-        public static bool IsMsiInstalled(Database msiDatabase)
-        {
-            var productCode = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductCode);
-
             return InstalledPrograms.Any(p =>
             {
                 return !String.IsNullOrEmpty(p.UninstallString) && p.UninstallString.Contains(productCode);
@@ -288,6 +288,17 @@ namespace Stein.Services
             var cultureId = int.Parse(cultureIdProperty);
             var culture = new CultureInfo(cultureId);
             return culture.IetfLanguageTag;
+        }
+
+        public static string GetProductCodeFromMsi(string fileName)
+        {
+            var msiDatabase = GetMsiDatabase(fileName);
+            return GetProductCodeFromMsiDatabase(msiDatabase);
+        }
+
+        public static string GetProductCodeFromMsiDatabase(Database msiDatabase)
+        {
+            return GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductCode);
         }
 
         public static Version GetVersionFromMsi(string fileName)

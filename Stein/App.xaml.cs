@@ -54,7 +54,7 @@ namespace Stein
                 }
 
                 var logFileName = String.Format("log-{0}.txt", DateTime.Now.ToShortDateString());
-                var logFilePath = Path.Combine(AppConfigurationService.AppConfigurationFolderPath, logFileName);
+                var logFilePath = Path.Combine(ConfigurationService.ConfigurationFolderPath, logFileName);
 
                 using (var file = File.AppendText(logFilePath))
                     file.WriteLine(errorBuilder.ToString());

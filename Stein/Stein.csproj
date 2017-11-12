@@ -106,9 +106,14 @@
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
-    <Compile Include="Configuration\AppConfiguration.cs" />
-    <Compile Include="Configuration\AppConfigurationService.cs" />
-    <Compile Include="Configuration\SetupConfiguration.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationService.cs" />
+    <Compile Include="Configuration\ApplicationFolder.cs" />
+    <Compile Include="Configuration\Date.cs" />
+    <Compile Include="Configuration\DateXml.cs" />
+    <Compile Include="Configuration\InstallerFile.cs" />
+    <Compile Include="Configuration\SubFolder.cs" />
+    <Compile Include="Configuration\VersionXml.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\InstalledProgram.cs" />
     <Compile Include="Services\InstallService.cs" />

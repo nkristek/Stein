@@ -56,26 +56,26 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 return;
             }
 
-            var setupConfiguration = new SetupConfiguration()
+            var applicationFolder = new ApplicationFolder()
             {
+                Id = Guid.NewGuid(),
                 Name = new DirectoryInfo(selectedPath).Name,
                 Path = selectedPath,
                 EnableSilentInstallation = true
             };
+            await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
 
-            var application = await Task.Run(() =>
-            {
-                AppConfigurationService.CurrentConfiguration.Setups.Add(setupConfiguration);
-                if (!AppConfigurationService.SaveConfiguration())
-                    return null;
+            ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
+            
+            await ConfigurationService.SaveConfigurationToDiskAsync();
+            
+            viewModel.Applications.Add(ViewModelService.CreateApplicationViewModel(applicationFolder, viewModel));
+        }
 
-                return ViewModelService.CreateApplicationViewModel(setupConfiguration, viewModel);
-            });
-
-            if (application != null)
-                viewModel.Applications.Add(application);
-            else
-                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
+            viewModel.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
         }
     }
 }

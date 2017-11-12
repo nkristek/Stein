@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using WpfBase.ViewModels;
 
 namespace WpfBase.Commands
@@ -88,14 +85,23 @@ namespace WpfBase.Commands
             }
             catch (Exception exception)
             {
-                // TODO: implement logging
-                MessageBox.Show(exception.Message);
+                try
+                {
+                    OnThrownExeption(Parent, Parent?.View, parameter, exception);
+                }
+                catch { }
             }
             finally
             {
                 IsWorking = false;
             }
-}
+        }
+
+        /// <summary>
+        /// Will be called when ExecuteAsync throws an exception
+        /// </summary>
+        /// <returns></returns>
+        public virtual void OnThrownExeption(TViewModel viewModel, object view, object parameter, Exception exception) { }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

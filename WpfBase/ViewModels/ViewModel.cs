@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WpfBase.ViewModels
 {
@@ -31,9 +27,12 @@ namespace WpfBase.ViewModels
                 {
                     if (Parent != null && value)
                         Parent.IsDirty = true;
+                    OnIsDirtyChanged(value);
                 }
             }
         }
+
+        protected virtual void OnIsDirtyChanged(bool newValue) { }
 
         private WeakReference<ViewModel> _Parent;
 

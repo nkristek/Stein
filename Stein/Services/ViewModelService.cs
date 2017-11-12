@@ -20,109 +20,69 @@ namespace Stein.Services
     {
         public static IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent = null)
         {
-            foreach (var setup in AppConfigurationService.CurrentConfiguration.Setups)
-                yield return CreateApplicationViewModel(setup, parent);
+            foreach (var applicationFolder in ConfigurationService.Configuration.ApplicationFolders)
+                yield return CreateApplicationViewModel(applicationFolder, parent);
         }
 
-        public static ApplicationViewModel CreateApplicationViewModel(SetupConfiguration setup, ViewModel parent = null)
+        public static ApplicationViewModel CreateApplicationViewModel(ApplicationFolder applicationFolder, ViewModel parent = null)
         {
             var application = new ApplicationViewModel(parent)
             {
-                Name = setup.Name,
-                Path = setup.Path,
-                EnableSilentInstallation = setup.EnableSilentInstallation,
-                AssociatedSetup = setup
+                FolderId = applicationFolder.Id,
+                Name = applicationFolder.Name,
+                Path = applicationFolder.Path,
+                EnableSilentInstallation = applicationFolder.EnableSilentInstallation
             };
 
-            IEnumerable<InstallerBundleViewModel> installerBundles;
-            try
-            {
-                installerBundles = GetInstallerBundlesFromApplication(application);
-            }
-            catch
-            {
-                installerBundles = Enumerable.Empty<InstallerBundleViewModel>();
-            }
-
-            foreach (var installerBundle in installerBundles)
+            foreach (var installerBundle in GetInstallerBundlesFromApplicationFolder(applicationFolder, application))
                 application.InstallerBundles.Add(installerBundle);
 
             application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
 
             return application;
         }
-        
-        public static IEnumerable<InstallerBundleViewModel> GetInstallerBundlesFromApplication(ApplicationViewModel application)
+
+        public static IEnumerable<InstallerBundleViewModel> GetInstallerBundlesFromApplicationFolder(ApplicationFolder applicationFolder, ViewModel parent = null)
         {
-            if (!Directory.Exists(application.Path))
-                yield break;
+            foreach (var subFolder in applicationFolder.SubFolders)
+                foreach (var installerBundle in GetInstallerBundlesFromSubFolder(subFolder, parent))
+                    yield return installerBundle;
+        }
 
-            foreach (var directoryName in Directory.EnumerateDirectories(application.Path))
+        public static IEnumerable<InstallerBundleViewModel> GetInstallerBundlesFromSubFolder(SubFolder subFolder, ViewModel parent = null)
+        {
+            if (subFolder.InstallerFiles.Any())
             {
-                IEnumerable<InstallerViewModel> installers;
-                try
+                foreach (var installerFileGroup in subFolder.InstallerFiles.GroupBy(i => i.Culture))
                 {
-                    installers = GetInstallersFromDirectory(directoryName);
-                } catch { continue; }
-
-                foreach (var installerGroup in installers.GroupBy(i => i.Culture))
-                {
-                    var installerBundle = new InstallerBundleViewModel(application)
+                    var installerBundle = new InstallerBundleViewModel(parent)
                     {
-                        Path = directoryName
+                        Name = subFolder.Name,
+                        Path = subFolder.Path
                     };
 
-                    try
+                    foreach (var installer in installerFileGroup)
                     {
-                        installerBundle.Name = new DirectoryInfo(directoryName).Name;
-                    } catch { }
-
-                    foreach (var installer in installerGroup)
-                    {
-                        installer.Parent = installerBundle;
-                        installerBundle.Installers.Add(installer);
+                        installerBundle.Installers.Add(new InstallerViewModel(installerBundle)
+                        {
+                            Name = installer.Name,
+                            Path = installer.Path,
+                            IsEnabled = true,
+                            IsDisabled = false,
+                            Version = installer.Version,
+                            Culture = installer.Culture,
+                            IsInstalled = InstallService.IsProductCodeInstalled(installer.ProductCode),
+                            Created = installer.Created
+                        });
                     }
 
                     yield return installerBundle;
                 }
             }
-        }
 
-        private const string installerFileNamePattern = "*.msi";
-
-        public static IEnumerable<InstallerViewModel> GetInstallersFromDirectory(string directoryPath)
-        {
-            if (!Directory.Exists(directoryPath))
-                yield break;
-
-            foreach (var fileName in Directory.EnumerateFiles(directoryPath, installerFileNamePattern))
-            {
-                var installer = new InstallerViewModel()
-                {
-                    Path = fileName,
-                    IsEnabled = true,
-                    IsDisabled = false
-                };
-
-                ReadMsiProperties(installer);
-
-                yield return installer;
-            }
-        }
-
-        private static void ReadMsiProperties(InstallerViewModel installer)
-        {
-            try
-            {
-                var database = InstallService.GetMsiDatabase(installer.Path);
-
-                installer.Name = InstallService.GetPropertyFromMsiDatabase(database, InstallService.MsiPropertyName.ProductName);
-                installer.Version = InstallService.GetVersionFromMsiDatabase(database);
-                installer.Culture = InstallService.GetCultureTagFromMsiDatabase(database);
-                installer.IsInstalled = InstallService.IsMsiInstalled(database);
-
-                installer.Created = new FileInfo(installer.Path).CreationTime;
-            } catch { }
+            foreach (var subSubFolder in subFolder.SubFolders)
+                foreach (var installerBundle in GetInstallerBundlesFromSubFolder(subSubFolder, parent))
+                    yield return installerBundle;
         }
     }
 }
