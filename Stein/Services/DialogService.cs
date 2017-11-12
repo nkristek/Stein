@@ -14,7 +14,8 @@ namespace Stein.Services
     {
         private static readonly IReadOnlyDictionary<Type, Type> ViewModelsToViewsMapping = new Dictionary<Type, Type>
         {
-            { typeof(InstallerBundleViewModel), typeof(SelectInstallersDialog) }
+            { typeof(InstallerBundleViewModel), typeof(InstallerBundleDialog) },
+            { typeof(ApplicationViewModel), typeof(ApplicationDialog) }
         };
 
         public static bool? ShowDialog(ViewModel dialogViewModel, string title = null)

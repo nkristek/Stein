@@ -1,4 +1,4 @@
-﻿<Window x:Class="Stein.Views.SelectInstallersDialog"
+﻿<Window x:Class="Stein.Views.InstallerBundleDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,6 +21,8 @@
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0"
+               VerticalAlignment="Center"
+               VerticalContentAlignment="Center"
                Content="Please select on which installers to proceed:"/>
 
         <ScrollViewer Grid.Row="2" 
@@ -92,7 +94,8 @@
             <Button Grid.Column="1" 
                     Content="Ok"
                     Padding="16,4"
-                    Click="OnDialogOkButtonClick"/>
+                    Click="OnDialogOkButtonClick"
+                    IsEnabled="{Binding Installers, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"/>
 
             <Button Grid.Column="3" 
                     Content="Cancel"

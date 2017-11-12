@@ -101,6 +101,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ApplicationViewModelCommands\EditApplicationCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
@@ -124,9 +126,16 @@
     <Compile Include="ViewModels\InstallerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\InstallerBundleViewModel.cs" />
-    <Compile Include="Views\SelectInstallersDialog.xaml.cs">
-      <DependentUpon>SelectInstallersDialog.xaml</DependentUpon>
+    <Compile Include="Views\ApplicationDialog.xaml.cs">
+      <DependentUpon>ApplicationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\InstallerBundleDialog.xaml.cs">
+      <DependentUpon>InstallerBundleDialog.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\ApplicationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,7 +148,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\SelectInstallersDialog.xaml">
+    <Page Include="Views\InstallerBundleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

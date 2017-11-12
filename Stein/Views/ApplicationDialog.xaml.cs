@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Stein.Views
 {
     /// <summary>
-    /// Interaction logic for SelectInstallersDialog.xaml
+    /// Interaction logic for ApplicationDialog.xaml
     /// </summary>
-    public partial class SelectInstallersDialog : Window
+    public partial class ApplicationDialog : Window
     {
-        public SelectInstallersDialog()
+        public ApplicationDialog()
         {
             InitializeComponent();
         }

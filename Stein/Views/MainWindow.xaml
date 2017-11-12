@@ -7,10 +7,44 @@
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         mc:Ignorable="d"
         Title="Stein - Silent Temp Installer" 
-        MinWidth="600"
+        MinWidth="500"
         MinHeight="300"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Path x:Key="RefreshIcon" 
+              Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"
+              Fill="Gray" />
+
+        <Path x:Key="RefreshIcon_Hover" 
+              Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"
+              Fill="Black" />
+
+        <Path x:Key="AddIcon" 
+              Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+              Fill="Gray" />
+
+        <Path x:Key="AddIcon_Hover" 
+              Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+              Fill="Black" />
+
+        <Path x:Key="EditIcon" 
+              Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+              Fill="Gray" />
+
+        <Path x:Key="EditIcon_Hover" 
+              Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+              Fill="Black" />
+
+        <Path x:Key="DeleteIcon" 
+              Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" 
+              Fill="Gray" />
+
+        <Path x:Key="DeleteIcon_Hover" 
+              Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" 
+              Fill="Black" />
+    </Window.Resources>
+    
     <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -46,14 +80,53 @@
             </Label>
 
             <Button Grid.Column="2"
-                    Command="{Binding AddApplicationCommand}"
-                    Content="Add Folder"
-                    Padding="16,4"/>
+                    BorderThickness="0"
+                    Focusable="False"
+                    Background="Transparent"
+                    Command="{Binding AddApplicationCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Button.Template" >
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Button.Content" Value="{StaticResource AddIcon}" />
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter Property="Button.Content" Value="{StaticResource AddIcon_Hover}" />
+                                <Setter Property="Button.Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
             <Button Grid.Column="4"
-                    Command="{Binding RefreshApplicationsCommand}"
-                    Content="Refresh"
-                    Padding="16,4"/>
+                    BorderThickness="0"
+                    Background="Transparent"
+                    Command="{Binding RefreshApplicationsCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Button.Template" >
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Button.Content" Value="{StaticResource RefreshIcon}" />
+                        <Style.Triggers>
+                            <Trigger Property="Button.IsMouseOver" Value="True">
+                                <Setter Property="Button.Content" Value="{StaticResource RefreshIcon_Hover}" />
+                                <Setter Property="Button.Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </Grid>
 
         <ScrollViewer Grid.Row="2" 
@@ -77,10 +150,8 @@
                                     <ColumnDefinition Width="8"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                                     <ColumnDefinition Width="8"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="SelectionColumn"/>
-                                    <ColumnDefinition Width="8"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ModifyButtonColumn"/>
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Label Column -->
@@ -94,8 +165,10 @@
                                     <Label Grid.Row="0" 
                                            Content="{Binding Name}" />
 
-                                    <Label Grid.Row="2"
-                                           Content="{Binding Path}" />
+                                    <ComboBox Grid.Row="2" 
+                                              ItemsSource="{Binding InstallerBundles}"
+                                              SelectedItem="{Binding SelectedInstallerBundle}"
+                                              IsEnabled="{Binding InstallerBundles, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"/>
                                 </Grid>
 
                                 <!-- Button Column -->
@@ -117,35 +190,62 @@
                                             Command="{Binding UninstallApplicationCommand}"/>
                                 </Grid>
 
-                                <!-- Selection and SilentInstall Column -->
-                                <Grid Grid.Column="4"
-                                      IsEnabled="{Binding Parent.CurrentInstallation, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
+                                <!-- Modify Button Column -->
+                                <Grid Grid.Column="7">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                         <RowDefinition Height="8"/>
                                         <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
                                     </Grid.RowDefinitions>
+                                    
+                                    <Button Grid.Row="0"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Command="{Binding EditApplicationCommand}">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Button.Template" >
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Button.Content" Value="{StaticResource EditIcon}" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="Button.IsMouseOver" Value="True">
+                                                        <Setter Property="Button.Content" Value="{StaticResource EditIcon_Hover}" />
+                                                        <Setter Property="Button.Background" Value="Transparent" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
 
-                                    <ComboBox Grid.Row="0"
-                                              ItemsSource="{Binding InstallerBundles}"
-                                              SelectedItem="{Binding SelectedInstallerBundle}"
-                                              IsEnabled="{Binding InstallerBundles, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"/>
-
-                                    <CheckBox Grid.Row="2"
-                                              VerticalAlignment="Center"
-                                              VerticalContentAlignment="Center"
-                                              IsChecked="{Binding EnableSilentInstallation}">
-                                        <Label Content="(un)install with defaults"/>
-                                    </CheckBox>
-                                </Grid>
-
-                                <!-- Delete Button Column -->
-                                <Grid Grid.Column="7">
-                                    <Button Content="Delete"
-                                            Padding="16,4"
-                                            VerticalAlignment="Center"
+                                    <Button Grid.Row="2"
+                                            BorderThickness="0"
+                                            Background="Transparent"
                                             Command="{Binding Parent.DeleteApplicationCommand}"
-                                            CommandParameter="{Binding}"/>
+                                            CommandParameter="{Binding}">
+                                        <Button.Style>
+                                            <Style TargetType="{x:Type Button}">
+                                                <Setter Property="Button.Template" >
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="{x:Type Button}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Button.Content" Value="{StaticResource DeleteIcon}" />
+                                                <Style.Triggers>
+                                                    <Trigger Property="Button.IsMouseOver" Value="True">
+                                                        <Setter Property="Button.Content" Value="{StaticResource DeleteIcon_Hover}" />
+                                                        <Setter Property="Button.Background" Value="Transparent" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
                                 </Grid>
                             </Grid>
                         </Border>

@@ -24,6 +24,23 @@ namespace Stein.Services
                 yield return CreateApplicationViewModel(applicationFolder, parent);
         }
 
+        public static void UpdateApplicationViewModel(ApplicationViewModel application)
+        {
+            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
+            if (associatedApplicationFolder == null)
+                return;
+
+            application.FolderId = associatedApplicationFolder.Id;
+            application.Name = associatedApplicationFolder.Name;
+            application.Path = associatedApplicationFolder.Path;
+            application.EnableSilentInstallation = associatedApplicationFolder.EnableSilentInstallation;
+
+            foreach (var installerBundle in GetInstallerBundlesFromApplicationFolder(associatedApplicationFolder, application))
+                application.InstallerBundles.Add(installerBundle);
+
+            application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
+        }
+
         public static ApplicationViewModel CreateApplicationViewModel(ApplicationFolder applicationFolder, ViewModel parent = null)
         {
             var application = new ApplicationViewModel(parent)

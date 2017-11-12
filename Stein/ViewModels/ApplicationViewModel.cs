@@ -19,6 +19,8 @@ namespace Stein.ViewModels
         {
             InstallApplicationCommand = new InstallApplicationCommand(this);
             UninstallApplicationCommand = new UninstallApplicationCommand(this);
+            SelectFolderCommand = new SelectFolderCommand(this);
+            EditApplicationCommand = new EditApplicationCommand(this);
 
             InstallerBundles.CollectionChanged += InstallerBundles_CollectionChanged;
         }
@@ -29,6 +31,10 @@ namespace Stein.ViewModels
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
         
+        public ViewModelCommand<ApplicationViewModel> SelectFolderCommand { get; private set; }
+
+        public AsyncViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; private set; }
+
         private string _Name;
         public string Name
         {

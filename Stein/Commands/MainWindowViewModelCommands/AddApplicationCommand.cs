@@ -26,31 +26,16 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
-            string selectedPath;
-
-            // this is the standard select folder dialog but it is very limited in functionality and ugly
-            //using (var dialog = new FolderBrowserDialog())
-            //{
-            //    var result = dialog.ShowDialog();
-            //    if (result != DialogResult.OK)
-            //        return;
-
-            //    selectedPath = dialog.SelectedPath;
-            //}
-
-            using (var dialog = new CommonOpenFileDialog())
+            var application = new ApplicationViewModel(viewModel)
             {
-                dialog.IsFolderPicker = true;
-                dialog.Multiselect = false;
+                FolderId = Guid.NewGuid(),
+                EnableSilentInstallation = true
+            };
 
-                var result = dialog.ShowDialog();
-                if (result != CommonFileDialogResult.Ok)
-                    return;
+            if (DialogService.ShowDialog(application) != true)
+                return;
 
-                selectedPath = dialog.FileName;
-            }
-
-            if (String.IsNullOrWhiteSpace(selectedPath) || selectedPath.ContainsInvalidPathChars() || !Directory.Exists(selectedPath))
+            if (String.IsNullOrWhiteSpace(application.Path) || application.Path.ContainsInvalidPathChars() || !Directory.Exists(application.Path))
             {
                 MessageBox.Show("Selected path is not valid!");
                 return;
@@ -58,18 +43,19 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
             var applicationFolder = new ApplicationFolder()
             {
-                Id = Guid.NewGuid(),
-                Name = new DirectoryInfo(selectedPath).Name,
-                Path = selectedPath,
-                EnableSilentInstallation = true
+                Id = application.FolderId,
+                Name = application.Name,
+                Path = application.Path,
+                EnableSilentInstallation = application.EnableSilentInstallation
             };
-            await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
 
+            await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
+            
             ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
-            
             await ConfigurationService.SaveConfigurationToDiskAsync();
-            
-            viewModel.Applications.Add(ViewModelService.CreateApplicationViewModel(applicationFolder, viewModel));
+
+            ViewModelService.UpdateApplicationViewModel(application);
+            viewModel.Applications.Add(application);
         }
 
         public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
