@@ -58,6 +58,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 didUninstall = true;
             }
 
+            // reenable previously disabled installers
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.IsDisabled = false;
 
