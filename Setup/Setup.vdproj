@@ -19,24 +19,6 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_FE5E398EE9593E5D5810428DE1F1D2DD"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FE5E398EE9593E5D5810428DE1F1D2DD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -132,32 +114,6 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FE5E398EE9593E5D5810428DE1F1D2DD"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:WpfBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:WpfBase.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -214,15 +170,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{E3724997-822D-4C79-A937-D90867539A41}"
-        "PackageCode" = "8:{FF445AA2-23B0-4DF7-951D-1EC6BF186558}"
+        "ProductCode" = "8:{E1289494-82C6-4FC1-9ADA-4151C4CE30AA}"
+        "PackageCode" = "8:{59F14FD0-D1F0-4099-B8E6-6A5695E58B30}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.7"
+        "ProductVersion" = "8:0.8"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
@@ -764,7 +720,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E9FF6F79877B4E2487779AAD5EE23B4F"
             {
-            "SourcePath" = "8:..\\Stein\\obj\\x64\\Release\\Stein.exe"
+            "SourcePath" = "8:..\\Stein\\obj\\x64\\Debug\\Stein.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
