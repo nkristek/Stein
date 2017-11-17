@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Stein.Services;
@@ -31,31 +27,35 @@ namespace Stein.Commands.ApplicationViewModelCommands
             var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
-                Type = InstallationViewModel.InstallationType.Uninstall,
+                State = InstallationViewModel.InstallationState.Preparing,
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
 
+            var didUninstall = false;
+
             // disable installers which are not installed
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.IsDisabled = installer.IsInstalled.HasValue && !installer.IsInstalled.Value;
-
-            var didUninstall = false;
-
+            
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
+
+                mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Uninstall;
                 mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
                 
                 foreach (var installer in installersToInstall)
                 {
+                    if (mainWindowViewModel.CurrentInstallation.State == InstallationViewModel.InstallationState.Cancelled)
+                        break;
+
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
                     
                     await InstallService.UninstallAsync(installer, viewModel.EnableSilentInstallation);
+                    didUninstall = true;
                 }
-
-                didUninstall = true;
             }
 
             // reenable previously disabled installers

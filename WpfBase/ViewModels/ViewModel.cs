@@ -13,7 +13,6 @@ namespace WpfBase.ViewModels
         }
 
         private bool _IsDirty;
-
         public bool IsDirty
         {
             get
@@ -27,15 +26,11 @@ namespace WpfBase.ViewModels
                 {
                     if (Parent != null && value)
                         Parent.IsDirty = true;
-                    OnIsDirtyChanged(value);
                 }
             }
         }
 
-        protected virtual void OnIsDirtyChanged(bool newValue) { }
-
         private WeakReference<ViewModel> _Parent;
-
         public ViewModel Parent
         {
             get
@@ -63,7 +58,6 @@ namespace WpfBase.ViewModels
         }
 
         private WeakReference<object> _View;
-
         public object View
         {
             get
@@ -91,7 +85,9 @@ namespace WpfBase.ViewModels
 
         protected sealed override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            IsDirty = true;
+            if (propertyName != nameof(IsDirty) && propertyName != nameof(Parent) && propertyName != nameof(View))
+                IsDirty = true;
+
             base.OnPropertyChanged(propertyName);
         }
     }

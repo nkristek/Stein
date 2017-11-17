@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Stein.Services;
@@ -31,7 +27,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
-                Type = InstallationViewModel.InstallationType.Install,
+                State = InstallationViewModel.InstallationState.Preparing,
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
@@ -41,10 +37,15 @@ namespace Stein.Commands.ApplicationViewModelCommands
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
                 var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
+
+                mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Install;
                 mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
                 
                 foreach (var installer in installersToInstall)
                 {
+                    if (mainWindowViewModel.CurrentInstallation.State == InstallationViewModel.InstallationState.Cancelled)
+                        break;
+
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
 
@@ -52,9 +53,9 @@ namespace Stein.Commands.ApplicationViewModelCommands
                         await InstallService.ReinstallAsync(installer, viewModel.EnableSilentInstallation);
                     else
                         await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
-                }
 
-                didInstall = true;
+                    didInstall = true;
+                }
             }
 
             mainWindowViewModel.CurrentInstallation = null;

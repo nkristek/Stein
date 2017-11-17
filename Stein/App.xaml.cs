@@ -18,7 +18,8 @@ namespace Stein
     {
         public App()
         {
-            Startup += new StartupEventHandler(App_Startup);
+            Startup += App_Startup;
+            Exit += App_Exit;
 
             DispatcherUnhandledException += App_DispatcherUnhandledException;
 
@@ -26,18 +27,44 @@ namespace Stein
 
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
         }
-
-        void App_Startup(object sender, StartupEventArgs e)
+        
+        private void App_Startup(object sender, StartupEventArgs e)
         {
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            ConfigurationService.LoadConfigurationFromDisk();
+        }
+
+        private void App_Exit(object sender, ExitEventArgs e)
+        {
+            ConfigurationService.SaveConfigurationToDisk();
         }
         
-        void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
+            ProcessError(e.Exception);
         }
 
-        void ProcessError(Exception exception)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = e.ExceptionObject as Exception;
+            if (exception == null)
+                return;
+            
+            ProcessError(exception);
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            ProcessError(e.Exception);
+        }
+
+        private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            ProcessError(e.Exception);
+        }
+
+        private void ProcessError(Exception exception)
         {
             try
             {
@@ -60,48 +87,6 @@ namespace Stein
                     file.WriteLine(errorBuilder.ToString());
             }
             catch { }
-        }
-
-        void ShowError(Exception exception)
-        {
-            var messageBuilder = new StringBuilder();
-            messageBuilder.AppendLine("Unhandled exception:");
-            messageBuilder.AppendLine();
-            messageBuilder.AppendLine(exception.Message);
-            MessageBox.Show(messageBuilder.ToString());
-        }
-        
-        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            ShowError(e.Exception);
-            ProcessError(e.Exception);
-            e.Handled = true;
-        }
-        
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            var exception = e.ExceptionObject as Exception;
-            if (exception == null)
-                return;
-
-            ShowError(exception);
-            ProcessError(exception);
-        }
-        
-        void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-        {
-            ShowError(e.Exception);
-            ProcessError(e.Exception);
-
-            e.SetObserved();
-        }
-        
-        void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            ShowError(e.Exception);
-            ProcessError(e.Exception);
-
-            ProcessError(e.Exception);
         }
     }
 }

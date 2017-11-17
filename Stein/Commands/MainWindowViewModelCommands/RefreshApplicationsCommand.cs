@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Stein.Configuration;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
-using System.Windows.Input;
 using System.Windows;
+using System.Linq;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -24,20 +21,20 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
-            viewModel.Applications.Clear();
-
-            await ConfigurationService.LoadConfigurationFromDiskAsync();
-
-            foreach (var applicationFolder in ConfigurationService.Configuration.ApplicationFolders)
-                await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
-
-            await ConfigurationService.SaveConfigurationToDiskAsync();
-
-            await InstallService.RefreshInstalledProgramsAsync();
+            // save changes from application viewmodels back to the configuration
+            foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
+                ViewModelService.SaveViewModel(changedApplication);
             
-            foreach (var application in ViewModelService.CreateApplicationViewModels(viewModel))
-                viewModel.Applications.Add(application);
+            // get new installers
+            await ConfigurationService.SyncApplicationFoldersWithDiskAsync();
+            await ConfigurationService.SaveConfigurationToDiskAsync();
+            await InstallService.RefreshInstalledProgramsAsync();
 
+            // update the viewmodels
+            var createdOrUpdatedApplications = ViewModelService.CreateOrUpdateApplicationViewModels(viewModel, viewModel.Applications.ToList());
+            viewModel.Applications.Clear();
+            foreach (var application in createdOrUpdatedApplications)
+                viewModel.Applications.Add(application);
             viewModel.IsDirty = false;
         }
 

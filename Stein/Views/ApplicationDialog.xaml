@@ -42,7 +42,7 @@
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Text="{Binding Name}"/>
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <!-- Path -->
@@ -66,7 +66,7 @@
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Text="{Binding Path}"/>
+                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Button Grid.Column="4"
                     Content="…"
@@ -106,7 +106,8 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" 
+            <Button x:Name="OkButton" 
+                    Grid.Column="1" 
                     Content="Ok"
                     Padding="16,4"
                     Click="OnDialogOkButtonClick"

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Stein.Services;
 using WpfBase.ViewModels;
-using System.IO;
 
 namespace Stein.ViewModels
 {
@@ -113,6 +107,23 @@ namespace Stein.ViewModels
             set
             {
                 SetProperty(ref _Culture, value);
+            }
+        }
+
+        private string _ProductCode;
+        /// <summary>
+        /// ProductCode of the installer (from the Msi-properties)
+        /// </summary>
+        public string ProductCode
+        {
+            get
+            {
+                return _ProductCode;
+            }
+
+            set
+            {
+                SetProperty(ref _ProductCode, value);
             }
         }
 

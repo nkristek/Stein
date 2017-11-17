@@ -14,7 +14,9 @@ namespace WpfBase.Converters
             var dateTime = (DateTime)value;
             if (dateTime == DateTime.MinValue)
                 return "Date not set";
-            return String.Join(" ", dateTime.ToShortDateString(), dateTime.ToShortTimeString());
+            if (parameter is string && !String.IsNullOrEmpty(parameter as string))
+                return dateTime.ToString(parameter as string);
+            return dateTime.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

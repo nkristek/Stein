@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using WpfBase.ViewModels;
 
 namespace Stein.ViewModels
@@ -13,24 +8,28 @@ namespace Stein.ViewModels
     {
         public InstallationViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
 
-        public enum InstallationType
+        public enum InstallationState
         {
+            Preparing,
+
             Install,
 
-            Uninstall
+            Uninstall,
+
+            Cancelled
         }
 
-        private InstallationType _Type;
-        public InstallationType Type
+        private InstallationState _State;
+        public InstallationState State
         {
             get
             {
-                return _Type;
+                return _State;
             }
 
             set
             {
-                SetProperty(ref _Type, value);
+                SetProperty(ref _State, value);
             }
         }
         

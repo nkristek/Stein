@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Stein.Configuration;
@@ -10,7 +7,6 @@ using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
 using WpfBase.Extensions;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -28,11 +24,10 @@ namespace Stein.Commands.MainWindowViewModelCommands
         {
             var application = new ApplicationViewModel(viewModel)
             {
-                FolderId = Guid.NewGuid(),
                 EnableSilentInstallation = true
             };
-
-            if (DialogService.ShowDialog(application) != true)
+            
+            if (DialogService.ShowDialog(application, "Add folder") != true)
                 return;
 
             if (String.IsNullOrWhiteSpace(application.Path) || application.Path.ContainsInvalidPathChars() || !Directory.Exists(application.Path))
@@ -43,7 +38,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
             var applicationFolder = new ApplicationFolder()
             {
-                Id = application.FolderId,
+                Id = Guid.NewGuid(),
                 Name = application.Name,
                 Path = application.Path,
                 EnableSilentInstallation = application.EnableSilentInstallation
@@ -54,7 +49,8 @@ namespace Stein.Commands.MainWindowViewModelCommands
             ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
             await ConfigurationService.SaveConfigurationToDiskAsync();
 
-            ViewModelService.UpdateApplicationViewModel(application);
+            application.FolderId = applicationFolder.Id;
+            ViewModelService.UpdateViewModel(application);
             viewModel.Applications.Add(application);
         }
 

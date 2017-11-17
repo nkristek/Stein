@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using Stein.ViewModels;
-using WpfBase.ViewModels;
 using Stein.Services;
 
 namespace Stein.Configuration
@@ -30,22 +25,28 @@ namespace Stein.Configuration
             }
         }
 
+        public static void SyncApplicationFoldersWithDisk()
+        {
+            foreach (var applicationFolder in Configuration.ApplicationFolders)
+                SyncApplicationFolderWithDisk(applicationFolder);
+        }
+
         public static void SyncApplicationFolderWithDisk(ApplicationFolder applicationFolder)
         {
-            var subDirectorNames = Directory.GetDirectories(applicationFolder.Path);
+            var subDirectories = Directory.GetDirectories(applicationFolder.Path).Select(directoryName => new DirectoryInfo(directoryName));
 
             // remove all directories which don't exist on the file system anymore
-            applicationFolder.SubFolders.RemoveAll(folder => !subDirectorNames.Any(fileName => fileName == folder.Path));
+            applicationFolder.SubFolders.RemoveAll(folder => !subDirectories.Any(dir => dir.FullName == folder.Path));
 
-            foreach (var subDirectoryName in subDirectorNames)
+            foreach (var subDirectory in subDirectories.OrderBy(dir => dir.CreationTime))
             {
-                var folder = applicationFolder.SubFolders.FirstOrDefault(sf => sf.Path == subDirectoryName);
+                var folder = applicationFolder.SubFolders.FirstOrDefault(sf => sf.Path == subDirectory.FullName);
                 if (folder == null)
                 {
                     folder = new SubFolder
                     {
-                        Path = subDirectoryName,
-                        Name = new DirectoryInfo(subDirectoryName).Name
+                        Path = subDirectory.FullName,
+                        Name = subDirectory.Name
                     };
                     applicationFolder.SubFolders.Add(folder);
                 }
@@ -55,58 +56,37 @@ namespace Stein.Configuration
 
         private static void SyncSubFolderWithDisk(SubFolder subFolder)
         {
-            var fileNames = Directory.GetFiles(subFolder.Path, "*.msi");
+            var files = Directory.GetFiles(subFolder.Path, "*.msi").Select(fileName => new FileInfo(fileName));
 
             // remove all files which don't exist on the file system anymore
-            subFolder.InstallerFiles.RemoveAll(i => !fileNames.Any(fileName => fileName == i.Path));
+            subFolder.InstallerFiles.RemoveAll(i => !files.Any(file => file.FullName == i.Path));
 
-            foreach (var fileName in fileNames)
+            foreach (var file in files.OrderBy(file => file.Name))
             {
-                var creationDate = new FileInfo(fileName).CreationTime;
-
-                var previouslySeenFile = subFolder.InstallerFiles.FirstOrDefault(i => i.Path == fileName);
+                var fileCreationTime = DateXml.TrimDateTimeToXmlAccuracy(file.CreationTime);
+                var previouslySeenFile = subFolder.InstallerFiles.FirstOrDefault(i => i.Path == file.FullName);
                 if (previouslySeenFile != null)
                 {
                     // this is probably the same file when the creation date matches
-                    if (previouslySeenFile.Created == creationDate)
+                    if (previouslySeenFile.Created == fileCreationTime)
                         continue;
 
                     // not the same file since the creation date is different
                     subFolder.InstallerFiles.Remove(previouslySeenFile);
                 }
 
-                var database = InstallService.GetMsiDatabase(fileName);
+                var database = InstallService.GetMsiDatabase(file.FullName);
                 var installerFile = new InstallerFile
                 {
                     Name = InstallService.GetPropertyFromMsiDatabase(database, InstallService.MsiPropertyName.ProductName),
-                    Path = fileName,
+                    Path = file.FullName,
                     IsEnabled = true,
-                    Created = creationDate,
+                    Created = fileCreationTime,
                     Version = InstallService.GetVersionFromMsiDatabase(database),
                     Culture = InstallService.GetCultureTagFromMsiDatabase(database),
                     ProductCode = InstallService.GetProductCodeFromMsiDatabase(database)
                 };
                 subFolder.InstallerFiles.Add(installerFile);
-            }
-
-            var subDirectoryNames = Directory.GetDirectories(subFolder.Path);
-
-            // remove all directories which don't exist on the file system anymore
-            subFolder.SubFolders.RemoveAll(folder => !subDirectoryNames.Any(fileName => fileName == folder.Path));
-
-            foreach (var subDirectoryName in subDirectoryNames)
-            {
-                var folder = subFolder.SubFolders.FirstOrDefault(sf => sf.Path == subDirectoryName);
-                if (folder == null)
-                {
-                    folder = new SubFolder
-                    {
-                        Path = subDirectoryName,
-                        Name = new DirectoryInfo(subDirectoryName).Name
-                    };
-                    subFolder.SubFolders.Add(folder);
-                }
-                SyncSubFolderWithDisk(folder);
             }
         }
 
@@ -115,6 +95,14 @@ namespace Stein.Configuration
             await Task.Run(() =>
             {
                 SyncApplicationFolderWithDisk(applicationFolder);
+            });
+        }
+
+        public static async Task SyncApplicationFoldersWithDiskAsync()
+        {
+            await Task.Run(() =>
+            {
+                SyncApplicationFoldersWithDisk();
             });
         }
 

@@ -22,6 +22,17 @@ namespace Stein.Views
         public ApplicationDialog()
         {
             InitializeComponent();
+
+            KeyDown += ApplicationDialog_KeyDown;
+        }
+
+        private void ApplicationDialog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (OkButton.IsEnabled && e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                DialogResult = true;
+            }
         }
 
         private void OnDialogOkButtonClick(object sender, RoutedEventArgs e)

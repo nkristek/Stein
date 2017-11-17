@@ -1,14 +1,6 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Stein.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using WpfBase.Commands;
-using WpfBase.Extensions;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {

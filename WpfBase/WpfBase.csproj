@@ -47,6 +47,8 @@
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\ViewModelCommand.cs" />
+    <Compile Include="Converters\AnyBoolToBoolConverter.cs" />
+    <Compile Include="Converters\AnyBoolToInverseBoolConverter.cs" />
     <Compile Include="Converters\AnyBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToInverseBoolConverter.cs" />
     <Compile Include="Converters\BoolToNotVisibilityConverter.cs" />

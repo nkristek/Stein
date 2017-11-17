@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Stein.Commands.ApplicationViewModelCommands;
-using Stein.Configuration;
 using WpfBase.Commands;
 using WpfBase.ViewModels;
-using System.Windows.Input;
 
 namespace Stein.ViewModels
 {
@@ -20,7 +14,6 @@ namespace Stein.ViewModels
             InstallApplicationCommand = new InstallApplicationCommand(this);
             UninstallApplicationCommand = new UninstallApplicationCommand(this);
             SelectFolderCommand = new SelectFolderCommand(this);
-            EditApplicationCommand = new EditApplicationCommand(this);
 
             InstallerBundles.CollectionChanged += InstallerBundles_CollectionChanged;
         }
@@ -32,9 +25,7 @@ namespace Stein.ViewModels
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
         
         public ViewModelCommand<ApplicationViewModel> SelectFolderCommand { get; private set; }
-
-        public AsyncViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; private set; }
-
+        
         private string _Name;
         public string Name
         {
@@ -103,15 +94,22 @@ namespace Stein.ViewModels
         private void InstallerBundles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsDirty = true;
+
+            if (e.NewItems != null)
+                foreach (var newItem in e.NewItems)
+                    if (newItem is InstallerBundleViewModel installerBundle)
+                        installerBundle.PropertyChanged += InstallerBundle_PropertyChanged;
+
+            if (e.OldItems != null)
+                foreach (var oldItem in e.OldItems)
+                    if (oldItem is InstallerBundleViewModel installerBundle)
+                        installerBundle.PropertyChanged -= InstallerBundle_PropertyChanged;
         }
 
-        protected override void OnIsDirtyChanged(bool newValue)
+        private void InstallerBundle_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (newValue)
-                return;
-
-            foreach (var installerBundle in InstallerBundles)
-                installerBundle.IsDirty = false;
+            if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
+                OnPropertyChanged(nameof(InstallerBundles));
         }
 
         private InstallerBundleViewModel _SelectedInstallerBundle;

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using WpfBase.Commands;
 using WpfBase.ViewModels;
 
 namespace Stein.ViewModels
@@ -83,34 +80,37 @@ namespace Stein.ViewModels
         private void Installers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsDirty = true;
+
+            if (e.NewItems != null)
+                foreach (var newItem in e.NewItems)
+                    if (newItem is InstallerViewModel installer)
+                        installer.PropertyChanged += Installer_PropertyChanged;
+
+            if (e.OldItems != null)
+                foreach (var oldItem in e.OldItems)
+                    if (oldItem is InstallerViewModel installer)
+                        installer.PropertyChanged -= Installer_PropertyChanged;
         }
 
-        protected override void OnIsDirtyChanged(bool newValue)
+        private void Installer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (newValue)
-                return;
+            if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
+                OnPropertyChanged(nameof(Installers));
+        }
 
-            foreach (var installer in Installers)
-                installer.IsDirty = false;
+        [PropertySource(nameof(Installers))]
+        public bool AnyInstallerIsEnabled
+        {
+            get
+            {
+                return Installers.Any(i => i.IsEnabled);
+            }
         }
 
         public override string ToString()
         {
             var builder = new StringBuilder();
-
-            if (!String.IsNullOrEmpty(Name))
-                builder.Append(Name);
-            else if (Version != null)
-                builder.Append(Version.ToString());
-            else
-                builder.Append("Error");
-
-            var dateRange = GetDateRangeOfInstallers();
-            if (!String.IsNullOrEmpty(dateRange))
-            {
-                builder.Append(" - ");
-                builder.Append(dateRange);
-            }
+            builder.Append(Name);
 
             if (Culture != null)
             {
@@ -119,31 +119,6 @@ namespace Stein.ViewModels
             }
 
             return builder.ToString();
-        }
-
-        private string GetDateRangeOfInstallers()
-        {
-            if (Installers.Any())
-                return String.Empty;
-
-            var minimum = Installers.Min(i => i.Created);
-            var maximum = Installers.Max(i => i.Created);
-            if (!minimum.HasValue && !maximum.HasValue)
-                return String.Empty;
-
-            var dateStringBuilder = new StringBuilder();
-
-            if (minimum.HasValue)
-                dateStringBuilder.Append(minimum.Value.ToShortDateString());
-
-            if (maximum.HasValue)
-            {
-                if (dateStringBuilder.Length > 0)
-                    dateStringBuilder.Append("-");
-                dateStringBuilder.Append(maximum.Value.ToShortDateString());
-            }
-
-            return dateStringBuilder.ToString();
         }
     }
 }

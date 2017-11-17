@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace Stein.Configuration
@@ -33,8 +29,10 @@ namespace Stein.Configuration
 
             set
             {
-                DateTime.TryParse(value, out DateTime temp);
-                Date = new Date(temp);
+                if (DateTime.TryParse(value, out DateTime temp))
+                    Date = new Date(temp);
+                else
+                    Date = null;
             }
         }
 
@@ -51,6 +49,15 @@ namespace Stein.Configuration
         public override string ToString()
         {
             return Value;
+        }
+
+        public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)
+        {
+            var newDateTime = dateTime.Date;
+            newDateTime.AddHours(dateTime.Hour);
+            newDateTime.AddMinutes(dateTime.Minute);
+            newDateTime.AddSeconds(dateTime.Second);
+            return newDateTime;
         }
     }
 }

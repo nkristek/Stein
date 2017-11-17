@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 
 namespace WpfBase.Converters
 {
-    public class AnyBoolToVisibilityConverter
+    public class AnyBoolToInverseBoolConverter
         : IMultiValueConverter
     {
-        public static AnyBoolToVisibilityConverter Instance = new AnyBoolToVisibilityConverter();
+        public static AnyBoolToInverseBoolConverter Instance = new AnyBoolToInverseBoolConverter();
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (parameter as string)
-            {
-                case "Hidden": return values.Any(v => v is bool && (bool)v) ? Visibility.Visible : Visibility.Hidden;
-                default: return values.Any(v => v is bool && (bool)v) ? Visibility.Visible : Visibility.Collapsed;
-            }
+            return !values.Any(v => v is bool && (bool)v);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

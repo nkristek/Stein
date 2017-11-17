@@ -2,9 +2,6 @@
 using Stein.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using WpfBase.ViewModels;
 
@@ -33,8 +30,10 @@ namespace Stein.Services
             dialog.Owner = dialogViewModel.Parent?.View as Window;
 
             dialogViewModel.View = dialog;
+            var dialogResult = dialog.ShowDialog();
+            dialogViewModel.View = null;
 
-            return dialog.ShowDialog();
+            return dialogResult;
         }
     }
 }
