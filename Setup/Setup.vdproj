@@ -170,15 +170,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{8487392F-B258-475B-93C7-A882CA6561CE}"
-        "PackageCode" = "8:{EFCE8BDB-B844-41D1-AF2E-C2E876CADBF5}"
+        "ProductCode" = "8:{BD83D60F-D5FE-4091-85D4-9A21DBF196DE}"
+        "PackageCode" = "8:{D2D74215-6750-4D1C-AD62-DBA1AF2356EC}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.8.1"
+        "ProductVersion" = "8:0.8.2"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
@@ -720,7 +720,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E9FF6F79877B4E2487779AAD5EE23B4F"
             {
-            "SourcePath" = "8:..\\Stein\\obj\\x64\\Release\\Stein.exe"
+            "SourcePath" = "8:..\\Stein\\obj\\x64\\Debug\\Stein.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
