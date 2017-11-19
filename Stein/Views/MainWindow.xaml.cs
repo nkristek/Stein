@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Stein.Configuration;
 using Stein.Services;
 using Stein.ViewModels;
 
@@ -31,6 +18,19 @@ namespace Stein
             DataContext = viewModel;
 
             viewModel.RefreshApplicationsCommand.Execute(null);
+
+            Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel == null)
+                return;
+
+            // save changes from application viewmodels back to the configuration
+            foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
+                ViewModelService.SaveViewModel(changedApplication);
         }
     }
 }
