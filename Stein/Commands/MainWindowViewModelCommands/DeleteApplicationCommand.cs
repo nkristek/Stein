@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Stein.Configuration;
+using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
 using System.Windows;
@@ -24,7 +24,6 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 return;
             
             ConfigurationService.Configuration.ApplicationFolders.RemoveAll(af => af.Id == applicationToDelete.FolderId);
-            
             await ConfigurationService.SaveConfigurationToDiskAsync();
 
             viewModel.Applications.Remove(applicationToDelete);

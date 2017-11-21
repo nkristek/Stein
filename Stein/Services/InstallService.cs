@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Stein.ViewModels;
 using WpfBase.Extensions;
-using WindowsInstaller;
-using System.Globalization;
 
 namespace Stein.Services
 {
@@ -80,6 +78,11 @@ namespace Stein.Services
                 };
         }
 
+        public static bool IsProductCodeInstalled(string productCode)
+        {
+            return !String.IsNullOrEmpty(productCode) && InstalledPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
+        }
+
         public static void Install(InstallerViewModel installer, bool quiet = true)
         {
             var process = StartInstallProcess(installer, quiet);
@@ -133,10 +136,9 @@ namespace Stein.Services
             var argumentsBuilder = new StringBuilder();
 
             argumentsBuilder.Append("/FAMUS ");
-
-            var productCode = GetPropertyFromMsi(installer.Path, MsiPropertyName.ProductCode);
-            if (!String.IsNullOrEmpty(productCode))
-                argumentsBuilder.Append(productCode);
+            
+            if (!String.IsNullOrEmpty(installer.ProductCode))
+                argumentsBuilder.Append(installer.ProductCode);
             else
                 argumentsBuilder.Append(installer.Path.Quoted());
 
@@ -174,10 +176,9 @@ namespace Stein.Services
                 argumentsBuilder.Append("/X ");
             //else
             //    argumentsBuilder.Append("/I ");
-
-            var productCode = GetPropertyFromMsi(installer.Path, MsiPropertyName.ProductCode);
-            if (!String.IsNullOrEmpty(productCode))
-                argumentsBuilder.Append(productCode);
+            
+            if (!String.IsNullOrEmpty(installer.ProductCode))
+                argumentsBuilder.Append(installer.ProductCode);
             else
                 argumentsBuilder.Append(installer.Path.Quoted());
 
@@ -191,111 +192,6 @@ namespace Stein.Services
             };
 
             return Process.Start(startInfo);
-        }
-
-        public enum MsiPropertyName
-        {
-            ProductLanguage,
-            ProductVersion,
-            ProductCode,
-            ProductName,
-            Manufacturer
-        }
-
-        public static Dictionary<string, string> GetAllPropertiesFromMsi(string fileName)
-        {
-            return GetAllPropertiesFromMsiDatabase(GetMsiDatabase(fileName));
-        }
-
-        public static Dictionary<string, string> GetAllPropertiesFromMsiDatabase(Database database)
-        {
-            var view = database.OpenView("SELECT * FROM Property");
-            view.Execute(null);
-
-            var properties = new Dictionary<string, string>();
-
-            var record = view.Fetch();
-            while (record != null)
-            {
-                var key = record.get_StringData(1);
-                var value = record.get_StringData(2);
-
-                if (!String.IsNullOrEmpty(key) && !properties.ContainsKey(key))
-                    properties.Add(key, value);
-
-                record = view.Fetch();
-            }
-
-            return properties;
-        }
-
-        public static string GetPropertyFromMsi(string fileName, MsiPropertyName propertyName)
-        {
-            return GetPropertyFromMsiDatabase(GetMsiDatabase(fileName), propertyName);
-        }
-
-        public static string GetPropertyFromMsiDatabase(Database database, MsiPropertyName propertyName)
-        {
-            var query = String.Format("SELECT * FROM Property WHERE Property='{0}'", propertyName.ToString());
-            var view = database.OpenView(query);
-            view.Execute(null);
-            return view.Fetch()?.get_StringData(2);
-        }
-
-        public static Database GetMsiDatabase(string fileName)
-        {
-            var installerType = Type.GetTypeFromProgID("WindowsInstaller.Installer");
-            var installer = Activator.CreateInstance(installerType) as Installer;
-            return installer.OpenDatabase(fileName, MsiOpenDatabaseMode.msiOpenDatabaseModeReadOnly);
-        }
-
-        /*
-         * https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
-         */
-
-        public static bool IsProductCodeInstalled(string productCode)
-        {
-            return InstalledPrograms.Any(p => !String.IsNullOrEmpty(p.UninstallString) && p.UninstallString.Contains(productCode));
-        }
-
-        public static string GetCultureTagFromMsi(string fileName)
-        {
-            return GetCultureTagFromMsiDatabase(GetMsiDatabase(fileName));
-        }
-
-        public static string GetCultureTagFromMsiDatabase(Database msiDatabase)
-        {
-            var cultureIdProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductLanguage);
-            if (String.IsNullOrEmpty(cultureIdProperty))
-                return null;
-
-            var cultureId = int.Parse(cultureIdProperty);
-            var culture = new CultureInfo(cultureId);
-            return culture.IetfLanguageTag;
-        }
-
-        public static string GetProductCodeFromMsi(string fileName)
-        {
-            return GetProductCodeFromMsiDatabase(GetMsiDatabase(fileName));
-        }
-
-        public static string GetProductCodeFromMsiDatabase(Database msiDatabase)
-        {
-            return GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductCode);
-        }
-
-        public static Version GetVersionFromMsi(string fileName)
-        {
-            return GetVersionFromMsiDatabase(GetMsiDatabase(fileName));
-        }
-
-        public static Version GetVersionFromMsiDatabase(Database msiDatabase)
-        {
-            var versionProperty = GetPropertyFromMsiDatabase(msiDatabase, MsiPropertyName.ProductVersion);
-            if (String.IsNullOrEmpty(versionProperty))
-                return null;
-
-            return new Version(versionProperty);
         }
     }
 }

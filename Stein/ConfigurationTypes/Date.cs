@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stein.Configuration
+namespace Stein.ConfigurationTypes
 {
     public class Date
     {

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Stein.Configuration;
+using Stein.ConfigurationTypes;
 using Stein.ViewModels;
 using WpfBase.ViewModels;
 
@@ -29,6 +28,9 @@ namespace Stein.Services
 
         public static void SaveViewModel<TViewModel>(TViewModel viewModelToSave) where TViewModel : ViewModel
         {
+            if (!viewModelToSave.IsDirty)
+                return;
+
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
             {
                 SaveApplicationViewModel(viewModelToSave as ApplicationViewModel);
@@ -37,73 +39,45 @@ namespace Stein.Services
             throw new NotSupportedException("This ViewModel is not supported.");
         }
 
-        private static void SaveApplicationViewModel(ApplicationViewModel applicationViewModelToSave)
+        private static void SaveApplicationViewModel(ApplicationViewModel application)
         {
-            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationViewModelToSave.FolderId);
+            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
             if (associatedApplicationFolder == null)
                 return;
 
-            foreach (var installerBundle in applicationViewModelToSave.InstallerBundles)
-            {
-                foreach (var installer in installerBundle.Installers)
-                {
-                    var installerFile = FindInstallerFileInApplicationFolder(associatedApplicationFolder, installer.Path);
-                    if (installerFile == null)
-                        continue;
+            associatedApplicationFolder.Name = application.Name;
+            associatedApplicationFolder.Path = application.Path;
+            associatedApplicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
 
-                    installerFile.Created = installer.Created ?? DateTime.MinValue;
-                    installerFile.Culture = installer.Culture;
-                    installerFile.IsEnabled = installer.IsEnabled;
-                    installerFile.Name = installer.Name;
-                    installerFile.Path = installer.Path;
-                    installerFile.ProductCode = installer.ProductCode;
-                    installerFile.Version = installer.Version;
+            foreach (var installerBundle in application.InstallerBundles.Where(installerBundle => installerBundle.IsDirty))
+                SaveInstallerBundleViewModel(installerBundle, associatedApplicationFolder);
 
-                    installer.IsDirty = false;
-                }
-                installerBundle.IsDirty = false;
-            }
-            applicationViewModelToSave.IsDirty = false;
+            application.IsDirty = false;
         }
 
-        private static InstallerFile FindInstallerFileInApplicationFolder(ApplicationFolder applicationFolder, string installerFilePath)
+        private static void SaveInstallerBundleViewModel(InstallerBundleViewModel installerBundle, ApplicationFolder parentApplicationFolder)
         {
-            var installerFileRelativePath = installerFilePath.TrimStart(applicationFolder.Path.ToCharArray()).Split('\\');
-            return FindInstallerFileInApplicationFolder(applicationFolder, installerFileRelativePath);
-        }
+            var associatedSubFolder = ConfigurationService.FindSubFolder(parentApplicationFolder, installerBundle.Path);
+            if (associatedSubFolder == null)
+                return;
 
-        private static InstallerFile FindInstallerFileInApplicationFolder(ApplicationFolder applicationFolder, IEnumerable<string> installerFilePath)
-        {
-            var folderName = installerFilePath.FirstOrDefault();
-            if (folderName == null)
-                return null;
-
-            var subFolder = applicationFolder.SubFolders.FirstOrDefault(sf => sf.Name == folderName);
-            if (subFolder == null)
-                return null;
+            foreach (var installer in installerBundle.Installers.Where(installer => installer.IsDirty))
+                SaveInstallerViewModel(installer, associatedSubFolder);
             
-            return FindInstallerFileInSubFolder(subFolder, installerFilePath.Skip(1));
+            installerBundle.IsDirty = false;
         }
 
-        private static InstallerFile FindInstallerFileInSubFolder(SubFolder subFolder, IEnumerable<string> installerFilePath)
+        private static void SaveInstallerViewModel(InstallerViewModel installer, SubFolder parentSubFolder)
         {
-            if (installerFilePath.Count() == 1)
-            {
-                var installerFileName = installerFilePath.FirstOrDefault();
-                return subFolder.InstallerFiles.FirstOrDefault(i => Path.GetFileName(i.Path) == installerFileName);
-            }
+            var installerFile = ConfigurationService.FindInstallerFile(parentSubFolder, installer.Path);
+            if (installerFile == null)
+                return;
 
-            var folderName = installerFilePath.FirstOrDefault();
-            if (folderName == null)
-                return null;
+            installerFile.IsEnabled = installer.IsEnabled;
 
-            var subSubFolder = subFolder.SubFolders.FirstOrDefault(sf => sf.Name == folderName);
-            if (subSubFolder == null)
-                return null;
-
-            return FindInstallerFileInSubFolder(subFolder, installerFilePath.Skip(1));
+            installer.IsDirty = false;
         }
-
+        
         public static TViewModel CreateViewModel<TViewModel>(object entity, ViewModel parent = null) where TViewModel : ViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
@@ -133,7 +107,72 @@ namespace Stein.Services
 
             return application;
         }
-        
+
+        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
+        {
+            foreach (var subFolder in applicationFolder.SubFolders)
+                foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subFolder, parent, existingInstallerBundles))
+                    yield return installerBundle;
+        }
+
+        private static IEnumerable<InstallerFile> FindInstallerFiles(SubFolder folder)
+        {
+            foreach (var installerFile in folder.InstallerFiles)
+                yield return installerFile;
+
+            foreach (var subFolder in folder.SubFolders)
+                foreach (var installerFile in FindInstallerFiles(subFolder))
+                    yield return installerFile;
+        }
+
+        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
+        {
+            foreach (var installerFileGroup in FindInstallerFiles(subFolder).GroupBy(i => i.Culture))
+            {
+                var currentCulture = installerFileGroup.FirstOrDefault()?.Culture;
+
+                var installerBundle = existingInstallerBundles?.FirstOrDefault(ib => ib.Path == subFolder.Path && ib.Culture == currentCulture);
+                if (installerBundle == null)
+                {
+                    installerBundle = new InstallerBundleViewModel(parent)
+                    {
+                        Name = subFolder.Name,
+                        Path = subFolder.Path
+                    };
+                }
+
+                foreach (var installer in installerFileGroup)
+                {
+                    var installerViewModel = installerBundle.Installers.FirstOrDefault(i => i.Path == installer.Path);
+                    if (installerViewModel == null)
+                    {
+                        installerViewModel = new InstallerViewModel(installerBundle);
+                        installerBundle.Installers.Add(installerViewModel);
+                    }
+
+                    installerViewModel.Name = installer.Name;
+                    installerViewModel.Path = installer.Path;
+                    installerViewModel.IsEnabled = installer.IsEnabled;
+                    installerViewModel.IsDisabled = false;
+                    installerViewModel.Version = installer.Version;
+                    installerViewModel.Culture = installer.Culture;
+                    installerViewModel.ProductCode = installer.ProductCode;
+                    installerViewModel.IsInstalled = InstallService.IsProductCodeInstalled(installer.ProductCode);
+                    installerViewModel.Created = installer.Created;
+
+                    installerViewModel.IsDirty = false;
+                }
+
+                installerBundle.IsDirty = false;
+
+                yield return installerBundle;
+            }
+
+            foreach (var subSubFolder in subFolder.SubFolders)
+                foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subSubFolder, parent, existingInstallerBundles))
+                    yield return installerBundle;
+        }
+
         public static void UpdateViewModel<TViewModel>(TViewModel viewModelToUpdate, object entity = null) where TViewModel : ViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
@@ -167,58 +206,6 @@ namespace Stein.Services
                 application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
 
             application.IsDirty = false;
-        }
-        
-        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
-        {
-            foreach (var subFolder in applicationFolder.SubFolders)
-                foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subFolder, parent, existingInstallerBundles))
-                    yield return installerBundle;
-        }
-
-        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
-        {
-            foreach (var installerFileGroup in subFolder.InstallerFiles.GroupBy(i => i.Culture))
-            {
-                var installerBundle = existingInstallerBundles?.FirstOrDefault(ib => ib.Name == subFolder.Name &&  ib.Path == subFolder.Path && ib.Culture == installerFileGroup.FirstOrDefault()?.Culture);
-                if (installerBundle == null)
-                {
-                    installerBundle = new InstallerBundleViewModel(parent)
-                    {
-                        Name = subFolder.Name,
-                        Path = subFolder.Path
-                    };
-                }
-
-                foreach (var installer in installerFileGroup)
-                {
-                    var installerViewModel = installerBundle.Installers.FirstOrDefault(i => i.Path == installer.Path);
-                    if (installerViewModel == null)
-                    {
-                        installerViewModel = new InstallerViewModel(installerBundle);
-                        installerBundle.Installers.Add(installerViewModel);
-                    }
-
-                    installerViewModel.Name = installer.Name;
-                    installerViewModel.Path = installer.Path;
-                    installerViewModel.IsEnabled = installer.IsEnabled;
-                    installerViewModel.IsDisabled = false;
-                    installerViewModel.Version = installer.Version;
-                    installerViewModel.Culture = installer.Culture;
-                    installerViewModel.ProductCode = installer.ProductCode;
-                    installerViewModel.IsInstalled = InstallService.IsProductCodeInstalled(installer.ProductCode);
-                    installerViewModel.Created = installer.Created;
-                    installerViewModel.IsDirty = false;
-                }
-
-                installerBundle.IsDirty = false;
-
-                yield return installerBundle;
-            }
-
-            foreach (var subSubFolder in subFolder.SubFolders)
-                foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subSubFolder, parent, existingInstallerBundles))
-                    yield return installerBundle;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Stein.Configuration;
+using Stein.ConfigurationTypes;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
@@ -45,7 +45,6 @@ namespace Stein.Commands.MainWindowViewModelCommands
             };
 
             await ConfigurationService.SyncApplicationFolderWithDiskAsync(applicationFolder);
-            
             ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
             await ConfigurationService.SaveConfigurationToDiskAsync();
 

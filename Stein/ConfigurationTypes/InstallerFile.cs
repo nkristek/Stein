@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Stein.Configuration
+namespace Stein.ConfigurationTypes
 {
     [Serializable]
     public class InstallerFile

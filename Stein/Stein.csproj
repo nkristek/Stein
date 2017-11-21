@@ -75,6 +75,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Deployment.WindowsInstaller.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -109,14 +111,15 @@
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
-    <Compile Include="Configuration\Configuration.cs" />
-    <Compile Include="Configuration\ConfigurationService.cs" />
-    <Compile Include="Configuration\ApplicationFolder.cs" />
-    <Compile Include="Configuration\Date.cs" />
-    <Compile Include="Configuration\DateXml.cs" />
-    <Compile Include="Configuration\InstallerFile.cs" />
-    <Compile Include="Configuration\SubFolder.cs" />
-    <Compile Include="Configuration\VersionXml.cs" />
+    <Compile Include="Services\MsiService.cs" />
+    <Compile Include="ConfigurationTypes\Configuration.cs" />
+    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="ConfigurationTypes\ApplicationFolder.cs" />
+    <Compile Include="ConfigurationTypes\Date.cs" />
+    <Compile Include="ConfigurationTypes\DateXml.cs" />
+    <Compile Include="ConfigurationTypes\InstallerFile.cs" />
+    <Compile Include="ConfigurationTypes\SubFolder.cs" />
+    <Compile Include="ConfigurationTypes\VersionXml.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\InstalledProgram.cs" />
     <Compile Include="Services\InstallService.cs" />
@@ -172,7 +175,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.manifest" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -194,17 +199,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="WindowsInstaller">
-      <Guid>{000C1092-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>1033</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="rock.ico" />

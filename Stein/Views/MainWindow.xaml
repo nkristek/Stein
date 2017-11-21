@@ -206,11 +206,11 @@
                                     </MultiBinding>
                                 </Grid.IsEnabled>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="8"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                                     <ColumnDefinition Width="8"/>
-                                    <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="ModifyButtonColumn"/>
                                 </Grid.ColumnDefinitions>
 
@@ -223,7 +223,7 @@
                                     </Grid.RowDefinitions>
 
                                     <Label Grid.Row="0" 
-                                           Content="{Binding Name}" />
+                                           Content="{Binding Name}"/>
 
                                     <ComboBox Grid.Row="2" 
                                               ItemsSource="{Binding InstallerBundles}"
@@ -232,7 +232,7 @@
                                 </Grid>
 
                                 <!-- Button Column -->
-                                <Grid Grid.Column="2">
+                                <Grid Grid.Column="3">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                         <RowDefinition Height="8"/>
@@ -251,7 +251,7 @@
                                 </Grid>
 
                                 <!-- Modify Button Column -->
-                                <Grid Grid.Column="7">
+                                <Grid Grid.Column="5">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                         <RowDefinition Height="8"/>

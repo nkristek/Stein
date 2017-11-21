@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Stein.Configuration;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
@@ -31,9 +30,9 @@ namespace Stein.Commands.MainWindowViewModelCommands
             await InstallService.RefreshInstalledProgramsAsync();
 
             // update the viewmodels
-            var createdOrUpdatedApplications = ViewModelService.CreateOrUpdateApplicationViewModels(viewModel, viewModel.Applications.ToList());
+            var applications = ViewModelService.CreateOrUpdateApplicationViewModels(viewModel, viewModel.Applications.ToList());
             viewModel.Applications.Clear();
-            foreach (var application in createdOrUpdatedApplications)
+            foreach (var application in applications)
                 viewModel.Applications.Add(application);
             viewModel.IsDirty = false;
         }

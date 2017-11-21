@@ -10,7 +10,8 @@ namespace Stein.Services
             if (window.TaskbarItemInfo == null)
                 window.TaskbarItemInfo = new TaskbarItemInfo();
 
-            window.TaskbarItemInfo.ProgressState = progressState;
+            if (window.TaskbarItemInfo.ProgressState != progressState)
+                window.TaskbarItemInfo.ProgressState = progressState;
         }
 
         public static void SetTaskbarProgress(Window window, double progress)

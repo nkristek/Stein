@@ -71,6 +71,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
         public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
         {
             MessageBox.Show(exception.Message);
+            (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
         }
     }
 }

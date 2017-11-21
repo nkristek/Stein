@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Stein.Configuration
+namespace Stein.ConfigurationTypes
 {
     [Serializable]
     [XmlType("Date")]
@@ -53,11 +53,10 @@ namespace Stein.Configuration
 
         public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)
         {
-            var newDateTime = dateTime.Date;
-            newDateTime.AddHours(dateTime.Hour);
-            newDateTime.AddMinutes(dateTime.Minute);
-            newDateTime.AddSeconds(dateTime.Second);
-            return newDateTime;
+            if (DateTime.TryParse(dateTime.ToString(), out DateTime temp))
+                return temp;
+            else
+                return DateTime.MinValue;
         }
     }
 }

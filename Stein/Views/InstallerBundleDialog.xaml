@@ -46,23 +46,26 @@
                             </Grid.ColumnDefinitions>
 
                             <CheckBox Grid.Column="0"
-                                      VerticalAlignment="Bottom"
+                                      VerticalAlignment="Stretch"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsEnabled}">
-                                <Label Content="{Binding Name}"
-                                       ToolTip="{Binding Path}"/>
-                            </CheckBox>
+                                      IsChecked="{Binding IsEnabled}"/>
+
+                            <Label Grid.Column="1"
+                                   Content="{Binding Name}"
+                                   VerticalAlignment="Stretch"
+                                   VerticalContentAlignment="Center"
+                                   ToolTip="{Binding Path}"/>
 
                             <Label Grid.Column="2"
                                    Content="is installed"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Stretch"
                                    VerticalContentAlignment="Center"
                                    IsEnabled="False"
                                    Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"/>
 
                             <Label Grid.Column="2"
                                    Content="is not installed"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Stretch"
                                    VerticalContentAlignment="Center"
                                    IsEnabled="False"
                                    Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToNotVisibilityConverter.Instance}}"/>
@@ -75,11 +78,11 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Label Grid.Column="0"
-                                       VerticalAlignment="Center"
+                                       VerticalAlignment="Stretch"
                                        VerticalContentAlignment="Center"
                                        Content="Created:"/>
                                 <Label Grid.Column="1"
-                                       VerticalAlignment="Center"
+                                       VerticalAlignment="Stretch"
                                        VerticalContentAlignment="Center"
                                        Content="{Binding Created, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=d}"/>
                             </Grid>

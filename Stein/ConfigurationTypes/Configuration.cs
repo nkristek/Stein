@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Stein.Configuration
+namespace Stein.ConfigurationTypes
 {
     [Serializable]
     [XmlRoot("Configuration")]
@@ -33,7 +33,7 @@ namespace Stein.Configuration
             });
         }
 
-        public void ToXmlFile(string filePath)
+        public void ToFile(string filePath)
         {
             var xmlSerializer = new XmlSerializer(typeof(Configuration));
 
@@ -43,11 +43,11 @@ namespace Stein.Configuration
             }
         }
         
-        public async Task ToXmlFileAsync(string filePath)
+        public async Task ToFileAsync(string filePath)
         {
             await Task.Run(() =>
             {
-                ToXmlFile(filePath);
+                ToFile(filePath);
             });
         }
 
@@ -65,17 +65,17 @@ namespace Stein.Configuration
             });
         }
 
-        public static Configuration CreateFromXmlFile(string filePath)
+        public static Configuration CreateFromFile(string filePath)
         {
             using (var reader = new StreamReader(filePath))
                 return Deserialize(reader);
         }
 
-        public static async Task<Configuration> CreateFromXmlFileAsync(string filePath)
+        public static async Task<Configuration> CreateFromFileAsync(string filePath)
         {
             return await Task.Run(() =>
             {
-                return CreateFromXmlFile(filePath);
+                return CreateFromFile(filePath);
             });
         }
 

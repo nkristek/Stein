@@ -1,9 +1,10 @@
-﻿using Stein.Configuration;
-using Stein.Services;
+﻿using Stein.Services;
 using Stein.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using WpfBase.Commands;
+using System.Windows;
+using System;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -45,6 +46,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
             await ConfigurationService.SaveConfigurationToDiskAsync();
 
             ViewModelService.UpdateViewModel(applicationToEdit);
+        }
+
+        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            MessageBox.Show(exception.Message);
+            viewModel.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Stein.Configuration
+namespace Stein.ConfigurationTypes
 {
     [Serializable]
     [XmlType("Version")]
