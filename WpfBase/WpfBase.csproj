@@ -63,6 +63,7 @@
     <Compile Include="Converters\ValueNotNullToBoolConverter.cs" />
     <Compile Include="Converters\ValueNotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\ValueNullToBoolConverter.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="Extensions\IEnumerableExtension.cs" />
     <Compile Include="Extensions\ProcessExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

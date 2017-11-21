@@ -1,15 +1,24 @@
 ﻿using Microsoft.Win32;
 using System;
+using WpfBase;
 
 namespace Stein.Services
 {
     public class InstalledProgram
-        : IDisposable
+        : Disposable
     {
         /// <summary>
         /// Registry key to the program
         /// </summary>
         public RegistryKey RegistryKey { get; set; }
+
+        /// <summary>
+        /// Disposable
+        /// </summary>
+        protected override void DisposeManagedResources()
+        {
+            RegistryKey?.Dispose();
+        }
 
         /// <summary>
         /// ProductName property
@@ -255,14 +264,6 @@ namespace Stein.Services
             {
                 return RegistryKey?.GetValue("SettingsIdentifier") as string;
             }
-        }
-
-        /// <summary>
-        /// IDisposable
-        /// </summary>
-        public void Dispose()
-        {
-            RegistryKey?.Close();
         }
     }
 }
