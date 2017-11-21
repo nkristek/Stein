@@ -24,20 +24,20 @@ namespace Stein.ConfigurationTypes
         [XmlElement("ProductCode")]
         public string ProductCode;
 
-        [XmlElement("Created", typeof(DateXml))]
-        public Date CreatedXml;
+        [XmlElement("Created")]
+        public DateTimeXml CreatedXml;
 
         [XmlIgnore]
         public DateTime Created
         {
             get
             {
-                return CreatedXml.DateTime;
+                return CreatedXml.Date ?? DateTime.MinValue;
             }
 
             set
             {
-                CreatedXml = new Date(value);
+                CreatedXml = new DateTimeXml(value);
             }
         }
     }

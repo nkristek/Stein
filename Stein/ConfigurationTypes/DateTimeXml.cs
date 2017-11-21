@@ -6,17 +6,17 @@ namespace Stein.ConfigurationTypes
 {
     [Serializable]
     [XmlType("Date")]
-    public class DateXml
+    public class DateTimeXml
     {
-        public DateXml() { }
+        public DateTimeXml() { }
 
-        public DateXml(Date date)
+        public DateTimeXml(DateTime dateTime)
         {
-            Date = date;
+            Date = dateTime;
         }
 
         [XmlIgnore]
-        public Date Date { get; set; }
+        public DateTime? Date { get; set; }
 
         [XmlText]
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
@@ -24,26 +24,26 @@ namespace Stein.ConfigurationTypes
         {
             get
             {
-                return Date == null ? String.Empty : Date.DateTime.ToString();
+                return Date?.ToString();
             }
 
             set
             {
-                if (DateTime.TryParse(value, out DateTime temp))
-                    Date = new Date(temp);
+                if (DateTime.TryParse(value, out DateTime dateTime))
+                    Date = dateTime;
                 else
                     Date = null;
             }
         }
 
-        public static implicit operator Date(DateXml dateXml)
+        public static implicit operator DateTime(DateTimeXml dateTimeXml)
         {
-            return dateXml.Date;
+            return dateTimeXml.Date ?? DateTime.MinValue;
         }
 
-        public static implicit operator DateXml(Date date)
+        public static implicit operator DateTimeXml(DateTime dateTime)
         {
-            return new DateXml(date);
+            return new DateTimeXml(dateTime);
         }
 
         public override string ToString()
@@ -53,8 +53,8 @@ namespace Stein.ConfigurationTypes
 
         public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)
         {
-            if (DateTime.TryParse(dateTime.ToString(), out DateTime temp))
-                return temp;
+            if (DateTime.TryParse(dateTime.ToString(), out DateTime parsedDateTime))
+                return parsedDateTime;
             else
                 return DateTime.MinValue;
         }

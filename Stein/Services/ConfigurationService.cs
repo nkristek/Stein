@@ -86,7 +86,7 @@ namespace Stein.Services
 
             foreach (var fileOnDisk in filesOnDisk)
             {
-                var fileCreationTime = DateXml.TrimDateTimeToXmlAccuracy(fileOnDisk.CreationTime);
+                var fileCreationTime = DateTimeXml.TrimDateTimeToXmlAccuracy(fileOnDisk.CreationTime);
                 var existingInstallerFile = subFolder.InstallerFiles.FirstOrDefault(installerFile => installerFile.Path == fileOnDisk.FullName);
                 if (existingInstallerFile != null)
                 {
