@@ -115,10 +115,8 @@
     <Compile Include="ConfigurationTypes\Configuration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="ConfigurationTypes\ApplicationFolder.cs" />
-    <Compile Include="ConfigurationTypes\DateTimeXml.cs" />
     <Compile Include="ConfigurationTypes\InstallerFile.cs" />
     <Compile Include="ConfigurationTypes\SubFolder.cs" />
-    <Compile Include="ConfigurationTypes\VersionXml.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\InstalledProgram.cs" />
     <Compile Include="Services\InstallService.cs" />

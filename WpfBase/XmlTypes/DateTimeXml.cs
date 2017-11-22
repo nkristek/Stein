@@ -2,12 +2,13 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Stein.ConfigurationTypes
+namespace WpfBase.XmlTypes
 {
     [Serializable]
     [XmlType("Date")]
     public class DateTimeXml
     {
+        // cant use default parameter null in other constructor because XML Serialization can't handle that
         public DateTimeXml() { }
 
         public DateTimeXml(DateTime dateTime)

@@ -73,6 +73,9 @@
     <Compile Include="ViewModels\ComputedBindableBase.cs" />
     <Compile Include="ViewModels\PropertySourceAttribute.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="XmlTypes\DateTimeXml.cs" />
+    <Compile Include="XmlTypes\VersionXml.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

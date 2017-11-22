@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Stein.ConfigurationTypes;
 using System.Collections.Generic;
+using WpfBase.XmlTypes;
 
 namespace Stein.Services
 {
