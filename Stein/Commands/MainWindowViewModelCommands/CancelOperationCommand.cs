@@ -1,5 +1,7 @@
-﻿using Stein.ViewModels;
+﻿using System;
+using Stein.ViewModels;
 using WpfBase.Commands;
+using Stein.Services;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -14,9 +16,15 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 && viewModel.CurrentInstallation.State != InstallationViewModel.InstallationState.Preparing 
                 && viewModel.CurrentInstallation.State != InstallationViewModel.InstallationState.Cancelled;
         }
+
         public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
         {
             viewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Cancelled;
+        }
+
+        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        {
+            LogService.LogError(exception);
         }
     }
 }

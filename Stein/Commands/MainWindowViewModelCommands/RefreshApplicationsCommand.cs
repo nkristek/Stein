@@ -5,6 +5,7 @@ using Stein.ViewModels;
 using WpfBase.Commands;
 using System.Windows;
 using System.Linq;
+using Stein.ConfigurationTypes;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -25,7 +26,8 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 ViewModelService.SaveViewModel(changedApplication);
             
             // get new installers
-            await ConfigurationService.SyncApplicationFoldersWithDiskAsync();
+            foreach (var applicationFolder in ConfigurationService.Configuration.ApplicationFolders)
+                await applicationFolder.SyncWithDiskAsync();
             await ConfigurationService.SaveConfigurationToDiskAsync();
             await InstallService.RefreshInstalledProgramsAsync();
 
@@ -39,6 +41,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
+            LogService.LogError(exception);
             MessageBox.Show(exception.Message);
         }
     }

@@ -31,8 +31,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
+            LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            viewModel.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
+            Task.Run(async () =>
+            {
+                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+            });
         }
     }
 }

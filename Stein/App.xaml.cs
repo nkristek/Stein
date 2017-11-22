@@ -1,7 +1,6 @@
 ﻿using Stein.Services;
 using System;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -26,19 +25,27 @@ namespace Stein
         
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
+            ConfigurationService.ConfiguationFolderPath = appDataConfigurationPath;
+            LogService.LogFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
+            LogService.LogInfo("Application start");
 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            
             ConfigurationService.LoadConfigurationFromDisk();
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
             ConfigurationService.SaveConfigurationToDisk();
+
+            LogService.LogInfo("Application exit");
+            LogService.CloseLogFiles();
         }
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            ProcessError(e.Exception);
+            LogService.LogError(e.Exception);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -46,43 +53,18 @@ namespace Stein
             var exception = e.ExceptionObject as Exception;
             if (exception == null)
                 return;
-            
-            ProcessError(exception);
+
+            LogService.LogError(exception);
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            ProcessError(e.Exception);
+            LogService.LogError(e.Exception);
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            ProcessError(e.Exception);
-        }
-
-        private void ProcessError(Exception exception)
-        {
-            try
-            {
-                var errorBuilder = new StringBuilder();
-                errorBuilder.Append(DateTime.Now.ToString());
-                errorBuilder.Append(": ");
-                errorBuilder.Append(exception.Message);
-
-                var innerException = exception.InnerException;
-                while (innerException != null)
-                {
-                    errorBuilder.AppendLine(innerException.Message);
-                    innerException = innerException.InnerException;
-                }
-
-                var logFileName = String.Format("log-{0}.txt", DateTime.Now.ToShortDateString());
-                var logFilePath = Path.Combine(ConfigurationService.ConfigurationFolderPath, logFileName);
-
-                using (var file = File.AppendText(logFilePath))
-                    file.WriteLine(errorBuilder.ToString());
-            }
-            catch { }
+            LogService.LogError(e.Exception);
         }
     }
 }

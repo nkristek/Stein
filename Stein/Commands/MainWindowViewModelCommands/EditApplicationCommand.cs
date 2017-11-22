@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WpfBase.Commands;
 using System.Windows;
 using System;
+using Stein.ConfigurationTypes;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -42,7 +43,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
             associatedApplicationFolder.Path = applicationCopy.Path;
             associatedApplicationFolder.EnableSilentInstallation = applicationCopy.EnableSilentInstallation;
 
-            await ConfigurationService.SyncApplicationFolderWithDiskAsync(associatedApplicationFolder);
+            await associatedApplicationFolder.SyncWithDiskAsync();
             await ConfigurationService.SaveConfigurationToDiskAsync();
 
             ViewModelService.UpdateViewModel(applicationToEdit);
@@ -50,8 +51,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
 
         public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
+            LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            viewModel.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
+            Task.Run(async () =>
+            {
+                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+            });
         }
     }
 }

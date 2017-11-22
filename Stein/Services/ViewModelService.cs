@@ -57,7 +57,7 @@ namespace Stein.Services
 
         private static void SaveInstallerBundleViewModel(InstallerBundleViewModel installerBundle, ApplicationFolder parentApplicationFolder)
         {
-            var associatedSubFolder = ConfigurationService.FindSubFolder(parentApplicationFolder, installerBundle.Path);
+            var associatedSubFolder = parentApplicationFolder.FindSubFolder(installerBundle.Path);
             if (associatedSubFolder == null)
                 return;
 
@@ -69,7 +69,7 @@ namespace Stein.Services
 
         private static void SaveInstallerViewModel(InstallerViewModel installer, SubFolder parentSubFolder)
         {
-            var installerFile = ConfigurationService.FindInstallerFile(parentSubFolder, installer.Path);
+            var installerFile = parentSubFolder.FindInstallerFile(installer.Path);
             if (installerFile == null)
                 return;
 

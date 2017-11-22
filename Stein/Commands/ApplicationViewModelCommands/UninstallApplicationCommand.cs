@@ -70,8 +70,12 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
         public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
         {
+            LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null).Wait();
+            Task.Run(async () =>
+            {
+                await (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
+            });
         }
     }
 }
