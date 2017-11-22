@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,22 @@ namespace Stein.Services
 {
     public static class InstallService
     {
+        private static string _InstallationLogFolderPath;
+        public static string InstallationLogFolderPath
+        {
+            get
+            {
+                return _InstallationLogFolderPath;
+            }
+
+            set
+            {
+                if (!Directory.Exists(value))
+                    Directory.CreateDirectory(value);
+                _InstallationLogFolderPath = value;
+            }
+        }
+
         private static IEnumerable<InstalledProgram> _InstalledPrograms;
 
         public static IEnumerable<InstalledProgram> InstalledPrograms
@@ -82,30 +99,32 @@ namespace Stein.Services
             return !String.IsNullOrEmpty(productCode) && InstalledPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
         }
 
-        public static void Install(string installerPath, bool quiet = true)
+        public static void Install(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task InstallAsync(string installerPath, bool quiet = true)
+        public static async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartInstallProcess(string installerPath, bool quiet = true)
+        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
-                throw new ArgumentException("Installer path is empty");
+                throw new ArgumentException("Installer path is null or empty");
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append("/I ");
-            argumentsBuilder.Append(installerPath.Quoted());
+            argumentsBuilder.Append(String.Format("/I \"{0}\"", installerPath));
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (!String.IsNullOrEmpty(logFilePath))
+                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
@@ -115,30 +134,32 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
         
-        public static void Reinstall(string installerPath, bool quiet = true)
+        public static void Reinstall(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task ReinstallAsync(string installerPath, bool quiet = true)
+        public static async Task ReinstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartReinstallProcess(string installerPath, bool quiet = true)
+        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException("Installer path is empty");
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append("/FAMUS ");
-            argumentsBuilder.Append(installerPath.Quoted());
+            argumentsBuilder.Append(String.Format("/FAMUS \"{0}\"", installerPath));
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (!String.IsNullOrEmpty(logFilePath))
+                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
@@ -148,30 +169,32 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
 
-        public static void Uninstall(string installerPath, bool quiet = true)
+        public static void Uninstall(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartUninstallProcess(installerPath, quiet);
+            var process = StartUninstallProcess(installerPath, logFilePath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task UninstallAsync(string installerPath, bool quiet = true)
+        public static async Task UninstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
         {
-            var process = StartUninstallProcess(installerPath, quiet);
+            var process = StartUninstallProcess(installerPath, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartUninstallProcess(string installerPath, bool quiet = true)
+        private static Process StartUninstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException("Installer path is empty");
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append("/X ");
-            argumentsBuilder.Append(installerPath.Quoted());
+            argumentsBuilder.Append(String.Format("/X \"{0}\"", installerPath));
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (!String.IsNullOrEmpty(logFilePath))
+                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {

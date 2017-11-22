@@ -27,8 +27,9 @@ namespace Stein
         {
             var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
             ConfigurationService.ConfiguationFolderPath = appDataConfigurationPath;
-            LogService.LogFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
-            LogService.LogInfo("Application start");
+            var logFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
+            LogService.LogFolderPath = logFolderPath;
+            InstallService.InstallationLogFolderPath = Path.Combine(logFolderPath, "Installs");
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             
@@ -38,8 +39,6 @@ namespace Stein
         private void App_Exit(object sender, ExitEventArgs e)
         {
             ConfigurationService.SaveConfigurationToDisk();
-
-            LogService.LogInfo("Application exit");
             LogService.CloseLogFiles();
         }
         

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
+using System.IO;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
@@ -40,20 +41,27 @@ namespace Stein.Commands.ApplicationViewModelCommands
             
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, "Select installers") == true)
             {
-                var installersToInstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
+                var installersToUninstall = viewModel.SelectedInstallerBundle.Installers.Where(i => i.IsEnabled && !i.IsDisabled);
+                var installerCount = installersToUninstall.Count();
+
+                await LogService.LogInfoAsync(String.Format("Uninstalling {0} installers.", installerCount));
 
                 mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Uninstall;
-                mainWindowViewModel.CurrentInstallation.InstallerCount = installersToInstall.Count();
-                
-                foreach (var installer in installersToInstall)
+                mainWindowViewModel.CurrentInstallation.InstallerCount = installerCount;
+
+                foreach (var installer in installersToUninstall)
                 {
                     if (mainWindowViewModel.CurrentInstallation.State == InstallationViewModel.InstallationState.Cancelled)
+                    {
+                        await LogService.LogInfoAsync("Operation was cancelled.");
                         break;
+                    }
 
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
-                    
-                    await InstallService.UninstallAsync(installer.Path, viewModel.EnableSilentInstallation);
+
+                    await LogService.LogInfoAsync(String.Format("Uninstalling {0}.", installer.Name));
+                    await InstallService.UninstallAsync(installer.Path, viewModel.EnableInstallationLogging ? GetLogFilePathForInstaller(installer) : null, viewModel.EnableSilentInstallation);
                     didUninstall = true;
                 }
             }
@@ -66,6 +74,13 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
             if (didUninstall)
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+        }
+
+        private static string GetLogFilePathForInstaller(InstallerViewModel installer)
+        {
+            var currentDate = DateTime.Now;
+            var logFileName = String.Format("{0}_{1}-{2}-{3}_{4}{5}{6}", installer.Name, currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, currentDate.Second);
+            return Path.Combine(InstallService.InstallationLogFolderPath, logFileName);
         }
 
         public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)

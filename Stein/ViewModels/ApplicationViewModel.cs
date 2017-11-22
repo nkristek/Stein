@@ -82,6 +82,20 @@ namespace Stein.ViewModels
             }
         }
 
+        private bool _EnableInstallationLogging;
+        public bool EnableInstallationLogging
+        {
+            get
+            {
+                return _EnableInstallationLogging;
+            }
+
+            set
+            {
+                SetProperty(ref _EnableInstallationLogging, value);
+            }
+        }
+
         private readonly ObservableCollection<InstallerBundleViewModel> _InstallerBundles = new ObservableCollection<InstallerBundleViewModel>();
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles
         {

@@ -48,6 +48,7 @@ namespace Stein.Services
             associatedApplicationFolder.Name = application.Name;
             associatedApplicationFolder.Path = application.Path;
             associatedApplicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
+            associatedApplicationFolder.EnableInstallationLogging = application.EnableInstallationLogging;
 
             foreach (var installerBundle in application.InstallerBundles.Where(installerBundle => installerBundle.IsDirty))
                 SaveInstallerBundleViewModel(installerBundle, associatedApplicationFolder);
@@ -95,7 +96,8 @@ namespace Stein.Services
                 FolderId = applicationFolder.Id,
                 Name = applicationFolder.Name,
                 Path = applicationFolder.Path,
-                EnableSilentInstallation = applicationFolder.EnableSilentInstallation
+                EnableSilentInstallation = applicationFolder.EnableSilentInstallation,
+                EnableInstallationLogging = applicationFolder.EnableInstallationLogging
             };
 
             foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(applicationFolder, application))
@@ -196,6 +198,7 @@ namespace Stein.Services
             application.Name = associatedApplicationFolder.Name;
             application.Path = associatedApplicationFolder.Path;
             application.EnableSilentInstallation = associatedApplicationFolder.EnableSilentInstallation;
+            application.EnableInstallationLogging = associatedApplicationFolder.EnableInstallationLogging;
 
             var installerBundles = CreateOrUpdateInstallerBundleViewModels(associatedApplicationFolder, application, application.InstallerBundles.ToList());
             application.InstallerBundles.Clear();

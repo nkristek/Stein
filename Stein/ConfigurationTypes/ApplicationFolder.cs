@@ -19,6 +19,9 @@ namespace Stein.ConfigurationTypes
         [XmlElement("EnableSilentInstallation")]
         public bool EnableSilentInstallation;
 
+        [XmlElement("EnableInstallationLogging")]
+        public bool EnableInstallationLogging;
+
         [XmlArray("SubFolders")]
         [XmlArrayItem("SubFolder")]
         public List<SubFolder> SubFolders = new List<SubFolder>();
