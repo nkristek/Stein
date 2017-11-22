@@ -50,9 +50,9 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
 
                     if (installer.IsInstalled.HasValue && installer.IsInstalled.Value)
-                        await InstallService.ReinstallAsync(installer, viewModel.EnableSilentInstallation);
+                        await InstallService.ReinstallAsync(installer.Path, viewModel.EnableSilentInstallation);
                     else
-                        await InstallService.InstallAsync(installer, viewModel.EnableSilentInstallation);
+                        await InstallService.InstallAsync(installer.Path, viewModel.EnableSilentInstallation);
 
                     didInstall = true;
                 }

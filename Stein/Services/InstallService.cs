@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Stein.ViewModels;
 using WpfBase.Extensions;
 
 namespace Stein.Services
@@ -83,27 +82,27 @@ namespace Stein.Services
             return !String.IsNullOrEmpty(productCode) && InstalledPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
         }
 
-        public static void Install(InstallerViewModel installer, bool quiet = true)
+        public static void Install(string installerPath, bool quiet = true)
         {
-            var process = StartInstallProcess(installer, quiet);
+            var process = StartInstallProcess(installerPath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task InstallAsync(InstallerViewModel installer, bool quiet = true)
+        public static async Task InstallAsync(string installerPath, bool quiet = true)
         {
-            var process = StartInstallProcess(installer, quiet);
+            var process = StartInstallProcess(installerPath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartInstallProcess(InstallerViewModel installer, bool quiet = true)
+        private static Process StartInstallProcess(string installerPath, bool quiet = true)
         {
-            if (String.IsNullOrWhiteSpace(installer.Path))
+            if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException("Installer path is empty");
 
             var argumentsBuilder = new StringBuilder();
 
             argumentsBuilder.Append("/I ");
-            argumentsBuilder.Append(installer.Path.Quoted());
+            argumentsBuilder.Append(installerPath.Quoted());
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -115,32 +114,28 @@ namespace Stein.Services
 
             return Process.Start(startInfo);
         }
-
-        public static void Reinstall(InstallerViewModel installer, bool quiet = true)
+        
+        public static void Reinstall(string installerPath, bool quiet = true)
         {
-            var process = StartInstallProcess(installer, quiet);
+            var process = StartInstallProcess(installerPath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task ReinstallAsync(InstallerViewModel installer, bool quiet = true)
+        public static async Task ReinstallAsync(string installerPath, bool quiet = true)
         {
-            var process = StartInstallProcess(installer, quiet);
+            var process = StartInstallProcess(installerPath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartReinstallProcess(InstallerViewModel installer, bool quiet = true)
+        private static Process StartReinstallProcess(string installerPath, bool quiet = true)
         {
-            if (String.IsNullOrWhiteSpace(installer.Path))
+            if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException("Installer path is empty");
 
             var argumentsBuilder = new StringBuilder();
 
             argumentsBuilder.Append("/FAMUS ");
-            
-            if (!String.IsNullOrEmpty(installer.ProductCode))
-                argumentsBuilder.Append(installer.ProductCode);
-            else
-                argumentsBuilder.Append(installer.Path.Quoted());
+            argumentsBuilder.Append(installerPath.Quoted());
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -153,34 +148,27 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
 
-        public static void Uninstall(InstallerViewModel installer, bool quiet = true)
+        public static void Uninstall(string installerPath, bool quiet = true)
         {
-            var process = StartUninstallProcess(installer, quiet);
+            var process = StartUninstallProcess(installerPath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task UninstallAsync(InstallerViewModel installer, bool quiet = true)
+        public static async Task UninstallAsync(string installerPath, bool quiet = true)
         {
-            var process = StartUninstallProcess(installer, quiet);
+            var process = StartUninstallProcess(installerPath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartUninstallProcess(InstallerViewModel installer, bool quiet = true)
+        private static Process StartUninstallProcess(string installerPath, bool quiet = true)
         {
-            if (String.IsNullOrWhiteSpace(installer.Path))
+            if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException("Installer path is empty");
 
             var argumentsBuilder = new StringBuilder();
 
-            //if (quiet)
-                argumentsBuilder.Append("/X ");
-            //else
-            //    argumentsBuilder.Append("/I ");
-            
-            if (!String.IsNullOrEmpty(installer.ProductCode))
-                argumentsBuilder.Append(installer.ProductCode);
-            else
-                argumentsBuilder.Append(installer.Path.Quoted());
+            argumentsBuilder.Append("/X ");
+            argumentsBuilder.Append(installerPath.Quoted());
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");

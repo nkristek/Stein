@@ -53,7 +53,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     mainWindowViewModel.CurrentInstallation.Name = installer.Name;
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
                     
-                    await InstallService.UninstallAsync(installer, viewModel.EnableSilentInstallation);
+                    await InstallService.UninstallAsync(installer.Path, viewModel.EnableSilentInstallation);
                     didUninstall = true;
                 }
             }
