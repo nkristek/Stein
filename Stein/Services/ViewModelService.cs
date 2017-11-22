@@ -202,8 +202,7 @@ namespace Stein.Services
             foreach (var installerBundle in installerBundles)
                 application.InstallerBundles.Add(installerBundle);
 
-            if (application.SelectedInstallerBundle == null || !application.InstallerBundles.Any(ib => ib == application.SelectedInstallerBundle))
-                application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
+            application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
 
             application.IsDirty = false;
         }
