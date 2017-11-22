@@ -23,7 +23,6 @@ namespace WpfBase.Commands
         public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
 
         private bool _IsWorking;
-
         public bool IsWorking
         {
             get
@@ -39,7 +38,6 @@ namespace WpfBase.Commands
         }
 
         private WeakReference<TViewModel> _Parent;
-
         private TViewModel Parent
         {
             get

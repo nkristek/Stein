@@ -22,7 +22,6 @@ namespace WpfBase.Commands
         public abstract void Execute(TViewModel viewModel, object view, object parameter);
 
         private bool _IsWorking;
-
         public bool IsWorking
         {
             get
@@ -38,7 +37,6 @@ namespace WpfBase.Commands
         }
 
         private WeakReference<TViewModel> _Parent;
-
         private TViewModel Parent
         {
             get
