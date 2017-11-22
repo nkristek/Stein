@@ -109,7 +109,7 @@ namespace Stein.ViewModels
         private void InstallerBundle_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
-                OnPropertyChanged(nameof(InstallerBundles));
+                RaisePropertyChanged(nameof(InstallerBundles));
         }
 
         private InstallerBundleViewModel _SelectedInstallerBundle;

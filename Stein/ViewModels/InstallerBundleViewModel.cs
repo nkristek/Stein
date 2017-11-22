@@ -95,7 +95,7 @@ namespace Stein.ViewModels
         private void Installer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
-                OnPropertyChanged(nameof(Installers));
+                RaisePropertyChanged(nameof(Installers));
         }
 
         [PropertySource(nameof(Installers))]

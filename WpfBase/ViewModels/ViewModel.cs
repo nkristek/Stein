@@ -44,7 +44,7 @@ namespace WpfBase.ViewModels
             {
                 if (Parent == value) return;
                 _Parent = value != null ? new WeakReference<ViewModel>(value) : null;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -71,7 +71,7 @@ namespace WpfBase.ViewModels
             {
                 if (View == value) return;
                 _View = value != null ? new WeakReference<object>(value) : null;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
 
@@ -83,12 +83,15 @@ namespace WpfBase.ViewModels
             }
         }
 
-        protected sealed override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        /// <summary>
+        /// This will set the IsDirty property to true is a property was changed, ignoring IsDirty, Parent and View.
+        /// Override if you want different behaviour.
+        /// </summary>
+        /// <param name="propertyName">Name of the property which was changed</param>
+        protected override void OnPropertyChanged(string propertyName)
         {
             if (propertyName != nameof(IsDirty) && propertyName != nameof(Parent) && propertyName != nameof(View))
                 IsDirty = true;
-
-            base.OnPropertyChanged(propertyName);
         }
     }
 }

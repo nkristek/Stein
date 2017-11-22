@@ -65,7 +65,7 @@ namespace Stein.ViewModels
         private void Application_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
-                OnPropertyChanged(nameof(Applications));
+                RaisePropertyChanged(nameof(Applications));
         }
         
         private InstallationViewModel _CurrentInstallation;
@@ -100,7 +100,7 @@ namespace Stein.ViewModels
         private void _CurrentInstallation_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
-                OnPropertyChanged(nameof(CurrentInstallation));
+                RaisePropertyChanged(nameof(CurrentInstallation));
         }
     }
 }

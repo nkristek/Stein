@@ -64,7 +64,7 @@ namespace WpfBase.ViewModels
                 if (propertiesWithPropertiesToNotify.ContainsKey(e.PropertyName))
                 {
                     foreach (var propertyNameToNotify in propertiesWithPropertiesToNotify[e.PropertyName])
-                        OnPropertyChanged(propertyNameToNotify);
+                        RaisePropertyChanged(propertyNameToNotify);
                 }
 
                 if (propertiesWithCommandsToNotify.ContainsKey(e.PropertyName))
