@@ -134,18 +134,33 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
         
-        public static void Reinstall(string installerPath, string logFilePath = null, bool quiet = true)
+        public static void Reinstall(string productCodeToUninstall, string installerPathToInstall, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet);
-            process.WaitForExit();
+            // Note: reinstalling with a different installer fails, so for now uninstall and install it.
+            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, logFilePath, quiet);
+            uninstallProcess.WaitForExit();
+
+            var installProcess = StartInstallProcess(installerPathToInstall, logFilePath, quiet);
+            installProcess.WaitForExit();
         }
 
-        public static async Task ReinstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
+        public static async Task ReinstallAsync(string productCodeToUninstall, string installerPathToInstall, string logFilePath = null, bool quiet = true)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet);
-            await process.WaitForExitAsync().ConfigureAwait(false);
+            // Note: reinstalling with a different installer fails, so for now uninstall and install it.
+            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, logFilePath, quiet);
+            await uninstallProcess.WaitForExitAsync().ConfigureAwait(false);
+
+            var installProcess = StartInstallProcess(installerPathToInstall, logFilePath, quiet);
+            await installProcess.WaitForExitAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Caution, only use this with the original installer. Otherwise the reinstallation may fail.
+        /// </summary>
+        /// <param name="installerPath">Path to the installer</param>
+        /// <param name="logFilePath">Path to the log file for the installation. (optional)</param>
+        /// <param name="quiet">True for no UI. False for no UI.</param>
+        /// <returns></returns>
         private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
@@ -169,26 +184,26 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
 
-        public static void Uninstall(string installerPath, string logFilePath = null, bool quiet = true)
+        public static void Uninstall(string productCode, string logFilePath = null, bool quiet = true)
         {
-            var process = StartUninstallProcess(installerPath, logFilePath, quiet);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet);
             process.WaitForExit();
         }
 
-        public static async Task UninstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
+        public static async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true)
         {
-            var process = StartUninstallProcess(installerPath, logFilePath, quiet);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
-        private static Process StartUninstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
+        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true)
         {
-            if (String.IsNullOrWhiteSpace(installerPath))
-                throw new ArgumentException("Installer path is empty");
+            if (String.IsNullOrWhiteSpace(productCode))
+                throw new ArgumentException("Productcode is empty");
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append(String.Format("/X \"{0}\"", installerPath));
+            argumentsBuilder.Append(String.Format("/X {0}", productCode));
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");

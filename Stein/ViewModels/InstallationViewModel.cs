@@ -14,6 +14,8 @@ namespace Stein.ViewModels
 
             Install,
 
+            Reinstall,
+
             Uninstall,
 
             Cancelled

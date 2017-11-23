@@ -302,6 +302,10 @@
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
 
             <Label Grid.Column="0" 
+                   Content="Reinstalling..."
+                   Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
+
+            <Label Grid.Column="0" 
                    Content="Uninstalling..."
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
 
