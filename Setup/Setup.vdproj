@@ -70,19 +70,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5038157718F27041E9659E731D7E4D71"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_913A92560436BD64DC4F31DB379D2A0D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4B408F545751324F2DD43F02ADDA06CE"
+        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -94,7 +82,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "OwnerKey" = "8:_4B408F545751324F2DD43F02ADDA06CE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_913A92560436BD64DC4F31DB379D2A0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5038157718F27041E9659E731D7E4D71"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -378,15 +378,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{F5DA6C9B-B2B9-49CD-9ED4-E50E8D950EAC}"
-        "PackageCode" = "8:{41629095-B8C7-4F15-946B-63384CF2F442}"
+        "ProductCode" = "8:{1F22F900-332B-4673-A4E2-F1EAFADA9323}"
+        "PackageCode" = "8:{AF9919BD-9039-4A90-B693-CA1F5ECBA9B9}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.8.4"
+        "ProductVersion" = "8:0.8.5"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
