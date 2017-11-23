@@ -18,6 +18,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
@@ -96,8 +98,37 @@
                       IsChecked="{Binding EnableSilentInstallation}"/>
         </Grid>
 
+        <!-- Enable Installation Logging -->
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   VerticalAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   FontWeight="Bold"
+                   Content="Install Log"/>
+
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding EnableInstallationLogging}"/>
+
+            <Button Grid.Column="4"
+                    Content="Open folder"
+                    Padding="16,4"
+                    Command="{Binding OpenLogFolderCommand}"/>
+        </Grid>
+
         <!-- Dialog Buttons -->
-        <Grid Grid.Row="7"
+        <Grid Grid.Row="9"
               Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

@@ -14,6 +14,7 @@ namespace Stein.ViewModels
             InstallApplicationCommand = new InstallApplicationCommand(this);
             UninstallApplicationCommand = new UninstallApplicationCommand(this);
             SelectFolderCommand = new SelectFolderCommand(this);
+            OpenLogFolderCommand = new OpenLogFolderCommand(this);
 
             InstallerBundles.CollectionChanged += InstallerBundles_CollectionChanged;
         }
@@ -25,6 +26,8 @@ namespace Stein.ViewModels
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
         
         public ViewModelCommand<ApplicationViewModel> SelectFolderCommand { get; private set; }
+
+        public ViewModelCommand<ApplicationViewModel> OpenLogFolderCommand { get; private set; }
         
         private string _Name;
         public string Name

@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ApplicationViewModelCommands\OpenLogFolderCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\EditApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\SelectFolderCommand.cs" />

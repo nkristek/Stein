@@ -31,6 +31,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 Name = applicationToEdit.Name,
                 Path = applicationToEdit.Path,
                 EnableSilentInstallation = applicationToEdit.EnableSilentInstallation,
+                EnableInstallationLogging = applicationToEdit.EnableInstallationLogging
             };
             if (DialogService.ShowDialog(applicationCopy, "Edit folder") != true)
                 return;
@@ -42,6 +43,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
             associatedApplicationFolder.Name = applicationCopy.Name;
             associatedApplicationFolder.Path = applicationCopy.Path;
             associatedApplicationFolder.EnableSilentInstallation = applicationCopy.EnableSilentInstallation;
+            associatedApplicationFolder.EnableInstallationLogging = applicationCopy.EnableInstallationLogging;
 
             await associatedApplicationFolder.SyncWithDiskAsync();
             await ConfigurationService.SaveConfigurationToDiskAsync();
