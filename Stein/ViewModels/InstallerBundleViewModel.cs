@@ -107,6 +107,15 @@ namespace Stein.ViewModels
             }
         }
 
+        [PropertySource(nameof(Installers))]
+        public DateTime? NewestInstallerCreationTime
+        {
+            get
+            {
+                return Installers.Select(i => i.Created).Max();
+            }
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();

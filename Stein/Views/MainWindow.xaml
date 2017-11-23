@@ -207,6 +207,8 @@
                                 </Grid.IsEnabled>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="8"/>
                                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
@@ -231,8 +233,20 @@
                                               IsEnabled="{Binding InstallerBundles, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"/>
                                 </Grid>
 
+                                <!-- SelectedInstallerDate Column -->
+                                <Grid Grid.Column="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
+                                        <RowDefinition Height="8"/>
+                                        <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="2" 
+                                           Content="{Binding SelectedInstallerBundle.NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=d}"/>
+                                </Grid>
+                                
                                 <!-- Button Column -->
-                                <Grid Grid.Column="3">
+                                <Grid Grid.Column="5">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                         <RowDefinition Height="8"/>
@@ -251,7 +265,7 @@
                                 </Grid>
 
                                 <!-- Modify Button Column -->
-                                <Grid Grid.Column="5">
+                                <Grid Grid.Column="7">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
                                         <RowDefinition Height="8"/>

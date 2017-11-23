@@ -13,7 +13,7 @@ namespace WpfBase.Converters
         {
             var dateTime = (DateTime)value;
             if (dateTime == DateTime.MinValue)
-                return "Date not set";
+                return null;
             if (parameter is string && !String.IsNullOrEmpty(parameter as string))
                 return dateTime.ToString(parameter as string);
             return dateTime.ToString();
