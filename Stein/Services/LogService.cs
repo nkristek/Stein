@@ -8,6 +8,9 @@ namespace Stein.Services
     public static class LogService
     {
         private static string _LogFolderPath;
+        /// <summary>
+        /// Path to the folder in which the log files exists
+        /// </summary>
         public static string LogFolderPath
         {
             get
@@ -23,6 +26,9 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Path to the main log file
+        /// </summary>
         public static string LogFileFullName
         {
             get
@@ -37,6 +43,9 @@ namespace Stein.Services
         }
         
         private static StreamWriter _LogFile;
+        /// <summary>
+        /// StreamWriter to an open log file
+        /// </summary>
         private static StreamWriter LogFile
         {
             get
@@ -52,7 +61,11 @@ namespace Stein.Services
                 _LogFile = value;
             }
         }
-        
+
+        /// <summary>
+        /// Write a message with an INFO prefix to the main log file
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
         public static void LogInfo(string message)
         {
             try
@@ -63,6 +76,11 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write a message with an INFO prefix to the main log file asynchronously
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
+        /// <returns>Task which writes the message to the main log file</returns>
         public static async Task LogInfoAsync(string message)
         {
             try
@@ -73,16 +91,29 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write an exception with an INFO prefix to the main log file
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
         public static void LogInfo(Exception exception)
         {
             LogInfo(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Write an exception with an INFO prefix to the main log file asynchronously
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
+        /// <returns>Task which writes the exception to the main log file</returns>
         public static async Task LogInfoAsync(Exception exception)
         {
             await LogInfoAsync(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Write a message with a WARNING prefix to the main log file
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
         public static void LogWarning(string message)
         {
             try
@@ -93,6 +124,11 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write a message with an WARNING prefix to the main log file asynchronously
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
+        /// <returns>Task which writes the message to the main log file</returns>
         public static async Task LogWarningAsync(string message)
         {
             try
@@ -103,16 +139,28 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write an exception with an WARNING prefix to the main log file
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
         public static void LogWarning(Exception exception)
         {
             LogWarning(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Write an exception with an WARNING prefix to the main log file asynchronously
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
+        /// <returns>Task which writes the exception to the main log file</returns>
         public static async Task LogWarningAsync(Exception exception)
         {
             await LogWarningAsync(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Path to the error log file
+        /// </summary>
         public static string ErrorLogFileFullName
         {
             get
@@ -124,6 +172,9 @@ namespace Stein.Services
         }
         
         private static StreamWriter _ErrorLogFile;
+        /// <summary>
+        /// StreamWriter to an open error log file
+        /// </summary>
         private static StreamWriter ErrorLogFile
         {
             get
@@ -139,7 +190,11 @@ namespace Stein.Services
                 _ErrorLogFile = value;
             }
         }
-        
+
+        /// <summary>
+        /// Write a message to the error log file
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
         public static void LogError(string message)
         {
             try
@@ -150,6 +205,11 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write a message to the error log file asynchronously
+        /// </summary>
+        /// <param name="message">The message which should get logged</param>
+        /// <returns>Task which writes the message to the error log file</returns>
         public static async Task LogErrorAsync(string message)
         {
             try
@@ -160,16 +220,30 @@ namespace Stein.Services
             catch { }
         }
 
+        /// <summary>
+        /// Write an exception to the error log file
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
         public static void LogError(Exception exception)
         {
             LogError(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Write an exception to the error log file asynchronously
+        /// </summary>
+        /// <param name="exception">The exception which should get logged</param>
+        /// <returns>Task which writes the exception to the error log file</returns>
         public static async Task LogErrorAsync(Exception exception)
         {
             await LogErrorAsync(BuildExceptionMessage(exception));
         }
 
+        /// <summary>
+        /// Builds a message from the given exception and all InnerExceptions
+        /// </summary>
+        /// <param name="exception">The exception from which the message gets build</param>
+        /// <returns>A message from the given exception and all InnerExceptions</returns>
         private static string BuildExceptionMessage(Exception exception)
         {
             var messageBuilder = new StringBuilder();
@@ -186,6 +260,9 @@ namespace Stein.Services
             return messageBuilder.ToString();
         }
 
+        /// <summary>
+        /// Closes all open log files
+        /// </summary>
         public static void CloseLogFiles()
         {
             LogFile = null;

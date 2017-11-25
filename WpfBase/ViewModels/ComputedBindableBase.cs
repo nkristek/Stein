@@ -5,6 +5,9 @@ using WpfBase.Commands;
 
 namespace WpfBase.ViewModels
 {
+    /// <summary>
+    /// Adds the functionality to use the PropertySourceAttribute above properties and CommandCanExecuteSourceAttribute above ViewModelCommand or AsyncViewModelCommand implementations
+    /// </summary>
     public abstract class ComputedBindableBase
         : BindableBase
     {
@@ -79,10 +82,10 @@ namespace WpfBase.ViewModels
                                 continue;
 
                             var value = field.GetValue(this);
-                            if (value is Command)
-                                (value as Command).RaiseCanExecuteChanged();
-                            else if (value is AsyncCommand)
-                                (value as AsyncCommand).RaiseCanExecuteChanged();
+                            if (value is BindableCommand)
+                                (value as BindableCommand).RaiseCanExecuteChanged();
+                            else if (value is AsyncBindableCommand)
+                                (value as AsyncBindableCommand).RaiseCanExecuteChanged();
                         }
                         catch { }
                     }

@@ -4,6 +4,9 @@ using System.Xml.Serialization;
 
 namespace WpfBase.XmlTypes
 {
+    /// <summary>
+    /// Helper class to serialize/deserialize Version to/from XML
+    /// </summary>
     [Serializable]
     [XmlType("Version")]
     public class VersionXml

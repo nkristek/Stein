@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
-using System.IO;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
@@ -61,7 +60,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     mainWindowViewModel.CurrentInstallation.CurrentIndex++;
 
                     await LogService.LogInfoAsync(String.Format("Uninstalling {0}.", installer.Name));
-                    await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? GetLogFilePathForInstaller(installer) : null, viewModel.EnableSilentInstallation);
+                    await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(installer.Name) : null, viewModel.EnableSilentInstallation);
                     didUninstall = true;
                 }
             }
@@ -74,13 +73,6 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
             if (didUninstall)
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
-        }
-
-        private static string GetLogFilePathForInstaller(InstallerViewModel installer)
-        {
-            var currentDate = DateTime.Now;
-            var logFileName = String.Format("{0}_{1}-{2}-{3}_{4}-{5}-{6}.txt", installer.Name, currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, currentDate.Second);
-            return Path.Combine(InstallService.InstallationLogFolderPath, logFileName);
         }
 
         public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)

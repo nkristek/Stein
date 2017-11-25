@@ -3,6 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace WpfBase.ViewModels
 {
+    /// <summary>
+    /// ViewModel implementation
+    /// </summary>
     public abstract class ViewModel
         : ComputedBindableBase
     {
@@ -13,6 +16,9 @@ namespace WpfBase.ViewModels
         }
 
         private bool _IsDirty;
+        /// <summary>
+        /// Indicates if a property changed on the ViewModel and the change is not persisted
+        /// </summary>
         public bool IsDirty
         {
             get
@@ -31,6 +37,9 @@ namespace WpfBase.ViewModels
         }
 
         private WeakReference<ViewModel> _Parent;
+        /// <summary>
+        /// The parent of this ViewModel
+        /// </summary>
         public ViewModel Parent
         {
             get
@@ -48,6 +57,11 @@ namespace WpfBase.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the first parent of the requested type
+        /// </summary>
+        /// <typeparam name="T">Type of the requested parent</typeparam>
+        /// <returns>The first parent of the requested type</returns>
         public T FirstParentOfType<T>() where T : ViewModel
         {
             if (_Parent != null && _Parent.TryGetTarget(out ViewModel parent))
@@ -58,6 +72,9 @@ namespace WpfBase.ViewModels
         }
 
         private WeakReference<object> _View;
+        /// <summary>
+        /// The View of this ViewModel. Will return the view of the parent if no set.
+        /// </summary>
         public object View
         {
             get
@@ -75,6 +92,9 @@ namespace WpfBase.ViewModels
             }
         }
 
+        /// <summary>
+        /// The top most parent of this ViewModel
+        /// </summary>
         public ViewModel TopMost
         {
             get

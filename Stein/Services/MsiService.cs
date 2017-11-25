@@ -99,6 +99,11 @@ namespace Stein.Services
             ProductLanguage,
         }
 
+        /// <summary>
+        /// Gets the msi database of an installer file
+        /// </summary>
+        /// <param name="fileName">Path to the installer file</param>
+        /// <returns>Msi Database of the specified installer file</returns>
         public static Database GetMsiDatabase(string fileName)
         {
             try
@@ -111,12 +116,22 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Gets all properties of an installer file
+        /// </summary>
+        /// <param name="fileName">Path to the installer</param>
+        /// <returns>All properties of the installer file</returns>
         public static Dictionary<string, string> GetAllPropertiesFromMsi(string fileName)
         {
             using (var database = GetMsiDatabase(fileName))
                 return GetAllPropertiesFromMsiDatabase(database);
         }
 
+        /// <summary>
+        /// Gets all properties
+        /// </summary>
+        /// <param name="database">Msi database of an installer file</param>
+        /// <returns>All properties</returns>
         public static Dictionary<string, string> GetAllPropertiesFromMsiDatabase(Database database)
         {
             try
@@ -138,12 +153,24 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Gets a specific property from an installer file
+        /// </summary>
+        /// <param name="fileName">Path to the installer</param>
+        /// <param name="propertyName">Requested property</param>
+        /// <returns>Property if exists, null otherwise</returns>
         public static string GetPropertyFromMsi(string fileName, MsiPropertyName propertyName)
         {
             using (var database = GetMsiDatabase(fileName))
                 return GetPropertyFromMsiDatabase(database, propertyName);
         }
 
+        /// <summary>
+        /// Gets a specific property
+        /// </summary>
+        /// <param name="database">Msi database of an installer file</param>
+        /// <param name="propertyName">Requested property</param>
+        /// <returns>Property if exists, null otherwise</returns>
         public static string GetPropertyFromMsiDatabase(Database database, MsiPropertyName propertyName)
         {
             try
@@ -156,12 +183,22 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Gets the culture with IetfLanguageTag-format on an installer file
+        /// </summary>
+        /// <param name="fileName">Path to the installer</param>
+        /// <returns>Culture with IetfLanguageTag-format</returns>
         public static string GetCultureTagFromMsi(string fileName)
         {
             using (var database = GetMsiDatabase(fileName))
                 return GetCultureTagFromMsiDatabase(database);
         }
 
+        /// <summary>
+        /// Gets the culture with IetfLanguageTag-format
+        /// </summary>
+        /// <param name="database">Msi database of an installer file</param>
+        /// <returns>Culture with IetfLanguageTag-format</returns>
         public static string GetCultureTagFromMsiDatabase(Database database)
         {
             try
@@ -175,12 +212,22 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Gets the version of an installer file
+        /// </summary>
+        /// <param name="fileName">Path to the installer</param>
+        /// <returns>Version of the installer file</returns>
         public static Version GetVersionFromMsi(string fileName)
         {
             using (var database = GetMsiDatabase(fileName))
                 return GetVersionFromMsiDatabase(database);
         }
 
+        /// <summary>
+        /// Gets the version
+        /// </summary>
+        /// <param name="database">Msi database of an installer file</param>
+        /// <returns>Version</returns>
         public static Version GetVersionFromMsiDatabase(Database database)
         {
             try

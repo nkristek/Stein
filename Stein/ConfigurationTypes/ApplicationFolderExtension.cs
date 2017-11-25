@@ -8,6 +8,12 @@ namespace Stein.ConfigurationTypes
 {
     public static class ApplicationFolderExtension
     {
+        /// <summary>
+        /// Finds a subfolder inside the ApplicationFolder by providing the full path to the subfolder
+        /// </summary>
+        /// <param name="applicationFolder">ApplicationFolder in which the subfolder exists</param>
+        /// <param name="subFolderFullPath">Full path to the subfolder</param>
+        /// <returns>The SubFolder if found, null otherwise</returns>
         public static SubFolder FindSubFolder(this ApplicationFolder applicationFolder, string subFolderFullPath)
         {
             if (!subFolderFullPath.StartsWith(applicationFolder.Path))
@@ -17,6 +23,12 @@ namespace Stein.ConfigurationTypes
             return applicationFolder.FindSubFolder(relativePath);
         }
 
+        /// <summary>
+        /// Finds a subfolder inside the ApplicationFolder by providing the relative path to the subfolder
+        /// </summary>
+        /// <param name="applicationFolder">ApplicationFolder in which the subfolder exists</param>
+        /// <param name="subFolderRelativePath">Relative path to the subfolder</param>
+        /// <returns>The SubFolder if found, null otherwise</returns>
         public static SubFolder FindSubFolder(this ApplicationFolder applicationFolder, IEnumerable<string> subFolderRelativePath)
         {
             var subFolderName = subFolderRelativePath.FirstOrDefault();
@@ -30,6 +42,10 @@ namespace Stein.ConfigurationTypes
             return subFolder.FindSubFolder(subFolderRelativePath.Skip(1));
         }
 
+        /// <summary>
+        /// Synchronize the ApplicationFolder with what exists on disk. It removes subfolders which aren't present anymore and adds new subfolders
+        /// </summary>
+        /// <param name="applicationFolder">The ApplicationFolder to synchronize</param>
         public static void SyncWithDisk(this ApplicationFolder applicationFolder)
         {
             var subDirectoriesOnDisk = Directory.GetDirectories(applicationFolder.Path).Select(directoryName => new DirectoryInfo(directoryName)).ToList();
@@ -55,6 +71,11 @@ namespace Stein.ConfigurationTypes
             applicationFolder.SubFolders = applicationFolder.SubFolders.OrderBy(subFolder => subFolder.Name).ToList();
         }
 
+        /// <summary>
+        /// Synchronize the ApplicationFolder asynchronously with what exists on disk. It removes subfolders which aren't present anymore and adds new subfolders
+        /// </summary>
+        /// <param name="applicationFolder">The ApplicationFolder to synchronize</param>
+        /// <returns>The asynchronous Task</returns>
         public static async Task SyncWithDiskAsync(this ApplicationFolder applicationFolder)
         {
             await Task.Run(() =>

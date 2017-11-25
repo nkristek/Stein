@@ -2,7 +2,10 @@
 
 namespace WpfBase
 {
-    public class Disposable
+    /// <summary>
+    /// IDisposable implementation which provides an easier implementation of the IDisposable interface
+    /// </summary>
+    public abstract class Disposable
         : IDisposable
     {
         /// <summary>

@@ -1,43 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WpfBase.ViewModels;
 
 namespace WpfBase.Commands
 {
+    /// <summary>
+    /// AsyncBindableCommand implementation with ViewModel parameters in command methods
+    /// </summary>
+    /// <typeparam name="TViewModel">Subclass of ViewModel</typeparam>
     public abstract class AsyncViewModelCommand<TViewModel>
-        : AsyncCommand, INotifyPropertyChanged where TViewModel : ViewModel
+        : AsyncBindableCommand where TViewModel : ViewModel
     {
         public AsyncViewModelCommand(TViewModel parent)
         {
             Parent = parent;
         }
-
-        public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
-        {
-            return true;
-        }
-
-        public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
-
-        private bool _IsWorking;
-        public bool IsWorking
-        {
-            get
-            {
-                return _IsWorking;
-            }
-
-            set
-            {
-                if (SetProperty(ref _IsWorking, value))
-                    RaiseCanExecuteChanged();
-            }
-        }
-
+        
         private WeakReference<TViewModel> _Parent;
+        /// <summary>
+        /// Parent of this AsyncViewModelCommand which is used when calling CanExecute/Execute or OnThrownException
+        /// </summary>
         private TViewModel Parent
         {
             get
@@ -54,20 +36,25 @@ namespace WpfBase.Commands
             }
         }
 
-        public Type AcceptedViewModelType
+        public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
         {
-            get
-            {
-                return typeof(TViewModel);
-            }
+            return true;
         }
 
-        public sealed override bool CanExecute(object parameter)
+        public abstract Task ExecuteAsync(TViewModel viewModel, object view, object parameter);
+
+        /// <summary>
+        /// Will be called when ExecuteAsync throws an exception
+        /// </summary>
+        /// <returns></returns>
+        public virtual void OnThrownExeption(TViewModel viewModel, object view, object parameter, Exception exception) { }
+
+        public override sealed bool CanExecute(object parameter)
         {
             return Parent != null && !IsWorking && CanExecute(Parent, Parent?.View, parameter);
         }
 
-        public sealed override async Task ExecuteAsync(object parameter)
+        public override sealed async Task ExecuteAsync(object parameter)
         {
             if (!CanExecute(Parent, Parent?.View, parameter))
                 throw new InvalidOperationException("canexecute");
@@ -92,31 +79,6 @@ namespace WpfBase.Commands
             {
                 IsWorking = false;
             }
-        }
-
-        /// <summary>
-        /// Will be called when ExecuteAsync throws an exception
-        /// </summary>
-        /// <returns></returns>
-        public virtual void OnThrownExeption(TViewModel viewModel, object view, object parameter, Exception exception) { }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            OnPropertyChanged(propertyName);
-        }
-        
-        protected virtual void OnPropertyChanged(string propertyName) { }
-
-        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
-        {
-            if (EqualityComparer<T>.Default.Equals(storage, value))
-                return false;
-            storage = value;
-            RaisePropertyChanged(propertyName);
-            return true;
         }
     }
 }

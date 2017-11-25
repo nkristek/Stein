@@ -22,6 +22,9 @@ namespace Stein.ViewModels
         }
 
         private InstallationState _State;
+        /// <summary>
+        /// Current state of the installation
+        /// </summary>
         public InstallationState State
         {
             get
@@ -36,6 +39,9 @@ namespace Stein.ViewModels
         }
         
         private int _InstallerCount;
+        /// <summary>
+        /// Total count of operations of the current installation
+        /// </summary>
         public int InstallerCount
         {
             get
@@ -50,6 +56,9 @@ namespace Stein.ViewModels
         }
 
         private int _CurrentIndex;
+        /// <summary>
+        /// At which installer the current operation is
+        /// </summary>
         public int CurrentIndex
         {
             get
@@ -63,17 +72,22 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Returns a string representing the current progress
+        /// </summary>
         [PropertySource(nameof(CurrentIndex), nameof(InstallerCount))]
         public string ProgressString
         {
             get
             {
-                if (CurrentIndex == 0 || InstallerCount == 0) return null;
-                return String.Join(String.Empty, CurrentIndex.ToString(), "/", InstallerCount.ToString());
+                return String.Format("{0}/{1}", CurrentIndex, InstallerCount);
             }
         }
 
         private string _Name;
+        /// <summary>
+        /// Name of the current installer
+        /// </summary>
         public string Name
         {
             get

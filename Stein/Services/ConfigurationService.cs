@@ -7,9 +7,15 @@ namespace Stein.Services
 {
     public static class ConfigurationService
     {
+        /// <summary>
+        /// Configuration which gets loaded from and saved to the file system
+        /// </summary>
         public static Configuration Configuration { get; private set; }
 
         private static string _ConfigurationFolderPath;
+        /// <summary>
+        /// Path to the folder in which the configuration file exists
+        /// </summary>
         public static string ConfiguationFolderPath
         {
             get
@@ -25,6 +31,9 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Path to the configuration file
+        /// </summary>
         public static string ConfiguationPath
         {
             get
@@ -36,6 +45,9 @@ namespace Stein.Services
             }
         }
         
+        /// <summary>
+        /// Loads the configuration file from the file system
+        /// </summary>
         public static void LoadConfigurationFromDisk()
         {
             try
@@ -48,6 +60,10 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Loads the configuration file from the file system asynchronously
+        /// </summary>
+        /// <returns>Task which loads the configuration file from the file system</returns>
         public static async Task LoadConfigurationFromDiskAsync()
         {
             try
@@ -60,6 +76,9 @@ namespace Stein.Services
             }
         }
         
+        /// <summary>
+        /// Saves the configuration file to the file system
+        /// </summary>
         public static void SaveConfigurationToDisk()
         {
             try
@@ -72,6 +91,10 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Saves the configuration file to the file system asynchronously
+        /// </summary>
+        /// <returns>>Task which saves the configuration file to the file system</returns>
         public static async Task SaveConfigurationToDiskAsync()
         {
             try

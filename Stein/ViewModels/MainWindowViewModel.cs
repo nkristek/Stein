@@ -39,6 +39,9 @@ namespace Stein.ViewModels
         public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; private set; }
 
         private readonly ObservableCollection<ApplicationViewModel> _Applications = new ObservableCollection<ApplicationViewModel>();
+        /// <summary>
+        /// List of all applications
+        /// </summary>
         public ObservableCollection<ApplicationViewModel> Applications
         {
             get
@@ -47,6 +50,11 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Attach property changed handler to elements in the collection to raise a PropertyChanged event if an element changed
+        /// </summary>
+        /// <param name="sender">The collection</param>
+        /// <param name="e">EventArgs</param>
         private void Applications_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsDirty = true;
@@ -62,6 +70,11 @@ namespace Stein.ViewModels
                         application.PropertyChanged -= Application_PropertyChanged;
         }
 
+        /// <summary>
+        /// Raise a PropertyChanged event for the collection if a property changed on the item of the collection
+        /// </summary>
+        /// <param name="sender">Item of the collection</param>
+        /// <param name="e">EventArgs</param>
         private void Application_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
@@ -69,6 +82,9 @@ namespace Stein.ViewModels
         }
         
         private InstallationViewModel _CurrentInstallation;
+        /// <summary>
+        /// Is set if an operation is in progress
+        /// </summary>
         public InstallationViewModel CurrentInstallation
         {
             get
@@ -97,6 +113,11 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Raise a PropertyChanged event for the CurrentInstallation if a property changed on the InstallationViewModel
+        /// </summary>
+        /// <param name="sender">The InstallationViewModel</param>
+        /// <param name="e">EventArgs</param>
         private void _CurrentInstallation_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))

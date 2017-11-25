@@ -4,6 +4,9 @@ using System.Xml.Serialization;
 
 namespace WpfBase.XmlTypes
 {
+    /// <summary>
+    /// Helper class to serialize/deserialize DateTime to/from XML
+    /// </summary>
     [Serializable]
     [XmlType("Date")]
     public class DateTimeXml

@@ -9,6 +9,12 @@ namespace Stein.ConfigurationTypes
 {
     public static class SubFolderExtension
     {
+        /// <summary>
+        /// Finds a subfolder inside the SubFolder by providing the full path to the subfolder
+        /// </summary>
+        /// <param name="folder">SubFolder in which the subfolder exists</param>
+        /// <param name="subFolderFullPath">Full path to the subfolder</param>
+        /// <returns>The SubFolder if found, null otherwise</returns>
         public static SubFolder FindSubFolder(this SubFolder folder, string subFolderFullPath)
         {
             if (!subFolderFullPath.StartsWith(folder.Path))
@@ -18,6 +24,12 @@ namespace Stein.ConfigurationTypes
             return folder.FindSubFolder(relativePath);
         }
 
+        /// <summary>
+        /// Finds a subfolder inside the SubFolder by providing the relative path to the subfolder
+        /// </summary>
+        /// <param name="folder">SubFolder in which the subfolder exists</param>
+        /// <param name="subFolderRelativePath">Relative path to the subfolder</param>
+        /// <returns>The SubFolder if found, null otherwise</returns>
         public static SubFolder FindSubFolder(this SubFolder folder, IEnumerable<string> subFolderRelativePath)
         {
             var subFolder = folder;
@@ -32,6 +44,12 @@ namespace Stein.ConfigurationTypes
             return subFolder;
         }
 
+        /// <summary>
+        /// Finds a installer file inside the SubFolder by providing the relative path to the file
+        /// </summary>
+        /// <param name="folder">SubFolder in which the installer file exists</param>
+        /// <param name="installerFileFullPath">Full path to the installer file</param>
+        /// <returns>The InstallerFile if found, null otherwise</returns>
         public static InstallerFile FindInstallerFile(this SubFolder folder, string installerFileFullPath)
         {
             if (!installerFileFullPath.StartsWith(folder.Path))
@@ -41,6 +59,12 @@ namespace Stein.ConfigurationTypes
             return folder.FindInstallerFile(relativePath);
         }
 
+        /// <summary>
+        /// Finds a installer file inside the SubFolder by providing the relative path to the file
+        /// </summary>
+        /// <param name="folder">SubFolder in which the installer file exists</param>
+        /// <param name="installerFileRelativePath">Relative path to the installer file</param>
+        /// <returns>The InstallerFile if found, null otherwise</returns>
         public static InstallerFile FindInstallerFile(this SubFolder folder, IEnumerable<string> installerFileRelativePath)
         {
             if (!installerFileRelativePath.Any())
@@ -54,6 +78,25 @@ namespace Stein.ConfigurationTypes
             return parentFolderOfInstallerFile.InstallerFiles.FirstOrDefault(i => Path.GetFileName(i.Path) == installerFileName);
         }
 
+        /// <summary>
+        /// Finds all InstallerFiles inside the SubFolder hierarchy
+        /// </summary>
+        /// <param name="folder">SubFolder</param>
+        /// <returns>List of found InstallerFiles</returns>
+        public static IEnumerable<InstallerFile> FindAllInstallerFiles(this SubFolder folder)
+        {
+            foreach (var installerFile in folder.InstallerFiles)
+                yield return installerFile;
+
+            foreach (var subFolder in folder.SubFolders)
+                foreach (var installerFile in subFolder.FindAllInstallerFiles())
+                    yield return installerFile;
+        }
+
+        /// <summary>
+        /// Synchronize the SubFolder with what exists on disk. It removes subfolders and installer files which aren't present anymore and adds new subfolders
+        /// </summary>
+        /// <param name="subFolder">The SubFolder to synchronize</param>
         public static void SyncWithDisk(this SubFolder subFolder)
         {
             var filesOnDisk = Directory.GetFiles(subFolder.Path, "*.msi").Select(fileName => new FileInfo(fileName)).ToList();

@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AsyncBindableCommand.cs" />
     <Compile Include="Commands\AsyncCommand.cs" />
+    <Compile Include="Commands\AsyncRelayCommand.cs" />
     <Compile Include="Commands\AsyncViewModelCommand.cs" />
+    <Compile Include="Commands\BindableCommand.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\IAsyncCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />

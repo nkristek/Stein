@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace WpfBase.Commands
 {
     /// <summary>
-    /// RelayCommand implementation
+    /// Asynchronous implementation of a RelayCommand
     /// </summary>
-    public class RelayCommand
-        : Command
+    public class AsyncRelayCommand
+        : AsyncCommand
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+        public AsyncRelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -22,9 +23,12 @@ namespace WpfBase.Commands
             return _canExecute != null ? _canExecute(parameter) : base.CanExecute(parameter);
         }
 
-        public override void Execute(object parameter)
+        public override async Task ExecuteAsync(object parameter)
         {
-            _execute?.Invoke(parameter);
+            await Task.Run(() =>
+            {
+                _execute?.Invoke(parameter);
+            });
         }
     }
 }

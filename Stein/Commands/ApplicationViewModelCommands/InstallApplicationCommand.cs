@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
-using System.IO;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
@@ -22,7 +21,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
         }
-
+        
         public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
             var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
@@ -59,13 +58,13 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     {
                         mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Reinstall;
                         await LogService.LogInfoAsync(String.Format("Reinstalling {0}.", installer.Name));
-                        await InstallService.ReinstallAsync(installer.ProductCode, installer.Path, viewModel.EnableInstallationLogging ? GetLogFilePathForInstaller(installer) : null, viewModel.EnableSilentInstallation);
+                        await InstallService.ReinstallAsync(installer.ProductCode, installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
                     }
                     else
                     {
                         mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Install;
                         await LogService.LogInfoAsync(String.Format("Installing {0}.", installer.Name));
-                        await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? GetLogFilePathForInstaller(installer) : null, viewModel.EnableSilentInstallation);
+                        await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(installer.Name) : null, viewModel.EnableSilentInstallation);
                     }
 
                     didInstall = true;
@@ -76,13 +75,6 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
             if (didInstall)
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
-        }
-
-        private static string GetLogFilePathForInstaller(InstallerViewModel installer)
-        {
-            var currentDate = DateTime.Now;
-            var logFileName = String.Format("{0}_{1}-{2}-{3}_{4}-{5}-{6}.txt", installer.Name, currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, currentDate.Second);
-            return Path.Combine(InstallService.InstallationLogFolderPath, logFileName);
         }
 
         public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)

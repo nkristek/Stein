@@ -15,6 +15,9 @@ namespace Stein.ViewModels
         }
 
         private string _Name;
+        /// <summary>
+        /// The name of the folder of the installer bundle
+        /// </summary>
         public string Name
         {
             get
@@ -29,6 +32,9 @@ namespace Stein.ViewModels
         }
 
         private string _Path;
+        /// <summary>
+        /// The full path to the folder of the installer bundle
+        /// </summary>
         public string Path
         {
             get
@@ -41,7 +47,10 @@ namespace Stein.ViewModels
                 SetProperty(ref _Path, value);
             }
         }
-        
+
+        /// <summary>
+        /// Gets the culture of the installers, if the Culture property is the same on all Installers, otherwise null
+        /// </summary>
         [PropertySource(nameof(Installers))]
         public string Culture
         {
@@ -55,6 +64,9 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the version of the installers, if the Version property is the same on all Installers, otherwise null
+        /// </summary>
         [PropertySource(nameof(Installers))]
         public Version Version
         {
@@ -69,6 +81,9 @@ namespace Stein.ViewModels
         }
 
         private readonly ObservableCollection<InstallerViewModel> _Installers = new ObservableCollection<InstallerViewModel>();
+        /// <summary>
+        /// List of installers in this installer bundle
+        /// </summary>
         public ObservableCollection<InstallerViewModel> Installers
         {
             get
@@ -77,6 +92,11 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Attach property changed handler to elements in the collection to raise a PropertyChanged event if an element changed
+        /// </summary>
+        /// <param name="sender">The collection</param>
+        /// <param name="e">EventArgs</param>
         private void Installers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             IsDirty = true;
@@ -92,12 +112,20 @@ namespace Stein.ViewModels
                         installer.PropertyChanged -= Installer_PropertyChanged;
         }
 
+        /// <summary>
+        /// Raise a PropertyChanged event for the collection if a property changed on the item of the collection
+        /// </summary>
+        /// <param name="sender">Item of the collection</param>
+        /// <param name="e">EventArgs</param>
         private void Installer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
                 RaisePropertyChanged(nameof(Installers));
         }
 
+        /// <summary>
+        /// Returns if any installer is enabled
+        /// </summary>
         [PropertySource(nameof(Installers))]
         public bool AnyInstallerIsEnabled
         {
@@ -107,6 +135,9 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Returns the newest creation time of all installers
+        /// </summary>
         [PropertySource(nameof(Installers))]
         public DateTime? NewestInstallerCreationTime
         {
@@ -116,6 +147,10 @@ namespace Stein.ViewModels
             }
         }
 
+        /// <summary>
+        /// Creates a unique string to identify this InstallerBundleViewModel
+        /// </summary>
+        /// <returns>A unique string to identify this InstallerBundleViewModel</returns>
         public override string ToString()
         {
             var builder = new StringBuilder();

@@ -28,8 +28,17 @@ namespace Stein.Services
             }
         }
 
-        private static IEnumerable<InstalledProgram> _InstalledPrograms;
+        public static string GetLogFilePathForInstaller(string installerName)
+        {
+            var currentDate = DateTime.Now;
+            var logFileName = String.Format("{0}_{1}-{2}-{3}_{4}-{5}-{6}.txt", installerName, currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, currentDate.Second);
+            return Path.Combine(InstallationLogFolderPath, logFileName);
+        }
 
+        private static List<InstalledProgram> _InstalledPrograms;
+        /// <summary>
+        /// List of installed programs read from the registry
+        /// </summary>
         public static IEnumerable<InstalledProgram> InstalledPrograms
         {
             get
@@ -42,10 +51,13 @@ namespace Stein.Services
             private set
             {
                 _InstalledPrograms?.ForEach(program => program.Dispose());
-                _InstalledPrograms = value;
+                _InstalledPrograms = value.ToList();
             }
         }
 
+        /// <summary>
+        /// Refreshes the list of installed programs
+        /// </summary>
         public static void RefreshInstalledPrograms()
         {
             try
@@ -58,6 +70,10 @@ namespace Stein.Services
             }
         }
 
+        /// <summary>
+        /// Refreshes the list of installed programs asynchronously
+        /// </summary>
+        /// <returns>Task which refreshes the list of installed programs</returns>
         public static async Task RefreshInstalledProgramsAsync()
         {
             await Task.Run(() =>
@@ -66,6 +82,10 @@ namespace Stein.Services
             });
         }
 
+        /// <summary>
+        /// Reads the registry for installed programs
+        /// </summary>
+        /// <returns>List of installed programs</returns>
         private static IEnumerable<InstalledProgram> ReadInstalledPrograms()
         {
             const string registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
@@ -85,6 +105,11 @@ namespace Stein.Services
                     yield return program;
         }
 
+        /// <summary>
+        /// Reads all installed programs from a registry key
+        /// </summary>
+        /// <param name="key">RegistryKey to the registry path in which the installed programs are listed</param>
+        /// <returns>List of installed programs</returns>
         private static IEnumerable<InstalledProgram> GetInstalledProgramsFromKey(RegistryKey key)
         {
             foreach (var subkeyName in key.GetSubKeyNames())
@@ -94,23 +119,48 @@ namespace Stein.Services
                 };
         }
 
+        /// <summary>
+        /// Searches in the installed programs if a product code is installed
+        /// </summary>
+        /// <param name="productCode"></param>
+        /// <returns></returns>
         public static bool IsProductCodeInstalled(string productCode)
         {
             return !String.IsNullOrEmpty(productCode) && InstalledPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
         }
 
+        /// <summary>
+        /// Installs a installer file
+        /// </summary>
+        /// <param name="installerPath">Path to the installer file</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be installed without UI</param>
         public static void Install(string installerPath, string logFilePath = null, bool quiet = true)
         {
             var process = StartInstallProcess(installerPath, logFilePath, quiet);
             process.WaitForExit();
         }
 
+        /// <summary>
+        /// Installs a installer file asynchronously
+        /// </summary>
+        /// <param name="installerPath">Path to the installer file</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be installed without UI</param>
+        /// <returns>Task which installs a installer file</returns>
         public static async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
         {
             var process = StartInstallProcess(installerPath, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Creates a process for installing a installer file
+        /// </summary>
+        /// <param name="installerPath">Path to the installer file</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be installed without UI</param>
+        /// <returns>Process of the installer</returns>
         private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
@@ -133,24 +183,41 @@ namespace Stein.Services
 
             return Process.Start(startInfo);
         }
-        
-        public static void Reinstall(string productCodeToUninstall, string installerPathToInstall, string logFilePath = null, bool quiet = true)
+
+        /// <summary>
+        /// Uninstalls and installs a installer file
+        /// </summary>
+        /// <param name="productCodeToUninstall">Product code of the installed program</param>
+        /// <param name="installerPathToInstall">Path to the installer file</param>
+        /// <param name="uninstallLogFilePath">Path to a log file for uninstalling (optional)</param>
+        /// <param name="installLogFilePath">Path to a log file for installing (optional)</param>
+        /// <param name="quiet">If it should be reinstalled without UI</param>
+        public static void Reinstall(string productCodeToUninstall, string installerPathToInstall, string uninstallLogFilePath = null, string installLogFilePath = null, bool quiet = true)
         {
             // Note: reinstalling with a different installer fails, so for now uninstall and install it.
-            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, logFilePath, quiet);
+            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, uninstallLogFilePath, quiet);
             uninstallProcess.WaitForExit();
 
-            var installProcess = StartInstallProcess(installerPathToInstall, logFilePath, quiet);
+            var installProcess = StartInstallProcess(installerPathToInstall, installLogFilePath, quiet);
             installProcess.WaitForExit();
         }
 
-        public static async Task ReinstallAsync(string productCodeToUninstall, string installerPathToInstall, string logFilePath = null, bool quiet = true)
+        /// <summary>
+        /// Uninstalls and installs a installer file asynchronously
+        /// </summary>
+        /// <param name="productCodeToUninstall">Product code of the installed program</param>
+        /// <param name="installerPathToInstall">Path to the installer file</param>
+        /// <param name="uninstallLogFilePath">Path to a log file for uninstalling (optional)</param>
+        /// <param name="installLogFilePath">Path to a log file for installing (optional)</param>
+        /// <param name="quiet">If it should be reinstalled without UI</param>
+        /// <returns>Task which uninstalls and installs a installer file</returns>
+        public static async Task ReinstallAsync(string productCodeToUninstall, string installerPathToInstall, string uninstallLogFilePath = null, string installLogFilePath = null, bool quiet = true)
         {
             // Note: reinstalling with a different installer fails, so for now uninstall and install it.
-            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, logFilePath, quiet);
+            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, uninstallLogFilePath, quiet);
             await uninstallProcess.WaitForExitAsync().ConfigureAwait(false);
 
-            var installProcess = StartInstallProcess(installerPathToInstall, logFilePath, quiet);
+            var installProcess = StartInstallProcess(installerPathToInstall, installLogFilePath, quiet);
             await installProcess.WaitForExitAsync().ConfigureAwait(false);
         }
 
@@ -159,7 +226,7 @@ namespace Stein.Services
         /// </summary>
         /// <param name="installerPath">Path to the installer</param>
         /// <param name="logFilePath">Path to the log file for the installation. (optional)</param>
-        /// <param name="quiet">True for no UI. False for no UI.</param>
+        /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <returns></returns>
         private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
@@ -184,18 +251,38 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
 
+        /// <summary>
+        /// Uninstalls a program
+        /// </summary>
+        /// <param name="productCode">Product code of the installed program</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be uninstalled without UI</param>
         public static void Uninstall(string productCode, string logFilePath = null, bool quiet = true)
         {
             var process = StartUninstallProcess(productCode, logFilePath, quiet);
             process.WaitForExit();
         }
 
+        /// <summary>
+        /// Uninstalls a program asynchronously
+        /// </summary>
+        /// <param name="productCode">Product code of the installed program</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be uninstalled without UI</param>
+        /// <returns>Task which uninstalls a installer file</returns>
         public static async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true)
         {
             var process = StartUninstallProcess(productCode, logFilePath, quiet);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Creates a process for uninstalling a product code
+        /// </summary>
+        /// <param name="productCode">Product code of the installed program</param>
+        /// <param name="logFilePath">Path to a log file (optional)</param>
+        /// <param name="quiet">If it should be uninstalled without UI</param>
+        /// <returns>Process of the uninstaller</returns>
         private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(productCode))

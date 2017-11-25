@@ -1,14 +1,33 @@
 ﻿using System;
 using System.Windows.Input;
+using WpfBase.ViewModels;
 
 namespace WpfBase.Commands
 {
     /// <summary>
-    /// ICommand implementation
+    /// ICommand implementation with INotifyPropertyChanged support
     /// </summary>
-    public abstract class Command
-        : ICommand
+    public abstract class BindableCommand
+        : ComputedBindableBase, ICommand
     {
+        private bool _IsWorking;
+        /// <summary>
+        /// Indicates if the command is working at the moment
+        /// </summary>
+        public bool IsWorking
+        {
+            get
+            {
+                return _IsWorking;
+            }
+
+            set
+            {
+                if (SetProperty(ref _IsWorking, value))
+                    RaiseCanExecuteChanged();
+            }
+        }
+
         public virtual bool CanExecute(object parameter)
         {
             return true;
