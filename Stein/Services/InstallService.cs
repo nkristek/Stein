@@ -186,39 +186,30 @@ namespace Stein.Services
 
         /// <summary>
         /// Uninstalls and installs a installer file
+        /// Warning: reinstalling with a different installer fails, so for now uninstall and install it.
         /// </summary>
-        /// <param name="productCodeToUninstall">Product code of the installed program</param>
         /// <param name="installerPathToInstall">Path to the installer file</param>
-        /// <param name="uninstallLogFilePath">Path to a log file for uninstalling (optional)</param>
-        /// <param name="installLogFilePath">Path to a log file for installing (optional)</param>
+        /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
-        public static void Reinstall(string productCodeToUninstall, string installerPathToInstall, string uninstallLogFilePath = null, string installLogFilePath = null, bool quiet = true)
+        public static void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true)
         {
-            // Note: reinstalling with a different installer fails, so for now uninstall and install it.
-            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, uninstallLogFilePath, quiet);
-            uninstallProcess.WaitForExit();
-
-            var installProcess = StartInstallProcess(installerPathToInstall, installLogFilePath, quiet);
-            installProcess.WaitForExit();
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet);
+            reinstallProcess.WaitForExit();
         }
 
         /// <summary>
         /// Uninstalls and installs a installer file asynchronously
+        /// Warning: reinstalling with a different installer fails, so for now uninstall and install it.
         /// </summary>
-        /// <param name="productCodeToUninstall">Product code of the installed program</param>
         /// <param name="installerPathToInstall">Path to the installer file</param>
-        /// <param name="uninstallLogFilePath">Path to a log file for uninstalling (optional)</param>
-        /// <param name="installLogFilePath">Path to a log file for installing (optional)</param>
+        /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <returns>Task which uninstalls and installs a installer file</returns>
-        public static async Task ReinstallAsync(string productCodeToUninstall, string installerPathToInstall, string uninstallLogFilePath = null, string installLogFilePath = null, bool quiet = true)
+        public static async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true)
         {
             // Note: reinstalling with a different installer fails, so for now uninstall and install it.
-            var uninstallProcess = StartUninstallProcess(productCodeToUninstall, uninstallLogFilePath, quiet);
-            await uninstallProcess.WaitForExitAsync().ConfigureAwait(false);
-
-            var installProcess = StartInstallProcess(installerPathToInstall, installLogFilePath, quiet);
-            await installProcess.WaitForExitAsync().ConfigureAwait(false);
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet);
+            await reinstallProcess.WaitForExitAsync().ConfigureAwait(false);
         }
 
         /// <summary>
