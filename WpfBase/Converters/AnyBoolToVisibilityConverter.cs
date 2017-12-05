@@ -13,10 +13,13 @@ namespace WpfBase.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values.Any(v => v is bool && (bool)v))
+                return Visibility.Visible;
+            
             switch (parameter as string)
             {
-                case "Hidden": return values.Any(v => v is bool && (bool)v) ? Visibility.Visible : Visibility.Hidden;
-                default: return values.Any(v => v is bool && (bool)v) ? Visibility.Visible : Visibility.Collapsed;
+                case "Hidden": return Visibility.Hidden;
+                default: return Visibility.Collapsed;
             }
         }
 
