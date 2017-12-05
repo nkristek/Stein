@@ -103,16 +103,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ApplicationViewModelCommands\ModifyApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\OpenLogFolderCommand.cs" />
+    <Compile Include="Commands\InstallerViewModelCommands\PreferInstallCommand.cs" />
+    <Compile Include="Commands\InstallerViewModelCommands\PreferNothingCommand.cs" />
+    <Compile Include="Commands\InstallerViewModelCommands\PreferReinstallCommand.cs" />
+    <Compile Include="Commands\InstallerViewModelCommands\PreferUninstallCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\EditApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
-    <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
-    <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
     <Compile Include="ConfigurationTypes\ApplicationFolderExtension.cs" />
+    <Compile Include="ConfigurationTypes\InstallerOperationType.cs" />
     <Compile Include="ConfigurationTypes\SubFolderExtension.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\MsiService.cs" />

@@ -242,26 +242,19 @@
                                     </Grid.RowDefinitions>
 
                                     <Label Grid.Row="2" 
-                                           Content="{Binding SelectedInstallerBundle.NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=d}"/>
+                                           Content="{Binding SelectedInstallerBundle.NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=g}"/>
                                 </Grid>
                                 
                                 <!-- Button Column -->
                                 <Grid Grid.Column="5">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
-                                        <RowDefinition Height="8"/>
-                                        <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
+                                        <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
                                     <Button Grid.Row="0"
-                                            Content="Install"
+                                            Content="Modify"
                                             Padding="16,4"
-                                            Command="{Binding InstallApplicationCommand}"/>
-
-                                    <Button Grid.Row="2"
-                                            Content="Uninstall"
-                                            Padding="16,4"
-                                            Command="{Binding UninstallApplicationCommand}"/>
+                                            Command="{Binding ModifyApplicationCommand}"/>
                                 </Grid>
 
                                 <!-- Modify Button Column -->

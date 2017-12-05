@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Stein.Commands.InstallerViewModelCommands;
+using Stein.ConfigurationTypes;
+using System;
+using WpfBase.Commands;
 using WpfBase.ViewModels;
 
 namespace Stein.ViewModels
@@ -6,7 +9,25 @@ namespace Stein.ViewModels
     public class InstallerViewModel
         : ViewModel
     {
-        public InstallerViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
+        public InstallerViewModel(ViewModel parent = null, object view = null) : base(parent, view)
+        {
+            PreferNothingCommand = new PreferNothingCommand(this);
+            PreferInstallCommand = new PreferInstallCommand(this);
+            PreferReinstallCommand = new PreferReinstallCommand(this);
+            PreferUninstallCommand = new PreferUninstallCommand(this);
+        }
+        
+        [PropertySource(nameof(PreferredOperation), nameof(IsInstalled))]
+        public ViewModelCommand<InstallerViewModel> PreferNothingCommand { get; private set; }
+
+        [PropertySource(nameof(PreferredOperation), nameof(IsInstalled))]
+        public ViewModelCommand<InstallerViewModel> PreferInstallCommand { get; private set; }
+
+        [PropertySource(nameof(PreferredOperation), nameof(IsInstalled))]
+        public ViewModelCommand<InstallerViewModel> PreferReinstallCommand { get; private set; }
+
+        [PropertySource(nameof(PreferredOperation), nameof(IsInstalled))]
+        public ViewModelCommand<InstallerViewModel> PreferUninstallCommand { get; private set; }
         
         private string _Path;
         /// <summary>
@@ -25,37 +46,32 @@ namespace Stein.ViewModels
             }
         }
 
-        private bool _IsEnabled;
+        private InstallerOperationType _PreferredOperation;
         /// <summary>
         /// If the installer is enabled by the user
         /// </summary>
-        public bool IsEnabled
+        public InstallerOperationType PreferredOperation
         {
             get
             {
-                return _IsEnabled;
+                return _PreferredOperation;
             }
 
             set
             {
-                SetProperty(ref _IsEnabled, value);
+                SetProperty(ref _PreferredOperation, value);
             }
         }
-
-        private bool _IsDisabled;
+        
         /// <summary>
         /// If the installer is disabled by the system (for example when it isn't installed)
         /// </summary>
+        [PropertySource(nameof(IsInstalled))]
         public bool IsDisabled
         {
             get
             {
-                return _IsDisabled;
-            }
-
-            set
-            {
-                SetProperty(ref _IsDisabled, value);
+                return IsInstalled == null;
             }
         }
 
@@ -140,7 +156,8 @@ namespace Stein.ViewModels
 
             set
             {
-                SetProperty(ref _IsInstalled, value);
+                if (SetProperty(ref _IsInstalled, value))
+                    PreferredOperation = InstallerOperationType.DoNothing;
             }
         }
 

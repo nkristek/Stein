@@ -11,8 +11,7 @@ namespace Stein.ViewModels
     {
         public ApplicationViewModel(ViewModel parent = null, object view = null) : base(parent, view)
         {
-            InstallApplicationCommand = new InstallApplicationCommand(this);
-            UninstallApplicationCommand = new UninstallApplicationCommand(this);
+            ModifyApplicationCommand = new ModifyApplicationCommand(this);
             SelectFolderCommand = new SelectFolderCommand(this);
             OpenLogFolderCommand = new OpenLogFolderCommand(this);
 
@@ -20,10 +19,7 @@ namespace Stein.ViewModels
         }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; private set; }
-
-        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> ModifyApplicationCommand { get; private set; }
         
         public ViewModelCommand<ApplicationViewModel> SelectFolderCommand { get; private set; }
 

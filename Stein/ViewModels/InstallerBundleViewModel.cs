@@ -127,11 +127,11 @@ namespace Stein.ViewModels
         /// Returns if any installer is enabled
         /// </summary>
         [PropertySource(nameof(Installers))]
-        public bool AnyInstallerIsEnabled
+        public bool AnyOperationWillBeExecuted
         {
             get
             {
-                return Installers.Any(i => i.IsEnabled);
+                return Installers.Any(i => i.PreferredOperation != ConfigurationTypes.InstallerOperationType.DoNothing);
             }
         }
 

@@ -99,8 +99,6 @@ namespace Stein.Services
             if (installerFile == null)
                 return;
 
-            installerFile.IsEnabled = installer.IsEnabled;
-
             installer.IsDirty = false;
         }
         
@@ -190,19 +188,22 @@ namespace Stein.Services
                     var installerViewModel = installerBundle.Installers.FirstOrDefault(i => i.Path == installer.Path);
                     if (installerViewModel == null)
                     {
-                        installerViewModel = new InstallerViewModel(installerBundle);
+                        installerViewModel = new InstallerViewModel(installerBundle)
+                        {
+                            PreferredOperation = InstallerOperationType.DoNothing
+                        };
                         installerBundle.Installers.Add(installerViewModel);
+
                     }
 
                     installerViewModel.Name = installer.Name;
                     installerViewModel.Path = installer.Path;
-                    installerViewModel.IsEnabled = installer.IsEnabled;
-                    installerViewModel.IsDisabled = false;
                     installerViewModel.Version = installer.Version;
                     installerViewModel.Culture = installer.Culture;
                     installerViewModel.ProductCode = installer.ProductCode;
                     installerViewModel.IsInstalled = InstallService.IsProductCodeInstalled(installer.ProductCode);
                     installerViewModel.Created = installer.Created;
+                    installerViewModel.PreferredOperation = InstallerOperationType.DoNothing;
 
                     installerViewModel.IsDirty = false;
                 }
