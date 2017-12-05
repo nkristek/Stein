@@ -10,12 +10,12 @@ namespace Stein.Commands.InstallerViewModelCommands
 
         public override bool CanExecute(InstallerViewModel viewModel, object view, object parameter)
         {
-            return viewModel.PreferredOperation != ConfigurationTypes.InstallerOperationType.DoNothing;
+            return viewModel.PreferredOperation != InstallerOperationType.DoNothing;
         }
 
         public override void Execute(InstallerViewModel viewModel, object view, object parameter)
         {
-            viewModel.PreferredOperation = ConfigurationTypes.InstallerOperationType.DoNothing;
+            viewModel.PreferredOperation = InstallerOperationType.DoNothing;
         }
     }
 }

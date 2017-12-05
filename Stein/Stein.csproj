@@ -116,7 +116,8 @@
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
     <Compile Include="ConfigurationTypes\ApplicationFolderExtension.cs" />
-    <Compile Include="ConfigurationTypes\InstallerOperationType.cs" />
+    <Compile Include="ViewModels\InstallationState.cs" />
+    <Compile Include="ViewModels\InstallerOperationType.cs" />
     <Compile Include="ConfigurationTypes\SubFolderExtension.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\MsiService.cs" />

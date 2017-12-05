@@ -12,12 +12,12 @@ namespace Stein.Commands.InstallerViewModelCommands
         {
             return viewModel.IsInstalled.HasValue
                 && viewModel.IsInstalled.Value
-                && viewModel.PreferredOperation != ConfigurationTypes.InstallerOperationType.Reinstall;
+                && viewModel.PreferredOperation != InstallerOperationType.Reinstall;
         }
 
         public override void Execute(InstallerViewModel viewModel, object view, object parameter)
         {
-            viewModel.PreferredOperation = ConfigurationTypes.InstallerOperationType.Reinstall;
+            viewModel.PreferredOperation = InstallerOperationType.Reinstall;
         }
     }
 }

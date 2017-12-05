@@ -8,19 +8,6 @@ namespace Stein.ViewModels
     {
         public InstallationViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
 
-        public enum InstallationState
-        {
-            Preparing,
-
-            Install,
-
-            Reinstall,
-
-            Uninstall,
-
-            Cancelled
-        }
-
         private InstallationState _State;
         /// <summary>
         /// Current state of the installation

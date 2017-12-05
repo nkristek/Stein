@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
-using Stein.ConfigurationTypes;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
@@ -28,7 +27,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
-                State = InstallationViewModel.InstallationState.Preparing,
+                State = InstallationState.Preparing,
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
@@ -48,7 +47,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
                 foreach (var installer in installers)
                 {
-                    if (mainWindowViewModel.CurrentInstallation.State == InstallationViewModel.InstallationState.Cancelled)
+                    if (mainWindowViewModel.CurrentInstallation.State == InstallationState.Cancelled)
                     {
                         await LogService.LogInfoAsync("Operation was cancelled.");
                         break;
@@ -60,13 +59,13 @@ namespace Stein.Commands.ApplicationViewModelCommands
                     switch (installer.PreferredOperation)
                     {
                         case InstallerOperationType.Install:
-                            mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Install;
+                            mainWindowViewModel.CurrentInstallation.State = InstallationState.Install;
                             await LogService.LogInfoAsync(String.Format("Installing {0}.", installer.Name));
                             await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
 
                             break;
                         case InstallerOperationType.Reinstall:
-                            mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Reinstall;
+                            mainWindowViewModel.CurrentInstallation.State = InstallationState.Reinstall;
                             await LogService.LogInfoAsync(String.Format("Reinstalling {0}.", installer.Name));
                             // uninstall and install instead of reinstalling since the reinstall fails when another version of the installer was used (e.g. daily temps with the same version number)
                             if (installer.IsInstalled.HasValue && installer.IsInstalled.Value)
@@ -75,7 +74,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
 
                             break;
                         case InstallerOperationType.Uninstall:
-                            mainWindowViewModel.CurrentInstallation.State = InstallationViewModel.InstallationState.Uninstall;
+                            mainWindowViewModel.CurrentInstallation.State = InstallationState.Uninstall;
                             await LogService.LogInfoAsync(String.Format("Uninstalling {0}.", installer.Name));
                             if (installer.IsInstalled.HasValue && installer.IsInstalled.Value)
                                 await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null, viewModel.EnableSilentInstallation);

@@ -1,5 +1,4 @@
 ﻿using Stein.Commands.InstallerViewModelCommands;
-using Stein.ConfigurationTypes;
 using System;
 using WpfBase.Commands;
 using WpfBase.ViewModels;

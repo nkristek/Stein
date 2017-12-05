@@ -1,4 +1,4 @@
-﻿namespace Stein.ConfigurationTypes
+﻿namespace Stein.ViewModels
 {
     public enum InstallerOperationType
     {

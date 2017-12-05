@@ -131,7 +131,7 @@ namespace Stein.ViewModels
         {
             get
             {
-                return Installers.Any(i => i.PreferredOperation != ConfigurationTypes.InstallerOperationType.DoNothing);
+                return Installers.Any(i => i.PreferredOperation != InstallerOperationType.DoNothing);
             }
         }
 
