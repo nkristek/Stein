@@ -7,6 +7,7 @@
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
         xmlns:localization="clr-namespace:Stein.Localizations"
+        xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         mc:Ignorable="d"
         MinWidth="500"
         MinHeight="230"
@@ -44,8 +45,10 @@
                       VerticalScrollBarVisibility="Auto"
                       Grid.IsSharedSizeScope="True">
             <ItemsControl x:Name="InstallerList" 
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{Binding Installers}">
+                          HorizontalContentAlignment="Stretch"
+                          ItemsSource="{Binding Installers}"
+                          dd:DragDrop.IsDragSource="True"
+                          dd:DragDrop.IsDropTarget="True">
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:InstallerViewModel}">
