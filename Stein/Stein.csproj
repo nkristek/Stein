@@ -116,6 +116,16 @@
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
     <Compile Include="ConfigurationTypes\ApplicationFolderExtension.cs" />
+    <Compile Include="Localizations\Strings.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localizations\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\InstallationState.cs" />
     <Compile Include="ViewModels\InstallerOperationType.cs" />
     <Compile Include="ConfigurationTypes\SubFolderExtension.cs" />
@@ -177,6 +187,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Localizations\Strings.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localizations\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

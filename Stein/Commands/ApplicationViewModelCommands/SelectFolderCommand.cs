@@ -4,6 +4,7 @@ using Stein.ViewModels;
 using WpfBase.Commands;
 using Stein.Services;
 using System.Windows;
+using Stein.Localizations;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
@@ -16,6 +17,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
         {
             using (var dialog = new CommonOpenFileDialog())
             {
+                dialog.Title = Strings.SelectFolder;
                 dialog.IsFolderPicker = true;
                 dialog.Multiselect = false;
                 

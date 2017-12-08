@@ -1,6 +1,8 @@
 ﻿using Stein.Services;
 using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -13,6 +15,10 @@ namespace Stein
     {
         public App()
         {
+            // uncomment to test localization
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
+
             Startup += App_Startup;
             Exit += App_Exit;
 
@@ -21,6 +27,7 @@ namespace Stein
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
+
         }
         
         private void App_Startup(object sender, StartupEventArgs e)

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stein.Views"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
+        xmlns:localization="clr-namespace:Stein.Localizations"
         mc:Ignorable="d"
         MinWidth="500"
         MinHeight="250"
@@ -39,7 +40,7 @@
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="Name"/>
+                   Content="{x:Static localization:Strings.Name}"/>
 
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
@@ -63,7 +64,7 @@
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="Path"/>
+                   Content="{x:Static localization:Strings.Path}"/>
 
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
@@ -91,7 +92,7 @@
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="Silent install"/>
+                   Content="{x:Static localization:Strings.SilentInstall}"/>
 
             <CheckBox Grid.Column="2"
                       VerticalAlignment="Center"
@@ -115,14 +116,14 @@
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="Install Log"/>
+                   Content="{x:Static localization:Strings.InstallLog}"/>
 
             <CheckBox Grid.Column="2"
                       VerticalAlignment="Center"
                       IsChecked="{Binding EnableInstallationLogging}"/>
 
             <Button Grid.Column="4"
-                    Content="Open folder"
+                    Content="{x:Static localization:Strings.OpenFolder}"
                     Padding="16,4"
                     Command="{Binding OpenLogFolderCommand}"/>
         </Grid>
@@ -139,13 +140,13 @@
 
             <Button x:Name="OkButton" 
                     Grid.Column="1" 
-                    Content="Ok"
+                    Content="{x:Static localization:Strings.Ok}"
                     Padding="16,4"
                     Click="OnDialogOkButtonClick"
                     IsEnabled="{Binding Path, Converter={x:Static converters:StringNotNullOrEmptyToBoolConverter.Instance}}"/>
 
             <Button Grid.Column="3" 
-                    Content="Cancel"
+                    Content="{x:Static localization:Strings.Cancel}"
                     Padding="16,4"
                     Click="OnDialogCancelButtonClick"/>
         </Grid>

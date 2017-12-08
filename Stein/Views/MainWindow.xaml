@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
+        xmlns:localization="clr-namespace:Stein.Localizations"
         mc:Ignorable="d"
         Title="Stein - Silent Temp Installer" 
         MinWidth="500"
@@ -150,7 +151,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" 
-               Content="Loading..."
+               Content="{x:Static localization:Strings.Loading}"
                HorizontalAlignment="Center"
                VerticalAlignment="Center">
                 <Label.Visibility>
@@ -252,7 +253,7 @@
                                     </Grid.RowDefinitions>
 
                                     <Button Grid.Row="0"
-                                            Content="Modify"
+                                            Content="{x:Static localization:Strings.Modify}"
                                             Padding="16,4"
                                             Command="{Binding ModifyApplicationCommand}"/>
                                 </Grid>
@@ -301,23 +302,23 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0" 
-                   Content="Preparing..."
+                   Content="{x:Static localization:Strings.Preparing}"
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Preparing}"/>
 
             <Label Grid.Column="0" 
-                   Content="Installing..."
+                   Content="{x:Static localization:Strings.Installing}"
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
 
             <Label Grid.Column="0" 
-                   Content="Reinstalling..."
+                   Content="{x:Static localization:Strings.Reinstalling}"
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
 
             <Label Grid.Column="0" 
-                   Content="Uninstalling..."
+                   Content="{x:Static localization:Strings.Uninstalling}"
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
 
             <Label Grid.Column="0" 
-                   Content="Cancelled, finishing current operation..."
+                   Content="{x:Static localization:Strings.Cancelled}"
                    Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Cancelled}"/>
 
             <Label Grid.Column="2"
@@ -327,7 +328,7 @@
                    Content="{Binding CurrentInstallation.Name}"/>
 
             <Button Grid.Column="6"
-                    Content="Cancel"
+                    Content="{x:Static localization:Strings.Cancel}"
                     Padding="16,4"
                     Command="{Binding CancelOperationCommand}"/>
         </Grid>

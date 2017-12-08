@@ -1,4 +1,5 @@
-﻿using Stein.ViewModels;
+﻿using Stein.Localizations;
+using Stein.ViewModels;
 using Stein.Views;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,11 @@ namespace Stein.Services
         {
             var viewModelType = dialogViewModel.GetType();
             if (!ViewModelsToViewsMapping.ContainsKey(viewModelType))
-                throw new NotSupportedException("No view found for viewmodel");
+                throw new NotSupportedException(Strings.NoViewExistsForViewModel);
 
             var dialog = Activator.CreateInstance(ViewModelsToViewsMapping[viewModelType]) as Window;
             if (dialog == null)
-                throw new ArgumentException("view for viewmodel is no window");
+                throw new ArgumentException(Strings.ViewIsNoWindow);
 
             dialog.Title = title ?? String.Empty;
             dialog.DataContext = dialogViewModel;

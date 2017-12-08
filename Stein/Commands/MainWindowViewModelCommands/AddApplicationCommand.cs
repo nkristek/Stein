@@ -7,6 +7,7 @@ using Stein.Services;
 using Stein.ViewModels;
 using WpfBase.Commands;
 using WpfBase.Extensions;
+using Stein.Localizations;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -27,12 +28,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 EnableSilentInstallation = true
             };
             
-            if (DialogService.ShowDialog(application, "Add folder") != true)
+            if (DialogService.ShowDialog(application, Strings.AddFolder) != true)
                 return;
 
             if (String.IsNullOrWhiteSpace(application.Path) || application.Path.ContainsInvalidPathChars() || !Directory.Exists(application.Path))
             {
-                MessageBox.Show("Selected path is not valid!");
+                MessageBox.Show(Strings.SelectedPathNotValid);
                 return;
             }
 

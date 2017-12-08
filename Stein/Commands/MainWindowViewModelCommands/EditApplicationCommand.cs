@@ -6,6 +6,7 @@ using WpfBase.Commands;
 using System.Windows;
 using System;
 using Stein.ConfigurationTypes;
+using Stein.Localizations;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {
@@ -33,7 +34,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
                 EnableSilentInstallation = applicationToEdit.EnableSilentInstallation,
                 EnableInstallationLogging = applicationToEdit.EnableInstallationLogging
             };
-            if (DialogService.ShowDialog(applicationCopy, "Edit folder") != true)
+            if (DialogService.ShowDialog(applicationCopy, Strings.EditFolder) != true)
                 return;
 
             var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationCopy.FolderId);

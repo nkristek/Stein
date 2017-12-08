@@ -4,6 +4,7 @@ using System.Linq;
 using Stein.ConfigurationTypes;
 using Stein.ViewModels;
 using WpfBase.ViewModels;
+using Stein.Localizations;
 
 namespace Stein.Services
 {
@@ -47,7 +48,7 @@ namespace Stein.Services
                 SaveApplicationViewModel(viewModelToSave as ApplicationViewModel);
                 return;
             }
-            throw new NotSupportedException("This ViewModel is not supported.");
+            throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace Stein.Services
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
                 return CreateApplicationViewModel(entity as ApplicationFolder, parent) as TViewModel;
-            throw new NotSupportedException("This ViewModel is not supported.");
+            throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
         /// <summary>
@@ -231,7 +232,7 @@ namespace Stein.Services
                 UpdateApplicationViewModel(viewModelToUpdate as ApplicationViewModel, entity as ApplicationFolder);
                 return;
             }
-            throw new NotSupportedException("This ViewModel is not supported.");
+            throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
         /// <summary>
@@ -245,7 +246,7 @@ namespace Stein.Services
             {
                 associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
                 if (associatedApplicationFolder == null)
-                    throw new Exception("folder not found in cached folders");
+                    throw new Exception(Strings.ApplicationFolderNotCached);
             }
 
             application.FolderId = associatedApplicationFolder.Id;

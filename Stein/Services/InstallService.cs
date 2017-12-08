@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Stein.Localizations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -164,7 +165,7 @@ namespace Stein.Services
         private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
-                throw new ArgumentException("Installer path is null or empty");
+                throw new ArgumentException(Strings.InstallerPathIsEmpty);
 
             var argumentsBuilder = new StringBuilder();
 
@@ -222,7 +223,7 @@ namespace Stein.Services
         private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
-                throw new ArgumentException("Installer path is empty");
+                throw new ArgumentException(Strings.InstallerPathIsEmpty);
 
             var argumentsBuilder = new StringBuilder();
 
@@ -277,7 +278,7 @@ namespace Stein.Services
         private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true)
         {
             if (String.IsNullOrWhiteSpace(productCode))
-                throw new ArgumentException("Productcode is empty");
+                throw new ArgumentException(Strings.ProductCodeIsEmpty);
 
             var argumentsBuilder = new StringBuilder();
 

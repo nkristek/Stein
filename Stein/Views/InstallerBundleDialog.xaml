@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Stein.Views"
         xmlns:viewmodels="clr-namespace:Stein.ViewModels"
         xmlns:converters="clr-namespace:WpfBase.Converters;assembly=WpfBase"
+        xmlns:localization="clr-namespace:Stein.Localizations"
         mc:Ignorable="d"
         MinWidth="500"
         MinHeight="230"
@@ -22,30 +23,22 @@
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
-            <Label Grid.Column="0"
-               VerticalAlignment="Center"
-               VerticalContentAlignment="Center"
-               Content="Please select what to do:"/>
 
-            <Label Grid.Column="3"
+            <Label Grid.Column="1"
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
-                   Content="Bundle language:"/>
+                   Content="{x:Static localization:Strings.BundleLanguage}"/>
             
-            <Label Grid.Column="4"
+            <Label Grid.Column="2"
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    Content="{Binding Culture}"/>
         </Grid>
         
-
         <ScrollViewer Grid.Row="2" 
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto"
@@ -82,7 +75,7 @@
                                     <UniformGrid Rows="1">
                                         <UniformGrid.Resources>
                                             <Style TargetType="{x:Type Button}">
-                                                <Setter Property="Width" Value="70" />
+                                                <Setter Property="Width" Value="90" />
                                                 <Setter Property="BorderThickness" Value="0" />
                                                 <Setter Property="BorderBrush" Value="Gray" />
                                                 <Setter Property="Background" Value="WhiteSmoke" />
@@ -116,21 +109,21 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </UniformGrid.Resources>
-                                        
-                                        <Button Content="Nothing"
+
+                                        <Button Content="{x:Static localization:Strings.Nothing}"
                                                 Command="{Binding PreferNothingCommand}"/>
-                                        
-                                        <Button Content="Install"
+
+                                        <Button Content="{x:Static localization:Strings.Install}"
                                                 BorderThickness="1,0,0,0"
                                                 Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToNotVisibilityConverter.Instance}}"
                                                 Command="{Binding PreferInstallCommand}"/>
-                                        
-                                        <Button Content="Reinstall"
+
+                                        <Button Content="{x:Static localization:Strings.Reinstall}"
                                                 BorderThickness="1,0,0,0"
                                                 Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"
                                                 Command="{Binding PreferReinstallCommand}"/>
-                                        
-                                        <Button Content="Uninstall"
+
+                                        <Button Content="{x:Static localization:Strings.Uninstall}"
                                                 BorderThickness="1,0,0,0"
                                                 Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"
                                                 Command="{Binding PreferUninstallCommand}"/>
@@ -159,13 +152,13 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="1" 
-                    Content="Ok"
+                    Content="{x:Static localization:Strings.Ok}"
                     Padding="16,4"
                     Click="OnDialogOkButtonClick"
                     IsEnabled="{Binding AnyOperationWillBeExecuted}"/>
 
             <Button Grid.Column="3" 
-                    Content="Cancel"
+                    Content="{x:Static localization:Strings.Cancel}"
                     Padding="16,4"
                     Click="OnDialogCancelButtonClick"/>
         </Grid>

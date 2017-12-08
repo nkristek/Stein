@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Stein.ConfigurationTypes;
+using Stein.Localizations;
 
 namespace Stein.Services
 {
@@ -87,7 +88,7 @@ namespace Stein.Services
             }
             catch (Exception exception)
             {
-                throw new Exception("Saving the configuration file failed.", exception);
+                throw new Exception(Strings.SaveConfigurationFailed, exception);
             }
         }
 
@@ -103,7 +104,7 @@ namespace Stein.Services
             }
             catch (Exception exception)
             {
-                throw new Exception("Saving the configuration file failed.", exception);
+                throw new Exception(Strings.SaveConfigurationFailed, exception);
             }
         }
     }
