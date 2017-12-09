@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Shell;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class TaskbarService
     {

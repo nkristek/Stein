@@ -1,8 +1,7 @@
 ﻿using Microsoft.Win32;
-using System;
 using nkristek.MVVMBase;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public class InstalledProgram
         : Disposable

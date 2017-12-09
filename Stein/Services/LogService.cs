@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class LogService
     {

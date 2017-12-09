@@ -1,14 +1,15 @@
-﻿using Stein.Services;
-using Stein.ViewModels;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using System;
-using Stein.ConfigurationTypes;
-using Stein.Localizations;
+using System.Threading.Tasks;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.ConfigurationTypes;
+using nkristek.Stein.Localizations;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.MainWindowViewModelCommands
+
+namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 {
     public class EditApplicationCommand
         : AsyncViewModelCommand<MainWindowViewModel>

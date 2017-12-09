@@ -1,7 +1,7 @@
-﻿using Stein.ViewModels;
 ﻿using nkristek.MVVMBase.Commands;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.InstallerViewModelCommands
+namespace nkristek.Stein.Commands.InstallerViewModelCommands
 {
     public class PreferNothingCommand
         : ViewModelCommand<InstallerViewModel>

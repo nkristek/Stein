@@ -1,9 +1,9 @@
-﻿using Stein.Commands.InstallerViewModelCommands;
-using System;
+﻿using System;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using nkristek.Stein.Commands.InstallerViewModelCommands;
 
-namespace Stein.ViewModels
+namespace nkristek.Stein.ViewModels
 {
     public class InstallerViewModel
         : ViewModel

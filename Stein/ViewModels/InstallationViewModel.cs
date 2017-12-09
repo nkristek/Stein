@@ -1,7 +1,7 @@
 ﻿using System;
 using nkristek.MVVMBase.ViewModels;
 
-namespace Stein.ViewModels
+namespace nkristek.Stein.ViewModels
 {
     public class InstallationViewModel
         : ViewModel

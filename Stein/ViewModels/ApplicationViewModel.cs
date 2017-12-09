@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Stein.Commands.ApplicationViewModelCommands;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using nkristek.Stein.Commands.ApplicationViewModelCommands;
 
-namespace Stein.ViewModels
+namespace nkristek.Stein.ViewModels
 {
     public class ApplicationViewModel
         : ViewModel

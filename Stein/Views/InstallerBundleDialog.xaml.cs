@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Stein.Views
+namespace nkristek.Stein.Views
 {
     /// <summary>
     /// Interaction logic for SelectInstallersDialog.xaml

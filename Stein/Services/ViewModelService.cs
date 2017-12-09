@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stein.ConfigurationTypes;
-using Stein.ViewModels;
-using Stein.Localizations;
 using nkristek.MVVMBase.ViewModels;
+using nkristek.Stein.Localizations;
+using nkristek.Stein.ConfigurationTypes;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class ViewModelService
     {

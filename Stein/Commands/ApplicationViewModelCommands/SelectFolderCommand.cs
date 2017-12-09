@@ -1,12 +1,12 @@
 ﻿using System;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using Stein.ViewModels;
-using Stein.Services;
 using System.Windows;
-using Stein.Localizations;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.Services;
+using nkristek.Stein.Localizations;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.ApplicationViewModelCommands
+namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 {
     public class SelectFolderCommand
         : ViewModelCommand<ApplicationViewModel>

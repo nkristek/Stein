@@ -1,11 +1,11 @@
-﻿using Stein.Services;
-using Stein.ViewModels;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.ApplicationViewModelCommands
+namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 {
     public class OpenLogFolderCommand
         : ViewModelCommand<ApplicationViewModel>

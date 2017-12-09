@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Stein.Services;
-using Stein.ViewModels;
-using System.Windows;
 using System.Linq;
-using Stein.ConfigurationTypes;
+using System.Windows;
+using System.Threading.Tasks;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.ConfigurationTypes;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.MainWindowViewModelCommands
+namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 {
     public class RefreshApplicationsCommand
         : AsyncViewModelCommand<MainWindowViewModel>

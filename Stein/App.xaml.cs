@@ -1,12 +1,12 @@
-﻿using Stein.Services;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using nkristek.Stein.Services;
 
-namespace Stein
+namespace nkristek.Stein
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.Deployment.WindowsInstaller;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class MsiService
     {

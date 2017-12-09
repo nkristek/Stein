@@ -1,4 +1,4 @@
-﻿namespace Stein.ViewModels
+﻿namespace nkristek.Stein.ViewModels
 {
     public enum InstallerOperationType
     {

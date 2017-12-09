@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace Stein.Views
+namespace nkristek.Stein.Views
 {
     /// <summary>
     /// Interaction logic for ApplicationDialog.xaml

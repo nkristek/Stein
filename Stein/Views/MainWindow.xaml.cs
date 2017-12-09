@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
-using Stein.Services;
-using Stein.ViewModels;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein
+namespace nkristek.Stein
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

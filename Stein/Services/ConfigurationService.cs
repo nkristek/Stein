@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Stein.ConfigurationTypes;
-using Stein.Localizations;
+using nkristek.Stein.ConfigurationTypes;
+using nkristek.Stein.Localizations;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class ConfigurationService
     {

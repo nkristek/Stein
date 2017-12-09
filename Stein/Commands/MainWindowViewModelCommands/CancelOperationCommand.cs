@@ -1,9 +1,9 @@
 ﻿using System;
-using Stein.ViewModels;
-using Stein.Services;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.MainWindowViewModelCommands
+namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 {
     public class CancelOperationCommand
         : ViewModelCommand<MainWindowViewModel>

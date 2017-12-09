@@ -1,12 +1,12 @@
-﻿using Stein.Localizations;
-using Stein.ViewModels;
-using Stein.Views;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Windows;
+using System.Collections.Generic;
 using nkristek.MVVMBase.ViewModels;
+using nkristek.Stein.Localizations;
+using nkristek.Stein.ViewModels;
+using nkristek.Stein.Views;
 
-namespace Stein.Services
+namespace nkristek.Stein.Services
 {
     public static class DialogService
     {

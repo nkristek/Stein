@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Stein.ConfigurationTypes
+namespace nkristek.Stein.ConfigurationTypes
 {
     [Serializable]
     [XmlRoot("Configuration")]

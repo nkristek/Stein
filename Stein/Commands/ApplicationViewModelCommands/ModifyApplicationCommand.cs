@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Stein.Services;
-using Stein.ViewModels;
 using nkristek.MVVMBase.Commands;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.ApplicationViewModelCommands
+namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 {
     public class ModifyApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>

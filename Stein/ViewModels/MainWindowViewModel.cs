@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using Stein.Commands.MainWindowViewModelCommands;
-using Stein.Services;
 using System.Windows.Shell;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using nkristek.Stein.Services;
+using nkristek.Stein.Commands.MainWindowViewModelCommands;
 
-namespace Stein.ViewModels
+namespace nkristek.Stein.ViewModels
 {
     public class MainWindowViewModel
         : ViewModel

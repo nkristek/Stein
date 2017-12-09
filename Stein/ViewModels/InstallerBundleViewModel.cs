@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using nkristek.MVVMBase.ViewModels;
 
-namespace Stein.ViewModels
+namespace nkristek.Stein.ViewModels
 {
     public class InstallerBundleViewModel
         : ViewModel

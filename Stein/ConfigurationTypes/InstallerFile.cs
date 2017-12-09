@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using nkristek.MVVMBase.XmlTypes;
 
-namespace Stein.ConfigurationTypes
+namespace nkristek.Stein.ConfigurationTypes
 {
     [Serializable]
     public class InstallerFile

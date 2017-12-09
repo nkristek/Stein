@@ -2,14 +2,14 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Stein.ConfigurationTypes;
-using Stein.Services;
-using Stein.ViewModels;
-using Stein.Localizations;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.Extensions;
+using nkristek.Stein.Localizations;
+using nkristek.Stein.ConfigurationTypes;
+using nkristek.Stein.Services;
+using nkristek.Stein.ViewModels;
 
-namespace Stein.Commands.MainWindowViewModelCommands
+namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 {
     public class AddApplicationCommand
         : AsyncViewModelCommand<MainWindowViewModel>

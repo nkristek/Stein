@@ -1,11 +1,11 @@
-﻿using Stein.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using nkristek.MVVMBase.XmlTypes;
+using nkristek.Stein.Services;
 
-namespace Stein.ConfigurationTypes
+namespace nkristek.Stein.ConfigurationTypes
 {
     public static class SubFolderExtension
     {
