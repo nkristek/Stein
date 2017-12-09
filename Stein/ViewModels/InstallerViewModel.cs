@@ -1,7 +1,7 @@
 ﻿using Stein.Commands.InstallerViewModelCommands;
 using System;
-using WpfBase.Commands;
-using WpfBase.ViewModels;
+using nkristek.MVVMBase.Commands;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.ViewModels
 {

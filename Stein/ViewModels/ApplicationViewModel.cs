@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Stein.Commands.ApplicationViewModelCommands;
-using WpfBase.Commands;
-using WpfBase.ViewModels;
+using nkristek.MVVMBase.Commands;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.ViewModels
 {

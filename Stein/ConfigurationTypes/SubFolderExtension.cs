@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WpfBase.XmlTypes;
+using nkristek.MVVMBase.XmlTypes;
 
 namespace Stein.ConfigurationTypes
 {

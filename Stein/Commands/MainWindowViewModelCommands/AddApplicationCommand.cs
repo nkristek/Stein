@@ -5,9 +5,9 @@ using System.Windows.Forms;
 using Stein.ConfigurationTypes;
 using Stein.Services;
 using Stein.ViewModels;
-using WpfBase.Commands;
-using WpfBase.Extensions;
 using Stein.Localizations;
+using nkristek.MVVMBase.Commands;
+using nkristek.MVVMBase.Extensions;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Stein.ViewModels;
-using WpfBase.Commands;
 using Stein.Services;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {

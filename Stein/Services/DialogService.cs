@@ -4,7 +4,7 @@ using Stein.Views;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using WpfBase.ViewModels;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.Services
 {

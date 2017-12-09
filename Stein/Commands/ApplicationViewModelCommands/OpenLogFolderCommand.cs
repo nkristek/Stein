@@ -3,7 +3,7 @@ using Stein.ViewModels;
 using System;
 using System.Diagnostics;
 using System.Windows;
-using WpfBase.Commands;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {

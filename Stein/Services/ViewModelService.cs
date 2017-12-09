@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Stein.ConfigurationTypes;
 using Stein.ViewModels;
-using WpfBase.ViewModels;
 using Stein.Localizations;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.Services
 {

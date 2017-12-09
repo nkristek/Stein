@@ -1,5 +1,5 @@
 ﻿using Stein.ViewModels;
-using WpfBase.Commands;
+﻿using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.InstallerViewModelCommands
 {

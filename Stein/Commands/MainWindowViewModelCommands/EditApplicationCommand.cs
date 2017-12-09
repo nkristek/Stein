@@ -2,11 +2,11 @@
 using Stein.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
-using WpfBase.Commands;
 using System.Windows;
 using System;
 using Stein.ConfigurationTypes;
 using Stein.Localizations;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {

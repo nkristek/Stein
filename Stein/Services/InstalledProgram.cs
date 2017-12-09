@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
-using WpfBase;
+using nkristek.MVVMBase;
 
 namespace Stein.Services
 {

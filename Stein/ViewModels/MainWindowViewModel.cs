@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Windows;
 using Stein.Commands.MainWindowViewModelCommands;
-using WpfBase.Commands;
-using WpfBase.ViewModels;
 using Stein.Services;
 using System.Windows.Shell;
+using nkristek.MVVMBase.Commands;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.ViewModels
 {

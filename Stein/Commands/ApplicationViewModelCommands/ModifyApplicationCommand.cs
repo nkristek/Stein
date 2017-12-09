@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Stein.Services;
 using Stein.ViewModels;
-using WpfBase.Commands;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {

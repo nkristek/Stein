@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Stein.Services;
 using Stein.ViewModels;
-using WpfBase.Commands;
 using System.Windows;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.MainWindowViewModelCommands
 {

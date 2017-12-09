@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein", "Stein\Stein.csproj", "{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfBase", "WpfBase\WpfBase.csproj", "{4D3661A8-A1CA-45A3-87E6-160859D9F896}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CE3354E6-BA26-4396-BA2D-FB741666F21E}"
 EndProject
@@ -25,14 +23,6 @@ Global
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|x64.ActiveCfg = Release|x64
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|x64.Build.0 = Release|x64
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Debug|x64.Build.0 = Debug|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|x64.ActiveCfg = Release|Any CPU
-		{4D3661A8-A1CA-45A3-87E6-160859D9F896}.Release|x64.Build.0 = Release|Any CPU
 		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|Any CPU.ActiveCfg = Debug
 		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|x64.ActiveCfg = Debug
 		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Release|Any CPU.ActiveCfg = Release

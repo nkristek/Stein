@@ -1,5 +1,5 @@
 ﻿using System;
-using WpfBase.ViewModels;
+using nkristek.MVVMBase.ViewModels;
 
 namespace Stein.ViewModels
 {

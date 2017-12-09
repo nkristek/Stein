@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WpfBase.Extensions;
+using nkristek.MVVMBase.Extensions;
 
 namespace Stein.Services
 {

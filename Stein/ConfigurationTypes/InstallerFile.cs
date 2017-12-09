@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
-using WpfBase.XmlTypes;
+using nkristek.MVVMBase.XmlTypes;
 
 namespace Stein.ConfigurationTypes
 {

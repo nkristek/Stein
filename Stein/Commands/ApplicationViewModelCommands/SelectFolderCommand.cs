@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Stein.ViewModels;
-using WpfBase.Commands;
 using Stein.Services;
 using System.Windows;
 using Stein.Localizations;
+using nkristek.MVVMBase.Commands;
 
 namespace Stein.Commands.ApplicationViewModelCommands
 {
