@@ -13,7 +13,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
     {
         public SelectFolderCommand(ApplicationViewModel parent) : base(parent) { }
 
-        public override void Execute(ApplicationViewModel viewModel, object view, object parameter)
+        protected override void ExecuteSync(ApplicationViewModel viewModel, object view, object parameter)
         {
             using (var dialog = new CommonOpenFileDialog())
             {
@@ -28,7 +28,7 @@ namespace Stein.Commands.ApplicationViewModelCommands
             }
         }
 
-        public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
             MessageBox.Show(exception.Message);

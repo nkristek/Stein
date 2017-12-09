@@ -10,19 +10,19 @@ namespace Stein.Commands.MainWindowViewModelCommands
     {
         public CancelOperationCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation != null 
                 && viewModel.CurrentInstallation.State != InstallationState.Preparing 
                 && viewModel.CurrentInstallation.State != InstallationState.Cancelled;
         }
 
-        public override void Execute(MainWindowViewModel viewModel, object view, object parameter)
+        protected override void ExecuteSync(MainWindowViewModel viewModel, object view, object parameter)
         {
             viewModel.CurrentInstallation.State = InstallationState.Cancelled;
         }
 
-        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
         }

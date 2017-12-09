@@ -8,32 +8,35 @@ namespace WpfBase.Commands
     /// ICommand implementation with INotifyPropertyChanged support
     /// </summary>
     public abstract class BindableCommand
-        : ComputedBindableBase, ICommand
+        : ComputedBindableBase, ICommand, IRaiseCanExecuteChanged
     {
-        private bool _IsWorking;
-        /// <summary>
-        /// Indicates if the command is working at the moment
-        /// </summary>
-        public bool IsWorking
-        {
-            get
-            {
-                return _IsWorking;
-            }
-
-            set
-            {
-                if (SetProperty(ref _IsWorking, value))
-                    RaiseCanExecuteChanged();
-            }
-        }
-
         public virtual bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public abstract void Execute(object parameter);
+        public void Execute(object parameter)
+        {
+            try
+            {
+                ExecuteSync(parameter);
+            }
+            catch (Exception exception)
+            {
+                try
+                {
+                    OnThrownException(parameter, exception);
+                }
+                catch { }
+            }
+        }
+
+        protected abstract void ExecuteSync(object parameter);
+
+        /// <summary>
+        /// Will be called when ExecuteSync throws an exception
+        /// </summary>
+        protected virtual void OnThrownException(object parameter, Exception exception) { }
 
         private EventHandler _internalCanExecuteChanged;
 

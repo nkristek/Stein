@@ -29,16 +29,16 @@ namespace Stein.ConfigurationTypes
         public DateTimeXml CreatedXml;
 
         [XmlIgnore]
-        public DateTime Created
+        public DateTime? Created
         {
             get
             {
-                return CreatedXml.Date ?? DateTime.MinValue;
+                return CreatedXml?.Date;
             }
 
             set
             {
-                CreatedXml = new DateTimeXml(value);
+                CreatedXml = value.HasValue ? new DateTimeXml(value.Value) : null;
             }
         }
     }

@@ -170,48 +170,52 @@ namespace Stein.Services
         /// <returns>List of new or updated InstallerBundleViewModels</returns>
         private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
         {
-            foreach (var installerFileGroup in subFolder.FindAllInstallerFiles().GroupBy(i => i.Culture))
+            foreach (var installerFileGroup in subFolder.FindAllInstallerFiles().GroupBy(i => i.Culture).Select(ifg => ifg.ToList()))
             {
                 var currentCulture = installerFileGroup.FirstOrDefault()?.Culture;
 
-                var installerBundle = existingInstallerBundles?.FirstOrDefault(ib => ib.Path == subFolder.Path && ib.Culture == currentCulture);
-                if (installerBundle == null)
+                var installerBundleViewModel = existingInstallerBundles?.FirstOrDefault(ib => ib.Path == subFolder.Path && ib.Culture == currentCulture);
+                if (installerBundleViewModel == null)
                 {
-                    installerBundle = new InstallerBundleViewModel(parent)
+                    installerBundleViewModel = new InstallerBundleViewModel(parent)
                     {
                         Name = subFolder.Name,
                         Path = subFolder.Path
                     };
                 }
 
-                foreach (var installer in installerFileGroup)
+                // remove all InstallerViewModel's which don't exist in the installerFileGroup anymore
+                var installerViewModelsToRemove = installerBundleViewModel.Installers.Where(i => !installerFileGroup.Any(installerFile => installerFile.Path == i.Path)).ToList();
+                foreach (var installerViewModelToRemove in installerViewModelsToRemove)
+                    installerBundleViewModel.Installers.Remove(installerViewModelToRemove);
+                
+                foreach (var installerFile in installerFileGroup)
                 {
-                    var installerViewModel = installerBundle.Installers.FirstOrDefault(i => i.Path == installer.Path);
+                    var installerViewModel = installerBundleViewModel.Installers.FirstOrDefault(i => i.Path == installerFile.Path);
                     if (installerViewModel == null)
                     {
-                        installerViewModel = new InstallerViewModel(installerBundle)
+                        installerViewModel = new InstallerViewModel(installerBundleViewModel)
                         {
                             PreferredOperation = InstallerOperationType.DoNothing
                         };
-                        installerBundle.Installers.Add(installerViewModel);
-
+                        installerBundleViewModel.Installers.Add(installerViewModel);
                     }
 
-                    installerViewModel.Name = installer.Name;
-                    installerViewModel.Path = installer.Path;
-                    installerViewModel.Version = installer.Version;
-                    installerViewModel.Culture = installer.Culture;
-                    installerViewModel.ProductCode = installer.ProductCode;
-                    installerViewModel.IsInstalled = InstallService.IsProductCodeInstalled(installer.ProductCode);
-                    installerViewModel.Created = installer.Created;
+                    installerViewModel.Name = installerFile.Name;
+                    installerViewModel.Path = installerFile.Path;
+                    installerViewModel.Version = installerFile.Version;
+                    installerViewModel.Culture = installerFile.Culture;
+                    installerViewModel.ProductCode = installerFile.ProductCode;
+                    installerViewModel.IsInstalled = InstallService.IsProductCodeInstalled(installerFile.ProductCode);
+                    installerViewModel.Created = installerFile.Created;
                     installerViewModel.PreferredOperation = InstallerOperationType.DoNothing;
 
                     installerViewModel.IsDirty = false;
                 }
 
-                installerBundle.IsDirty = false;
+                installerBundleViewModel.IsDirty = false;
 
-                yield return installerBundle;
+                yield return installerBundleViewModel;
             }
 
             foreach (var subSubFolder in subFolder.SubFolders)
@@ -255,7 +259,7 @@ namespace Stein.Services
             application.EnableSilentInstallation = associatedApplicationFolder.EnableSilentInstallation;
             application.EnableInstallationLogging = associatedApplicationFolder.EnableInstallationLogging;
 
-            var installerBundles = CreateOrUpdateInstallerBundleViewModels(associatedApplicationFolder, application, application.InstallerBundles.ToList());
+            var installerBundles = CreateOrUpdateInstallerBundleViewModels(associatedApplicationFolder, application, application.InstallerBundles).ToList();
             application.InstallerBundles.Clear();
             foreach (var installerBundle in installerBundles)
                 application.InstallerBundles.Add(installerBundle);

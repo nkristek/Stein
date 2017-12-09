@@ -9,11 +9,11 @@ namespace WpfBase.Commands
     /// IAsyncCommand implementation with INotifyPropertyChanged support
     /// </summary>
     public abstract class AsyncBindableCommand
-        : ComputedBindableBase, IAsyncCommand
+        : ComputedBindableBase, ICommand, IRaiseCanExecuteChanged
     {
         private bool _IsWorking;
         /// <summary>
-        /// Indicates if the command is working at the moment
+        /// Indicates if the command is working
         /// </summary>
         public bool IsWorking
         {
@@ -22,7 +22,7 @@ namespace WpfBase.Commands
                 return _IsWorking;
             }
 
-            set
+            private set
             {
                 if (SetProperty(ref _IsWorking, value))
                     RaiseCanExecuteChanged();
@@ -36,11 +36,32 @@ namespace WpfBase.Commands
 
         public async void Execute(object parameter)
         {
-            await ExecuteAsync(parameter);
+            try
+            {
+                IsWorking = true;
+                await ExecuteAsync(parameter);
+            }
+            catch (Exception exception)
+            {
+                try
+                {
+                    OnThrownException(parameter, exception);
+                }
+                catch { }
+            }
+            finally
+            {
+                IsWorking = false;
+            }
         }
 
-        public abstract Task ExecuteAsync(object parameter);
-        
+        protected abstract Task ExecuteAsync(object parameter);
+
+        /// <summary>
+        /// Will be called when ExecuteAsync throws an exception
+        /// </summary>
+        protected virtual void OnThrownException(object parameter, Exception exception) { }
+
         private EventHandler _internalCanExecuteChanged;
 
         public event EventHandler CanExecuteChanged

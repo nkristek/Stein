@@ -8,20 +8,46 @@ namespace WpfBase.Commands
     /// IAsyncCommand implementation
     /// </summary>
     public abstract class AsyncCommand
-        : IAsyncCommand
+        : ICommand, IRaiseCanExecuteChanged
     {
+        /// <summary>
+        /// Indicates if the command is working
+        /// </summary>
+        public bool IsWorking { get; private set; }
+
         public virtual bool CanExecute(object parameter)
         {
             return true;
         }
-
-        public abstract Task ExecuteAsync(object parameter);
-
+        
         public async void Execute(object parameter)
         {
-            await ExecuteAsync(parameter);
+            try
+            {
+                IsWorking = true;
+                await ExecuteAsync(parameter);
+            }
+            catch (Exception exception)
+            {
+                try
+                {
+                    OnThrownException(parameter, exception);
+                }
+                catch { }
+            }
+            finally
+            {
+                IsWorking = false;
+            }
         }
 
+        protected abstract Task ExecuteAsync(object parameter);
+
+        /// <summary>
+        /// Will be called when ExecuteAsync throws an exception
+        /// </summary>
+        protected virtual void OnThrownException(object parameter, Exception exception) { }
+        
         private EventHandler _internalCanExecuteChanged;
 
         public event EventHandler CanExecuteChanged

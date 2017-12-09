@@ -14,12 +14,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
     {
         public RefreshApplicationsCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
+        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             // save changes from application viewmodels back to the configuration
             foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
@@ -39,7 +39,7 @@ namespace Stein.Commands.MainWindowViewModelCommands
             viewModel.IsDirty = false;
         }
 
-        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
             MessageBox.Show(exception.Message);

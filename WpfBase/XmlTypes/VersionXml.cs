@@ -6,6 +6,9 @@ namespace WpfBase.XmlTypes
 {
     /// <summary>
     /// Helper class to serialize/deserialize Version to/from XML
+    /// Can be used like:
+    /// [XmlElement("Version", typeof(VersionXml))]
+    /// public Version Version;
     /// </summary>
     [Serializable]
     [XmlType("Version")]

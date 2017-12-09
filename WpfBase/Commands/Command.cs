@@ -7,14 +7,35 @@ namespace WpfBase.Commands
     /// ICommand implementation
     /// </summary>
     public abstract class Command
-        : ICommand
+        : ICommand, IRaiseCanExecuteChanged
     {
         public virtual bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public abstract void Execute(object parameter);
+        public void Execute(object parameter)
+        {
+            try
+            {
+                ExecuteSync(parameter);
+            }
+            catch (Exception exception)
+            {
+                try
+                {
+                    OnThrownException(parameter, exception);
+                }
+                catch { }
+            }
+        }
+
+        protected abstract void ExecuteSync(object parameter);
+
+        /// <summary>
+        /// Will be called when ExecuteSync throws an exception
+        /// </summary>
+        protected virtual void OnThrownException(object parameter, Exception exception) { }
 
         private EventHandler _internalCanExecuteChanged;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace WpfBase.ViewModels
 {
@@ -71,6 +70,17 @@ namespace WpfBase.ViewModels
             return null;
         }
 
+        /// <summary>
+        /// The top most parent of this ViewModel
+        /// </summary>
+        public ViewModel TopMost
+        {
+            get
+            {
+                return Parent?.TopMost ?? this;
+            }
+        }
+
         private WeakReference<object> _View;
         /// <summary>
         /// The View of this ViewModel. Will return the view of the parent if no set.
@@ -93,18 +103,8 @@ namespace WpfBase.ViewModels
         }
 
         /// <summary>
-        /// The top most parent of this ViewModel
-        /// </summary>
-        public ViewModel TopMost
-        {
-            get
-            {
-                return Parent?.TopMost ?? this;
-            }
-        }
-
-        /// <summary>
-        /// This will set the IsDirty property to true is a property was changed, ignoring IsDirty, Parent and View.
+        /// This will set the IsDirty property to true is a property was changed, 
+        /// It ignores IsDirty, Parent and View.
         /// Override if you want different behaviour.
         /// </summary>
         /// <param name="propertyName">Name of the property which was changed</param>

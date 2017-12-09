@@ -8,12 +8,12 @@ namespace Stein.Commands.InstallerViewModelCommands
     {
         public PreferNothingCommand(InstallerViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(InstallerViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(InstallerViewModel viewModel, object view, object parameter)
         {
             return viewModel.PreferredOperation != InstallerOperationType.DoNothing;
         }
 
-        public override void Execute(InstallerViewModel viewModel, object view, object parameter)
+        protected override void ExecuteSync(InstallerViewModel viewModel, object view, object parameter)
         {
             viewModel.PreferredOperation = InstallerOperationType.DoNothing;
         }

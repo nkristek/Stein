@@ -13,18 +13,21 @@ namespace Stein.Commands.ApplicationViewModelCommands
     {
         public ModifyApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
+            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
             if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
 
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
         }
 
-        public override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
+        protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
+            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            if (mainWindowViewModel == null)
+                return;
+
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel(mainWindowViewModel)
             {
                 State = InstallationState.Preparing,
@@ -95,14 +98,11 @@ namespace Stein.Commands.ApplicationViewModelCommands
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
         }
 
-        public override void OnThrownExeption(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            Task.Run(async () =>
-            {
-                await (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
-            });
+            (viewModel.FirstParentOfType<MainWindowViewModel>())?.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

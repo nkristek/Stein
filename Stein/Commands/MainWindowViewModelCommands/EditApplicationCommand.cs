@@ -15,12 +15,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
     {
         public EditApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
+        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             var applicationToEdit = parameter as ApplicationViewModel;
             if (applicationToEdit == null)
@@ -52,14 +52,11 @@ namespace Stein.Commands.MainWindowViewModelCommands
             ViewModelService.UpdateViewModel(applicationToEdit);
         }
 
-        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            Task.Run(async () =>
-            {
-                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
-            });
+            viewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

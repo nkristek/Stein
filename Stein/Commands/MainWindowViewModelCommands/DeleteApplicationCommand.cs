@@ -12,12 +12,12 @@ namespace Stein.Commands.MainWindowViewModelCommands
     {
         public DeleteApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(MainWindowViewModel viewModel, object view, object parameter)
         {
             return viewModel.CurrentInstallation == null;
         }
 
-        public override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
+        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
             var applicationToDelete = parameter as ApplicationViewModel;
             if (applicationToDelete == null)
@@ -29,14 +29,11 @@ namespace Stein.Commands.MainWindowViewModelCommands
             viewModel.Applications.Remove(applicationToDelete);
         }
 
-        public override void OnThrownExeption(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
             MessageBox.Show(exception.Message);
-            Task.Run(async () =>
-            {
-                await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
-            });
+            viewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

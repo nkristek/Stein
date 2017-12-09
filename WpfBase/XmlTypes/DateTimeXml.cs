@@ -6,6 +6,9 @@ namespace WpfBase.XmlTypes
 {
     /// <summary>
     /// Helper class to serialize/deserialize DateTime to/from XML
+    /// Can be used like:
+    /// [XmlElement("Created")]
+    /// public DateTimeXml CreatedXml;
     /// </summary>
     [Serializable]
     [XmlType("Date")]

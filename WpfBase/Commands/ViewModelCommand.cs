@@ -6,7 +6,7 @@ namespace WpfBase.Commands
     /// <summary>
     ///BindableCommand implementation with ViewModel parameters in command methods
     /// </summary>
-    /// <typeparam name="TViewModel">Subclass of ViewModel</typeparam>
+    /// <typeparam name="TViewModel">Type of the parent ViewModel</typeparam>
     public abstract class ViewModelCommand<TViewModel>
         : BindableCommand where TViewModel : ViewModel
     {
@@ -19,7 +19,7 @@ namespace WpfBase.Commands
         /// <summary>
         /// Parent of this ViewModelCommand which is used when calling CanExecute/Execute or OnThrownException
         /// </summary>
-        private TViewModel Parent
+        public TViewModel Parent
         {
             get
             {
@@ -28,56 +28,39 @@ namespace WpfBase.Commands
                 return null;
             }
 
-            set
+            private set
             {
                 if (Parent == value) return;
                 _Parent = value != null ? new WeakReference<TViewModel>(value) : null;
             }
         }
 
-        public virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
+        protected virtual bool CanExecute(TViewModel viewModel, object view, object parameter)
         {
             return true;
         }
 
-        public abstract void Execute(TViewModel viewModel, object view, object parameter);
+        protected abstract void ExecuteSync(TViewModel viewModel, object view, object parameter);
 
         /// <summary>
-        /// Will be called when ExecuteAsync throws an exception
+        /// Will be called when Execute throws an exception
         /// </summary>
         /// <returns></returns>
-        public virtual void OnThrownExeption(TViewModel viewModel, object view, object parameter, Exception exception) { }
+        protected virtual void OnThrownException(TViewModel viewModel, object view, object parameter, Exception exception) { }
 
         public override sealed bool CanExecute(object parameter)
         {
-            return Parent != null && !IsWorking && CanExecute(Parent, Parent?.View, parameter);
+            return CanExecute(Parent, Parent?.View, parameter);
         }
 
-        public override sealed void Execute(object parameter)
+        protected override sealed void ExecuteSync(object parameter)
         {
-            if (!CanExecute(Parent, Parent?.View, parameter))
-                throw new InvalidOperationException("canexecute");
+            ExecuteSync(Parent, Parent?.View, parameter);
+        }
 
-            if (IsWorking)
-                throw new InvalidOperationException("isworking");
-
-            try
-            {
-                IsWorking = true;
-                Execute(Parent, Parent?.View, parameter);
-            }
-            catch (Exception exception)
-            {
-                try
-                {
-                    OnThrownExeption(Parent, Parent?.View, parameter, exception);
-                }
-                catch { }
-            }
-            finally
-            {
-                IsWorking = false;
-            }
+        protected override sealed void OnThrownException(object parameter, Exception exception)
+        {
+            OnThrownException(Parent, Parent?.View, parameter, exception);
         }
     }
 }

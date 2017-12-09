@@ -8,14 +8,14 @@ namespace Stein.Commands.InstallerViewModelCommands
     {
         public PreferUninstallCommand(InstallerViewModel parent) : base(parent) { }
 
-        public override bool CanExecute(InstallerViewModel viewModel, object view, object parameter)
+        protected override bool CanExecute(InstallerViewModel viewModel, object view, object parameter)
         {
             return viewModel.IsInstalled.HasValue 
                 && viewModel.IsInstalled.Value 
                 && viewModel.PreferredOperation != InstallerOperationType.Uninstall;
         }
 
-        public override void Execute(InstallerViewModel viewModel, object view, object parameter)
+        protected override void ExecuteSync(InstallerViewModel viewModel, object view, object parameter)
         {
             viewModel.PreferredOperation = InstallerOperationType.Uninstall;
         }

@@ -13,10 +13,10 @@ namespace WpfBase.ViewModels
     {
         public ComputedBindableBase()
         {
-            var declaredProperties = GetType().GetTypeInfo().DeclaredProperties;
+            var declaredProperties = GetType().GetTypeInfo().DeclaredProperties.ToList();
 
             // PropertySourceAttribute
-            var propertiesWithPropertiesToNotify = new Dictionary<string, HashSet<string>>();
+            var propertiesWithPropertiesToNotify = new Dictionary<string, List<string>>();
             foreach (var property in declaredProperties)
             {
                 // get the PropertySource attribute from the property, if it exists this property should be notified from the source properties listed in the attribute
@@ -27,12 +27,12 @@ namespace WpfBase.ViewModels
                 foreach (var sourceName in computedAttribute.Sources)
                 {
                     // skip when there is no property with this name
-                    if (!declaredProperties.Select(p => p.Name).Contains(sourceName))
+                    if (!declaredProperties.Any(p => p.Name == sourceName))
                         continue;
 
                     // create a new entry in the dictionary if this property doesn't notify another property already
                     if (!propertiesWithPropertiesToNotify.ContainsKey(sourceName))
-                        propertiesWithPropertiesToNotify[sourceName] = new HashSet<string>();
+                        propertiesWithPropertiesToNotify[sourceName] = new List<string>();
 
                     // add the property to the list of properties which get notified
                     propertiesWithPropertiesToNotify[sourceName].Add(property.Name);
@@ -40,7 +40,7 @@ namespace WpfBase.ViewModels
             }
             
             // CommandCanExecuteSourceAttribute
-            var propertiesWithCommandsToNotify = new Dictionary<string, HashSet<string>>();
+            var propertiesWithCommandsToNotify = new Dictionary<string, List<string>>();
             foreach (var property in declaredProperties)
             {
                 // get the CommandCanExecuteSource attribute from the property, if it exists this command should be notified from the source properties listed in the attribute
@@ -51,12 +51,12 @@ namespace WpfBase.ViewModels
                 foreach (var sourceName in computedAttribute.Sources)
                 {
                     // skip when there is no property with this name
-                    if (!declaredProperties.Select(p => p.Name).Contains(sourceName))
+                    if (!declaredProperties.Any(p => p.Name == sourceName))
                         continue;
 
                     // create a new entry in the dictionary if this property doesn't notify another command already
                     if (!propertiesWithCommandsToNotify.ContainsKey(sourceName))
-                        propertiesWithCommandsToNotify[sourceName] = new HashSet<string>();
+                        propertiesWithCommandsToNotify[sourceName] = new List<string>();
 
                     // add the command to the list of commands which get notified
                     propertiesWithCommandsToNotify[sourceName].Add(property.Name);
@@ -82,10 +82,7 @@ namespace WpfBase.ViewModels
                                 continue;
 
                             var value = field.GetValue(this);
-                            if (value is BindableCommand)
-                                (value as BindableCommand).RaiseCanExecuteChanged();
-                            else if (value is AsyncBindableCommand)
-                                (value as AsyncBindableCommand).RaiseCanExecuteChanged();
+                            (value as IRaiseCanExecuteChanged)?.RaiseCanExecuteChanged();
                         }
                         catch { }
                     }
