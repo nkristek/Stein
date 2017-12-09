@@ -64,22 +64,6 @@ namespace nkristek.Stein.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets the version of the installers, if the Version property is the same on all Installers, otherwise null
-        /// </summary>
-        [PropertySource(nameof(Installers))]
-        public Version Version
-        {
-            get
-            {
-                if (!Installers.Any())
-                    return null;
-
-                var version = Installers.FirstOrDefault().Version;
-                return Installers.All(i => i.Version != null && i.Version == version) ? version : null;
-            }
-        }
-
         private readonly ObservableCollection<InstallerViewModel> _Installers = new ObservableCollection<InstallerViewModel>();
         /// <summary>
         /// List of installers in this installer bundle

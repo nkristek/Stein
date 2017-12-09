@@ -29,6 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="1"
+                   FontWeight="Bold"
                    VerticalAlignment="Center"
                    VerticalContentAlignment="Center"
                    Content="{x:Static localization:Strings.BundleLanguage}"/>
@@ -62,12 +63,26 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0"
+                            <Grid Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Label Grid.Column="0"
+                                   FontWeight="Bold"
                                    Content="{Binding Name}"
                                    VerticalAlignment="Stretch"
                                    VerticalContentAlignment="Center"
                                    ToolTip="{Binding Path}"/>
 
+                                <Label Grid.Column="1"
+                                   Foreground="Gray"
+                                   Content="{Binding Version}"
+                                   VerticalAlignment="Stretch"
+                                   VerticalContentAlignment="Center"/>
+                            </Grid>
+                            
                             <Grid Grid.Column="2">
                                 <Border BorderThickness="1" 
                                         SnapsToDevicePixels="True"

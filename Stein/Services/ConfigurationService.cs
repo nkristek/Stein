@@ -40,7 +40,7 @@ namespace nkristek.Stein.Services
             get
             {
                 if (String.IsNullOrEmpty(ConfiguationFolderPath))
-                    throw new Exception("ConfiguationFolderPath not set.");
+                    return null;
 
                 return Path.Combine(ConfiguationFolderPath, "Config.xml");
             }
@@ -53,7 +53,7 @@ namespace nkristek.Stein.Services
         {
             try
             {
-                Configuration = Configuration.CreateFromFile(ConfiguationPath);
+                Configuration = !String.IsNullOrEmpty(ConfiguationPath) ? Configuration.CreateFromFile(ConfiguationPath) : new Configuration();
             }
             catch
             {

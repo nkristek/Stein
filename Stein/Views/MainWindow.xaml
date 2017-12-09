@@ -151,9 +151,10 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" 
-               Content="{x:Static localization:Strings.Loading}"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center">
+                   FontWeight="Bold"
+                   Content="{x:Static localization:Strings.Loading}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
                 <Label.Visibility>
                     <MultiBinding Converter="{x:Static converters:AnyBoolToVisibilityConverter.Instance}" ConverterParameter="Hidden">
                         <MultiBinding.Bindings>
@@ -226,6 +227,9 @@
                                     </Grid.RowDefinitions>
 
                                     <Label Grid.Row="0" 
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Stretch"
+                                           VerticalContentAlignment="Center"
                                            Content="{Binding Name}"/>
 
                                     <ComboBox Grid.Row="2" 

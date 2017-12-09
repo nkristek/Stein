@@ -34,7 +34,7 @@ namespace nkristek.Stein.Services
             get
             {
                 if (String.IsNullOrEmpty(LogFolderPath))
-                    throw new Exception("LogFolderPath not set.");
+                    return null;
 
                 var dateTime = DateTime.Now;
                 var fileName = String.Format("log-{0}-{1}-{2}.txt", dateTime.Year, dateTime.Month, dateTime.Day);
@@ -50,7 +50,7 @@ namespace nkristek.Stein.Services
         {
             get
             {
-                if (_LogFile == null)
+                if (_LogFile == null && !String.IsNullOrEmpty(LogFileFullName))
                     _LogFile = File.AppendText(LogFileFullName);
                 return _LogFile;
             }
@@ -165,6 +165,9 @@ namespace nkristek.Stein.Services
         {
             get
             {
+                if (String.IsNullOrEmpty(LogFolderPath))
+                    return null;
+
                 var dateTime = DateTime.Now;
                 var fileName = String.Format("error-{0}-{1}-{2}.txt", dateTime.Year, dateTime.Month, dateTime.Day);
                 return Path.Combine(LogFolderPath, fileName);
@@ -179,7 +182,7 @@ namespace nkristek.Stein.Services
         {
             get
             {
-                if (_ErrorLogFile == null)
+                if (_ErrorLogFile == null && !String.IsNullOrEmpty(ErrorLogFileFullName))
                     _ErrorLogFile = File.AppendText(ErrorLogFileFullName);
                 return _ErrorLogFile;
             }
