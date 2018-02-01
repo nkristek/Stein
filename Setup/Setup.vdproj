@@ -76,25 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FA333378D463B0418482E72EAED2CBF1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_3D59733462175B06AF8C6E5CD4CBDEE9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_58382C2E49A445D629C075C618FA3356"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "OwnerKey" = "8:_F980D73659D60EA5EB6765894B59922D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,7 +88,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F980D73659D60EA5EB6765894B59922D"
+        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_58382C2E49A445D629C075C618FA3356"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3D59733462175B06AF8C6E5CD4CBDEE9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FA333378D463B0418482E72EAED2CBF1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -211,11 +211,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_3D59733462175B06AF8C6E5CD4CBDEE9"
-                    {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.WindowsAPICodePack.dll"
             "TargetName" = "8:"
@@ -242,11 +237,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Deployment.WindowsInstaller.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5038157718F27041E9659E731D7E4D71"
-                    {
-                    "Name" = "8:Microsoft.Deployment.WindowsInstaller.Linq.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Deployment.WindowsInstaller.Linq.dll"
             "TargetName" = "8:"
@@ -273,11 +263,6 @@
             "AssemblyAsmDisplayName" = "8:GongSolutions.WPF.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_58382C2E49A445D629C075C618FA3356"
-                    {
-                    "Name" = "8:GongSolutions.Wpf.DragDrop.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:GongSolutions.Wpf.DragDrop.dll"
             "TargetName" = "8:"
@@ -304,11 +289,6 @@
             "AssemblyAsmDisplayName" = "8:nkristek.MVVMBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_BAD6A372600FB307F674B516C47502E4"
-                    {
-                    "Name" = "8:nkristek.MVVMBase.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:nkristek.MVVMBase.dll"
             "TargetName" = "8:"
@@ -335,11 +315,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_F980D73659D60EA5EB6765894B59922D"
-                    {
-                    "Name" = "8:Microsoft.Deployment.WindowsInstaller.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Deployment.WindowsInstaller.dll"
             "TargetName" = "8:"
@@ -366,11 +341,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_FA333378D463B0418482E72EAED2CBF1"
-                    {
-                    "Name" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.WindowsAPICodePack.Shell.dll"
             "TargetName" = "8:"
@@ -446,15 +416,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{B530C0CA-CCF9-4948-B04A-6D84E8D71510}"
-        "PackageCode" = "8:{F0898C23-443C-4D69-B47A-935940B884FF}"
+        "ProductCode" = "8:{E54476FB-9317-4F50-BF67-3523D1C7DCFA}"
+        "PackageCode" = "8:{7E20BEB7-F8D9-4827-9919-DCF74707A863}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.9.2"
+        "ProductVersion" = "8:0.9.3"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
@@ -996,7 +966,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E9FF6F79877B4E2487779AAD5EE23B4F"
             {
-            "SourcePath" = "8:\\\\192.168.100.10\\Niclas\\Git\\Stein\\Stein\\obj\\Debug\\Stein.exe"
+            "SourcePath" = "8:\\\\192.168.100.10\\Niclas\\Git\\Stein\\Stein\\obj\\Release\\Stein.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
