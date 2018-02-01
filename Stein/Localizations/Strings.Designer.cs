@@ -106,7 +106,7 @@ namespace nkristek.Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} programs were installed, {1} reinstalled and {2} uninstalled. {3} installers failed..
+        ///   Looks up a localized string similar to {0} programs were installed, {1} reinstalled and {2} uninstalled..
         /// </summary>
         public static string DidInstallXPrograms {
             get {
@@ -355,6 +355,15 @@ namespace nkristek.Stein.Localizations {
         public static string ViewModelNotSupported {
             get {
                 return ResourceManager.GetString("ViewModelNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {3} installers failed..
+        /// </summary>
+        public static string XInstallersFailed {
+            get {
+                return ResourceManager.GetString("XInstallersFailed", resourceCulture);
             }
         }
     }

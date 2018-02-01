@@ -87,8 +87,6 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 
                         didReinstallCount++;
                     }
-
-                    didInstallCount++;
                 }
                 catch (Exception exception)
                 {
@@ -104,7 +102,11 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 
             if (didInstallCount > 0 || didReinstallCount > 0 || didUninstallCount > 0 || didFailedCount > 0)
             {
-                MessageBox.Show(String.Format(Strings.DidInstallXPrograms, didInstallCount, didReinstallCount, didUninstallCount, didFailedCount));
+                var resultMessage = String.Format(Strings.DidInstallXPrograms, didInstallCount, didReinstallCount, didUninstallCount);
+                if (didFailedCount > 0)
+                    resultMessage = String.Join("\n", resultMessage, String.Format(Strings.XInstallersFailed, didFailedCount));
+
+                MessageBox.Show(resultMessage);
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
             }
         }

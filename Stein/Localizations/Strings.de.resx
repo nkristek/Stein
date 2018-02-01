@@ -208,7 +208,7 @@
     <value>Dieses ViewModel wird nicht unterstützt. Die Operation kann nicht durchgeführt werden.</value>
   </data>
   <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>Es wurden {0} Programme installiert, {1} erneut installiert und {2} deinstalliert. {3} Installer sind fehlgeschlagen.</value>
+    <value>Es wurden {0} Programme installiert, {1} erneut installiert und {2} deinstalliert.</value>
   </data>
   <data name="RefreshFailed" xml:space="preserve">
     <value>Suchen nach Installerdateien in {0} ist fehlgeschlagen.
@@ -216,5 +216,8 @@
   </data>
   <data name="InstallerNotFound" xml:space="preserve">
     <value>Die Installerdatei {0} wurde nicht gefunden.</value>
+  </data>
+  <data name="XInstallersFailed" xml:space="preserve">
+    <value>{0} Installer sind fehlgeschlagen.</value>
   </data>
 </root>
