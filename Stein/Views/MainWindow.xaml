@@ -253,10 +253,17 @@
                                 <!-- Button Column -->
                                 <Grid Grid.Column="5">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto" SharedSizeGroup="UpperDetailRow"/>
+                                        <RowDefinition Height="8"/>
+                                        <RowDefinition Height="Auto" SharedSizeGroup="LowerDetailRow"/>
                                     </Grid.RowDefinitions>
 
                                     <Button Grid.Row="0"
+                                            Content="{x:Static localization:Strings.Install}"
+                                            Padding="16,4"
+                                            Command="{Binding InstallApplicationCommand}"/>
+                                    
+                                    <Button Grid.Row="2"
                                             Content="{x:Static localization:Strings.Modify}"
                                             Padding="16,4"
                                             Command="{Binding ModifyApplicationCommand}"/>

@@ -151,7 +151,7 @@
     <value>Lädt…</value>
   </data>
   <data name="Modify" xml:space="preserve">
-    <value>Ändern</value>
+    <value>Benutzerdefiniert</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -206,5 +206,15 @@
   </data>
   <data name="ViewModelNotSupported" xml:space="preserve">
     <value>Dieses ViewModel wird nicht unterstützt. Die Operation kann nicht durchgeführt werden.</value>
+  </data>
+  <data name="DidInstallXPrograms" xml:space="preserve">
+    <value>Es wurden {0} Programme installiert, {1} erneut installiert und {2} deinstalliert. {3} Installer sind fehlgeschlagen.</value>
+  </data>
+  <data name="RefreshFailed" xml:space="preserve">
+    <value>Suchen nach Installerdateien in {0} ist fehlgeschlagen.
+{1}</value>
+  </data>
+  <data name="InstallerNotFound" xml:space="preserve">
+    <value>Die Installerdatei {0} wurde nicht gefunden.</value>
   </data>
 </root>

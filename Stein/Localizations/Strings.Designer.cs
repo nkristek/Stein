@@ -106,6 +106,15 @@ namespace nkristek.Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} programs were installed, {1} reinstalled and {2} uninstalled. {3} installers failed..
+        /// </summary>
+        public static string DidInstallXPrograms {
+            get {
+                return ResourceManager.GetString("DidInstallXPrograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Folder.
         /// </summary>
         public static string EditFolder {
@@ -120,6 +129,15 @@ namespace nkristek.Stein.Localizations {
         public static string Install {
             get {
                 return ResourceManager.GetString("Install", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The installer file at {0} was not found..
+        /// </summary>
+        public static string InstallerNotFound {
+            get {
+                return ResourceManager.GetString("InstallerNotFound", resourceCulture);
             }
         }
         
@@ -160,7 +178,7 @@ namespace nkristek.Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modify.
+        ///   Looks up a localized string similar to Custom.
         /// </summary>
         public static string Modify {
             get {
@@ -237,6 +255,16 @@ namespace nkristek.Stein.Localizations {
         public static string ProductCodeIsEmpty {
             get {
                 return ResourceManager.GetString("ProductCodeIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching installerfiles in {0} failed.
+        ///{1}.
+        /// </summary>
+        public static string RefreshFailed {
+            get {
+                return ResourceManager.GetString("RefreshFailed", resourceCulture);
             }
         }
         

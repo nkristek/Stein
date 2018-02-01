@@ -11,12 +11,16 @@ namespace nkristek.Stein.ViewModels
     {
         public ApplicationViewModel(ViewModel parent = null, object view = null) : base(parent, view)
         {
+            InstallApplicationCommand = new InstallApplicationCommand(this);
             ModifyApplicationCommand = new ModifyApplicationCommand(this);
             SelectFolderCommand = new SelectFolderCommand(this);
             OpenLogFolderCommand = new OpenLogFolderCommand(this);
 
             InstallerBundles.CollectionChanged += InstallerBundles_CollectionChanged;
         }
+
+        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
+        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; private set; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
         public AsyncViewModelCommand<ApplicationViewModel> ModifyApplicationCommand { get; private set; }

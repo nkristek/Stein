@@ -111,6 +111,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\ModifyApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\OpenLogFolderCommand.cs" />
     <Compile Include="Commands\InstallerViewModelCommands\PreferInstallCommand.cs" />

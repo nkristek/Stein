@@ -6,6 +6,7 @@ using nkristek.MVVMBase.Commands;
 using nkristek.Stein.ConfigurationTypes;
 using nkristek.Stein.Services;
 using nkristek.Stein.ViewModels;
+using nkristek.Stein.Localizations;
 
 namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 {
@@ -24,10 +25,20 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
             // save changes from application viewmodels back to the configuration
             foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
                 ViewModelService.SaveViewModel(changedApplication);
-            
+
             // get new installers
             foreach (var applicationFolder in ConfigurationService.Configuration.ApplicationFolders)
-                await applicationFolder.SyncWithDiskAsync();
+            {
+                try
+                {
+                    await applicationFolder.SyncWithDiskAsync();
+                }
+                catch (Exception exception)
+                {
+                    applicationFolder.SubFolders.Clear();
+                    MessageBox.Show(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
+                }
+            }
             await ConfigurationService.SaveConfigurationToDiskAsync();
             await InstallService.RefreshInstalledProgramsAsync();
 

@@ -167,6 +167,9 @@ namespace nkristek.Stein.Services
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
 
+            if (!File.Exists(installerPath))
+                throw new FileNotFoundException(String.Format(Strings.InstallerNotFound, installerPath), installerPath);
+
             var argumentsBuilder = new StringBuilder();
 
             argumentsBuilder.Append(String.Format("/I \"{0}\"", installerPath));
@@ -224,6 +227,9 @@ namespace nkristek.Stein.Services
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
+
+            if (!File.Exists(installerPath))
+                throw new FileNotFoundException(String.Format(Strings.InstallerNotFound, installerPath), installerPath);
 
             var argumentsBuilder = new StringBuilder();
 
