@@ -212,5 +212,15 @@
   <ItemGroup>
     <Resource Include="rock.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UiResources.FlatLightThemePack\UiResources.FlatLightThemePack.csproj">
+      <Project>{1c41d016-993d-41b5-b9db-4581867829d6}</Project>
+      <Name>UiResources.FlatLightThemePack</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UiResources\UiResources.csproj">
+      <Project>{45e54988-48a0-43ab-810b-0ee50e77f8fc}</Project>
+      <Name>UiResources</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

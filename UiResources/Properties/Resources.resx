@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,7 +60,6 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -69,10 +68,9 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -87,10 +85,9 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -112,115 +109,9 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddFolder" xml:space="preserve">
-    <value>Add Folder</value>
-  </data>
-  <data name="ApplicationFolderNotCached" xml:space="preserve">
-    <value>The requested application folder is not cached and could not be updated.</value>
-  </data>
-  <data name="BundleLanguage" xml:space="preserve">
-    <value>Bundle language:</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Cancelled" xml:space="preserve">
-    <value>Cancelled, finishing current operation…</value>
-  </data>
-  <data name="EditFolder" xml:space="preserve">
-    <value>Edit Folder</value>
-  </data>
-  <data name="Install" xml:space="preserve">
-    <value>Install</value>
-  </data>
-  <data name="InstallerPathIsEmpty" xml:space="preserve">
-    <value>The file path of the installer is empty. The operation could not be executed.</value>
-  </data>
-  <data name="Installing" xml:space="preserve">
-    <value>Installing…</value>
-  </data>
-  <data name="InstallLog" xml:space="preserve">
-    <value>Install log</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Loading…</value>
-  </data>
-  <data name="Modify" xml:space="preserve">
-    <value>Custom</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="Nothing" xml:space="preserve">
-    <value>Nothing</value>
-  </data>
-  <data name="NoViewExistsForViewModel" xml:space="preserve">
-    <value>No view found to display this ViewModel.</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="OpenFolder" xml:space="preserve">
-    <value>Open Folder</value>
-  </data>
-  <data name="Path" xml:space="preserve">
-    <value>Path</value>
-  </data>
-  <data name="Preparing" xml:space="preserve">
-    <value>Preparing…</value>
-  </data>
-  <data name="ProductCodeIsEmpty" xml:space="preserve">
-    <value>The product code is empty. The operation could not be executed.</value>
-  </data>
-  <data name="Ready" xml:space="preserve">
-    <value>Ready</value>
-  </data>
-  <data name="Reinstall" xml:space="preserve">
-    <value>Reinstall</value>
-  </data>
-  <data name="Reinstalling" xml:space="preserve">
-    <value>Reinstalling…</value>
-  </data>
-  <data name="SaveConfigurationFailed" xml:space="preserve">
-    <value>Saving the configuration failed.</value>
-  </data>
-  <data name="SelectedPathNotValid" xml:space="preserve">
-    <value>The selected path is not valid.</value>
-  </data>
-  <data name="SelectFolder" xml:space="preserve">
-    <value>Select Folder</value>
-  </data>
-  <data name="SilentInstall" xml:space="preserve">
-    <value>No UI during install</value>
-  </data>
-  <data name="Uninstall" xml:space="preserve">
-    <value>Uninstall</value>
-  </data>
-  <data name="Uninstalling" xml:space="preserve">
-    <value>Uninstalling…</value>
-  </data>
-  <data name="ViewIsNoWindow" xml:space="preserve">
-    <value>Opening the dialog failed. The dialog view is not a window.</value>
-  </data>
-  <data name="ViewModelNotSupported" xml:space="preserve">
-    <value>This ViewModel is not supported. The operation could not be executed.</value>
-  </data>
-  <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>{0} programs were installed, {1} reinstalled and {2} uninstalled.</value>
-  </data>
-  <data name="RefreshFailed" xml:space="preserve">
-    <value>Searching installerfiles in {0} failed.
-{1}</value>
-  </data>
-  <data name="InstallerNotFound" xml:space="preserve">
-    <value>The installer file at {0} was not found.</value>
-  </data>
-  <data name="XInstallersFailed" xml:space="preserve">
-    <value>{3} installers failed.</value>
-  </data>
 </root>

@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/Colors.xaml"/>
+
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/Button.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/ComboBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/ContextMenu.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/GroupBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/ListBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/SplitButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/DefaultStyles/TextBox.xaml"/>
+
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/NamedStyles/PrimaryButton.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/NamedStyles/ToolbarButton.xaml"/>
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

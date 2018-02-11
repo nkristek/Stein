@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:nkristek.Stein"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary Source="pack://application:,,,/UiResources.FlatLightThemePack;component/Resources.xaml"/>
+
     </Application.Resources>
 </Application>

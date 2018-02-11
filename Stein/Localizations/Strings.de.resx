@@ -177,6 +177,9 @@
   <data name="ProductCodeIsEmpty" xml:space="preserve">
     <value>Der Produktcode ist leer. Die Operation kann nicht durchgeführt werden.</value>
   </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Bereit</value>
+  </data>
   <data name="Reinstall" xml:space="preserve">
     <value>Reinstallieren</value>
   </data>
