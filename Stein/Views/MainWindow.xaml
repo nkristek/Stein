@@ -112,13 +112,7 @@
 
         <!-- Application bar -->
         <Grid>
-            <Border>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0 0" EndPoint="0 1">
-                        <GradientStop Offset="0" Color="{DynamicResource PrimaryAlt1Color}"/>
-                        <GradientStop Offset="0.15" Color="{DynamicResource PrimaryColor}"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border Background="{DynamicResource PrimaryBrush}">
                 <Border.Effect>
                     <DropShadowEffect Direction="270"
                                       BlurRadius="4"
