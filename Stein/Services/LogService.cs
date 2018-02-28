@@ -260,6 +260,8 @@ namespace nkristek.Stein.Services
                 innerException = innerException.InnerException;
             }
 
+            messageBuilder.AppendLine(exception.StackTrace);
+
             return messageBuilder.ToString();
         }
 
