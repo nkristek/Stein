@@ -259,6 +259,15 @@ namespace nkristek.Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ready.
+        /// </summary>
+        public static string Ready {
+            get {
+                return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Searching installerfiles in {0} failed.
         ///{1}.
         /// </summary>
