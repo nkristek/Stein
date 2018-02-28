@@ -30,3 +30,5 @@ It will generate 4 installer bundles:
 - tmp02 - deDE
   - tmp02/installer1_deDE.msi
   - tmp02/installer2_deDE.msi
+
+![Screenshot](Docs/Screenshot.png)
