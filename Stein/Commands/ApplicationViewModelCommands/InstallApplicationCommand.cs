@@ -37,16 +37,18 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
-
-            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
-                installer.PreferredOperation = InstallerOperationType.DoNothing;
-
+            
             var didInstallCount = 0;
             var didReinstallCount = 0;
             var didUninstallCount = 0;
             var didFailedCount = 0;
 
-            var installers = viewModel.SelectedInstallerBundle.Installers.Where(i => !i.IsDisabled).ToList();
+            // filter installers with the same name 
+            // if no name is set don't filter by grouping by path (which will always be distinct)
+            var installers = viewModel.SelectedInstallerBundle.Installers
+                .Where(i => !i.IsDisabled)
+                .GroupBy(i => !String.IsNullOrEmpty(i.Name) ? i.Name : i.Path).Select(ig => ig.First())
+                .ToList();
 
             await LogService.LogInfoAsync(String.Format("Starting operation with {0} installers.", installers.Count));
 
@@ -94,9 +96,6 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                     MessageBox.Show(exception.Message);
                 }
             }
-
-            foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
-                installer.PreferredOperation = InstallerOperationType.DoNothing;
 
             mainWindowViewModel.CurrentInstallation = null;
 
