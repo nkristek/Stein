@@ -112,7 +112,7 @@ namespace nkristek.Stein.ViewModels
                 }
             }
         }
-
+        
         /// <summary>
         /// Raise a PropertyChanged event for the CurrentInstallation if a property changed on the InstallationViewModel
         /// </summary>
@@ -122,6 +122,41 @@ namespace nkristek.Stein.ViewModels
         {
             if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
                 RaisePropertyChanged(nameof(CurrentInstallation));
+        }
+
+        private FinishedInstallationViewModel _FinishedInstallation;
+        /// <summary>
+        /// Is set if an operation was finished
+        /// </summary>
+        public FinishedInstallationViewModel FinishedInstallation
+        {
+            get
+            {
+                return _FinishedInstallation;
+            }
+
+            set
+            {
+                if (_FinishedInstallation != null)
+                    _FinishedInstallation.PropertyChanged -= _FinishedInstallation_PropertyChanged;
+
+                if (SetProperty(ref _FinishedInstallation, value))
+                {
+                    if (_FinishedInstallation != null)
+                        _FinishedInstallation.PropertyChanged += _FinishedInstallation_PropertyChanged;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Raise a PropertyChanged event for the FinishedInstallation if a property changed on the InstallationViewModel
+        /// </summary>
+        /// <param name="sender">The FinishedInstallationViewModel</param>
+        /// <param name="e">EventArgs</param>
+        private void _FinishedInstallation_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
+                RaisePropertyChanged(nameof(FinishedInstallation));
         }
     }
 }

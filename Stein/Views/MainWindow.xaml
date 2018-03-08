@@ -273,79 +273,101 @@
 
             <StatusBarItem Padding="0">
                 <Grid>
-                    <Label Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={x:Static uiconverters:VisibilityToInverseVisibilityConverter.Instance}}"
-                           Content="{x:Static localization:Strings.Ready}"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"/>
+                    <!-- no installation -->
+                    <Grid Visibility="{Binding Visibility, ElementName=CurrentInstallationStatus, Converter={x:Static uiconverters:VisibilityToInverseVisibilityConverter.Instance}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Grid.Column="0" 
+                               Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={x:Static uiconverters:VisibilityToInverseVisibilityConverter.Instance}}"
+                               Content="{x:Static localization:Strings.Ready}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"/>
 
-                    <Label x:Name="LoadingLabel"
-                           FontWeight="Bold"
-                           Content="{x:Static localization:Strings.Loading}"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center">
-                        <Label.Visibility>
-                            <MultiBinding Converter="{x:Static converters:AnyBoolToVisibilityConverter.Instance}" ConverterParameter="Hidden">
-                                <MultiBinding.Bindings>
-                                    <Binding Path="RefreshApplicationsCommand.IsWorking"/>
-                                    <Binding Path="AddApplicationCommand.IsWorking"/>
-                                    <Binding Path="EditApplicationCommand.IsWorking"/>
-                                    <Binding Path="DeleteApplicationCommand.IsWorking"/>
-                                </MultiBinding.Bindings>
-                            </MultiBinding>
-                        </Label.Visibility>
-                    </Label>
+                        <Label x:Name="LoadingLabel"
+                               Grid.Column="0" 
+                               Content="{x:Static localization:Strings.Loading}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center">
+                            <Label.Visibility>
+                                <MultiBinding Converter="{x:Static converters:AnyBoolToVisibilityConverter.Instance}" ConverterParameter="Hidden">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="RefreshApplicationsCommand.IsWorking"/>
+                                        <Binding Path="AddApplicationCommand.IsWorking"/>
+                                        <Binding Path="EditApplicationCommand.IsWorking"/>
+                                        <Binding Path="DeleteApplicationCommand.IsWorking"/>
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </Label.Visibility>
+                        </Label>
+
+                        <Label Grid.Column="2" 
+                               Visibility="{Binding FinishedInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}"
+                               Content="{Binding FinishedInstallation.Result}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <!-- during installation -->
+                    <Grid x:Name="CurrentInstallationStatus"
+                          Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               Content="{Binding CurrentInstallation.ProgressString}"/>
+
+                        <Label Grid.Column="2" 
+                               Content="{x:Static localization:Strings.Preparing}"
+                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Preparing}"/>
+
+                        <Label Grid.Column="2" 
+                               Content="{x:Static localization:Strings.Installing}"
+                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
+
+                        <Label Grid.Column="2" 
+                               Content="{x:Static localization:Strings.Reinstalling}"
+                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
+
+                        <Label Grid.Column="2" 
+                               Content="{x:Static localization:Strings.Uninstalling}"
+                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
+
+                        <Label Grid.Column="2" 
+                               Content="{x:Static localization:Strings.Cancelled}"
+                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Cancelled}"/>
+
+                        <Label Grid.Column="4"
+                               Content="{Binding CurrentInstallation.Name}"/>
+                    </Grid>
                 </Grid>
             </StatusBarItem>
 
             <StatusBarItem Padding="0"
                            HorizontalAlignment="Right">
-                <Grid Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                
+            </StatusBarItem>
 
-                    <Label Grid.Column="0" 
-                           Content="{x:Static localization:Strings.Preparing}"
-                           Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Preparing}"/>
-
-                    <Label Grid.Column="0" 
-                           Content="{x:Static localization:Strings.Installing}"
-                           Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
-
-                    <Label Grid.Column="0" 
-                           Content="{x:Static localization:Strings.Reinstalling}"
-                           Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
-
-                    <Label Grid.Column="0" 
-                           Content="{x:Static localization:Strings.Uninstalling}"
-                           Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
-
-                    <Label Grid.Column="0" 
-                           Content="{x:Static localization:Strings.Cancelled}"
-                           Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Cancelled}"/>
-
-                    <Label Grid.Column="2"
-                           Content="{Binding CurrentInstallation.ProgressString}"/>
-
-                    <Label Grid.Column="4"
-                           Content="{Binding CurrentInstallation.Name}"/>
-
-                    <Button Grid.Column="6"
+            <!-- Cancel button -->
+            <StatusBarItem Padding="0"
+                           HorizontalAlignment="Right">
+                <Button Grid.Column="6"
                             Style="{StaticResource IconButtonStyle}"
                             ContentTemplate="{StaticResource DeleteIconVariant}"
                             Command="{Binding CancelOperationCommand}"
                             Margin="0, 4"
                             ToolTip="{x:Static localization:Strings.Cancel}"
-                            ToolTipService.InitialShowDelay="0"/>
-                </Grid>
+                            ToolTipService.InitialShowDelay="0"
+                            Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}"/>
             </StatusBarItem>
-            
         </StatusBar>
     </Grid>
 </Window>

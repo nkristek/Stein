@@ -100,25 +100,28 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                     catch (Exception exception)
                     {
                         didFailedCount++;
-                        MessageBox.Show(exception.Message);
+                        await LogService.LogErrorAsync(exception);
                     }
                 }
             }
 
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.PreferredOperation = InstallerOperationType.DoNothing;
-
-            mainWindowViewModel.CurrentInstallation = null;
-
+            
             if (didInstallCount > 0 || didReinstallCount > 0 || didUninstallCount > 0 || didFailedCount > 0)
             {
                 var resultMessage = String.Format(Strings.DidInstallXPrograms, didInstallCount, didReinstallCount, didUninstallCount);
                 if (didFailedCount > 0)
                     resultMessage = String.Join("\n", resultMessage, String.Format(Strings.XInstallersFailed, didFailedCount));
 
-                MessageBox.Show(resultMessage);
+                mainWindowViewModel.FinishedInstallation = new FinishedInstallationViewModel(mainWindowViewModel)
+                {
+                    Result = resultMessage
+                };
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
             }
+
+            mainWindowViewModel.CurrentInstallation = null;
         }
 
         protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)

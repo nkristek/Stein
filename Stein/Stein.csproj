@@ -135,6 +135,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\FinishedInstallationViewModel.cs" />
     <Compile Include="ViewModels\InstallationState.cs" />
     <Compile Include="ViewModels\InstallerOperationType.cs" />
     <Compile Include="ConfigurationTypes\SubFolderExtension.cs" />

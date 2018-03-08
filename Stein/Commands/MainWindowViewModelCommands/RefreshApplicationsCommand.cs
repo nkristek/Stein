@@ -47,6 +47,7 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
             viewModel.Applications.Clear();
             foreach (var application in applications)
                 viewModel.Applications.Add(application);
+
             viewModel.IsDirty = false;
         }
 
