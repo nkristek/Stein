@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using nkristek.Stein.Services;
 
-namespace SteinTests
+namespace nkristek.SteinTests
 {
     [TestClass]
     public class InstallServiceTests
