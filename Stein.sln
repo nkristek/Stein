@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiResources", "UiResources\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UiResources.FlatLightThemePack", "UiResources.FlatLightThemePack\UiResources.FlatLightThemePack.csproj", "{1C41D016-993D-41B5-B9DB-4581867829D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupTests", "SetupTests\SetupTests.csproj", "{D7ADB5FC-7D03-475D-A946-03402C23DFFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteinTests", "SteinTests\SteinTests.csproj", "{D7ADB5FC-7D03-475D-A946-03402C23DFFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

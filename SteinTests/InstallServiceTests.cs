@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using nkristek.Stein.Services;
 
-namespace SetupTests
+namespace SteinTests
 {
     [TestClass]
     public class InstallServiceTests
