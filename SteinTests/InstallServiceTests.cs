@@ -31,7 +31,7 @@ namespace nkristek.SteinTests
             TestInstallAsyncMethods();
         }
         
-        public void TestInstallNonAsyncMethods()
+        private void TestInstallNonAsyncMethods()
         {
             Assert.IsNotNull(TestInstallerFilePath, "The file path of the test installer is not set.");
             Assert.IsNotNull(TestInstallerProductCode, "The product code of the test installer is not set.");
@@ -56,8 +56,8 @@ namespace nkristek.SteinTests
             InstallService.RefreshInstalledPrograms();
             Assert.IsFalse(InstallService.IsProductCodeInstalled(TestInstallerProductCode), "The uninstallation of the test installer failed or checking if it was installed failed.");
         }
-        
-        public void TestInstallAsyncMethods()
+
+        private void TestInstallAsyncMethods()
         {
             Assert.IsFalse(String.IsNullOrEmpty(TestInstallerFilePath), "The file path of the test installer is not set.");
             Assert.IsFalse(String.IsNullOrEmpty(TestInstallerProductCode), "The product code of the test installer is not set.");
