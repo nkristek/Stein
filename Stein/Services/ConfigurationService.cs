@@ -53,7 +53,7 @@ namespace nkristek.Stein.Services
         {
             try
             {
-                Configuration = !String.IsNullOrEmpty(ConfiguationPath) ? Configuration.CreateFromFile(ConfiguationPath) : new Configuration();
+                Configuration = Configuration.CreateFromFile(ConfiguationPath);
             }
             catch
             {
@@ -84,7 +84,7 @@ namespace nkristek.Stein.Services
         {
             try
             {
-                Configuration?.ToFile(ConfiguationPath);
+                Configuration.ToFile(ConfiguationPath);
             }
             catch (Exception exception)
             {
@@ -100,7 +100,7 @@ namespace nkristek.Stein.Services
         {
             try
             {
-                await Configuration?.ToFileAsync(ConfiguationPath);
+                await Configuration.ToFileAsync(ConfiguationPath);
             }
             catch (Exception exception)
             {
