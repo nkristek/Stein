@@ -27,8 +27,8 @@ namespace nkristek.SteinTests
         [TestMethod]
         public void TestInstallMethods()
         {
-            Assert.IsFalse(String.IsNullOrEmpty(TestInstallerFilePath), "The file path of the test installer is not set.");
-            Assert.IsFalse(String.IsNullOrEmpty(TestInstallerProductCode), "The product code of the test installer is not set.");
+            Assert.IsNotNull(TestInstallerFilePath, "The file path of the test installer is not set.");
+            Assert.IsNotNull(TestInstallerProductCode, "The product code of the test installer is not set.");
 
             // precondition is that the file exists and is not installed
             Assert.IsTrue(File.Exists(TestInstallerFilePath), "The test installer file doesn't exist.");
