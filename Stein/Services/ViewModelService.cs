@@ -38,14 +38,14 @@ namespace nkristek.Stein.Services
         /// </summary>
         /// <typeparam name="TViewModel">Subclass of ViewModel</typeparam>
         /// <param name="viewModelToSave">ViewModel to save</param>
-        public static void SaveViewModel<TViewModel>(TViewModel viewModelToSave) where TViewModel : ViewModel
+        public static void SaveViewModel<TViewModel>(TViewModel viewModelToSave, object entity = null) where TViewModel : ViewModel
         {
             if (!viewModelToSave.IsDirty)
                 return;
 
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
             {
-                SaveApplicationViewModel(viewModelToSave as ApplicationViewModel);
+                SaveApplicationViewModel(viewModelToSave as ApplicationViewModel, entity as ApplicationFolder);
                 return;
             }
             throw new NotSupportedException(Strings.ViewModelNotSupported);
@@ -55,9 +55,10 @@ namespace nkristek.Stein.Services
         /// Saves an ApplicationViewModel to the corresponding ApplicationFolder in the configuration
         /// </summary>
         /// <param name="application">ApplicationViewModel to save</param>
-        private static void SaveApplicationViewModel(ApplicationViewModel application)
+        private static void SaveApplicationViewModel(ApplicationViewModel application, ApplicationFolder associatedApplicationFolder = null)
         {
-            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
+            if (associatedApplicationFolder == null)
+                associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
             if (associatedApplicationFolder == null)
                 return;
 
