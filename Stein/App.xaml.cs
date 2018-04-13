@@ -27,7 +27,6 @@ namespace nkristek.Stein
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
-
         }
         
         private void App_Startup(object sender, StartupEventArgs e)
