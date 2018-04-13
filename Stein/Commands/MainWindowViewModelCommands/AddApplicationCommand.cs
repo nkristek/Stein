@@ -25,7 +25,8 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
             var applicationDialog = new ApplicationDialogModel(viewModel)
             {
                 EnableSilentInstallation = true,
-                DisableReboot = true
+                DisableReboot = true,
+                EnableInstallationLogging = true
             };
             
             if (DialogService.ShowDialog(applicationDialog, Strings.AddFolder) != true)
