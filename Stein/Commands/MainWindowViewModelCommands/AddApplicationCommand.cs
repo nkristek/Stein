@@ -36,8 +36,8 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
                 DialogService.ShowMessageDialog(Strings.SelectedPathNotValid);
                 return;
             }
-            
-            ConfigurationService.Configuration.ApplicationFolders.Add(new ApplicationFolder()
+
+            var applicationFolder = new ApplicationFolder()
             {
                 Id = Guid.NewGuid(),
                 Name = applicationDialog.Name,
@@ -45,11 +45,12 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
                 EnableSilentInstallation = applicationDialog.EnableSilentInstallation,
                 DisableReboot = applicationDialog.DisableReboot,
                 EnableInstallationLogging = applicationDialog.EnableInstallationLogging
-            });
+            };
+            await applicationFolder.SyncWithDiskAsync();
+            ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
             await ConfigurationService.SaveConfigurationToDiskAsync();
-
-            // todo: async
-            viewModel.RefreshApplicationsCommand.Execute(null);
+            
+            viewModel.Applications.Add(ViewModelService.CreateViewModel<ApplicationViewModel>(applicationFolder, viewModel));
         }
 
         protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
