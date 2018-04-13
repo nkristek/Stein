@@ -45,19 +45,11 @@ namespace nkristek.Stein.ViewModels
                 return Installers.All(i => i.Culture != null && i.Culture == culture) ? culture : null;
             }
         }
+
         /// <summary>
         /// List of installers in this installer bundle
         /// </summary>
         public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();
-
-        /// <summary>
-        /// Returns if any installer is enabled
-        /// </summary>
-        [PropertySource(nameof(Installers))]
-        public bool AnyOperationWillBeExecuted
-        {
-            get { return Installers.Any(i => i.PreferredOperation != InstallerOperationType.DoNothing); }
-        }
 
         /// <summary>
         /// Returns the newest creation time of all installers

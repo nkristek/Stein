@@ -33,38 +33,51 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                 InstallerCount = 0,
                 CurrentIndex = 0
             };
-            
+
+            var installationResult = await InstallSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
+            if (installationResult.InstallCount > 0 || installationResult.ReinstallCount > 0 || installationResult.FailedCount > 0)
+            {
+                mainWindowViewModel.InstallationResult = installationResult;
+                mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+            }
+
+            mainWindowViewModel.CurrentInstallation = null;
+        }
+
+        private static async Task<InstallationResultViewModel> InstallSelectedInstallerBundle(ApplicationViewModel application, InstallationViewModel currentInstallation)
+        {
+            var installationResult = new InstallationResultViewModel(currentInstallation.Parent);
+
             // filter installers with the same name 
             // if no name is set don't filter by grouping by path (which will always be distinct)
-            var installers = viewModel.SelectedInstallerBundle.Installers
+            var installers = application.SelectedInstallerBundle.Installers
                 .Where(i => !i.IsDisabled)
                 .GroupBy(i => !String.IsNullOrEmpty(i.Name) ? i.Name : i.Path).Select(ig => ig.First())
                 .ToList();
 
             await LogService.LogInfoAsync(String.Format("Starting install operation with {0} installers.", installers.Count));
-
-            mainWindowViewModel.CurrentInstallation.InstallerCount = installers.Count;
+            currentInstallation.InstallerCount = installers.Count;
             
-            var installationResult = new InstallationResultViewModel(mainWindowViewModel);
-
             foreach (var installer in installers)
             {
                 try
                 {
-                    if (mainWindowViewModel.CurrentInstallation.State == InstallationState.Cancelled)
+                    if (currentInstallation.State == InstallationState.Cancelled)
                     {
                         await LogService.LogInfoAsync("Install operation was cancelled.");
                         break;
                     }
 
-                    mainWindowViewModel.CurrentInstallation.Name = installer.Name;
-                    mainWindowViewModel.CurrentInstallation.CurrentIndex++;
+                    currentInstallation.Name = installer.Name;
+                    currentInstallation.CurrentIndex++;
 
                     if (installer.IsInstalled == false)
                     {
-                        mainWindowViewModel.CurrentInstallation.State = InstallationState.Install;
+                        currentInstallation.State = InstallationState.Install;
                         await LogService.LogInfoAsync(String.Format("Installing {0}.", installer.Name));
-                        await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
+
+                        var logFilePath = application.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null;
+                        await InstallService.InstallAsync(installer.Path, logFilePath, application.EnableSilentInstallation);
 
                         installationResult.InstallCount++;
                     }
@@ -73,12 +86,17 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                         if (installer.IsInstalled == null)
                             await LogService.LogInfoAsync("There is no information if the installer is already installed, trying to reinstall.");
 
-                        mainWindowViewModel.CurrentInstallation.State = InstallationState.Reinstall;
+                        currentInstallation.State = InstallationState.Reinstall;
                         await LogService.LogInfoAsync(String.Format("Reinstalling {0}.", installer.Name));
+
                         // uninstall and install instead of reinstalling since the reinstall fails when another version of the installer was used (e.g. daily temps with the same version number)
                         if (installer.IsInstalled == null || installer.IsInstalled.HasValue && installer.IsInstalled.Value)
-                            await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null, viewModel.EnableSilentInstallation);
-                        await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
+                        {
+                            var uninstallLogFilePath = application.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null;
+                            await InstallService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                        }
+                        var installLogFilePath = application.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null;
+                        await InstallService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
 
                         installationResult.ReinstallCount++;
                     }
@@ -90,13 +108,7 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                 }
             }
 
-            if (installationResult.InstallCount > 0 || installationResult.ReinstallCount > 0 || installationResult.FailedCount > 0)
-            {
-                mainWindowViewModel.InstallationResult = installationResult;
-                mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
-            }
-
-            mainWindowViewModel.CurrentInstallation = null;
+            return installationResult;
         }
 
         protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)

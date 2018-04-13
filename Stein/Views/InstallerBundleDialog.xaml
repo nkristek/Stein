@@ -171,8 +171,7 @@
             <Button Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
                     Padding="16,4"
-                    Click="OnDialogOkButtonClick"
-                    IsEnabled="{Binding AnyOperationWillBeExecuted}"/>
+                    Click="OnDialogOkButtonClick"/>
 
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"
