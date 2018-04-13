@@ -22,25 +22,27 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var applicationCopy = new ApplicationDialogModel(viewModel)
+            var applicationDialog = new ApplicationDialogModel(viewModel)
             {
                 FolderId = viewModel.FolderId,
                 Name = viewModel.Name,
                 Path = viewModel.Path,
                 EnableSilentInstallation = viewModel.EnableSilentInstallation,
+                DisableReboot = viewModel.DisableReboot,
                 EnableInstallationLogging = viewModel.EnableInstallationLogging
             };
-            if (DialogService.ShowDialog(applicationCopy, Strings.EditFolder) != true)
+            if (DialogService.ShowDialog(applicationDialog, Strings.EditFolder) != true)
                 return;
 
-            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationCopy.FolderId);
+            var associatedApplicationFolder = ConfigurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationDialog.FolderId);
             if (associatedApplicationFolder == null)
                 return;
 
-            associatedApplicationFolder.Name = applicationCopy.Name;
-            associatedApplicationFolder.Path = applicationCopy.Path;
-            associatedApplicationFolder.EnableSilentInstallation = applicationCopy.EnableSilentInstallation;
-            associatedApplicationFolder.EnableInstallationLogging = applicationCopy.EnableInstallationLogging;
+            associatedApplicationFolder.Name = applicationDialog.Name;
+            associatedApplicationFolder.Path = applicationDialog.Path;
+            associatedApplicationFolder.EnableSilentInstallation = applicationDialog.EnableSilentInstallation;
+            associatedApplicationFolder.DisableReboot = applicationDialog.DisableReboot;
+            associatedApplicationFolder.EnableInstallationLogging = applicationDialog.EnableInstallationLogging;
 
             await associatedApplicationFolder.SyncWithDiskAsync();
             await ConfigurationService.SaveConfigurationToDiskAsync();
