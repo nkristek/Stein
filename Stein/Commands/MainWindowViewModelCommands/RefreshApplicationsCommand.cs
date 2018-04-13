@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Windows;
 using System.Threading.Tasks;
 using nkristek.MVVMBase.Commands;
 using nkristek.Stein.ConfigurationTypes;
@@ -36,7 +35,7 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
                 catch (Exception exception)
                 {
                     applicationFolder.SubFolders.Clear();
-                    MessageBox.Show(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
+                    DialogService.ShowMessageDialog(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
                 }
             }
             await ConfigurationService.SaveConfigurationToDiskAsync();
@@ -54,7 +53,7 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
         protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
-            MessageBox.Show(exception.Message);
+            DialogService.ShowErrorDialog(exception);
         }
     }
 }

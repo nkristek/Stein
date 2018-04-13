@@ -9,10 +9,7 @@ namespace nkristek.Stein.ViewModels
     public class InstallerBundleViewModel
         : ViewModel
     {
-        public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view)
-        {
-            Installers.CollectionChanged += Installers_CollectionChanged;
-        }
+        public InstallerBundleViewModel(ViewModel parent = null, object view = null) : base(parent, view) { }
 
         private string _Name;
         /// <summary>
@@ -20,15 +17,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _Name;
-            }
-
-            set
-            {
-                SetProperty(ref _Name, value);
-            }
+            get { return _Name; }
+            set { SetProperty(ref _Name, value); }
         }
 
         private string _Path;
@@ -37,15 +27,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string Path
         {
-            get
-            {
-                return _Path;
-            }
-
-            set
-            {
-                SetProperty(ref _Path, value);
-            }
+            get { return _Path; }
+            set { SetProperty(ref _Path, value); }
         }
 
         /// <summary>
@@ -58,54 +41,14 @@ namespace nkristek.Stein.ViewModels
             {
                 if (!Installers.Any())
                     return null;
-
                 var culture = Installers.FirstOrDefault().Culture;
                 return Installers.All(i => i.Culture != null && i.Culture == culture) ? culture : null;
             }
         }
-
-        private readonly ObservableCollection<InstallerViewModel> _Installers = new ObservableCollection<InstallerViewModel>();
         /// <summary>
         /// List of installers in this installer bundle
         /// </summary>
-        public ObservableCollection<InstallerViewModel> Installers
-        {
-            get
-            {
-                return _Installers;
-            }
-        }
-
-        /// <summary>
-        /// Attach property changed handler to elements in the collection to raise a PropertyChanged event if an element changed
-        /// </summary>
-        /// <param name="sender">The collection</param>
-        /// <param name="e">EventArgs</param>
-        private void Installers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            IsDirty = true;
-
-            if (e.NewItems != null)
-                foreach (var newItem in e.NewItems)
-                    if (newItem is InstallerViewModel installer)
-                        installer.PropertyChanged += Installer_PropertyChanged;
-
-            if (e.OldItems != null)
-                foreach (var oldItem in e.OldItems)
-                    if (oldItem is InstallerViewModel installer)
-                        installer.PropertyChanged -= Installer_PropertyChanged;
-        }
-
-        /// <summary>
-        /// Raise a PropertyChanged event for the collection if a property changed on the item of the collection
-        /// </summary>
-        /// <param name="sender">Item of the collection</param>
-        /// <param name="e">EventArgs</param>
-        private void Installer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != nameof(IsDirty) && e.PropertyName != nameof(Parent) && e.PropertyName != nameof(View))
-                RaisePropertyChanged(nameof(Installers));
-        }
+        public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();
 
         /// <summary>
         /// Returns if any installer is enabled
@@ -113,10 +56,7 @@ namespace nkristek.Stein.ViewModels
         [PropertySource(nameof(Installers))]
         public bool AnyOperationWillBeExecuted
         {
-            get
-            {
-                return Installers.Any(i => i.PreferredOperation != InstallerOperationType.DoNothing);
-            }
+            get { return Installers.Any(i => i.PreferredOperation != InstallerOperationType.DoNothing); }
         }
 
         /// <summary>
@@ -125,10 +65,7 @@ namespace nkristek.Stein.ViewModels
         [PropertySource(nameof(Installers))]
         public DateTime? NewestInstallerCreationTime
         {
-            get
-            {
-                return Installers.Select(i => i.Created).Max();
-            }
+            get { return Installers.Select(i => i.Created).Max(); }
         }
 
         /// <summary>

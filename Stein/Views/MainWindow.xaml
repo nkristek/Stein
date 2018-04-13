@@ -152,7 +152,6 @@
                         Height="20"
                         Padding="4"
                         Command="{Binding RefreshApplicationsCommand}"/>
-
             </Grid>
         </Grid>
 
@@ -169,7 +168,8 @@
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto">
                 <ItemsControl Grid.IsSharedSizeScope="True"
-                              ItemsSource="{Binding Applications}">
+                              ItemsSource="{Binding Applications}"
+                              IsEnabled="{Binding CurrentInstallation, Converter={x:Static converters:ValueNullToBoolConverter.Instance}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type viewmodels:ApplicationViewModel}">
                             <GroupBox Padding="8" 
@@ -188,36 +188,24 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock FontWeight="Bold"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Name}"/>
+                                        <Label Grid.Column="0"
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Content="{Binding Name}"/>
 
                                         <Button Grid.Column="3"
                                                 Style="{StaticResource IconButtonStyle}"
                                                 ContentTemplate="{StaticResource EditIconVariant}"
-                                                Command="{Binding Parent.EditApplicationCommand}"
-                                                CommandParameter="{Binding}"/>
+                                                Command="{Binding EditApplicationCommand}"/>
 
                                         <Button Grid.Column="4"
                                                 Style="{StaticResource IconButtonStyle}"
                                                 ContentTemplate="{StaticResource DeleteIconVariant}"
-                                                Command="{Binding Parent.DeleteApplicationCommand}"
-                                                CommandParameter="{Binding}"/>
-
+                                                Command="{Binding DeleteApplicationCommand}"/>
                                     </Grid>
                                 </GroupBox.Header>
 
                                 <Grid>
-                                    <Grid.IsEnabled>
-                                        <MultiBinding Converter="{x:Static converters:AnyBoolToInverseBoolConverter.Instance}">
-                                            <MultiBinding.Bindings>
-                                                <Binding Path="Parent.RefreshApplicationsCommand.IsWorking"/>
-                                                <Binding Path="Parent.AddApplicationCommand.IsWorking"/>
-                                                <Binding Path="Parent.EditApplicationCommand.IsWorking"/>
-                                                <Binding Path="Parent.DeleteApplicationCommand.IsWorking"/>
-                                            </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                    </Grid.IsEnabled>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="8"/>
@@ -233,7 +221,8 @@
 
                                     <!-- SelectedInstallerDate -->
                                     <Label Grid.Column="2"
-                                            Content="{Binding SelectedInstallerBundle.NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=g}"/>
+                                           DataContext="{Binding SelectedInstallerBundle}"
+                                           Content="{Binding NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=g}"/>
 
                                     <controls:SplitButton Grid.Column="4"
                                                           Content="{x:Static localization:Strings.Install}"
@@ -243,8 +232,10 @@
                                             <ContextMenu>
                                                 <MenuItem Header="{x:Static localization:Strings.Install}"
                                                           Command="{Binding InstallApplicationCommand}"/>
-                                                <MenuItem Header="{x:Static localization:Strings.Modify}" 
-                                                          Command="{Binding ModifyApplicationCommand}"/>
+                                                <MenuItem Header="{x:Static localization:Strings.Uninstall}"
+                                                          Command="{Binding UninstallApplicationCommand}"/>
+                                                <MenuItem Header="{x:Static localization:Strings.Custom}" 
+                                                          Command="{Binding CustomOperationApplicationCommand}"/>
                                             </ContextMenu>
                                         </controls:SplitButton.SplitMenu>
                                     </controls:SplitButton>
@@ -291,70 +282,63 @@
                                Grid.Column="0" 
                                Content="{x:Static localization:Strings.Loading}"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Center">
-                            <Label.Visibility>
-                                <MultiBinding Converter="{x:Static converters:AnyBoolToVisibilityConverter.Instance}" ConverterParameter="Hidden">
-                                    <MultiBinding.Bindings>
-                                        <Binding Path="RefreshApplicationsCommand.IsWorking"/>
-                                        <Binding Path="AddApplicationCommand.IsWorking"/>
-                                        <Binding Path="EditApplicationCommand.IsWorking"/>
-                                        <Binding Path="DeleteApplicationCommand.IsWorking"/>
-                                    </MultiBinding.Bindings>
-                                </MultiBinding>
-                            </Label.Visibility>
-                        </Label>
+                               VerticalAlignment="Center"
+                               DataContext="{Binding RefreshApplicationsCommand}"
+                               Visibility="{Binding IsWorking, Converter={x:Static converters:BoolToVisibilityConverter.Instance}, ConverterParameter=Hidden}"/>
 
-                        <Label Grid.Column="2" 
-                               Visibility="{Binding FinishedInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}"
-                               Content="{Binding FinishedInstallation.Result}"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"/>
+                        <Grid Grid.Column="2" 
+                              Visibility="{Binding InstallationResult, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
+                            <Label DataContext="{Binding InstallationResult}"
+                                   Content="{Binding Result}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"/>
+                        </Grid>
                     </Grid>
 
                     <!-- during installation -->
                     <Grid x:Name="CurrentInstallationStatus"
                           Visibility="{Binding CurrentInstallation, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid DataContext="{Binding CurrentInstallation}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0"
-                               Content="{Binding CurrentInstallation.ProgressString}"/>
+                            <Label Grid.Column="0"
+                                   Content="{Binding ProgressString}"/>
 
-                        <Label Grid.Column="2" 
-                               Content="{x:Static localization:Strings.Preparing}"
-                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Preparing}"/>
+                            <Label Grid.Column="2" 
+                                   Content="{x:Static localization:Strings.Preparing}"
+                                   Visibility="{Binding State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Preparing}"/>
 
-                        <Label Grid.Column="2" 
-                               Content="{x:Static localization:Strings.Installing}"
-                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
+                            <Label Grid.Column="2" 
+                                   Content="{x:Static localization:Strings.Installing}"
+                                   Visibility="{Binding State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Install}"/>
 
-                        <Label Grid.Column="2" 
-                               Content="{x:Static localization:Strings.Reinstalling}"
-                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
+                            <Label Grid.Column="2" 
+                                   Content="{x:Static localization:Strings.Reinstalling}"
+                                   Visibility="{Binding State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Reinstall}"/>
 
-                        <Label Grid.Column="2" 
-                               Content="{x:Static localization:Strings.Uninstalling}"
-                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
+                            <Label Grid.Column="2" 
+                                   Content="{x:Static localization:Strings.Uninstalling}"
+                                   Visibility="{Binding State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Uninstall}"/>
 
-                        <Label Grid.Column="2" 
-                               Content="{x:Static localization:Strings.Cancelled}"
-                               Visibility="{Binding CurrentInstallation.State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Cancelled}"/>
+                            <Label Grid.Column="2" 
+                                   Content="{x:Static localization:Strings.Cancelled}"
+                                   Visibility="{Binding State, Converter={x:Static converters:ObjectToStringEqualsParameterToVisibilityConverter.Instance}, ConverterParameter=Cancelled}"/>
 
-                        <Label Grid.Column="4"
-                               Content="{Binding CurrentInstallation.Name}"/>
+                            <Label Grid.Column="4"
+                                   Content="{Binding Name}"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </StatusBarItem>
 
             <StatusBarItem Padding="0"
-                           HorizontalAlignment="Right">
-                
-            </StatusBarItem>
+                           HorizontalAlignment="Right"/>
 
             <!-- Cancel button -->
             <StatusBarItem Padding="0"

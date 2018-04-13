@@ -34,15 +34,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string Path
         {
-            get
-            {
-                return _Path;
-            }
-
-            set
-            {
-                SetProperty(ref _Path, value);
-            }
+            get { return _Path; }
+            set { SetProperty(ref _Path, value); }
         }
 
         private InstallerOperationType _PreferredOperation;
@@ -51,15 +44,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public InstallerOperationType PreferredOperation
         {
-            get
-            {
-                return _PreferredOperation;
-            }
-
-            set
-            {
-                SetProperty(ref _PreferredOperation, value);
-            }
+            get { return _PreferredOperation; }
+            set { SetProperty(ref _PreferredOperation, value); }
         }
         
         /// <summary>
@@ -68,10 +54,7 @@ namespace nkristek.Stein.ViewModels
         [PropertySource(nameof(IsInstalled))]
         public bool IsDisabled
         {
-            get
-            {
-                return IsInstalled == null;
-            }
+            get { return IsInstalled == null; }
         }
 
         private string _Name;
@@ -80,15 +63,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _Name;
-            }
-
-            set
-            {
-                SetProperty(ref _Name, value);
-            }
+            get { return _Name; }
+            set { SetProperty(ref _Name, value); }
         }
 
         private Version _Version;
@@ -97,15 +73,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public Version Version
         {
-            get
-            {
-                return _Version;
-            }
-
-            set
-            {
-                SetProperty(ref _Version, value);
-            }
+            get { return _Version; }
+            set { SetProperty(ref _Version, value); }
         }
 
         private string _Culture;
@@ -114,15 +83,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string Culture
         {
-            get
-            {
-                return _Culture;
-            }
-
-            set
-            {
-                SetProperty(ref _Culture, value);
-            }
+            get { return _Culture; }
+            set { SetProperty(ref _Culture, value); }
         }
 
         private string _ProductCode;
@@ -131,15 +93,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public string ProductCode
         {
-            get
-            {
-                return _ProductCode;
-            }
-
-            set
-            {
-                SetProperty(ref _ProductCode, value);
-            }
+            get { return _ProductCode; }
+            set { SetProperty(ref _ProductCode, value); }
         }
 
         private bool? _IsInstalled;
@@ -148,11 +103,7 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public bool? IsInstalled
         {
-            get
-            {
-                return _IsInstalled;
-            }
-
+            get { return _IsInstalled; }
             set
             {
                 if (SetProperty(ref _IsInstalled, value))
@@ -166,15 +117,8 @@ namespace nkristek.Stein.ViewModels
         /// </summary>
         public DateTime? Created
         {
-            get
-            {
-                return _Created;
-            }
-
-            set
-            {
-                SetProperty(ref _Created, value);
-            }
+            get { return _Created; }
+            set { SetProperty(ref _Created, value); }
         }
     }
 }

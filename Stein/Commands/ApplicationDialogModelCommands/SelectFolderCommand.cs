@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Windows;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using nkristek.MVVMBase.Commands;
 using nkristek.Stein.Services;
 using nkristek.Stein.Localizations;
 using nkristek.Stein.ViewModels;
 
-namespace nkristek.Stein.Commands.ApplicationViewModelCommands
+namespace nkristek.Stein.Commands.ApplicationDialogModelCommands
 {
     public class SelectFolderCommand
-        : ViewModelCommand<ApplicationViewModel>
+        : ViewModelCommand<ApplicationDialogModel>
     {
-        public SelectFolderCommand(ApplicationViewModel parent) : base(parent) { }
+        public SelectFolderCommand(ApplicationDialogModel parent) : base(parent) { }
 
-        protected override void ExecuteSync(ApplicationViewModel viewModel, object view, object parameter)
+        protected override void ExecuteSync(ApplicationDialogModel viewModel, object view, object parameter)
         {
             using (var dialog = new CommonOpenFileDialog())
             {
@@ -28,10 +27,10 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
             }
         }
 
-        protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
+        protected override void OnThrownException(ApplicationDialogModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
-            MessageBox.Show(exception.Message);
+            DialogService.ShowErrorDialog(exception);
         }
     }
 }

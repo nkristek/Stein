@@ -81,14 +81,14 @@
     </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Deployment.WindowsInstaller.Linq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="nkristek.MVVMBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\nkristek.MVVMBase.1.1.0\lib\net47\nkristek.MVVMBase.dll</HintPath>
+    <Reference Include="nkristek.MVVMBase, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nkristek.MVVMBase.1.2.1\lib\net47\nkristek.MVVMBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -111,18 +111,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
-    <Compile Include="Commands\ApplicationViewModelCommands\ModifyApplicationCommand.cs" />
-    <Compile Include="Commands\ApplicationViewModelCommands\OpenLogFolderCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\CustomOperationApplicationCommand.cs" />
+    <Compile Include="Commands\ApplicationDialogModelCommands\OpenLogFolderCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
     <Compile Include="Commands\InstallerViewModelCommands\PreferInstallCommand.cs" />
     <Compile Include="Commands\InstallerViewModelCommands\PreferNothingCommand.cs" />
     <Compile Include="Commands\InstallerViewModelCommands\PreferReinstallCommand.cs" />
     <Compile Include="Commands\InstallerViewModelCommands\PreferUninstallCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\EditApplicationCommand.cs" />
-    <Compile Include="Commands\ApplicationViewModelCommands\SelectFolderCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\EditApplicationCommand.cs" />
+    <Compile Include="Commands\ApplicationDialogModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\DeleteApplicationCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\DeleteApplicationCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\ShowInfoDialogCommand.cs" />
     <Compile Include="ConfigurationTypes\ApplicationFolderExtension.cs" />
     <Compile Include="Localizations\Strings.de.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -134,7 +136,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\FinishedInstallationViewModel.cs" />
+    <Compile Include="ViewModels\ApplicationDialogModel.cs" />
+    <Compile Include="ViewModels\InstallationResultViewModel.cs" />
     <Compile Include="ViewModels\InstallationState.cs" />
     <Compile Include="ViewModels\InstallerOperationType.cs" />
     <Compile Include="ConfigurationTypes\SubFolderExtension.cs" />
@@ -222,5 +225,6 @@
       <Name>UiResources</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

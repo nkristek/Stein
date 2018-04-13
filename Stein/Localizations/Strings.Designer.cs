@@ -106,11 +106,29 @@ namespace nkristek.Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} programs were installed, {1} reinstalled and {2} uninstalled..
+        ///   Looks up a localized string similar to Custom.
+        /// </summary>
+        public static string Custom {
+            get {
+                return ResourceManager.GetString("Custom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed: {0}  Reinstalled: {1}  Uninstalled: {2}.
         /// </summary>
         public static string DidInstallXPrograms {
             get {
                 return ResourceManager.GetString("DidInstallXPrograms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable reboot after installation.
+        /// </summary>
+        public static string DisableReboot {
+            get {
+                return ResourceManager.GetString("DisableReboot", resourceCulture);
             }
         }
         
@@ -174,15 +192,6 @@ namespace nkristek.Stein.Localizations {
         public static string Loading {
             get {
                 return ResourceManager.GetString("Loading", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom.
-        /// </summary>
-        public static string Modify {
-            get {
-                return ResourceManager.GetString("Modify", resourceCulture);
             }
         }
         

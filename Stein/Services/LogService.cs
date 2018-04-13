@@ -247,7 +247,7 @@ namespace nkristek.Stein.Services
         /// </summary>
         /// <param name="exception">The exception from which the message gets build</param>
         /// <returns>A message from the given exception and all InnerExceptions</returns>
-        private static string BuildExceptionMessage(Exception exception)
+        public static string BuildExceptionMessage(Exception exception)
         {
             var messageBuilder = new StringBuilder();
 

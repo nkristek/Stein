@@ -20,6 +20,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
@@ -85,21 +87,29 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   HorizontalContentAlignment="Right"
-                   VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   FontWeight="Bold"
-                   Content="{x:Static localization:Strings.SilentInstall}"/>
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding EnableSilentInstallation}"
+                      Content="{x:Static localization:Strings.SilentInstall}"/>
+        </Grid>
+
+        <!-- Disable reboot -->
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
             <CheckBox Grid.Column="2"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding EnableSilentInstallation}"/>
+                      IsChecked="{Binding DisableReboot}"
+                      Content="{x:Static localization:Strings.DisableReboot}"/>
         </Grid>
 
         <!-- Enable Installation Logging -->
-        <Grid Grid.Row="6">
+        <Grid Grid.Row="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
@@ -109,17 +119,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   HorizontalContentAlignment="Right"
-                   VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   FontWeight="Bold"
-                   Content="{x:Static localization:Strings.InstallLog}"/>
-
             <CheckBox Grid.Column="2"
                       VerticalAlignment="Center"
-                      IsChecked="{Binding EnableInstallationLogging}"/>
+                      IsChecked="{Binding EnableInstallationLogging}"
+                      Content="{x:Static localization:Strings.InstallLog}"/>
 
             <Button Grid.Column="4"
                     Content="{x:Static localization:Strings.OpenFolder}"
@@ -128,7 +131,7 @@
         </Grid>
 
         <!-- Dialog Buttons -->
-        <Grid Grid.Row="9"
+        <Grid Grid.Row="11"
               Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using nkristek.MVVMBase.Commands;
-using nkristek.Stein.Localizations;
 using nkristek.Stein.Services;
 using nkristek.Stein.ViewModels;
 
 namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 {
-    public class ModifyApplicationCommand
+    public class CustomOperationApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
-        public ModifyApplicationCommand(ApplicationViewModel parent) : base(parent) { }
+        public CustomOperationApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
                 return false;
 
@@ -25,7 +23,7 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
 
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object view, object parameter)
         {
-            var mainWindowViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             if (mainWindowViewModel == null)
                 return;
 
@@ -39,10 +37,7 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.PreferredOperation = InstallerOperationType.DoNothing;
 
-            var didInstallCount = 0;
-            var didReinstallCount = 0;
-            var didUninstallCount = 0;
-            var didFailedCount = 0;
+            var installationResult = new InstallationResultViewModel(mainWindowViewModel);
 
             if (DialogService.ShowDialog(viewModel.SelectedInstallerBundle, viewModel.SelectedInstallerBundle.Name) == true)
             {
@@ -72,7 +67,7 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                                 await LogService.LogInfoAsync(String.Format("Installing {0}.", installer.Name));
                                 await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
 
-                                didInstallCount++;
+                                installationResult.InstallCount++;
 
                                 break;
                             case InstallerOperationType.Reinstall:
@@ -83,7 +78,7 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                                     await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null, viewModel.EnableSilentInstallation);
                                 await InstallService.InstallAsync(installer.Path, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_install")) : null, viewModel.EnableSilentInstallation);
 
-                                didReinstallCount++;
+                                installationResult.ReinstallCount++;
 
                                 break;
                             case InstallerOperationType.Uninstall:
@@ -92,14 +87,14 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
                                 if (installer.IsInstalled.HasValue && installer.IsInstalled.Value)
                                     await InstallService.UninstallAsync(installer.ProductCode, viewModel.EnableInstallationLogging ? InstallService.GetLogFilePathForInstaller(String.Concat(installer.Name, "_uninstall")) : null, viewModel.EnableSilentInstallation);
 
-                                didUninstallCount++;
+                                installationResult.UninstallCount++;
 
                                 break;
                         }
                     }
                     catch (Exception exception)
                     {
-                        didFailedCount++;
+                        installationResult.FailedCount++;
                         await LogService.LogErrorAsync(exception);
                     }
                 }
@@ -108,16 +103,12 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
             foreach (var installer in viewModel.SelectedInstallerBundle.Installers)
                 installer.PreferredOperation = InstallerOperationType.DoNothing;
             
-            if (didInstallCount > 0 || didReinstallCount > 0 || didUninstallCount > 0 || didFailedCount > 0)
+            if (installationResult.InstallCount > 0 
+             || installationResult.ReinstallCount > 0 
+             || installationResult.UninstallCount > 0 
+             || installationResult.FailedCount > 0)
             {
-                var resultMessage = String.Format(Strings.DidInstallXPrograms, didInstallCount, didReinstallCount, didUninstallCount);
-                if (didFailedCount > 0)
-                    resultMessage = String.Join("\n", resultMessage, String.Format(Strings.XInstallersFailed, didFailedCount));
-
-                mainWindowViewModel.FinishedInstallation = new FinishedInstallationViewModel(mainWindowViewModel)
-                {
-                    Result = resultMessage
-                };
+                mainWindowViewModel.InstallationResult = installationResult;
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
             }
 
@@ -127,9 +118,9 @@ namespace nkristek.Stein.Commands.ApplicationViewModelCommands
         protected override void OnThrownException(ApplicationViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
-            MessageBox.Show(exception.Message);
+            DialogService.ShowErrorDialog(exception);
 
-            var mainViewModel = viewModel.FirstParentOfType<MainWindowViewModel>();
+            var mainViewModel = viewModel.Parent as MainWindowViewModel;
             if (mainViewModel == null)
                 return;
 

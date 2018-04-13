@@ -19,6 +19,9 @@ namespace nkristek.Stein.ConfigurationTypes
         [XmlElement("EnableSilentInstallation")]
         public bool EnableSilentInstallation;
 
+        [XmlElement("DisableReboot")]
+        public bool DisableReboot;
+
         [XmlElement("EnableInstallationLogging")]
         public bool EnableInstallationLogging;
 

@@ -150,7 +150,7 @@
   <data name="Loading" xml:space="preserve">
     <value>Lädt…</value>
   </data>
-  <data name="Modify" xml:space="preserve">
+  <data name="Custom" xml:space="preserve">
     <value>Benutzerdefiniert</value>
   </data>
   <data name="Name" xml:space="preserve">
@@ -211,7 +211,7 @@
     <value>Dieses ViewModel wird nicht unterstützt. Die Operation kann nicht durchgeführt werden.</value>
   </data>
   <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>Es wurden {0} Programme installiert, {1} erneut installiert und {2} deinstalliert.</value>
+    <value>Installiert: {0}  Erneut installiert: {1}  Deinstallliert: {2}</value>
   </data>
   <data name="RefreshFailed" xml:space="preserve">
     <value>Suchen nach Installerdateien in {0} ist fehlgeschlagen.
@@ -222,5 +222,8 @@
   </data>
   <data name="XInstallersFailed" xml:space="preserve">
     <value>{0} Installer sind fehlgeschlagen.</value>
+  </data>
+  <data name="DisableReboot" xml:space="preserve">
+    <value>Verbiete Neustart nach Installation</value>
   </data>
 </root>

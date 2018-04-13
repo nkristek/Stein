@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.Extensions;
 using nkristek.Stein.Localizations;
@@ -23,41 +22,40 @@ namespace nkristek.Stein.Commands.MainWindowViewModelCommands
 
         protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object view, object parameter)
         {
-            var application = new ApplicationViewModel(viewModel)
+            var applicationDialog = new ApplicationDialogModel(viewModel)
             {
-                EnableSilentInstallation = true
+                EnableSilentInstallation = true,
+                DisableReboot = true
             };
             
-            if (DialogService.ShowDialog(application, Strings.AddFolder) != true)
+            if (DialogService.ShowDialog(applicationDialog, Strings.AddFolder) != true)
                 return;
 
-            if (String.IsNullOrWhiteSpace(application.Path) || application.Path.ContainsInvalidPathChars() || !Directory.Exists(application.Path))
+            if (String.IsNullOrWhiteSpace(applicationDialog.Path) || applicationDialog.Path.ContainsInvalidPathChars() || !Directory.Exists(applicationDialog.Path))
             {
-                MessageBox.Show(Strings.SelectedPathNotValid);
+                DialogService.ShowMessageDialog(Strings.SelectedPathNotValid);
                 return;
             }
-
-            var applicationFolder = new ApplicationFolder()
+            
+            ConfigurationService.Configuration.ApplicationFolders.Add(new ApplicationFolder()
             {
                 Id = Guid.NewGuid(),
-                Name = application.Name,
-                Path = application.Path,
-                EnableSilentInstallation = application.EnableSilentInstallation
-            };
-
-            await applicationFolder.SyncWithDiskAsync();
-            ConfigurationService.Configuration.ApplicationFolders.Add(applicationFolder);
+                Name = applicationDialog.Name,
+                Path = applicationDialog.Path,
+                EnableSilentInstallation = applicationDialog.EnableSilentInstallation,
+                DisableReboot = applicationDialog.DisableReboot,
+                EnableInstallationLogging = applicationDialog.EnableInstallationLogging
+            });
             await ConfigurationService.SaveConfigurationToDiskAsync();
 
-            application.FolderId = applicationFolder.Id;
-            ViewModelService.UpdateViewModel(application);
-            viewModel.Applications.Add(application);
+            // todo: async
+            viewModel.RefreshApplicationsCommand.Execute(null);
         }
 
         protected override void OnThrownException(MainWindowViewModel viewModel, object view, object parameter, Exception exception)
         {
             LogService.LogError(exception);
-            MessageBox.Show(exception.Message);
+            DialogService.ShowErrorDialog(exception);
             viewModel.RefreshApplicationsCommand.Execute(null);
         }
     }

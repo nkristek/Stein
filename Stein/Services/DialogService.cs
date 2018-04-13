@@ -16,7 +16,7 @@ namespace nkristek.Stein.Services
         private static readonly IReadOnlyDictionary<Type, Type> ViewModelsToViewsMapping = new Dictionary<Type, Type>
         {
             { typeof(InstallerBundleViewModel), typeof(InstallerBundleDialog) },
-            { typeof(ApplicationViewModel), typeof(ApplicationDialog) }
+            { typeof(ApplicationDialogModel), typeof(ApplicationDialog) }
         };
 
         /// <summary>
@@ -44,6 +44,25 @@ namespace nkristek.Stein.Services
             dialogViewModel.View = null;
 
             return dialogResult;
+        }
+
+        /// <summary>
+        /// Shows a dialog with the given message
+        /// </summary>
+        /// <param name="message"></param>
+        public static void ShowMessageDialog(string message)
+        {
+            MessageBox.Show(message);
+        }
+
+        /// <summary>
+        /// Shows a dialog with the given <see cref="Exception"/>
+        /// </summary>
+        /// <param name="exception"></param>
+        public static void ShowErrorDialog(Exception exception)
+        {
+            var exceptionMessage = LogService.BuildExceptionMessage(exception);
+            ShowMessageDialog(exceptionMessage);
         }
     }
 }

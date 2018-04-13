@@ -65,6 +65,7 @@ namespace nkristek.Stein.Services
             associatedApplicationFolder.Name = application.Name;
             associatedApplicationFolder.Path = application.Path;
             associatedApplicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
+            associatedApplicationFolder.DisableReboot = application.DisableReboot;
             associatedApplicationFolder.EnableInstallationLogging = application.EnableInstallationLogging;
 
             foreach (var installerBundle in application.InstallerBundles.Where(installerBundle => installerBundle.IsDirty))
@@ -135,6 +136,7 @@ namespace nkristek.Stein.Services
                 Name = applicationFolder.Name,
                 Path = applicationFolder.Path,
                 EnableSilentInstallation = applicationFolder.EnableSilentInstallation,
+                DisableReboot = applicationFolder.DisableReboot,
                 EnableInstallationLogging = applicationFolder.EnableInstallationLogging
             };
 
@@ -258,6 +260,7 @@ namespace nkristek.Stein.Services
             application.Name = associatedApplicationFolder.Name;
             application.Path = associatedApplicationFolder.Path;
             application.EnableSilentInstallation = associatedApplicationFolder.EnableSilentInstallation;
+            application.DisableReboot = associatedApplicationFolder.DisableReboot;
             application.EnableInstallationLogging = associatedApplicationFolder.EnableInstallationLogging;
 
             var installerBundles = CreateOrUpdateInstallerBundleViewModels(associatedApplicationFolder, application, application.InstallerBundles).ToList();

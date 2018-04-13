@@ -150,7 +150,7 @@
   <data name="Loading" xml:space="preserve">
     <value>Loading…</value>
   </data>
-  <data name="Modify" xml:space="preserve">
+  <data name="Custom" xml:space="preserve">
     <value>Custom</value>
   </data>
   <data name="Name" xml:space="preserve">
@@ -211,7 +211,7 @@
     <value>This ViewModel is not supported. The operation could not be executed.</value>
   </data>
   <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>{0} programs were installed, {1} reinstalled and {2} uninstalled.</value>
+    <value>Installed: {0}  Reinstalled: {1}  Uninstalled: {2}</value>
   </data>
   <data name="RefreshFailed" xml:space="preserve">
     <value>Searching installerfiles in {0} failed.
@@ -222,5 +222,8 @@
   </data>
   <data name="XInstallersFailed" xml:space="preserve">
     <value>{3} installers failed.</value>
+  </data>
+  <data name="DisableReboot" xml:space="preserve">
+    <value>Disable reboot after installation</value>
   </data>
 </root>

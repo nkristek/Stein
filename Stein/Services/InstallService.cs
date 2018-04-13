@@ -136,9 +136,10 @@ namespace nkristek.Stein.Services
         /// <param name="installerPath">Path to the installer file</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be installed without UI</param>
-        public static void Install(string installerPath, string logFilePath = null, bool quiet = true)
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        public static void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot);
             process.WaitForExit();
         }
 
@@ -148,10 +149,11 @@ namespace nkristek.Stein.Services
         /// <param name="installerPath">Path to the installer file</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be installed without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns>Task which installs a installer file</returns>
-        public static async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true)
+        public static async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
@@ -161,8 +163,9 @@ namespace nkristek.Stein.Services
         /// <param name="installerPath">Path to the installer file</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be installed without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns>Process of the installer</returns>
-        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
+        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -176,6 +179,9 @@ namespace nkristek.Stein.Services
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (disableReboot)
+                argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
@@ -195,9 +201,10 @@ namespace nkristek.Stein.Services
         /// <param name="installerPathToInstall">Path to the installer file</param>
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
-        public static void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true)
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        public static void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet);
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot);
             reinstallProcess.WaitForExit();
         }
 
@@ -208,11 +215,12 @@ namespace nkristek.Stein.Services
         /// <param name="installerPathToInstall">Path to the installer file</param>
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns>Task which uninstalls and installs a installer file</returns>
-        public static async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true)
+        public static async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             // Note: reinstalling with a different installer fails, so for now uninstall and install it.
-            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet);
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot);
             await reinstallProcess.WaitForExitAsync().ConfigureAwait(false);
         }
 
@@ -222,8 +230,9 @@ namespace nkristek.Stein.Services
         /// <param name="installerPath">Path to the installer</param>
         /// <param name="logFilePath">Path to the log file for the installation. (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns></returns>
-        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true)
+        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -237,6 +246,9 @@ namespace nkristek.Stein.Services
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (disableReboot)
+                argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
@@ -255,9 +267,10 @@ namespace nkristek.Stein.Services
         /// <param name="productCode">Product code of the installed program</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be uninstalled without UI</param>
-        public static void Uninstall(string productCode, string logFilePath = null, bool quiet = true)
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        public static void Uninstall(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            var process = StartUninstallProcess(productCode, logFilePath, quiet);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot);
             process.WaitForExit();
         }
 
@@ -267,10 +280,11 @@ namespace nkristek.Stein.Services
         /// <param name="productCode">Product code of the installed program</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be uninstalled without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns>Task which uninstalls a installer file</returns>
-        public static async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true)
+        public static async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            var process = StartUninstallProcess(productCode, logFilePath, quiet);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
 
@@ -280,8 +294,9 @@ namespace nkristek.Stein.Services
         /// <param name="productCode">Product code of the installed program</param>
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be uninstalled without UI</param>
+        /// <param name="disableReboot">If automatic reboot should be disabled</param>
         /// <returns>Process of the uninstaller</returns>
-        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true)
+        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(productCode))
                 throw new ArgumentException(Strings.ProductCodeIsEmpty);
@@ -292,6 +307,9 @@ namespace nkristek.Stein.Services
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
+
+            if (disableReboot)
+                argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
