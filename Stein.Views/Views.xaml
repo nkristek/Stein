@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+                    xmlns:views="clr-namespace:Stein.Views">
+
+    <!-- Views -->
+    <DataTemplate DataType="{x:Type viewModels:MainWindowViewModel}">
+        <views:MainWindowView/>
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type viewModels:ApplicationViewModel}">
+        <views:ApplicationView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:InstallerViewModel}">
+        <views:InstallerView/>
+    </DataTemplate>
+
+    <!-- Dialogs -->
+    <views:ApplicationDialog x:Key="{x:Type viewModels:ApplicationDialogModel}" x:Shared="False"/>
+    
+    <views:InstallerBundleDialog x:Key="{x:Type viewModels:InstallerBundleDialogModel}" x:Shared="False"/>
+</ResourceDictionary>

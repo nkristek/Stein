@@ -57,7 +57,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\VisibilityToInverseVisibilityConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

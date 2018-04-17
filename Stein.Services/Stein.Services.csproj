@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Stein.Services</RootNamespace>
+    <AssemblyName>Stein.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
+    <Reference Include="nkristek.MVVMBase, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nkristek.MVVMBase.1.3.0\lib\net47\nkristek.MVVMBase.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigurationService.cs" />
+    <Compile Include="DialogService.cs" />
+    <Compile Include="Extensions\ApplicationFolderExtension.cs" />
+    <Compile Include="IConfigurationService.cs" />
+    <Compile Include="IDialogService.cs" />
+    <Compile Include="IInstallService.cs" />
+    <Compile Include="IMsiService.cs" />
+    <Compile Include="IViewModelService.cs" />
+    <Compile Include="Types\MsiPropertyName.cs" />
+    <Compile Include="Types\InstalledProgram.cs" />
+    <Compile Include="InstallService.cs" />
+    <Compile Include="LogService.cs" />
+    <Compile Include="MsiService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Extensions\SubFolderExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Stein.Helpers\Stein.Helpers.csproj">
+      <Project>{8b1a8f56-1c5c-4669-b42c-57117a00d116}</Project>
+      <Name>Stein.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stein.Localizations\Stein.Localizations.csproj">
+      <Project>{a84ba3a1-fd2d-4255-8a5c-73ab256c8edc}</Project>
+      <Name>Stein.Localizations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stein.Types\Stein.Types.csproj">
+      <Project>{83f4ecdb-bb76-499a-9765-482b54839245}</Project>
+      <Name>Stein.Types</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

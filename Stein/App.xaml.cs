@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using nkristek.Stein.Services;
+using Stein.Services;
+using Stein.Views;
 
-namespace nkristek.Stein
+namespace Stein
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -23,28 +22,36 @@ namespace nkristek.Stein
             Exit += App_Exit;
 
             DispatcherUnhandledException += App_DispatcherUnhandledException;
-
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
         
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
-            ConfigurationService.ConfiguationFolderPath = appDataConfigurationPath;
-            var logFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
-            LogService.LogFolderPath = logFolderPath;
-            InstallService.InstallationLogFolderPath = Path.Combine(logFolderPath, "Installs");
+            if (!Directory.Exists(appDataConfigurationPath))
+                Directory.CreateDirectory(appDataConfigurationPath);
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            LogService.LogFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
+
+            ConfigurationService.Instance = new ConfigurationService(Path.Combine(appDataConfigurationPath, "Config.xml"));
+            ConfigurationService.Instance.LoadConfigurationFromDisk();
+
+            InstallService.Instance = new InstallService();
+
+            MsiService.Instance = new MsiService();
+
+            ViewModelService.Instance = new ViewModelService();
             
-            ConfigurationService.LoadConfigurationFromDisk();
+            var rootWindow = new MainWindow();
+            DialogService.Instance = new WpfDialogService(rootWindow);
+            
+            rootWindow.Show();
         }
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            ConfigurationService.SaveConfigurationToDisk();
             LogService.CloseLogFiles();
         }
         
