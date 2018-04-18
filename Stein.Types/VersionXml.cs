@@ -17,9 +17,9 @@ namespace Stein.Types
         // cant use default parameter null in other constructor because XML Serialization can't handle that
         public VersionXml() { }
 
-        public VersionXml(Version Version)
+        public VersionXml(Version version)
         {
-            this.Version = Version;
+            Version = version;
         }
 
         [XmlIgnore]
@@ -37,14 +37,14 @@ namespace Stein.Types
             }
         }
 
-        public static implicit operator Version(VersionXml VersionXml)
+        public static implicit operator Version(VersionXml versionXml)
         {
-            return VersionXml.Version;
+            return versionXml.Version;
         }
 
-        public static implicit operator VersionXml(Version Version)
+        public static implicit operator VersionXml(Version version)
         {
-            return new VersionXml(Version);
+            return new VersionXml(version);
         }
 
         public override string ToString()

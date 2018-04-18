@@ -14,12 +14,13 @@ namespace Stein.Types.Tests
             [XmlElement("Version", typeof(VersionXml))]
             public Version Version;
 
+            private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(VersionXmlTestClass), typeof(VersionXmlTestClass).GetNestedTypes());
+
             public string ToXml()
             {
-                var xmlSerializer = new XmlSerializer(typeof(VersionXmlTestClass));
                 using (var stringWriter = new StringWriter())
                 {
-                    xmlSerializer.Serialize(stringWriter, this);
+                    XmlSerializer.Serialize(stringWriter, this);
                     return stringWriter.ToString();
                 }
             }
@@ -27,7 +28,7 @@ namespace Stein.Types.Tests
             public static VersionXmlTestClass CreateFromXml(string xmlString)
             {
                 using (var reader = new StringReader(xmlString))
-                    return new XmlSerializer(typeof(VersionXmlTestClass)).Deserialize(reader) as VersionXmlTestClass;
+                    return XmlSerializer.Deserialize(reader) as VersionXmlTestClass;
             }
         }
 

@@ -13,6 +13,8 @@ namespace Stein.Types.ConfigurationTypes
         [XmlArray("ApplicationFolders")]
         [XmlArrayItem("ApplicationFolder")]
         public List<ApplicationFolder> ApplicationFolders = new List<ApplicationFolder>();
+        
+        private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(Configuration), typeof(Configuration).GetNestedTypes());
 
         /// <summary>
         /// Serializes the configuration to XML
@@ -20,11 +22,9 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>XML serialized string</returns>
         public string ToXml()
         {
-            var xmlSerializer = new XmlSerializer(typeof(Configuration));
-
             using(var stringWriter = new StringWriter())
             {
-                xmlSerializer.Serialize(stringWriter, this);
+                XmlSerializer.Serialize(stringWriter, this);
                 return stringWriter.ToString();
             }
         }
@@ -44,12 +44,8 @@ namespace Stein.Types.ConfigurationTypes
         /// <param name="filePath">Path to the file</param>
         public void ToFile(string filePath)
         {
-            var xmlSerializer = new XmlSerializer(typeof(Configuration));
-
             using (var writer = new StreamWriter(filePath))
-            {
-                xmlSerializer.Serialize(writer, this);
-            }
+                XmlSerializer.Serialize(writer, this);
         }
 
         /// <summary>
@@ -111,7 +107,7 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>Deserialized configuration</returns>
         private static Configuration Deserialize(TextReader reader)
         {
-            return new XmlSerializer(typeof(Configuration)).Deserialize(reader) as Configuration;
+            return XmlSerializer.Deserialize(reader) as Configuration;
         }
     }
 }

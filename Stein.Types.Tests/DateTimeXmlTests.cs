@@ -14,12 +14,13 @@ namespace Stein.Types.Tests
             [XmlElement("Date", typeof(DateTimeXml))]
             public DateTimeXml Date;
 
+            private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(DateTimeXmlTestClass), typeof(DateTimeXmlTestClass).GetNestedTypes());
+
             public string ToXml()
             {
-                var xmlSerializer = new XmlSerializer(typeof(DateTimeXmlTestClass));
                 using (var stringWriter = new StringWriter())
                 {
-                    xmlSerializer.Serialize(stringWriter, this);
+                    XmlSerializer.Serialize(stringWriter, this);
                     return stringWriter.ToString();
                 }
             }
@@ -27,7 +28,7 @@ namespace Stein.Types.Tests
             public static DateTimeXmlTestClass CreateFromXml(string xmlString)
             {
                 using (var reader = new StringReader(xmlString))
-                    return new XmlSerializer(typeof(DateTimeXmlTestClass)).Deserialize(reader) as DateTimeXmlTestClass;
+                    return XmlSerializer.Deserialize(reader) as DateTimeXmlTestClass;
             }
         }
 

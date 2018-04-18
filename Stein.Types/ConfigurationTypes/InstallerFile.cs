@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Stein.Types.ConfigurationTypes
@@ -14,25 +15,33 @@ namespace Stein.Types.ConfigurationTypes
 
         [XmlElement("IsEnabled")]
         public bool IsEnabled;
-
-        [XmlElement("Version", typeof(VersionXml))]
+        
+        [XmlIgnore]
         public Version Version;
+
+        [XmlElement("Version")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public VersionXml VersionXml
+        {
+            get => Version;
+            set => Version = value;
+        }
 
         [XmlElement("Culture")]
         public string Culture;
 
         [XmlElement("ProductCode")]
         public string ProductCode;
+        
+        [XmlIgnore]
+        public DateTime Created;
 
         [XmlElement("Created")]
-        public DateTimeXml CreatedXml;
-
-        [XmlIgnore]
-        public DateTime? Created
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public DateTimeXml CreatedXml
         {
-            get => CreatedXml?.Date;
-
-            set => CreatedXml = value.HasValue ? new DateTimeXml(value.Value) : null;
+            get => Created;
+            set => Created = value;
         }
     }
 }
