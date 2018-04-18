@@ -6,21 +6,9 @@ namespace Stein.Services.Tests
     [TestClass]
     public class LogServiceTests
     {
-        private string TestLogFolderPath
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestLogFolderPath => null;
 
-        private string TestLogMessage
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestLogMessage => null;
 
         [TestMethod]
         public void TestLogFileLogging()
@@ -32,7 +20,7 @@ namespace Stein.Services.Tests
             TestLogWarningAsync();
         }
 
-        private void TestLogInfo()
+        private static void TestLogInfo()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -45,12 +33,12 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.LogFileFullName), "The log file doesn't exists.");
             using (var reader = new StreamReader(LogService.LogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The log file doesn't contain the test message.");
 
             File.Delete(LogService.LogFileFullName);
         }
 
-        private void TestLogInfoAsync()
+        private static void TestLogInfoAsync()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -63,12 +51,12 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.LogFileFullName), "The log file doesn't exists.");
             using (var reader = new StreamReader(LogService.LogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The log file doesn't contain the test message.");
 
             File.Delete(LogService.LogFileFullName);
         }
 
-        private void TestLogWarning()
+        private static void TestLogWarning()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -81,12 +69,12 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.LogFileFullName), "The log file doesn't exists.");
             using (var reader = new StreamReader(LogService.LogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The log file doesn't contain the test message.");
 
             File.Delete(LogService.LogFileFullName);
         }
 
-        private void TestLogWarningAsync()
+        private static void TestLogWarningAsync()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -99,7 +87,7 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.LogFileFullName), "The log file doesn't exists.");
             using (var reader = new StreamReader(LogService.LogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The log file doesn't contain the test message.");
 
             File.Delete(LogService.LogFileFullName);
         }
@@ -111,7 +99,7 @@ namespace Stein.Services.Tests
             TestLogErrorAsync();
         }
 
-        private void TestLogError()
+        private static void TestLogError()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -124,12 +112,12 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.ErrorLogFileFullName), "The error log file doesn't exists.");
             using (var reader = new StreamReader(LogService.ErrorLogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The error log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The error log file doesn't contain the test message.");
 
             File.Delete(LogService.ErrorLogFileFullName);
         }
 
-        private void TestLogErrorAsync()
+        private static void TestLogErrorAsync()
         {
             Assert.IsNotNull(TestLogFolderPath, "The folder path of the log folder is not set.");
             Assert.IsNotNull(TestLogMessage, "The log message for testing is not set.");
@@ -142,7 +130,7 @@ namespace Stein.Services.Tests
 
             Assert.IsTrue(File.Exists(LogService.ErrorLogFileFullName), "The error log file doesn't exists.");
             using (var reader = new StreamReader(LogService.ErrorLogFileFullName))
-                Assert.IsTrue(reader.ReadLine().Contains(TestLogMessage), "The error log file doesn't contain the test message.");
+                Assert.IsTrue(reader.ReadLine()?.Contains(TestLogMessage) ?? false, "The error log file doesn't contain the test message.");
 
             File.Delete(LogService.ErrorLogFileFullName);
         }

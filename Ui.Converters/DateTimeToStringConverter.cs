@@ -23,10 +23,10 @@ namespace nkristek.Ui.Converters
             if (dateTime == DateTime.MinValue)
                 return null;
 
-            if (parameter is string && !String.IsNullOrEmpty(parameter as string))
-                return dateTime.ToString(parameter as string);
+            if (parameter is string s && !String.IsNullOrEmpty(s))
+                return dateTime.ToString(s);
 
-            return dateTime.ToString();
+            return dateTime.ToString(culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-//using System.Windows;
-//using System.Windows.Shell;
-//using Stein.Services;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using Stein.Services;
+using Stein.Services.Types;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 
 namespace Stein.ViewModels
@@ -22,50 +21,42 @@ namespace Stein.ViewModels
         }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public AsyncViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; private set; }
+        public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; private set; }
+        public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; }
 
-        public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; private set; }
+        public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; }
         /// <summary>
         /// List of all applications
         /// </summary>
         public ObservableCollection<ApplicationViewModel> Applications { get; } = new ObservableCollection<ApplicationViewModel>();
         
-        private InstallationViewModel _CurrentInstallation;
+        private InstallationViewModel _currentInstallation;
         /// <summary>
         /// Is set if an operation is in progress
         /// </summary>
         public InstallationViewModel CurrentInstallation
         {
-            get { return _CurrentInstallation; }
+            get => _currentInstallation;
             set
             {
-                if (SetProperty(ref _CurrentInstallation, value))
-                {
-                    //if (View is Window window)
-                    //{
-                    //    if (value != null)
-                    //        TaskbarService.SetTaskbarProgressState(window, TaskbarItemProgressState.Indeterminate);
-                    //    else
-                    //        TaskbarService.UnsetTaskBarProgressState(window);
-                    //}
-                }
+                if (SetProperty(ref _currentInstallation, value))
+                    ProgressBarService.Instance.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
             }
         }
 
-        private InstallationResultViewModel _InstallationResult;
+        private InstallationResultViewModel _installationResult;
         /// <summary>
         /// Is set if an operation was finished
         /// </summary>
         public InstallationResultViewModel InstallationResult
         {
-            get { return _InstallationResult; }
-            set { SetProperty(ref _InstallationResult, value); }
+            get => _installationResult;
+            set => SetProperty(ref _installationResult, value);
         }
     }
 }

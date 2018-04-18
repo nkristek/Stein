@@ -229,4 +229,7 @@
   <data name="ViewHasWrongTypeX" xml:space="preserve">
     <value>The view for ViewModel type {0} is of wrong type {1}. Requested type was {2}.</value>
   </data>
+  <data name="EntityNotFound" xml:space="preserve">
+    <value>The entity was not found.</value>
+  </data>
 </root>

@@ -65,7 +65,7 @@ namespace Stein.Types.Tests
         }
 
         [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
-        private void CreateInstance()
+        private static void CreateInstance()
         {
             var instance = new DisposableImpl();
         }

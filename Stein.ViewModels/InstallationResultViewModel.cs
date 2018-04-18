@@ -22,44 +22,44 @@ namespace Stein.ViewModels
             }
         }
 
-        private int _InstallCount;
+        private int _installCount;
         /// <summary>
         /// How many installers were installed
         /// </summary>
         public int InstallCount
         {
-            get { return _InstallCount; }
-            set { SetProperty(ref _InstallCount, value); }
+            get => _installCount;
+            set => SetProperty(ref _installCount, value);
         }
 
-        private int _UninstallCount;
+        private int _uninstallCount;
         /// <summary>
         /// How many installers were uninstalled
         /// </summary>
         public int UninstallCount
         {
-            get { return _UninstallCount; }
-            set { SetProperty(ref _UninstallCount, value); }
+            get => _uninstallCount;
+            set => SetProperty(ref _uninstallCount, value);
         }
 
-        private int _ReinstallCount;
+        private int _reinstallCount;
         /// <summary>
         /// How many installers were reinstalled
         /// </summary>
         public int ReinstallCount
         {
-            get { return _ReinstallCount; }
-            set { SetProperty(ref _ReinstallCount, value); }
+            get => _reinstallCount;
+            set => SetProperty(ref _reinstallCount, value);
         }
 
-        private int _FailedCount;
+        private int _failedCount;
         /// <summary>
         /// How many installers failed to process
         /// </summary>
         public int FailedCount
         {
-            get { return _FailedCount; }
-            set { SetProperty(ref _FailedCount, value); }
+            get => _failedCount;
+            set => SetProperty(ref _failedCount, value);
         }
     }
 }

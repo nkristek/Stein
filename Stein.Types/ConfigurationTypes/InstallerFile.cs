@@ -30,15 +30,9 @@ namespace Stein.Types.ConfigurationTypes
         [XmlIgnore]
         public DateTime? Created
         {
-            get
-            {
-                return CreatedXml?.Date;
-            }
+            get => CreatedXml?.Date;
 
-            set
-            {
-                CreatedXml = value.HasValue ? new DateTimeXml(value.Value) : null;
-            }
+            set => CreatedXml = value.HasValue ? new DateTimeXml(value.Value) : null;
         }
     }
 }

@@ -7,53 +7,50 @@ namespace Stein.ViewModels
     public class InstallationViewModel
         : ViewModel
     {
-        private string _Name;
+        private string _name;
         /// <summary>
         /// Name of the current installer
         /// </summary>
         public string Name
         {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
-        private InstallationState _State;
+        private InstallationState _state;
         /// <summary>
         /// Current state of the installation
         /// </summary>
         public InstallationState State
         {
-            get { return _State; }
-            set { SetProperty(ref _State, value); }
+            get => _state;
+            set => SetProperty(ref _state, value);
         }
         
-        private int _InstallerCount;
+        private int _installerCount;
         /// <summary>
         /// Total count of operations of the current installation
         /// </summary>
         public int InstallerCount
         {
-            get { return _InstallerCount; }
-            set { SetProperty(ref _InstallerCount, value); }
+            get => _installerCount;
+            set => SetProperty(ref _installerCount, value);
         }
 
-        private int _CurrentIndex;
+        private int _currentIndex;
         /// <summary>
         /// At which installer the current operation is
         /// </summary>
         public int CurrentIndex
         {
-            get { return _CurrentIndex; }
-            set { SetProperty(ref _CurrentIndex, value); }
+            get => _currentIndex;
+            set => SetProperty(ref _currentIndex, value);
         }
 
         /// <summary>
         /// Returns a string representing the current progress
         /// </summary>
         [PropertySource(nameof(CurrentIndex), nameof(InstallerCount))]
-        public string ProgressString
-        {
-            get { return String.Format("{0}/{1}", CurrentIndex, InstallerCount); }
-        }
+        public string ProgressString => $"{CurrentIndex}/{InstallerCount}";
     }
 }

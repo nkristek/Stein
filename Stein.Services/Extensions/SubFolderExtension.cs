@@ -69,14 +69,15 @@ namespace Stein.Services.Extensions
         /// <returns>The InstallerFile if found, null otherwise</returns>
         public static InstallerFile FindInstallerFile(this SubFolder folder, IEnumerable<string> installerFileRelativePath)
         {
-            if (!installerFileRelativePath.Any())
+            var fileRelativePath = installerFileRelativePath.ToList();
+            if (!fileRelativePath.Any())
                 return null;
 
-            var parentFolderOfInstallerFile = folder.FindSubFolder(installerFileRelativePath.Take(installerFileRelativePath.Count() - 1));
+            var parentFolderOfInstallerFile = folder.FindSubFolder(fileRelativePath.Take(fileRelativePath.Count() - 1));
             if (parentFolderOfInstallerFile == null)
                 return null;
 
-            var installerFileName = installerFileRelativePath.LastOrDefault();
+            var installerFileName = fileRelativePath.LastOrDefault();
             return parentFolderOfInstallerFile.InstallerFiles.FirstOrDefault(i => Path.GetFileName(i.Path) == installerFileName);
         }
 
@@ -104,7 +105,7 @@ namespace Stein.Services.Extensions
             var filesOnDisk = Directory.GetFiles(subFolder.Path, "*.msi").Select(fileName => new FileInfo(fileName)).ToList();
 
             // remove all files which don't exist on the file system anymore
-            subFolder.InstallerFiles.RemoveAll(installerFile => !filesOnDisk.Any(file => file.FullName == installerFile.Path));
+            subFolder.InstallerFiles.RemoveAll(installerFile => filesOnDisk.All(file => file.FullName != installerFile.Path));
 
             foreach (var fileOnDisk in filesOnDisk)
             {
@@ -116,7 +117,7 @@ namespace Stein.Services.Extensions
                     if (existingInstallerFile.Created == fileCreationTime)
                         continue;
 
-                    LogService.LogInfo(String.Format("Creation date of previously seen installer file doesn't match. Will process installer file as new one. ({0})", existingInstallerFile.Path));
+                    LogService.LogInfo($"Creation date of previously seen installer file doesn't match. Will process installer file as new one. ({existingInstallerFile.Path})");
 
                     subFolder.InstallerFiles.Remove(existingInstallerFile);
                 }

@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Controls;
-using Stein.Services;
-using Stein.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace Stein.Views
 {

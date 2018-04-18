@@ -17,7 +17,7 @@ namespace nkristek.Ui.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Any(v => v is bool && (bool)v))
+            if (values.Any(v => v is bool b && b))
                 return Visibility.Visible;
             
             switch (parameter as string)

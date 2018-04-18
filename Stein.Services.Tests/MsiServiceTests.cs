@@ -6,29 +6,11 @@ namespace Stein.Services.Tests
     [TestClass]
     public class MsiServiceTests
     {
-        private string TestInstallerFilePath
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestInstallerFilePath => null;
 
-        private string TestInstallerName
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestInstallerName => null;
 
-        private string TestInstallerProductCode
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestInstallerProductCode => null;
 
         [TestMethod]
         public void TestMsiMethods()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace Stein.Types
@@ -29,11 +30,7 @@ namespace Stein.Types
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
         public string Value
         {
-            get
-            {
-                return Date?.ToString();
-            }
-
+            get => Date?.ToString();
             set
             {
                 if (DateTime.TryParse(value, out DateTime dateTime))
@@ -60,10 +57,7 @@ namespace Stein.Types
 
         public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)
         {
-            if (DateTime.TryParse(dateTime.ToString(), out DateTime parsedDateTime))
-                return parsedDateTime;
-            else
-                return DateTime.MinValue;
+            return DateTime.TryParse(dateTime.ToString(CultureInfo.InvariantCulture), out var parsedDateTime) ? parsedDateTime : DateTime.MinValue;
         }
     }
 }

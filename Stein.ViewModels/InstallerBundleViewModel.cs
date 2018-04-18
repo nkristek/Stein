@@ -9,14 +9,14 @@ namespace Stein.ViewModels
     public class InstallerBundleViewModel
         : ViewModel
     {
-        private string _Name;
+        private string _name;
         /// <summary>
         /// The name of the folder of the installer bundle
         /// </summary>
         public string Name
         {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
         private string _Path;
@@ -25,8 +25,8 @@ namespace Stein.ViewModels
         /// </summary>
         public string Path
         {
-            get { return _Path; }
-            set { SetProperty(ref _Path, value); }
+            get => _Path;
+            set => SetProperty(ref _Path, value);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Stein.ViewModels
             {
                 if (!Installers.Any())
                     return null;
-                var culture = Installers.FirstOrDefault().Culture;
+                var culture = Installers.FirstOrDefault()?.Culture;
                 return Installers.All(i => i.Culture != null && i.Culture == culture) ? culture : null;
             }
         }
@@ -67,11 +67,11 @@ namespace Stein.ViewModels
             var builder = new StringBuilder();
             builder.Append(Name);
 
-            if (Culture != null)
-            {
-                builder.Append(" - ");
-                builder.Append(Culture);
-            }
+            if (Culture == null)
+                return builder.ToString();
+
+            builder.Append(" - ");
+            builder.Append(Culture);
 
             return builder.ToString();
         }

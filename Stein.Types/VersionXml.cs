@@ -29,14 +29,10 @@ namespace Stein.Types
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
         public string Value
         {
-            get
-            {
-                return Version == null ? String.Empty : Version.ToString();
-            }
-
+            get => Version == null ? String.Empty : Version.ToString();
             set
             {
-                Version.TryParse(value, out Version temp);
+                Version.TryParse(value, out var temp);
                 Version = temp;
             }
         }

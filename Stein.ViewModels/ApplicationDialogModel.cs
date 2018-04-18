@@ -14,68 +14,68 @@ namespace Stein.ViewModels
             OpenLogFolderCommand = new OpenLogFolderCommand(this);
         }
 
-        public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; private set; }
+        public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; }
 
-        public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; private set; }
+        public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; }
 
-        private string _Name;
+        private string _name;
         /// <summary>
         /// Name of the application folder
         /// </summary>
         public string Name
         {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
-        private string _Path;
+        private string _path;
         /// <summary>
         /// Path to the application folder
         /// </summary>
         public string Path
         {
-            get { return _Path; }
-            set { SetProperty(ref _Path, value); }
+            get => _path;
+            set => SetProperty(ref _path, value);
         }
 
-        private Guid _FolderId;
+        private Guid _folderId;
         /// <summary>
         /// The Id of the ApplicationFolder in the configuration
         /// </summary>
         public Guid FolderId
         {
-            get { return _FolderId; }
-            set { SetProperty(ref _FolderId, value); }
+            get => _folderId;
+            set => SetProperty(ref _folderId, value);
         }
 
-        private bool _EnableSilentInstallation;
+        private bool _enableSilentInstallation;
         /// <summary>
         /// If the installations should proceed without UI
         /// </summary>
         public bool EnableSilentInstallation
         {
-            get { return _EnableSilentInstallation; }
-            set { SetProperty(ref _EnableSilentInstallation, value); }
+            get => _enableSilentInstallation;
+            set => SetProperty(ref _enableSilentInstallation, value);
         }
 
-        private bool _DisableReboot;
+        private bool _disableReboot;
         /// <summary>
         /// If the installers should be able to automatically reboot if necessary
         /// </summary>
         public bool DisableReboot
         {
-            get { return _DisableReboot; }
-            set { SetProperty(ref _DisableReboot, value); }
+            get => _disableReboot;
+            set => SetProperty(ref _disableReboot, value);
         }
 
-        private bool _EnableInstallationLogging;
+        private bool _enableInstallationLogging;
         /// <summary>
         /// If logging during installation should be enabled
         /// </summary>
         public bool EnableInstallationLogging
         {
-            get { return _EnableInstallationLogging; }
-            set { SetProperty(ref _EnableInstallationLogging, value); }
+            get => _enableInstallationLogging;
+            set => SetProperty(ref _enableInstallationLogging, value);
         }
     }
 }

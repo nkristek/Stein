@@ -7,28 +7,28 @@ namespace Stein.ViewModels
     public class InstallerBundleDialogModel
         : DialogModel
     {
-        private string _Name;
+        private string _name;
         /// <summary>
         /// The name of the folder of the installer bundle
         /// </summary>
         public string Name
         {
-            get { return _Name; }
+            get => _name;
             set
             {
-                if (SetProperty(ref _Name, value))
-                    Title = _Name;
+                if (SetProperty(ref _name, value))
+                    Title = _name;
             }
         }
 
-        private string _Path;
+        private string _path;
         /// <summary>
         /// The full path to the folder of the installer bundle
         /// </summary>
         public string Path
         {
-            get { return _Path; }
-            set { SetProperty(ref _Path, value); }
+            get => _path;
+            set => SetProperty(ref _path, value);
         }
         
         /// <summary>
@@ -46,7 +46,7 @@ namespace Stein.ViewModels
             {
                 if (!Installers.Any())
                     return null;
-                var culture = Installers.FirstOrDefault().Culture;
+                var culture = Installers.FirstOrDefault()?.Culture;
                 return Installers.All(i => i.Culture != null && i.Culture == culture) ? culture : null;
             }
         }

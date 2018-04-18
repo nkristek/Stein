@@ -30,9 +30,9 @@ namespace Stein.Helpers
         public static IEnumerable<T> MergeSequence<T>(this IEnumerable<T> primarySequence, IEnumerable<T> secondarySequence, Func<T, object> equalsPropertyAccessor = null)
         {
             if (primarySequence == null)
-                throw new ArgumentNullException("primarySequence");
+                throw new ArgumentNullException(nameof(primarySequence));
             if (secondarySequence == null)
-                throw new ArgumentNullException("secondarySequence");
+                throw new ArgumentNullException(nameof(secondarySequence));
             if (equalsPropertyAccessor == null)
                 equalsPropertyAccessor = arg => arg;
 

@@ -17,21 +17,21 @@ namespace Stein.Services
     {
         public static IInstallService Instance;
 
-        private List<InstalledProgram> _InstalledPrograms;
+        private List<InstalledProgram> _installedPrograms;
 
         public IEnumerable<InstalledProgram> InstalledPrograms
         {
             get
             {
-                if (_InstalledPrograms == null)
+                if (_installedPrograms == null)
                     RefreshInstalledPrograms();
-                return _InstalledPrograms;
+                return _installedPrograms;
             }
 
             private set
             {
-                _InstalledPrograms?.ForEach(program => program.Dispose());
-                _InstalledPrograms = value.ToList();
+                _installedPrograms?.ForEach(program => program.Dispose());
+                _installedPrograms = value.ToList();
             }
         }
         
@@ -59,13 +59,12 @@ namespace Stein.Services
                     yield return program;
         }
         
-        private IEnumerable<InstalledProgram> GetInstalledProgramsFromKey(RegistryKey key)
+        private static IEnumerable<InstalledProgram> GetInstalledProgramsFromKey(RegistryKey key)
         {
-            foreach (var subkeyName in key.GetSubKeyNames())
-                yield return new InstalledProgram
-                {
-                    RegistryKey = key.OpenSubKey(subkeyName)
-                };
+            return key.GetSubKeyNames().Select(subkeyName => new InstalledProgram
+            {
+                RegistryKey = key.OpenSubKey(subkeyName)
+            });
         }
         
         public bool IsProductCodeInstalled(string productCode)
@@ -85,7 +84,7 @@ namespace Stein.Services
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -95,7 +94,7 @@ namespace Stein.Services
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append(String.Format("/I \"{0}\"", installerPath));
+            argumentsBuilder.Append($"/I \"{installerPath}\"");
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -104,7 +103,7 @@ namespace Stein.Services
                 argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
-                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
+                argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
@@ -127,7 +126,7 @@ namespace Stein.Services
             await reinstallProcess.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -137,7 +136,7 @@ namespace Stein.Services
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append(String.Format("/FAMUS \"{0}\"", installerPath));
+            argumentsBuilder.Append($"/FAMUS \"{installerPath}\"");
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -146,7 +145,7 @@ namespace Stein.Services
                 argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
-                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
+                argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
@@ -168,14 +167,14 @@ namespace Stein.Services
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
         {
             if (String.IsNullOrWhiteSpace(productCode))
                 throw new ArgumentException(Strings.ProductCodeIsEmpty);
 
             var argumentsBuilder = new StringBuilder();
 
-            argumentsBuilder.Append(String.Format("/X {0}", productCode));
+            argumentsBuilder.Append($"/X {productCode}");
 
             if (quiet)
                 argumentsBuilder.Append(" /QN");
@@ -184,7 +183,7 @@ namespace Stein.Services
                 argumentsBuilder.Append(" /norestart");
 
             if (!String.IsNullOrEmpty(logFilePath))
-                argumentsBuilder.Append(String.Format(" /L*V \"{0}\"", logFilePath));
+                argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {

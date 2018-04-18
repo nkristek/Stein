@@ -18,108 +18,105 @@ namespace Stein.ViewModels
         }
 
         [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferNothingCommand { get; private set; }
+        public ViewModelCommand<InstallerViewModel> PreferNothingCommand { get; }
 
         [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferInstallCommand { get; private set; }
+        public ViewModelCommand<InstallerViewModel> PreferInstallCommand { get; }
 
         [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferReinstallCommand { get; private set; }
+        public ViewModelCommand<InstallerViewModel> PreferReinstallCommand { get; }
 
         [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferUninstallCommand { get; private set; }
+        public ViewModelCommand<InstallerViewModel> PreferUninstallCommand { get; }
         
-        private string _Path;
+        private string _path;
         /// <summary>
         /// FilePath of the installer
         /// </summary>
         public string Path
         {
-            get { return _Path; }
-            set { SetProperty(ref _Path, value); }
+            get => _path;
+            set => SetProperty(ref _path, value);
         }
 
-        private InstallerOperationType _PreferredOperation;
+        private InstallerOperationType _preferredOperation;
         /// <summary>
         /// If the installer is enabled by the user
         /// </summary>
         public InstallerOperationType PreferredOperation
         {
-            get { return _PreferredOperation; }
-            set { SetProperty(ref _PreferredOperation, value); }
+            get => _preferredOperation;
+            set => SetProperty(ref _preferredOperation, value);
         }
         
         /// <summary>
         /// If the installer is disabled by the system (for example when it isn't installed)
         /// </summary>
         [PropertySource(nameof(IsInstalled))]
-        public bool IsDisabled
-        {
-            get { return IsInstalled == null; }
-        }
+        public bool IsDisabled => IsInstalled == null;
 
-        private string _Name;
+        private string _name;
         /// <summary>
         /// Name of the installer (from the Msi-properties)
         /// </summary>
         public string Name
         {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
-        private Version _Version;
+        private Version _version;
         /// <summary>
         /// Version of the installer (from the Msi-properties)
         /// </summary>
         public Version Version
         {
-            get { return _Version; }
-            set { SetProperty(ref _Version, value); }
+            get => _version;
+            set => SetProperty(ref _version, value);
         }
 
-        private string _Culture;
+        private string _culture;
         /// <summary>
         /// Culture in IetfLanguageTag-format of the installer (from the Msi-properties)
         /// </summary>
         public string Culture
         {
-            get { return _Culture; }
-            set { SetProperty(ref _Culture, value); }
+            get => _culture;
+            set => SetProperty(ref _culture, value);
         }
 
-        private string _ProductCode;
+        private string _productCode;
         /// <summary>
         /// ProductCode of the installer (from the Msi-properties)
         /// </summary>
         public string ProductCode
         {
-            get { return _ProductCode; }
-            set { SetProperty(ref _ProductCode, value); }
+            get => _productCode;
+            set => SetProperty(ref _productCode, value);
         }
 
-        private bool? _IsInstalled;
+        private bool? _isInstalled;
         /// <summary>
         /// If the installer is installed
         /// </summary>
         public bool? IsInstalled
         {
-            get { return _IsInstalled; }
+            get => _isInstalled;
             set
             {
-                if (SetProperty(ref _IsInstalled, value))
+                if (SetProperty(ref _isInstalled, value))
                     PreferredOperation = InstallerOperationType.DoNothing;
             }
         }
 
-        private DateTime? _Created;
+        private DateTime? _created;
         /// <summary>
         /// When the installer file was created
         /// </summary>
         public DateTime? Created
         {
-            get { return _Created; }
-            set { SetProperty(ref _Created, value); }
+            get => _created;
+            set => SetProperty(ref _created, value);
         }
     }
 }

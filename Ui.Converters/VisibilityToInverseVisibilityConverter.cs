@@ -6,7 +6,7 @@ using System.Windows.Data;
 namespace nkristek.Ui.Converters
 {
     /// <summary>
-    /// Expects <see cref="obVisibilityject"/>.
+    /// Expects <see cref="Visibility"/>.
     /// Returns the opposite, if parameter is set to hidden, it will return <see cref="Visibility.Hidden"/> if encountering <see cref="Visibility.Visible"/>
     /// </summary>
     public class VisibilityToInverseVisibilityConverter 
@@ -16,8 +16,10 @@ namespace nkristek.Ui.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Visibility valueAsVisibility = (Visibility)value;
+            if (value == null)
+                return null;
 
+            var valueAsVisibility = (Visibility)value;
             if (valueAsVisibility == Visibility.Visible)
                 return "Hidden".Equals(parameter) ? Visibility.Hidden : Visibility.Collapsed;
 

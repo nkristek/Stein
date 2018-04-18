@@ -35,10 +35,7 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>Task which returns the XML serialized string</returns>
         public async Task<string> ToXmlAsync()
         {
-            return await Task.Run(() =>
-            {
-                return ToXml();
-            });
+            return await Task.Run(() => ToXml());
         }
 
         /// <summary>
@@ -62,10 +59,7 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>Task with serializes and saves the configuration to disk</returns>
         public async Task ToFileAsync(string filePath)
         {
-            await Task.Run(() =>
-            {
-                ToFile(filePath);
-            });
+            await Task.Run(() => ToFile(filePath));
         }
 
         /// <summary>
@@ -86,10 +80,7 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>Task which returns the deserialized configuration</returns>
         public static async Task<Configuration> CreateFromXmlAsync(string xmlString)
         {
-            return await Task.Run(() =>
-            {
-                return CreateFromXml(xmlString);
-            });
+            return await Task.Run(() => CreateFromXml(xmlString));
         }
 
         /// <summary>
@@ -110,10 +101,7 @@ namespace Stein.Types.ConfigurationTypes
         /// <returns>Task which returns the deserialized configuration</returns>
         public static async Task<Configuration> CreateFromFileAsync(string filePath)
         {
-            return await Task.Run(() =>
-            {
-                return CreateFromFile(filePath);
-            });
+            return await Task.Run(() => CreateFromFile(filePath));
         }
 
         /// <summary>

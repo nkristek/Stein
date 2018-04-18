@@ -19,78 +19,78 @@ namespace Stein.ViewModels
         }
 
         [CommandCanExecuteSource(nameof(Parent))]
-        public AsyncViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; }
 
         [CommandCanExecuteSource(nameof(Parent))]
-        public AsyncViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; private set; }
+        public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; }
         
-        private string _Name;
+        private string _name;
         /// <summary>
         /// Name of the application folder
         /// </summary>
         public string Name
         {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
 
-        private string _Path;
+        private string _path;
         /// <summary>
         /// Path to the application folder
         /// </summary>
         public string Path
         {
-            get { return _Path; }
-            set { SetProperty(ref _Path, value); }
+            get => _path;
+            set => SetProperty(ref _path, value);
         }
 
-        private Guid _FolderId;
+        private Guid _folderId;
         /// <summary>
         /// The Id of the ApplicationFolder in the configuration
         /// </summary>
         public Guid FolderId
         {
-            get { return _FolderId; }
-            set { SetProperty(ref _FolderId, value); }
+            get => _folderId;
+            set => SetProperty(ref _folderId, value);
         }
 
-        private bool _EnableSilentInstallation;
+        private bool _enableSilentInstallation;
         /// <summary>
         /// If the installations should proceed without UI
         /// </summary>
         public bool EnableSilentInstallation
         {
-            get { return _EnableSilentInstallation; }
-            set { SetProperty(ref _EnableSilentInstallation, value); }
+            get => _enableSilentInstallation;
+            set => SetProperty(ref _enableSilentInstallation, value);
         }
 
-        private bool _DisableReboot;
+        private bool _disableReboot;
         /// <summary>
         /// If the installers should be able to automatically reboot if necessary
         /// </summary>
         public bool DisableReboot
         {
-            get { return _DisableReboot; }
-            set { SetProperty(ref _DisableReboot, value); }
+            get => _disableReboot;
+            set => SetProperty(ref _disableReboot, value);
         }
 
-        private bool _EnableInstallationLogging;
+        private bool _enableInstallationLogging;
         /// <summary>
         /// If logging during installation should be enabled
         /// </summary>
         public bool EnableInstallationLogging
         {
-            get { return _EnableInstallationLogging; }
-            set { SetProperty(ref _EnableInstallationLogging, value); }
+            get => _enableInstallationLogging;
+            set => SetProperty(ref _enableInstallationLogging, value);
         }
 
         /// <summary>
@@ -98,14 +98,14 @@ namespace Stein.ViewModels
         /// </summary>
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
         
-        private InstallerBundleViewModel _SelectedInstallerBundle;
+        private InstallerBundleViewModel _selectedInstallerBundle;
         /// <summary>
         /// The currently selected InstallerBundleViewModel
         /// </summary>
         public InstallerBundleViewModel SelectedInstallerBundle
         {
-            get { return _SelectedInstallerBundle; }
-            set { SetProperty(ref _SelectedInstallerBundle, value); }
+            get => _selectedInstallerBundle;
+            set => SetProperty(ref _selectedInstallerBundle, value);
         }
     }
 }

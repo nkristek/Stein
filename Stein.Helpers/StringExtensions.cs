@@ -23,9 +23,7 @@ namespace Stein.Helpers
         /// <param name="replacement">Replacement character</param>
         public static string ReplaceInvalidPathChars(this string path, char replacement)
         {
-            foreach (var invalidChar in Path.GetInvalidPathChars())
-                path = path.Replace(invalidChar, replacement);
-            return path;
+            return Path.GetInvalidPathChars().Aggregate(path, (current, invalidChar) => current.Replace(invalidChar, replacement));
         }
 
         /// <summary>
@@ -45,9 +43,7 @@ namespace Stein.Helpers
         /// <param name="replacement">Replacement character</param>
         public static string ReplaceInvalidFileNameChars(this string filename, char replacement)
         {
-            foreach (var invalidChar in Path.GetInvalidFileNameChars())
-                filename = filename.Replace(invalidChar, replacement);
-            return filename;
+            return Path.GetInvalidFileNameChars().Aggregate(filename, (current, invalidChar) => current.Replace(invalidChar, replacement));
         }
     }
 }

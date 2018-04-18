@@ -32,15 +32,9 @@ namespace Stein.Services.Extensions
         /// <returns>The SubFolder if found, null otherwise</returns>
         public static SubFolder FindSubFolder(this ApplicationFolder applicationFolder, IEnumerable<string> subFolderRelativePath)
         {
-            var subFolderName = subFolderRelativePath.FirstOrDefault();
-            if (subFolderName == null)
-                return null;
-
-            var subFolder = applicationFolder.SubFolders.FirstOrDefault(folder => folder.Name == subFolderName);
-            if (subFolder == null)
-                return null;
-
-            return subFolder.FindSubFolder(subFolderRelativePath.Skip(1));
+            var folderRelativePath = subFolderRelativePath.ToList();
+            var subFolderName = folderRelativePath.FirstOrDefault();
+            return subFolderName == null ? null : applicationFolder.SubFolders.FirstOrDefault(folder => folder.Name == subFolderName)?.FindSubFolder(folderRelativePath.Skip(1));
         }
 
         /// <summary>
@@ -52,7 +46,7 @@ namespace Stein.Services.Extensions
             var subDirectoriesOnDisk = Directory.GetDirectories(applicationFolder.Path).Select(directoryName => new DirectoryInfo(directoryName)).ToList();
 
             // remove all directories which don't exist on the file system anymore
-            applicationFolder.SubFolders.RemoveAll(subFolder => !subDirectoriesOnDisk.Any(dir => dir.FullName == subFolder.Path));
+            applicationFolder.SubFolders.RemoveAll(subFolder => subDirectoriesOnDisk.All(dir => dir.FullName != subFolder.Path));
 
             foreach (var subDirectoryOnDisk in subDirectoriesOnDisk)
             {

@@ -10,11 +10,11 @@ namespace Stein.Views
 {
     public class WpfDialogService : IDialogService
     {
-        private Stack<Window> windowStack = new Stack<Window>();
+        private readonly Stack<Window> _windowStack = new Stack<Window>();
 
         public WpfDialogService(Window root)
         {
-            windowStack.Push(root);
+            _windowStack.Push(root);
         }
 
         public void ShowPopup(ViewModel contextViewModel)
@@ -26,9 +26,9 @@ namespace Stein.Views
         public bool? ShowDialog(DialogModel dialogViewModel)
         {
             var dialog = CreateView<Window>(dialogViewModel);
-            dialog.Owner = windowStack.Peek();
+            dialog.Owner = _windowStack.Peek();
 
-            windowStack.Push(dialog);
+            _windowStack.Push(dialog);
             
             bool? result;
             try
@@ -37,7 +37,7 @@ namespace Stein.Views
             }
             finally
             {
-                windowStack.Pop();
+                _windowStack.Pop();
             }
 
             return result;
@@ -46,14 +46,10 @@ namespace Stein.Views
         private TView CreateView<TView>(ViewModel contextViewModel) where TView : FrameworkElement
         {
             if (contextViewModel == null)
-                throw new ArgumentNullException("contextViewModel");
+                throw new ArgumentNullException(nameof(contextViewModel));
 
             var resourceKey = contextViewModel.GetType();
-            var view = Application.Current.TryFindResource(resourceKey);
-
-            if (view == null)
-                view = Application.Current.MainWindow.TryFindResource(resourceKey);
-
+            var view = Application.Current.TryFindResource(resourceKey) ?? Application.Current.MainWindow?.TryFindResource(resourceKey);
             if (view == null)
                 throw new NotSupportedException(Strings.NoDialogExistsForDialogModel);
 

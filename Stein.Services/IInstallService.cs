@@ -46,7 +46,7 @@ namespace Stein.Services
         /// Uninstalls and installs a installer file
         /// Warning: reinstalling with a different installer fails, so for now uninstall and install it.
         /// </summary>
-        /// <param name="installerPathToInstall">Path to the installer file</param>
+        /// <param name="installerPathToReinstall">Path to the installer file</param>
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
@@ -56,7 +56,7 @@ namespace Stein.Services
         /// Uninstalls and installs a installer file asynchronously
         /// Warning: reinstalling with a different installer with the same version and productcode fails, use Uninstall+Install.
         /// </summary>
-        /// <param name="installerPathToInstall">Path to the installer file</param>
+        /// <param name="installerPathToReinstall">Path to the installer file</param>
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>

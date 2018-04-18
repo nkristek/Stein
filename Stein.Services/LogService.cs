@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,22 +8,19 @@ namespace Stein.Services
 {
     public static class LogService
     {
-        private static string _LogFolderPath;
+        private static string _logFolderPath;
         /// <summary>
         /// Path to the folder in which the log files exists
         /// </summary>
         public static string LogFolderPath
         {
-            get
-            {
-                return _LogFolderPath;
-            }
+            get => _logFolderPath;
 
             set
             {
                 if (!Directory.Exists(value))
                     Directory.CreateDirectory(value);
-                _LogFolderPath = value;
+                _logFolderPath = value;
             }
         }
 
@@ -37,12 +35,12 @@ namespace Stein.Services
                     return null;
 
                 var dateTime = DateTime.Now;
-                var fileName = String.Format("log-{0}-{1}-{2}.txt", dateTime.Year, dateTime.Month, dateTime.Day);
+                var fileName = $"log-{dateTime.Year}-{dateTime.Month}-{dateTime.Day}.txt";
                 return Path.Combine(LogFolderPath, fileName);
             }
         }
         
-        private static StreamWriter _LogFile;
+        private static StreamWriter _logFile;
         /// <summary>
         /// StreamWriter to an open log file
         /// </summary>
@@ -50,15 +48,15 @@ namespace Stein.Services
         {
             get
             {
-                if (_LogFile == null && !String.IsNullOrEmpty(LogFileFullName))
-                    _LogFile = File.AppendText(LogFileFullName);
-                return _LogFile;
+                if (_logFile == null && !String.IsNullOrEmpty(LogFileFullName))
+                    _logFile = File.AppendText(LogFileFullName);
+                return _logFile;
             }
 
             set
             {
-                _LogFile?.Close();
-                _LogFile = value;
+                _logFile?.Close();
+                _logFile = value;
             }
         }
 
@@ -70,7 +68,7 @@ namespace Stein.Services
         {
             try
             {
-                LogFile.WriteLine(String.Concat(DateTime.Now.ToString(), ": INFO - ", message));
+                LogFile.WriteLine(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": INFO - ", message));
                 LogFile.Flush();
             }
             catch { }
@@ -85,7 +83,7 @@ namespace Stein.Services
         {
             try
             {
-                await LogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(), ": INFO - ", message));
+                await LogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": INFO - ", message));
                 await LogFile.FlushAsync();
             }
             catch { }
@@ -118,7 +116,7 @@ namespace Stein.Services
         {
             try
             { 
-                LogFile.WriteLine(String.Concat(DateTime.Now.ToString(), ": WARNING - ", message));
+                LogFile.WriteLine(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": WARNING - ", message));
                 LogFile.Flush();
             }
             catch { }
@@ -133,7 +131,7 @@ namespace Stein.Services
         {
             try
             {
-                await LogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(), ": WARNING - ", message));
+                await LogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": WARNING - ", message));
                 await LogFile.FlushAsync();
             }
             catch { }
@@ -169,7 +167,7 @@ namespace Stein.Services
                     return null;
 
                 var dateTime = DateTime.Now;
-                var fileName = String.Format("error-{0}-{1}-{2}.txt", dateTime.Year, dateTime.Month, dateTime.Day);
+                var fileName = $"error-{dateTime.Year}-{dateTime.Month}-{dateTime.Day}.txt";
                 return Path.Combine(LogFolderPath, fileName);
             }
         }
@@ -202,7 +200,7 @@ namespace Stein.Services
         {
             try
             { 
-                ErrorLogFile.WriteLine(String.Concat(DateTime.Now.ToString(), ": ERROR - ", message));
+                ErrorLogFile.WriteLine(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": ERROR - ", message));
                 ErrorLogFile.Flush();
             }
             catch { }
@@ -217,7 +215,7 @@ namespace Stein.Services
         {
             try
             {
-                await ErrorLogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(), ": ERROR - ", message));
+                await ErrorLogFile.WriteLineAsync(String.Concat(DateTime.Now.ToString(CultureInfo.CurrentCulture), ": ERROR - ", message));
                 await ErrorLogFile.FlushAsync();
             }
             catch { }

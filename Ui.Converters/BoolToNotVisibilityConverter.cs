@@ -18,7 +18,7 @@ namespace nkristek.Ui.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool && !(bool)value)
+            if (value is bool b && !b)
                 return Visibility.Visible;
 
             switch (parameter as string)
@@ -30,7 +30,7 @@ namespace nkristek.Ui.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is Visibility && ((Visibility)value == Visibility.Collapsed);
+            return value is Visibility visibility && (visibility == Visibility.Collapsed);
         }
     }
 }

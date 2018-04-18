@@ -54,19 +54,19 @@
     <Compile Include="WpfDialogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskbarService.cs" />
-    <Compile Include="Views\ApplicationDialog.xaml.cs">
+    <Compile Include="ApplicationDialog.xaml.cs">
       <DependentUpon>ApplicationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ApplicationView.xaml.cs">
+    <Compile Include="ApplicationView.xaml.cs">
       <DependentUpon>ApplicationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InstallerBundleDialog.xaml.cs">
+    <Compile Include="InstallerBundleDialog.xaml.cs">
       <DependentUpon>InstallerBundleDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InstallerView.xaml.cs">
+    <Compile Include="InstallerView.xaml.cs">
       <DependentUpon>InstallerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindowView.xaml.cs">
+    <Compile Include="MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -100,23 +100,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ApplicationDialog.xaml">
+    <Page Include="ApplicationDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ApplicationView.xaml">
+    <Page Include="ApplicationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InstallerBundleDialog.xaml">
+    <Page Include="InstallerBundleDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InstallerView.xaml">
+    <Page Include="InstallerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainWindowView.xaml">
+    <Page Include="MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

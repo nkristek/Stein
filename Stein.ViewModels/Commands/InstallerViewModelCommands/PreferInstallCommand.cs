@@ -1,6 +1,5 @@
 ﻿using nkristek.MVVMBase.Commands;
 using Stein.ViewModels.Types;
-using System;
 
 namespace Stein.ViewModels.Commands.InstallerViewModelCommands
 {

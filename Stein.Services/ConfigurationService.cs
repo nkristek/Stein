@@ -12,34 +12,34 @@ namespace Stein.Services
 
         public Configuration Configuration { get; private set; }
 
-        private string _ConfiguationPath;
+        private readonly string _configuationPath;
 
         public ConfigurationService(string configurationFilePath)
         {
             if (String.IsNullOrEmpty(configurationFilePath))
-                throw new ArgumentNullException("configurationFolderPath");
+                throw new ArgumentNullException(nameof(configurationFilePath));
 
-            _ConfiguationPath = configurationFilePath;
+            _configuationPath = configurationFilePath;
         }
 
         public void LoadConfigurationFromDisk()
         {
-            Configuration = Configuration.CreateFromFile(_ConfiguationPath);
+            Configuration = Configuration.CreateFromFile(_configuationPath);
         }
         
         public async Task LoadConfigurationFromDiskAsync()
         {
-            Configuration = await Configuration.CreateFromFileAsync(_ConfiguationPath);
+            Configuration = await Configuration.CreateFromFileAsync(_configuationPath);
         }
         
         public void SaveConfigurationToDisk()
         {
-            Configuration.ToFile(_ConfiguationPath);
+            Configuration.ToFile(_configuationPath);
         }
         
         public async Task SaveConfigurationToDiskAsync()
         {
-            await Configuration.ToFileAsync(_ConfiguationPath);
+            await Configuration.ToFileAsync(_configuationPath);
         }
     }
 }

@@ -7,21 +7,9 @@ namespace Stein.Services.Tests
     [TestClass]
     public class InstallServiceTests
     {
-        private string TestInstallerFilePath
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestInstallerFilePath => null;
 
-        private string TestInstallerProductCode
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestInstallerProductCode => null;
 
         [TestMethod]
         public void TestInstallMethods()
@@ -30,7 +18,7 @@ namespace Stein.Services.Tests
             TestInstallAsyncMethods();
         }
         
-        private void TestInstallNonAsyncMethods()
+        private static void TestInstallNonAsyncMethods()
         {
             Assert.IsNotNull(TestInstallerFilePath, "The file path of the test installer is not set.");
             Assert.IsNotNull(TestInstallerProductCode, "The product code of the test installer is not set.");
@@ -58,7 +46,7 @@ namespace Stein.Services.Tests
             Assert.IsFalse(installService.IsProductCodeInstalled(TestInstallerProductCode), "The uninstallation of the test installer failed or checking if it was installed failed.");
         }
 
-        private void TestInstallAsyncMethods()
+        private static void TestInstallAsyncMethods()
         {
             Assert.IsFalse(String.IsNullOrEmpty(TestInstallerFilePath), "The file path of the test installer is not set.");
             Assert.IsFalse(String.IsNullOrEmpty(TestInstallerProductCode), "The product code of the test installer is not set.");

@@ -15,8 +15,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
-            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
-            if (mainWindowViewModel == null || mainWindowViewModel.CurrentInstallation != null)
+            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel) || mainWindowViewModel.CurrentInstallation != null)
                 return false;
 
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled == true);
@@ -60,7 +59,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 .GroupBy(i => !String.IsNullOrEmpty(i.Name) ? i.Name : i.Path).Select(ig => ig.First())
                 .ToList();
 
-            await LogService.LogInfoAsync(String.Format("Starting uninstall operation with {0} installers.", installers.Count));
+            await LogService.LogInfoAsync($"Starting uninstall operation with {installers.Count} installers.");
             currentInstallation.InstallerCount = installers.Count;
             
             foreach (var installer in installers)
@@ -83,7 +82,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                         await LogService.LogInfoAsync("There is no information if the installer is already installed, trying to uninstall.");
 
                     currentInstallation.State = InstallationState.Uninstall;
-                    await LogService.LogInfoAsync(String.Format("Uninstalling {0}.", installer.Name));
+                    await LogService.LogInfoAsync($"Uninstalling {installer.Name}.");
 
                     var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(installer.Name, "uninstall") : null;
                     await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
@@ -100,11 +99,11 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             return installationResult;
         }
 
-        private string GetLogFilePathForInstaller(string installerName, string installMethod)
+        private static string GetLogFilePathForInstaller(string installerName, string installMethod)
         {
             var installLogFolderPath = Path.Combine(LogService.LogFolderPath, "Installs");
             var currentDate = DateTime.Now;
-            var logFileName = String.Format("{0}_{1}_{2}-{3}-{4}_{5}-{6}-{7}.txt", installerName, installMethod, currentDate.Year, currentDate.Month, currentDate.Day, currentDate.Hour, currentDate.Minute, currentDate.Second);
+            var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
             return Path.Combine(installLogFolderPath, logFileName);
         }
 
@@ -113,8 +112,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             LogService.LogError(exception);
             DialogService.Instance.ShowError(exception);
 
-            var mainViewModel = viewModel.Parent as MainWindowViewModel;
-            if (mainViewModel == null)
+            if (!(viewModel.Parent is MainWindowViewModel mainViewModel))
                 return;
 
             mainViewModel.CurrentInstallation = null;

@@ -9,13 +9,7 @@ namespace Stein.Services.Tests
     [TestClass]
     public class ConfigurationServiceTests
     {
-        private string TestConfigurationFilePath
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestConfigurationFilePath => null;
 
         [TestMethod]
         public void TestConfig()
@@ -24,7 +18,7 @@ namespace Stein.Services.Tests
             TestConfigAsync();
         }
 
-        private void TestConfigNonAsync()
+        private static void TestConfigNonAsync()
         {
             Assert.IsNotNull(TestConfigurationFilePath, "The file path of the config file is not set.");
             Assert.IsFalse(File.Exists(TestConfigurationFilePath), "The config file already exists.");
@@ -49,7 +43,7 @@ namespace Stein.Services.Tests
             File.Delete(TestConfigurationFilePath);
         }
 
-        private void TestConfigAsync()
+        private static void TestConfigAsync()
         {
             Assert.IsNotNull(TestConfigurationFilePath, "The file path of the config file is not set.");
             Assert.IsFalse(File.Exists(TestConfigurationFilePath), "The config file already exists.");

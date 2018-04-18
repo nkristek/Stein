@@ -46,6 +46,7 @@ namespace Stein
             
             var rootWindow = new MainWindow();
             DialogService.Instance = new WpfDialogService(rootWindow);
+            ProgressBarService.Instance = new TaskbarService(rootWindow);
             
             rootWindow.Show();
         }

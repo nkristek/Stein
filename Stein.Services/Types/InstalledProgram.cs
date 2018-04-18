@@ -11,9 +11,7 @@ namespace Stein.Services.Types
         /// </summary>
         public RegistryKey RegistryKey { get; set; }
 
-        /// <summary>
-        /// Disposable
-        /// </summary>
+        /// <inheritdoc />
         protected override void DisposeManagedResources()
         {
             RegistryKey?.Dispose();
@@ -22,90 +20,42 @@ namespace Stein.Services.Types
         /// <summary>
         /// ProductName property
         /// </summary>
-        public string DisplayName
-        {
-            get
-            {
-                return RegistryKey?.GetValue("DisplayName") as string;
-            }
-        }
+        public string DisplayName => RegistryKey?.GetValue(nameof(DisplayName)) as string;
 
         /// <summary>
         /// Derived from ProductVersion property
         /// </summary>
-        public string DisplayVersion
-        {
-            get
-            {
-                return RegistryKey?.GetValue("DisplayVersion") as string;
-            }
-        }
+        public string DisplayVersion => RegistryKey?.GetValue(nameof(DisplayVersion)) as string;
 
         /// <summary>
         /// Manufacturer property
         /// </summary>
-        public string Publisher
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Publisher") as string;
-            }
-        }
+        public string Publisher => RegistryKey?.GetValue(nameof(Publisher)) as string;
 
         /// <summary>
         /// Derived from ProductVersion property
         /// </summary>
-        public string VersionMinor
-        {
-            get
-            {
-                return RegistryKey?.GetValue("VersionMinor") as string;
-            }
-        }
+        public string VersionMinor => RegistryKey?.GetValue(nameof(VersionMinor)) as string;
 
         /// <summary>
         /// Derived from ProductVersion property
         /// </summary>
-        public string VersionMajor
-        {
-            get
-            {
-                return RegistryKey?.GetValue("VersionMajor") as string;
-            }
-        }
+        public string VersionMajor => RegistryKey?.GetValue(nameof(VersionMajor)) as string;
 
         /// <summary>
         /// Derived from ProductVersion property
         /// </summary>
-        public string Version
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Version") as string;
-            }
-        }
+        public string Version => RegistryKey?.GetValue(nameof(Version)) as string;
 
         /// <summary>
         /// ARPHELPLINK property
         /// </summary>
-        public string HelpLink
-        {
-            get
-            {
-                return RegistryKey?.GetValue("HelpLink") as string;
-            }
-        }
+        public string HelpLink => RegistryKey?.GetValue(nameof(HelpLink)) as string;
 
         /// <summary>
         /// ARPHELPTELEPHONE property
         /// </summary>
-        public string HelpTelephone
-        {
-            get
-            {
-                return RegistryKey?.GetValue("HelpTelephone") as string;
-            }
-        }
+        public string HelpTelephone => RegistryKey?.GetValue(nameof(HelpTelephone)) as string;
 
         /// <summary>
         /// The last time this product received service. 
@@ -114,155 +64,71 @@ namespace Stein.Services.Types
         /// If the product has received no repairs or patches this property contains
         /// the time this product was installed on this computer.
         /// </summary>
-        public string InstallDate
-        {
-            get
-            {
-                return RegistryKey?.GetValue("InstallDate") as string;
-            }
-        }
+        public string InstallDate => RegistryKey?.GetValue(nameof(InstallDate)) as string;
 
         /// <summary>
         /// ARPINSTALLLOCATION property
         /// </summary>
-        public string InstallLocation
-        {
-            get
-            {
-                return RegistryKey?.GetValue("InstallLocation") as string;
-            }
-        }
+        public string InstallLocation => RegistryKey?.GetValue(nameof(InstallLocation)) as string;
 
         /// <summary>
         /// SourceDir property
         /// </summary>
-        public string InstallSource
-        {
-            get
-            {
-                return RegistryKey?.GetValue("InstallSource") as string;
-            }
-        }
+        public string InstallSource => RegistryKey?.GetValue(nameof(InstallSource)) as string;
 
         /// <summary>
         /// ARPURLINFOABOUT property
         /// </summary>
-        public string URLInfoAbout
-        {
-            get
-            {
-                return RegistryKey?.GetValue("URLInfoAbout") as string;
-            }
-        }
+        public string URLInfoAbout => RegistryKey?.GetValue(nameof(URLInfoAbout)) as string;
 
         /// <summary>
         /// ARPURLUPDATEINFO property
         /// </summary>
-        public string URLUpdateInfo
-        {
-            get
-            {
-                return RegistryKey?.GetValue("URLUpdateInfo") as string;
-            }
-        }
+        public string URLUpdateInfo => RegistryKey?.GetValue(nameof(URLUpdateInfo)) as string;
 
         /// <summary>
         /// ARPAUTHORIZEDCDFPREFIX property
         /// </summary>
-        public string AuthorizedCDFPrefix
-        {
-            get
-            {
-                return RegistryKey?.GetValue("AuthorizedCDFPrefix") as string;
-            }
-        }
+        public string AuthorizedCDFPrefix => RegistryKey?.GetValue(nameof(AuthorizedCDFPrefix)) as string;
 
         /// <summary>
         /// Comments provided to the Add or Remove Programs control panel.
         /// </summary>
-        public string Comments
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Comments") as string;
-            }
-        }
+        public string Comments => RegistryKey?.GetValue(nameof(Comments)) as string;
 
         /// <summary>
         /// Contact provided to the Add or Remove Programs control panel.
         /// </summary>
-        public string Contact
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Contact") as string;
-            }
-        }
+        public string Contact => RegistryKey?.GetValue(nameof(Contact)) as string;
 
         /// <summary>
         /// Determined and set by the Windows Installer.
         /// </summary>
-        public string EstimatedSize
-        {
-            get
-            {
-                return RegistryKey?.GetValue("EstimatedSize") as string;
-            }
-        }
+        public string EstimatedSize => RegistryKey?.GetValue(nameof(EstimatedSize)) as string;
 
         /// <summary>
         /// ProductLanguage property
         /// </summary>
-        public string Language
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Language") as string;
-            }
-        }
+        public string Language => RegistryKey?.GetValue(nameof(Language)) as string;
 
         /// <summary>
         /// Determined and set by the Windows Installer.
         /// </summary>
-        public string ModifyPath
-        {
-            get
-            {
-                return RegistryKey?.GetValue("ModifyPath") as string;
-            }
-        }
+        public string ModifyPath => RegistryKey?.GetValue(nameof(ModifyPath)) as string;
 
         /// <summary>
         /// Readme provided to the Add or Remove Programs control panel.
         /// </summary>
-        public string Readme
-        {
-            get
-            {
-                return RegistryKey?.GetValue("Readme") as string;
-            }
-        }
+        public string Readme => RegistryKey?.GetValue(nameof(Readme)) as string;
 
         /// <summary>
         /// Determined and set by Windows Installer.
         /// </summary>
-        public string UninstallString
-        {
-            get
-            {
-                return RegistryKey?.GetValue("UninstallString") as string;
-            }
-        }
+        public string UninstallString => RegistryKey?.GetValue(nameof(UninstallString)) as string;
 
         /// <summary>
         /// MSIARPSETTINGSIDENTIFIER property
         /// </summary>
-        public string SettingsIdentifier
-        {
-            get
-            {
-                return RegistryKey?.GetValue("SettingsIdentifier") as string;
-            }
-        }
+        public string SettingsIdentifier => RegistryKey?.GetValue(nameof(SettingsIdentifier)) as string;
     }
 }

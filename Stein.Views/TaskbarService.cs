@@ -1,42 +1,49 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Shell;
+using Stein.Services;
+using Stein.Services.Types;
 
 namespace Stein.Views
 {
-    public static class TaskbarService
+    public class TaskbarService
+        : IProgressBarService
     {
-        /// <summary>
-        /// Sets a TaskbarItemInfo object on the window if it not already exists and sets the state
-        /// </summary>
-        /// <param name="window">Window on which the TaskbarItemInfo object should be set</param>
-        /// <param name="progressState">Progress state which should be set</param>
-        public static void SetTaskbarProgressState(Window window, TaskbarItemProgressState progressState)
-        {
-            if (window.TaskbarItemInfo == null)
-                window.TaskbarItemInfo = new TaskbarItemInfo();
+        private readonly Window _window;
 
-            if (window.TaskbarItemInfo.ProgressState != progressState)
-                window.TaskbarItemInfo.ProgressState = progressState;
+        public TaskbarService(Window rootWindow)
+        {
+            _window = rootWindow;
+        }
+        
+        public void SetState(ProgressBarState state)
+        {
+            if (_window.TaskbarItemInfo == null)
+                _window.TaskbarItemInfo = new TaskbarItemInfo();
+
+            var taskbarState = GetTaskbarState(state);
+            if (_window.TaskbarItemInfo.ProgressState != taskbarState)
+                _window.TaskbarItemInfo.ProgressState = taskbarState;
         }
 
-        /// <summary>
-        /// Sets the progress on a TaskbarItemInfo object
-        /// </summary>
-        /// <param name="window">Window on which the progress should be set</param>
-        /// <param name="progress">Progress to set</param>
-        public static void SetTaskbarProgress(Window window, double progress)
+        private TaskbarItemProgressState GetTaskbarState(ProgressBarState state)
         {
-            SetTaskbarProgressState(window, TaskbarItemProgressState.Normal);
-            window.TaskbarItemInfo.ProgressValue = progress;
+            switch (state)
+            {
+                case ProgressBarState.None: return TaskbarItemProgressState.None;
+                case ProgressBarState.Indeterminate: return TaskbarItemProgressState.Indeterminate;
+                case ProgressBarState.Normal: return TaskbarItemProgressState.Normal;
+                case ProgressBarState.Error: return TaskbarItemProgressState.Error;
+                case ProgressBarState.Paused: return TaskbarItemProgressState.Paused;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
         }
-
-        /// <summary>
-        /// Removes the TaskbarItemInfo object from the Window
-        /// </summary>
-        /// <param name="window"></param>
-        public static void UnsetTaskBarProgressState(Window window)
+        
+        public void SetProgress(double progress)
         {
-            window.TaskbarItemInfo = null;
+            SetState(ProgressBarState.Normal);
+            _window.TaskbarItemInfo.ProgressValue = progress;
         }
     }
 }

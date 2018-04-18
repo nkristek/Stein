@@ -17,12 +17,12 @@ namespace nkristek.Ui.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return !(value is IEnumerable<object>) || !(value as IEnumerable<object>).Any();
+            return !(value is IEnumerable<object>) || !((IEnumerable<object>) value).Any();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

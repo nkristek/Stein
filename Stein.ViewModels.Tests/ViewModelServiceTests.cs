@@ -10,13 +10,7 @@ namespace Stein.ViewModels.Tests
     [TestClass]
     public class ViewModelServiceTests
     {
-        private string TestSetupsFolderPath
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private static string TestSetupsFolderPath => null;
 
         [TestMethod]
         public void TestCreateAndUpdateApplicationViewModels()
