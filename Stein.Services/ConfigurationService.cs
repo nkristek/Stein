@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Stein.Types.ConfigurationTypes;
 
@@ -10,7 +9,7 @@ namespace Stein.Services
     {
         public static IConfigurationService Instance;
 
-        public Configuration Configuration { get; private set; }
+        public Configuration Configuration { get; private set; } = new Configuration();
 
         private readonly string _configuationPath;
 

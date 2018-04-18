@@ -36,7 +36,14 @@ namespace Stein
             LogService.LogFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
 
             ConfigurationService.Instance = new ConfigurationService(Path.Combine(appDataConfigurationPath, "Config.xml"));
-            ConfigurationService.Instance.LoadConfigurationFromDisk();
+            try
+            {
+                ConfigurationService.Instance.LoadConfigurationFromDisk();
+            }
+            catch (Exception exception)
+            {
+                LogService.LogError(exception);
+            }
 
             InstallService.Instance = new InstallService();
 
