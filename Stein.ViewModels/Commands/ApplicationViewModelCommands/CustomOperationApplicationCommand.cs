@@ -91,8 +91,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                     currentInstallation.Name = installer.Name;
                     currentInstallation.CurrentIndex++;
 
-                    var installLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(installer.Name, "install") : null;
-                    var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(installer.Name, "uninstall") : null;
+                    var installLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "install") : null;
+                    var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "uninstall") : null;
 
                     switch (installer.PreferredOperation)
                     {
@@ -135,9 +135,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             return installationResult;
         }
 
-        private static string GetLogFilePathForInstaller(string installerName, string installMethod)
+        private static string GetLogFilePathForInstaller(string applicationName, string installerName, string installMethod)
         {
-            var installLogFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", "Install");
+            var installLogFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
             var currentDate = DateTime.Now;
             var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
             return Path.Combine(installLogFolderPath, logFileName);

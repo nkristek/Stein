@@ -13,20 +13,18 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public OpenLogFolderCommand(ApplicationDialogModel parent) : base(parent) { }
-
-        protected override bool CanExecute(ApplicationDialogModel viewModel, object parameter)
-        {
-            return Directory.Exists(GetLogFolderPath());
-        }
-
+        
         protected override void DoExecute(ApplicationDialogModel viewModel, object parameter)
         {
-            Process.Start(GetLogFolderPath());
+            var directoryName = GetLogFolderPath(viewModel.Name);
+            if (!Directory.Exists(directoryName))
+                Directory.CreateDirectory(directoryName);
+            Process.Start(directoryName);
         }
 
-        private static string GetLogFolderPath()
+        private static string GetLogFolderPath(string applicationName)
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
         }
         protected override void OnThrownException(ApplicationDialogModel viewModel, object parameter, Exception exception)
         {
