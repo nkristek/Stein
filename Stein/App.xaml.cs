@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using log4net;
 using Stein.Services;
 using Stein.Views;
 
@@ -12,6 +13,8 @@ namespace Stein
     /// </summary>
     public partial class App : Application
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public App()
         {
             // uncomment to test localization
@@ -19,7 +22,6 @@ namespace Stein
             //Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
 
             Startup += App_Startup;
-            Exit += App_Exit;
 
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
@@ -32,9 +34,7 @@ namespace Stein
             var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
             if (!Directory.Exists(appDataConfigurationPath))
                 Directory.CreateDirectory(appDataConfigurationPath);
-
-            LogService.LogFolderPath = Path.Combine(appDataConfigurationPath, "Logs");
-
+            
             ConfigurationService.Instance = new ConfigurationService(Path.Combine(appDataConfigurationPath, "Config.xml"));
             try
             {
@@ -42,7 +42,7 @@ namespace Stein
             }
             catch (Exception exception)
             {
-                LogService.LogError(exception);
+                Log.Error("Load configuration", exception);
             }
 
             InstallService.Instance = new InstallService();
@@ -57,15 +57,10 @@ namespace Stein
             
             rootWindow.Show();
         }
-
-        private void App_Exit(object sender, ExitEventArgs e)
-        {
-            LogService.CloseLogFiles();
-        }
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            LogService.LogError(e.Exception);
+            Log.Error("App_DispatcherUnhandledException", e.Exception);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -74,17 +69,17 @@ namespace Stein
             if (exception == null)
                 return;
 
-            LogService.LogError(exception);
+            Log.Error("CurrentDomain_UnhandledException", exception);
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            LogService.LogError(e.Exception);
+            Log.Error("TaskScheduler_UnobservedTaskException", e.Exception);
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            LogService.LogError(e.Exception);
+            Log.Error("WinFormApplication_ThreadException", e.Exception);
         }
     }
 }

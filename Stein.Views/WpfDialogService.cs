@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Collections.Generic;
+using System.Text;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
 using Stein.Services;
@@ -69,8 +70,26 @@ namespace Stein.Views
         
         public void ShowError(Exception exception)
         {
-            var exceptionMessage = LogService.BuildExceptionMessage(exception);
+            var exceptionMessage = BuildExceptionMessage(exception);
             ShowMessage(exceptionMessage);
+        }
+
+        private static string BuildExceptionMessage(Exception exception)
+        {
+            var messageBuilder = new StringBuilder();
+
+            messageBuilder.AppendLine(exception.Message);
+
+            var innerException = exception.InnerException;
+            while (innerException != null)
+            {
+                messageBuilder.AppendLine(innerException.Message);
+                innerException = innerException.InnerException;
+            }
+
+            messageBuilder.AppendLine(exception.StackTrace);
+
+            return messageBuilder.ToString();
         }
     }
 }

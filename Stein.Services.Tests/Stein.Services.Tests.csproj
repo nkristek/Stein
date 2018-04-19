@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="ConfigurationServiceTests.cs" />
     <Compile Include="InstallServiceTests.cs" />
-    <Compile Include="LogServiceTests.cs" />
     <Compile Include="MsiServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

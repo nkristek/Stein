@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using nkristek.MVVMBase.Commands;
 using Stein.Services;
 using Stein.ViewModels.Types;
@@ -11,6 +12,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     public class CustomOperationApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public CustomOperationApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
@@ -23,8 +26,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override async Task DoExecute(ApplicationViewModel viewModel, object parameter)
         {
-            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
-            if (mainWindowViewModel == null)
+            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel))
                 return;
 
             mainWindowViewModel.CurrentInstallation = new InstallationViewModel
@@ -73,7 +75,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 .Where(i => i.PreferredOperation != InstallerOperationType.DoNothing && !i.IsDisabled)
                 .ToList();
 
-            await LogService.LogInfoAsync($"Starting operation with {installers.Count} installers.");
+            Log.Info($"Starting operation with {installers.Count} installers.");
             currentInstallation.InstallerCount = installers.Count;
             
             foreach (var installer in installers)
@@ -82,7 +84,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 {
                     if (currentInstallation.State == InstallationState.Cancelled)
                     {
-                        await LogService.LogInfoAsync("Operation was cancelled.");
+                        Log.Info("Operation was cancelled.");
                         break;
                     }
 
@@ -96,7 +98,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                     {
                         case InstallerOperationType.Install:
                             currentInstallation.State = InstallationState.Install;
-                            await LogService.LogInfoAsync($"Installing {installer.Name}.");
+                            Log.Info($"Installing {installer.Name}.");
                             
                             await InstallService.Instance.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
 
@@ -104,7 +106,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             break;
                         case InstallerOperationType.Reinstall:
                             currentInstallation.State = InstallationState.Reinstall;
-                            await LogService.LogInfoAsync($"Reinstalling {installer.Name}.");
+                            Log.Info($"Reinstalling {installer.Name}.");
 
                             // uninstall and install instead of reinstalling since the reinstall fails when another version of the installer was used (e.g. daily temps with the same version number)
                             await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
@@ -115,7 +117,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             break;
                         case InstallerOperationType.Uninstall:
                             currentInstallation.State = InstallationState.Uninstall;
-                            await LogService.LogInfoAsync($"Uninstalling {installer.Name}.");
+                            Log.Info($"Uninstalling {installer.Name}.");
 
                             await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
 
@@ -126,7 +128,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 catch (Exception exception)
                 {
                     installationResult.FailedCount++;
-                    await LogService.LogErrorAsync(exception);
+                    Log.Error(exception);
                 }
             }
 
@@ -135,7 +137,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private static string GetLogFilePathForInstaller(string installerName, string installMethod)
         {
-            var installLogFolderPath = Path.Combine(LogService.LogFolderPath, "Installs");
+            var installLogFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", "Install");
             var currentDate = DateTime.Now;
             var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
             return Path.Combine(installLogFolderPath, logFileName);
@@ -143,7 +145,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
         {
-            LogService.LogError(exception);
+            Log.Error(exception);
             DialogService.Instance.ShowError(exception);
 
             if (!(viewModel.Parent is MainWindowViewModel mainViewModel))

@@ -1,4 +1,5 @@
 ﻿using System;
+using log4net;
 using nkristek.MVVMBase.Commands;
 using Stein.Services;
 using Stein.ViewModels.Types;
@@ -8,6 +9,8 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     public class CancelOperationCommand
         : ViewModelCommand<MainWindowViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public CancelOperationCommand(MainWindowViewModel parent) : base(parent) { }
 
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
@@ -24,7 +27,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
         {
-            LogService.LogError(exception);
+            Log.Error(exception);
         }
     }
 }

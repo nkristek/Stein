@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using log4net;
 using nkristek.MVVMBase.Commands;
 using Stein.Services;
 
@@ -8,6 +9,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     public class EditApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public EditApplicationCommand(ApplicationViewModel parent) : base(parent) { }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
@@ -28,7 +31,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
         {
-            LogService.LogError(exception);
+            Log.Error(exception);
             DialogService.Instance.ShowError(exception);
             (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.Execute(null);
         }

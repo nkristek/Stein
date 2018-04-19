@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using log4net;
 using nkristek.MVVMBase.Commands;
 using Stein.Localizations;
 using Stein.Services;
@@ -11,6 +12,8 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     public class AddApplicationCommand
         : AsyncViewModelCommand<MainWindowViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public AddApplicationCommand(MainWindowViewModel parent) : base(parent) { }
 
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
@@ -36,7 +39,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
         {
-            LogService.LogError(exception);
+            Log.Error(exception);
             DialogService.Instance.ShowError(exception);
             viewModel.RefreshApplicationsCommand.Execute(null);
         }

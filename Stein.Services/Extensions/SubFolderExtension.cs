@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using log4net;
 using Stein.Services.Types;
 using Stein.Types;
 using Stein.Types.ConfigurationTypes;
@@ -11,6 +12,8 @@ namespace Stein.Services.Extensions
 {
     public static class SubFolderExtension
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Finds a subfolder inside the SubFolder by providing the full path to the subfolder
         /// </summary>
@@ -117,7 +120,7 @@ namespace Stein.Services.Extensions
                     if (existingInstallerFile.Created == fileCreationTime)
                         continue;
 
-                    LogService.LogInfo($"Creation date of previously seen installer file doesn't match. Will process installer file as new one. ({existingInstallerFile.Path})");
+                    Log.Info($"Creation date of previously seen installer file doesn't match. Will process installer file as new one. ({existingInstallerFile.Path})");
 
                     subFolder.InstallerFiles.Remove(existingInstallerFile);
                 }
