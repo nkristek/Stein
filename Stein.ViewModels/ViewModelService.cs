@@ -75,6 +75,8 @@ namespace Stein.Services
             {
                 Parent = parent,
                 Title = Strings.AddFolder,
+                Name = String.Empty,
+                Path = String.Empty,
                 EnableSilentInstallation = true,
                 DisableReboot = true,
                 EnableInstallationLogging = true

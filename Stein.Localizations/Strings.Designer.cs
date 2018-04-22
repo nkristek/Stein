@@ -214,6 +214,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name should not be empty..
+        /// </summary>
+        public static string NameEmpty {
+            get {
+                return ResourceManager.GetString("NameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No dialog found to display this DialogModel..
         /// </summary>
         public static string NoDialogExistsForDialogModel {
@@ -255,6 +264,15 @@ namespace Stein.Localizations {
         public static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The path should not be empty..
+        /// </summary>
+        public static string PathEmpty {
+            get {
+                return ResourceManager.GetString("PathEmpty", resourceCulture);
             }
         }
         

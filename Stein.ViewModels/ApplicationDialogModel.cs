@@ -1,6 +1,7 @@
 ﻿using System;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using Stein.Localizations;
 using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 
 namespace Stein.ViewModels
@@ -22,20 +23,30 @@ namespace Stein.ViewModels
         /// <summary>
         /// Name of the application folder
         /// </summary>
+        [InitiallyNotValid("")]
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set
+            {
+                if (SetProperty(ref _name, value))
+                    SetValidationError(String.IsNullOrEmpty(value) ? Strings.NameEmpty : null);
+            }
         }
 
         private string _path;
         /// <summary>
         /// Path to the application folder
         /// </summary>
+        [InitiallyNotValid("")]
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value);
+            set
+            {
+                if (SetProperty(ref _path, value))
+                    SetValidationError(String.IsNullOrEmpty(value) ? Strings.PathEmpty : null);
+            }
         }
 
         private Guid _folderId;

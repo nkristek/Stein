@@ -232,4 +232,10 @@
   <data name="EntityNotFound" xml:space="preserve">
     <value>The entity was not found.</value>
   </data>
+  <data name="NameEmpty" xml:space="preserve">
+    <value>The name should not be empty.</value>
+  </data>
+  <data name="PathEmpty" xml:space="preserve">
+    <value>The path should not be empty.</value>
+  </data>
 </root>

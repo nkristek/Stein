@@ -13,6 +13,22 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
+    
+    <Window.Resources>
+        <Style x:Key="ValidatingTextBox" 
+               TargetType="{x:Type TextBox}" 
+               BasedOn="{StaticResource {x:Type TextBox}}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" 
+                         Value="true">
+                    <Setter Property="ToolTip" 
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Tag" 
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Margin="8"
           IsSharedSizeScope="True">
         <Grid.RowDefinitions>
@@ -49,7 +65,8 @@
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                     Style="{StaticResource ValidatingTextBox}"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         </Grid>
 
         <!-- Path -->
@@ -73,7 +90,8 @@
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"/>
+                     Style="{StaticResource ValidatingTextBox}"
+                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
             <Button Grid.Column="4"
                     Content="…"
@@ -149,7 +167,7 @@
                     Padding="16,4"
                     Click="OnDialogOkButtonClick"
                     IsDefault="True"
-                    IsEnabled="{Binding Path, Converter={x:Static converters:StringNotNullOrEmptyToBoolConverter.Instance}}"/>
+                    IsEnabled="{Binding IsValid}"/>
 
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"
