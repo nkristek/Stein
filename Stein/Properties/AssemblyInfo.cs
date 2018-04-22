@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Stein")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This C# MVVM application makes it easier to install, uninstall or reinstall multiple installers at the same time.\nIt bundles these installers by folder and by culture (ProductLanguage property on the MSI - file).")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("nkristek")]
 [assembly: AssemblyProduct("Stein")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Niclas Kristek")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,0 +1,65 @@
+﻿<Window x:Class="Stein.Views.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:converters="clr-namespace:nkristek.Ui.Converters;assembly=nkristek.Ui.Converters"
+        xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+        xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}"
+        MinWidth="300"
+        MinHeight="200"
+        Width="500"
+        Height="300"
+        WindowStartupLocation="CenterOwner"
+        Title="{Binding Title}">
+    <Grid Margin="28,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Margin="-6,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   FontSize="28"
+                   VerticalAlignment="Bottom"
+                   Content="{Binding Name}"/>
+
+            <Label Grid.Column="1"
+                   Margin="0,0,0,2"
+                   VerticalAlignment="Bottom"
+                   FontSize="21"
+                   FontWeight="Light"
+                   Foreground="Gray"
+                   Content="{Binding Version}"/>
+
+            <TextBlock Grid.Column="2"
+                       Margin="5,0,0,10"
+                       VerticalAlignment="Bottom"
+                       FontSize="14">
+                <Hyperlink Command="{Binding OpenUriCommand}">GitHub</Hyperlink>
+            </TextBlock>
+        </Grid>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Description}"
+                   TextWrapping="Wrap"/>
+
+        <Label Grid.Row="2"
+               Content="{Binding AdditionalNotes}"/>
+
+        <Label Grid.Row="4"
+               Content="{Binding Copyright}"/>
+    </Grid>
+</Window>

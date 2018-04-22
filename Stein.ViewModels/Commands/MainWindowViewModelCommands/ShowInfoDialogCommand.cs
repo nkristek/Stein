@@ -1,5 +1,5 @@
 ﻿using nkristek.MVVMBase.Commands;
-using System;
+using Stein.Services;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {
@@ -10,7 +10,8 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
         {
-            throw new NotImplementedException();
+            var dialogModel = ViewModelService.Instance.CreateViewModel<AboutDialogModel>(viewModel);
+            DialogService.Instance.ShowDialog(dialogModel);
         }
     }
 }

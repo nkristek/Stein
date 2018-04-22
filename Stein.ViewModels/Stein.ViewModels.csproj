@@ -52,8 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutDialogModel.cs" />
     <Compile Include="ApplicationDialogModel.cs" />
     <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="Commands\AboutDialogModelCommands\OpenUriCommand.cs" />
     <Compile Include="Commands\ApplicationDialogModelCommands\OpenLogFolderCommand.cs" />
     <Compile Include="Commands\ApplicationDialogModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\CustomOperationApplicationCommand.cs" />

@@ -18,14 +18,33 @@
                         Height="42" 
                         Clip="F1 M 0,0L 42.6667,0L 42.6667,42.6667L 0,42.6667L 0,0">
                 <Rectangle Width="42" 
-                               Height="42"
-                               Stretch="Fill" 
-                               Fill="Transparent" />
+                           Height="42"
+                           Stretch="Fill" 
+                           Fill="Transparent" />
                 <Path Width="42" 
-                          Height="42" 
-                          Stretch="Fill"
-                          Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
-                          Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+                      Height="42" 
+                      Stretch="Fill"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
+                      Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
+            </Canvas>
+        </Viewbox>
+    </DataTemplate>
+
+    <DataTemplate x:Key="InfoIconVariant">
+        <Viewbox Stretch="UniformToFill">
+            <Canvas x:Name="ContextInfo"
+                    Width="42" 
+                    Height="42"
+                    Clip="F1 M 0,0L 42.6667,0L 42.6667,42.6667L 0,42.6667L 0,0">
+                <Rectangle Width="42" 
+                           Height="42"
+                           Stretch="Fill" 
+                           Fill="Transparent" />
+                <Path Width="42" 
+                      Height="42" 
+                      Stretch="Fill"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
+                      Data="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
             </Canvas>
         </Viewbox>
     </DataTemplate>
@@ -37,14 +56,14 @@
                         Height="42" 
                         Clip="F1 M 0,0L 42.6667,0L 42.6667,42.6667L 0,42.6667L 0,0">
                 <Rectangle Width="42" 
-                               Height="42" 
-                               Stretch="Fill" 
-                               Fill="Transparent" />
+                           Height="42" 
+                           Stretch="Fill" 
+                           Fill="Transparent" />
                 <Path Width="42" 
-                          Height="42" 
-                          Stretch="Fill"
-                          Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
-                          Data="F1 M 19.0523,5.33863L 23.617,5.33863L 23.617,19.0443L 37.3333,19.0443L 37.3333,23.6223L 23.617,23.6223L 23.617,37.328L 19.0523,37.328L 19.0523,23.6223L 5.33333,23.6223L 5.33333,19.0443L 19.0523,19.0443" />
+                      Height="42" 
+                      Stretch="Fill"
+                      Fill="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ContentControl}}}"
+                      Data="F1 M 19.0523,5.33863L 23.617,5.33863L 23.617,19.0443L 37.3333,19.0443L 37.3333,23.6223L 23.617,23.6223L 23.617,37.328L 19.0523,37.328L 19.0523,23.6223L 5.33333,23.6223L 5.33333,19.0443L 19.0523,19.0443" />
             </Canvas>
         </Viewbox>
     </DataTemplate>
@@ -56,9 +75,9 @@
                         Height="42" 
                         Clip="F1 M 0,0L 42.6667,0L 42.6667,42.6667L 0,42.6667L 0,0">
                 <Rectangle Width="42" 
-                               Height="42" 
-                               Stretch="Fill" 
-                               Fill="Transparent" />
+                           Height="42" 
+                           Stretch="Fill" 
+                           Fill="Transparent" />
                 <Path Width="42" 
                           Height="42" 
                           Stretch="Fill"

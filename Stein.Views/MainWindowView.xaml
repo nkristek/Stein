@@ -33,8 +33,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                     <ColumnDefinition Width="8"/>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
@@ -51,13 +53,20 @@
                 </Button>
 
                 <Button Grid.Column="3"
-                        HorizontalAlignment="Right"
                         ContentTemplate="{StaticResource RefreshIconVariant}"
                         Style="{DynamicResource PrimaryButton}"
                         Width="20"
                         Height="20"
                         Padding="4"
                         Command="{Binding RefreshApplicationsCommand}"/>
+
+                <Button Grid.Column="5"
+                        ContentTemplate="{StaticResource InfoIconVariant}"
+                        Style="{DynamicResource PrimaryButton}"
+                        Width="20"
+                        Height="20"
+                        Padding="4"
+                        Command="{Binding ShowInfoDialogCommand}"/>
             </Grid>
         </Grid>
 

@@ -238,4 +238,7 @@
   <data name="PathEmpty" xml:space="preserve">
     <value>The path should not be empty.</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
 </root>

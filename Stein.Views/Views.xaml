@@ -20,4 +20,6 @@
     <views:ApplicationDialog x:Key="{x:Type viewModels:ApplicationDialogModel}" x:Shared="False"/>
     
     <views:InstallerBundleDialog x:Key="{x:Type viewModels:InstallerBundleDialogModel}" x:Shared="False"/>
+
+    <views:AboutDialog x:Key="{x:Type viewModels:AboutDialogModel}" x:Shared="False"/>
 </ResourceDictionary>

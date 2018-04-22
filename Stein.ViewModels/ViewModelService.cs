@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
 using Stein.Services.Extensions;
@@ -21,6 +22,8 @@ namespace Stein.Services
                 return CreateApplicationViewModel(parent) as TViewModel;
             if (typeof(TViewModel) == typeof(ApplicationDialogModel))
                 return CreateApplicationDialogModel(parent) as TViewModel;
+            if (typeof(TViewModel) == typeof(AboutDialogModel))
+                return CreateAboutDialogModel(parent) as TViewModel;
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
@@ -80,6 +83,27 @@ namespace Stein.Services
                 EnableSilentInstallation = true,
                 DisableReboot = true,
                 EnableInstallationLogging = true
+            };
+        }
+
+        private static AboutDialogModel CreateAboutDialogModel(ViewModel parent)
+        {
+            var assembly = Assembly.GetEntryAssembly();
+            var assemblyName = assembly.GetName();
+            var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
+            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
+            var publisher = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
+            return new AboutDialogModel
+            {
+                Parent = parent,
+                Title = Strings.About,
+                Name = assemblyName.Name,
+                Description = description?.Description,
+                Version = assemblyName.Version,
+                Copyright = copyright?.Copyright,
+                AdditionalNotes = "",
+                Uri = new Uri("https://github.com/nkristek/Stein"),
+                Publisher = publisher?.Company
             };
         }
 
