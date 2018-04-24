@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:converters="clr-namespace:nkristek.Ui.Converters;assembly=nkristek.Ui.Converters"
+        xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         mc:Ignorable="d"
@@ -14,6 +14,7 @@
         Height="300"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
+
     <Grid Margin="28,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

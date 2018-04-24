@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:BenRuehl.UiResources.Controls;assembly=UiResources"
-             xmlns:converters="clr-namespace:nkristek.Ui.Converters;assembly=nkristek.Ui.Converters"
+             xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              mc:Ignorable="d"
@@ -56,13 +56,13 @@
 
             <ComboBox ItemsSource="{Binding InstallerBundles}"
                       SelectedItem="{Binding SelectedInstallerBundle}"
-                      IsEnabled="{Binding InstallerBundles, Converter={x:Static converters:IEnumerableNotNullOrEmptyToBoolConverter.Instance}}"
+                      IsEnabled="{Binding InstallerBundles, Converter={converters:IEnumerableNotNullOrEmptyToBoolConverter}}"
                       HorizontalAlignment="Stretch"/>
 
             <!-- SelectedInstallerDate -->
             <Label Grid.Column="2"
                    DataContext="{Binding SelectedInstallerBundle}"
-                   Content="{Binding NewestInstallerCreationTime, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=g}"/>
+                   Content="{Binding NewestInstallerCreationTime, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
 
             <controls:SplitButton Grid.Column="4"
                                   Content="{x:Static localization:Strings.Install}"

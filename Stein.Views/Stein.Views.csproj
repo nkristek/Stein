@@ -39,6 +39,9 @@
     <Reference Include="nkristek.MVVMBase, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\nkristek.MVVMBase.1.4.2\lib\net47\nkristek.MVVMBase.dll</HintPath>
     </Reference>
+    <Reference Include="nkristek.Wpf.Converters, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nkristek.Wpf.Converters.1.0.0\lib\net47\nkristek.Wpf.Converters.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -88,10 +91,6 @@
     <ProjectReference Include="..\Stein.ViewModels\Stein.ViewModels.csproj">
       <Project>{10538f60-6022-4815-82ea-36921d746583}</Project>
       <Name>Stein.ViewModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ui.Converters\Ui.Converters.csproj">
-      <Project>{9e5bc521-4539-41a3-b968-2701b3f5a00d}</Project>
-      <Name>Ui.Converters</Name>
     </ProjectReference>
     <ProjectReference Include="..\UiResources\UiResources.csproj">
       <Project>{45e54988-48a0-43ab-810b-0ee50e77f8fc}</Project>

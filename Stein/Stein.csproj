@@ -153,10 +153,6 @@
       <Project>{01aac7ae-9bf5-4b7e-9cce-0bac08848930}</Project>
       <Name>Stein.Views</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ui.Converters\Ui.Converters.csproj">
-      <Project>{9e5bc521-4539-41a3-b968-2701b3f5a00d}</Project>
-      <Name>Ui.Converters</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UiResources.FlatLightThemePack\UiResources.FlatLightThemePack.csproj">
       <Project>{1c41d016-993d-41b5-b9db-4581867829d6}</Project>
       <Name>UiResources.FlatLightThemePack</Name>

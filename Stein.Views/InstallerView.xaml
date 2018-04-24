@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:converters="clr-namespace:nkristek.Ui.Converters;assembly=nkristek.Ui.Converters"
+             xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
-    <Grid IsEnabled="{Binding IsDisabled, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}"
+    <Grid IsEnabled="{Binding IsDisabled, Converter={converters:BoolToInverseBoolConverter}}"
           Margin="0,2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" 
@@ -102,17 +102,17 @@
 
                     <Button Content="{x:Static localization:Strings.Install}"
                             BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToNotVisibilityConverter.Instance}}"
+                            Visibility="{Binding IsInstalled, Converter={converters:BoolToNotVisibilityConverter}}"
                             Command="{Binding PreferInstallCommand}"/>
 
                     <Button Content="{x:Static localization:Strings.Reinstall}"
                             BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"
+                            Visibility="{Binding IsInstalled, Converter={converters:BoolToVisibilityConverter}}"
                             Command="{Binding PreferReinstallCommand}"/>
 
                     <Button Content="{x:Static localization:Strings.Uninstall}"
                             BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={x:Static converters:BoolToVisibilityConverter.Instance}}"
+                            Visibility="{Binding IsInstalled, Converter={converters:BoolToVisibilityConverter}}"
                             Command="{Binding PreferUninstallCommand}"/>
                 </UniformGrid>
             </Border>
@@ -121,7 +121,7 @@
         <Label Grid.Column="5"
                VerticalAlignment="Stretch"
                VerticalContentAlignment="Center"
-               Visibility="{Binding Created, Converter={x:Static converters:ValueNotNullToVisibilityConverter.Instance}}"
-               Content="{Binding Created, Converter={x:Static converters:DateTimeToStringConverter.Instance}, ConverterParameter=g}"/>
+               Visibility="{Binding Created, Converter={converters:ValueNotNullToVisibilityConverter}}"
+               Content="{Binding Created, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
     </Grid>
 </UserControl>
