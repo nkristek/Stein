@@ -30,14 +30,8 @@ namespace Stein.Types
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
         public string Value
         {
-            get => Date?.ToString();
-            set
-            {
-                if (DateTime.TryParse(value, out DateTime dateTime))
-                    Date = dateTime;
-                else
-                    Date = null;
-            }
+            get => Serialize(Date ?? DateTime.MinValue);
+            set => Date = Deserialize(value);
         }
 
         public static implicit operator DateTime(DateTimeXml dateTimeXml)
@@ -55,9 +49,23 @@ namespace Stein.Types
             return Value;
         }
 
+        private static string Serialize(DateTime dateTime)
+        {
+            return ((DateTimeOffset)dateTime).ToUnixTimeMilliseconds().ToString();
+        }
+
+        private static DateTime? Deserialize(string value)
+        {
+            if (!long.TryParse(value, out var valueAsLong))
+                return null;
+
+            return DateTimeOffset.FromUnixTimeMilliseconds(valueAsLong).UtcDateTime;
+        }
+
         public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)
         {
-            return DateTime.TryParse(dateTime.ToString(CultureInfo.InvariantCulture), out var parsedDateTime) ? parsedDateTime : DateTime.MinValue;
+            var serializedDateTime = Serialize(dateTime);
+            return Deserialize(serializedDateTime) ?? DateTime.MinValue;
         }
     }
 }

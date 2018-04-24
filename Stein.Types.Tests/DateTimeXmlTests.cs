@@ -11,7 +11,6 @@ namespace Stein.Types.Tests
         [Serializable]
         public class DateTimeXmlTestClass
         {
-            [XmlElement("Date", typeof(DateTimeXml))]
             public DateTimeXml Date;
 
             private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(DateTimeXmlTestClass), typeof(DateTimeXmlTestClass).GetNestedTypes());
