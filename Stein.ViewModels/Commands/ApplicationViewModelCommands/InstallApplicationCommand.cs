@@ -120,10 +120,17 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private static string GetLogFilePathForInstaller(string applicationName, string installerName, string installMethod)
         {
-            var installLogFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
+            var logFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
+            if (!Directory.Exists(logFolderPath))
+                Directory.CreateDirectory(logFolderPath);
+
             var currentDate = DateTime.Now;
             var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
-            return Path.Combine(installLogFolderPath, logFileName);
+            var logFilePath = Path.Combine(logFolderPath, logFileName);
+            if (File.Exists(logFilePath))
+                throw new IOException("File already exists");
+
+            return logFilePath;
         }
 
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
