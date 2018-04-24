@@ -3,6 +3,12 @@
                     xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
                     xmlns:views="clr-namespace:Stein.Views">
 
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/UiResources;component/Themes/Generic.xaml"/>
+
+    </ResourceDictionary.MergedDictionaries>
+
     <!-- Views -->
     <DataTemplate DataType="{x:Type viewModels:MainWindowViewModel}">
         <views:MainWindowView/>

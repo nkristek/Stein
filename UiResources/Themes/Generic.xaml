@@ -4,6 +4,8 @@
 
     <ResourceDictionary.MergedDictionaries>
 
+        <ResourceDictionary Source="pack://application:,,,/UiResources;component/Icons.xaml"/>
+
         <ResourceDictionary Source="pack://application:,,,/UiResources;component/Controls/SplitButton.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>

@@ -9,8 +9,6 @@
 
                 <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Views.xaml"/>
 
-                <ResourceDictionary Source="Icons.xaml"/>
-
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

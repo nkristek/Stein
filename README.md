@@ -32,3 +32,5 @@ It will generate 4 installer bundles:
   - tmp02/installer2_deDE.msi
 
 ![Screenshot](Docs/Screenshot.PNG)
+
+The icons used by this application come from [fontawesome](fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
