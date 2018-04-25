@@ -85,6 +85,9 @@
     <Reference Include="nkristek.MVVMBase, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\nkristek.MVVMBase.1.4.2\lib\net47\nkristek.MVVMBase.dll</HintPath>
     </Reference>
+    <Reference Include="nkristek.Wpf.Converters, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nkristek.Wpf.Converters.1.0.0\lib\net47\nkristek.Wpf.Converters.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
