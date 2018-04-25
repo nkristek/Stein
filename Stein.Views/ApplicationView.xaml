@@ -32,13 +32,13 @@
                        Content="{Binding Name}"/>
 
                 <Button Grid.Column="3"
-                        Style="{StaticResource IconButtonStyle}"
-                        ContentTemplate="{StaticResource EditIconVariant}"
+                        Style="{DynamicResource IconButtonStyle}"
+                        ContentTemplate="{DynamicResource EditIconVariant}"
                         Command="{Binding EditApplicationCommand}"/>
 
                 <Button Grid.Column="4"
-                        Style="{StaticResource IconButtonStyle}"
-                        ContentTemplate="{StaticResource DeleteIconVariant}"
+                        Style="{DynamicResource IconButtonStyle}"
+                        ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding DeleteApplicationCommand}"/>
             </Grid>
         </GroupBox.Header>

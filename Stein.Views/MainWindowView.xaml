@@ -6,12 +6,13 @@
              xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:controls="clr-namespace:BenRuehl.UiResources.Controls;assembly=UiResources"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -21,8 +22,8 @@
             <Border Background="{DynamicResource PrimaryBrush}">
                 <Border.Effect>
                     <DropShadowEffect Direction="270"
-                                      BlurRadius="4"
-                                      ShadowDepth="2"
+                                      BlurRadius="28"
+                                      ShadowDepth="7"
                                       Opacity="0.25"/>
                 </Border.Effect>
             </Border>
@@ -34,7 +35,7 @@
                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" MinWidth="30"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
@@ -43,7 +44,7 @@
                         Style="{DynamicResource PrimaryButton}"
                         Command="{Binding AddApplicationCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
+                        <ContentControl ContentTemplate="{DynamicResource AddIconVariant}"
                                         Height="12"
                                         Width="12"
                                         Margin="0, 0, 8, 0"/>
@@ -52,16 +53,27 @@
                     </StackPanel>
                 </Button>
 
-                <Button Grid.Column="3"
+                <!--<Button Grid.Column="3"
                         ContentTemplate="{StaticResource RefreshIconVariant}"
                         Style="{DynamicResource PrimaryButton}"
                         Width="20"
                         Height="20"
                         Padding="4"
-                        Command="{Binding RefreshApplicationsCommand}"/>
+                        Command="{Binding RefreshApplicationsCommand}"/>-->
+
+                <controls:RotatingButton Grid.Column="3"
+                                         HorizontalAlignment="Center"
+                                         DataContext="{Binding RefreshApplicationsCommand}"
+                                         IsRotating="{Binding IsWorking}"
+                                         ContentTemplate="{DynamicResource RefreshIconVariant}"
+                                         Style="{DynamicResource PrimaryButton}"
+                                         Width="20"
+                                         Height="20"
+                                         Padding="4"
+                                         Command="{Binding}"/>
 
                 <Button Grid.Column="5"
-                        ContentTemplate="{StaticResource InfoIconVariant}"
+                        ContentTemplate="{DynamicResource InfoIconVariant}"
                         Style="{DynamicResource PrimaryButton}"
                         Width="20"
                         Height="20"
@@ -184,8 +196,8 @@
             <!-- Cancel button -->
             <StatusBarItem Padding="0"
                            HorizontalAlignment="Right">
-                <Button Style="{StaticResource IconButtonStyle}"
-                        ContentTemplate="{StaticResource DeleteIconVariant}"
+                <Button Style="{DynamicResource IconButtonStyle}"
+                        ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding CancelOperationCommand}"
                         Margin="0, 4"
                         ToolTip="{x:Static localization:Strings.Cancel}"

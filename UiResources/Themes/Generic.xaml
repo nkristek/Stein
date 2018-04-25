@@ -8,6 +8,8 @@
 
         <ResourceDictionary Source="pack://application:,,,/UiResources;component/Controls/SplitButton.xaml"/>
 
+        <ResourceDictionary Source="pack://application:,,,/UiResources;component/Controls/RotatingButton.xaml"/>
+
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>
