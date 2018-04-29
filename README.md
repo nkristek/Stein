@@ -1,17 +1,19 @@
 # Stein - Silent Temp Installer
 
-This C# MVVM application makes it easier to install, uninstall or reinstall multiple installers at the same time.
+This application makes it easier to install, uninstall or reinstall multiple installers. It can be used in an environment, where there are regular builds of an application which are located inside a defined folder structure.
+
+## Supported folder structure
 
 It bundles these installers by folder and by culture (ProductLanguage property on the MSI-file).
 The supported folder structure is:
 
 - selected folder
-  - tmp01
+  - build01
     - installer1_enUS.msi
     - installer1_deDE.msi
     - installer2_enUS.msi
     - installer2_deDE.msi
-  - tmp02
+  - build02
     - installer1_enUS.msi
     - installer1_deDE.msi
     - installer2_enUS.msi
@@ -32,5 +34,8 @@ It will generate 4 installer bundles:
   - tmp02/installer2_deDE.msi
 
 ![Screenshot](Docs/Screenshot.PNG)
+
+## 
+
 
 The icons used by this application come from [fontawesome](fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
