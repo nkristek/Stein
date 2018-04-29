@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -67,6 +68,7 @@ namespace Stein
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Error("App_DispatcherUnhandledException", e.Exception);
+            DebugBreak();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -76,16 +78,26 @@ namespace Stein
                 return;
 
             Log.Error("CurrentDomain_UnhandledException", exception);
+            DebugBreak();
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             Log.Error("TaskScheduler_UnobservedTaskException", e.Exception);
+            DebugBreak();
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Log.Error("WinFormApplication_ThreadException", e.Exception);
+            DebugBreak();
+        }
+
+        [Conditional("DEBUG")]
+        void DebugBreak()
+        {
+            if (Debugger.IsAttached)
+                Debugger.Break();
         }
     }
 }
