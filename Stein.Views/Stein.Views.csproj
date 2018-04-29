@@ -62,7 +62,7 @@
     </Compile>
     <Compile Include="WpfDialogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskbarService.cs" />
+    <Compile Include="WpfTaskbarService.cs" />
     <Compile Include="ApplicationDialog.xaml.cs">
       <DependentUpon>ApplicationDialog.xaml</DependentUpon>
     </Compile>
@@ -78,6 +78,7 @@
     <Compile Include="MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfThemeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Localizations\Stein.Localizations.csproj">

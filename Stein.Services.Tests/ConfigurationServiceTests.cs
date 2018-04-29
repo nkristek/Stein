@@ -25,18 +25,18 @@ namespace Stein.Services.Tests
 
             var configurationService = new ConfigurationService(TestConfigurationFilePath);
 
-            configurationService.LoadConfigurationFromDisk();
+            configurationService.LoadConfiguration();
 
             configurationService.Configuration.ApplicationFolders = new List<ApplicationFolder>
             {
                 new ApplicationFolder()
             };
 
-            configurationService.SaveConfigurationToDisk();
+            configurationService.SaveConfiguration();
 
             Assert.IsTrue(File.Exists(TestConfigurationFilePath), "The config file wasn't saved.");
 
-            configurationService.LoadConfigurationFromDisk();
+            configurationService.LoadConfiguration();
 
             Assert.IsTrue(configurationService.Configuration.ApplicationFolders.Any(), "Verifying the saved configuration failed.");
 
@@ -50,18 +50,18 @@ namespace Stein.Services.Tests
 
             var configurationService = new ConfigurationService(TestConfigurationFilePath);
 
-            configurationService.LoadConfigurationFromDiskAsync().Wait();
+            configurationService.LoadConfigurationAsync().Wait();
 
             configurationService.Configuration.ApplicationFolders = new List<ApplicationFolder>
             {
                 new ApplicationFolder()
             };
 
-            configurationService.SaveConfigurationToDiskAsync().Wait();
+            configurationService.SaveConfigurationAsync().Wait();
 
             Assert.IsTrue(File.Exists(TestConfigurationFilePath), "The config file wasn't saved.");
 
-            configurationService.LoadConfigurationFromDiskAsync().Wait();
+            configurationService.LoadConfigurationAsync().Wait();
 
             Assert.IsTrue(configurationService.Configuration.ApplicationFolders.Any(), "Verifying the saved configuration failed.");
 

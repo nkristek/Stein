@@ -6,12 +6,20 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     public class ShowInfoDialogCommand
         : ViewModelCommand<MainWindowViewModel>
     {
-        public ShowInfoDialogCommand(MainWindowViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
 
+        private readonly IViewModelService _viewModelService;
+
+        public ShowInfoDialogCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService) : base(parent)
+        {
+            _dialogService = dialogService;
+            _viewModelService = viewModelService;
+        }
+        
         protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
         {
-            var dialogModel = ViewModelService.Instance.CreateViewModel<AboutDialogModel>(viewModel);
-            DialogService.Instance.ShowDialog(dialogModel);
+            var dialogModel = _viewModelService.CreateViewModel<AboutDialogModel>(viewModel);
+            _dialogService.ShowDialog(dialogModel);
         }
     }
 }

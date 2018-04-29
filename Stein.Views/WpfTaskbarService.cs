@@ -6,12 +6,12 @@ using Stein.Services.Types;
 
 namespace Stein.Views
 {
-    public class TaskbarService
+    public class WpfTaskbarService
         : IProgressBarService
     {
         private readonly Window _window;
 
-        public TaskbarService(Window rootWindow)
+        public WpfTaskbarService(Window rootWindow)
         {
             _window = rootWindow;
         }

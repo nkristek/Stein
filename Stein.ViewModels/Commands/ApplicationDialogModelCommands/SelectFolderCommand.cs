@@ -12,7 +12,12 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SelectFolderCommand(ApplicationDialogModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        public SelectFolderCommand(ApplicationDialogModel parent, IDialogService dialogService) : base(parent)
+        {
+            _dialogService = dialogService;
+        }
 
         protected override void DoExecute(ApplicationDialogModel viewModel, object parameter)
         {
@@ -32,7 +37,7 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         protected override void OnThrownException(ApplicationDialogModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
         }
     }
 }

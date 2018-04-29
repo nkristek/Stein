@@ -4,17 +4,28 @@ using System.Linq;
 using System.Reflection;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
+using Stein.Services;
 using Stein.Services.Extensions;
 using Stein.Types.ConfigurationTypes;
-using Stein.ViewModels;
 using Stein.ViewModels.Types;
 
-namespace Stein.Services
+namespace Stein.ViewModels
 {
     public class ViewModelService
         : IViewModelService
     {
-        public static IViewModelService Instance;
+        private readonly IDialogService _dialogService;
+
+        private readonly IConfigurationService _configurationService;
+
+        private readonly IInstallService _installService;
+
+        public ViewModelService(IDialogService dialogService, IConfigurationService configurationService, IInstallService installService)
+        {
+            _dialogService = dialogService;
+            _configurationService = configurationService;
+            _installService = installService;
+        }
 
         public TViewModel CreateViewModel<TViewModel>(ViewModel parent = null) where TViewModel : ViewModel
         {
@@ -27,7 +38,7 @@ namespace Stein.Services
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
-        private static ApplicationViewModel CreateApplicationViewModel(ViewModel parent, ApplicationFolder applicationFolder = null)
+        private ApplicationViewModel CreateApplicationViewModel(ViewModel parent, ApplicationFolder applicationFolder = null)
         {
             if (applicationFolder == null)
             {
@@ -35,10 +46,10 @@ namespace Stein.Services
                 {
                     Id = Guid.NewGuid()
                 };
-                ConfigurationService.Instance.Configuration.ApplicationFolders.Add(applicationFolder);
+                _configurationService.Configuration.ApplicationFolders.Add(applicationFolder);
             }
 
-            var application = new ApplicationViewModel
+            var application = new ApplicationViewModel(_dialogService, this, _installService)
             {
                 Parent = parent,
                 FolderId = applicationFolder.Id,
@@ -58,11 +69,11 @@ namespace Stein.Services
             return application;
         }
 
-        private static ApplicationDialogModel CreateApplicationDialogModel(ViewModel parent)
+        private ApplicationDialogModel CreateApplicationDialogModel(ViewModel parent)
         {
             if (parent is ApplicationViewModel application)
             {
-                return new ApplicationDialogModel
+                return new ApplicationDialogModel(_dialogService)
                 {
                     Parent = application,
                     Title = Strings.EditFolder,
@@ -74,7 +85,7 @@ namespace Stein.Services
                     EnableInstallationLogging = application.EnableInstallationLogging
                 };
             }
-            return new ApplicationDialogModel
+            return new ApplicationDialogModel(_dialogService)
             {
                 Parent = parent,
                 Title = Strings.AddFolder,
@@ -114,10 +125,10 @@ namespace Stein.Services
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
-        private static IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent, IEnumerable<ApplicationViewModel> existingViewModels)
+        private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent, IEnumerable<ApplicationViewModel> existingViewModels)
         {
             var existingApplicationViewModels = existingViewModels.ToList();
-            foreach (var applicationFolder in ConfigurationService.Instance.Configuration.ApplicationFolders)
+            foreach (var applicationFolder in _configurationService.Configuration.ApplicationFolders)
             {
                 var existingViewModel = existingApplicationViewModels.FirstOrDefault(avm => avm.FolderId == applicationFolder.Id);
                 if (existingViewModel != null)
@@ -151,9 +162,9 @@ namespace Stein.Services
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
         
-        private static void SaveApplicationViewModel(ApplicationViewModel application)
+        private void SaveApplicationViewModel(ApplicationViewModel application)
         {
-            var associatedApplicationFolder = ConfigurationService.Instance.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
+            var associatedApplicationFolder = _configurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
             if (associatedApplicationFolder == null)
                 throw new Exception(Strings.EntityNotFound);
 
@@ -190,7 +201,7 @@ namespace Stein.Services
             installer.IsDirty = false;
         }
 
-        private static void SaveApplicationDialogModel(ApplicationDialogModel applicationDialog)
+        private void SaveApplicationDialogModel(ApplicationDialogModel applicationDialog)
         {
             ApplicationFolder applicationFolder;
             if (applicationDialog.FolderId == default(Guid))
@@ -199,10 +210,10 @@ namespace Stein.Services
                 {
                     Id = Guid.NewGuid()
                 };
-                ConfigurationService.Instance.Configuration.ApplicationFolders.Add(applicationFolder);
+                _configurationService.Configuration.ApplicationFolders.Add(applicationFolder);
             } else
             {
-                applicationFolder = ConfigurationService.Instance.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationDialog.FolderId);
+                applicationFolder = _configurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == applicationDialog.FolderId);
                 if (applicationFolder == null)
                     throw new Exception(Strings.EntityNotFound);
             }
@@ -226,13 +237,13 @@ namespace Stein.Services
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
         
-        private static void UpdateApplicationViewModel(ApplicationViewModel application, ApplicationFolder applicationFolder = null)
+        private void UpdateApplicationViewModel(ApplicationViewModel application, ApplicationFolder applicationFolder = null)
         {
             if (application.FolderId == default(Guid))
                 throw new Exception(Strings.EntityNotFound);
 
             if (applicationFolder == null)
-                applicationFolder = ConfigurationService.Instance.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
+                applicationFolder = _configurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
 
             if (applicationFolder == null)
                 throw new Exception(Strings.ApplicationFolderNotCached);
@@ -254,14 +265,14 @@ namespace Stein.Services
             application.IsDirty = false;
         }
 
-        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
+        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
         {
             foreach (var subFolder in applicationFolder.SubFolders)
                 foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subFolder, parent, existingInstallerBundles))
                     yield return installerBundle;
         }
 
-        private static IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingViewModels = null)
+        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingViewModels = null)
         {
             var existingInstallerBundles = existingViewModels?.ToList();
             foreach (var installerFileGroup in subFolder.FindAllInstallerFiles().GroupBy(i => i.Culture).Select(ifg => ifg.ToList()))
@@ -302,7 +313,7 @@ namespace Stein.Services
                     installerViewModel.Version = installerFile.Version;
                     installerViewModel.Culture = installerFile.Culture;
                     installerViewModel.ProductCode = installerFile.ProductCode;
-                    installerViewModel.IsInstalled = InstallService.Instance.IsProductCodeInstalled(installerFile.ProductCode);
+                    installerViewModel.IsInstalled = _installService.IsProductCodeInstalled(installerFile.ProductCode);
                     installerViewModel.Created = installerFile.Created;
                     installerViewModel.PreferredOperation = InstallerOperationType.DoNothing;
 
@@ -329,9 +340,9 @@ namespace Stein.Services
             throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
-        private static void DeleteApplicationViewModel(ApplicationViewModel application)
+        private void DeleteApplicationViewModel(ApplicationViewModel application)
         {
-            ConfigurationService.Instance.Configuration.ApplicationFolders.RemoveAll(af => af.Id == application.FolderId);
+            _configurationService.Configuration.ApplicationFolders.RemoveAll(af => af.Id == application.FolderId);
         }
     }
 }

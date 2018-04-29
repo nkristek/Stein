@@ -14,7 +14,16 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public CustomOperationApplicationCommand(ApplicationViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        private readonly IInstallService _installService;
+
+        public CustomOperationApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) :
+            base(parent)
+        {
+            _dialogService = dialogService;
+            _installService = installService;
+        }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
@@ -67,7 +76,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             foreach (var installer in application.SelectedInstallerBundle.Installers)
                 dialogModel.Installers.Add(installer);
 
-            var dialogResult = DialogService.Instance.ShowDialog(dialogModel);
+            var dialogResult = _dialogService.ShowDialog(dialogModel);
             if (dialogResult != true)
                 return installationResult;
 
@@ -100,7 +109,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             currentInstallation.State = InstallationState.Install;
                             Log.Info($"Installing {installer.Name}.");
                             
-                            await InstallService.Instance.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
 
                             installationResult.InstallCount++;
                             break;
@@ -109,9 +118,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             Log.Info($"Reinstalling {installer.Name}.");
 
                             // uninstall and install instead of reinstalling since the reinstall fails when another version of the installer was used (e.g. daily temps with the same version number)
-                            await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
                             
-                            await InstallService.Instance.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
 
                             installationResult.ReinstallCount++;
                             break;
@@ -119,7 +128,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             currentInstallation.State = InstallationState.Uninstall;
                             Log.Info($"Uninstalling {installer.Name}.");
 
-                            await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
 
                             installationResult.UninstallCount++;
                             break;
@@ -153,7 +162,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
 
             if (!(viewModel.Parent is MainWindowViewModel mainViewModel))
                 return;

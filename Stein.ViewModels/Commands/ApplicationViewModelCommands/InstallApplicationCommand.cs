@@ -14,7 +14,15 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public InstallApplicationCommand(ApplicationViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        private readonly IInstallService _installService;
+
+        public InstallApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) : base(parent)
+        {
+            _dialogService = dialogService;
+            _installService = installService;
+        }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
@@ -84,7 +92,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                         Log.Info($"Installing {installer.Name}.");
 
                         var logFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "install") : null;
-                        await InstallService.Instance.InstallAsync(installer.Path, logFilePath, application.EnableSilentInstallation);
+                        await _installService.InstallAsync(installer.Path, logFilePath, application.EnableSilentInstallation);
 
                         installationResult.InstallCount++;
                     }
@@ -100,10 +108,10 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                         if (installer.IsInstalled == null || installer.IsInstalled.HasValue && installer.IsInstalled.Value)
                         {
                             var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "uninstall") : null;
-                            await InstallService.Instance.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
                         }
                         var installLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "install") : null;
-                        await InstallService.Instance.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                        await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
 
                         installationResult.ReinstallCount++;
                     }
@@ -136,7 +144,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
 
             if (!(viewModel.Parent is MainWindowViewModel mainViewModel))
                 return;

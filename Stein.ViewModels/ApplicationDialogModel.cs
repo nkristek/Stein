@@ -2,6 +2,7 @@
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
+using Stein.Services;
 using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 
 namespace Stein.ViewModels
@@ -9,10 +10,10 @@ namespace Stein.ViewModels
     public class ApplicationDialogModel
         : DialogModel
     {
-        public ApplicationDialogModel()
+        public ApplicationDialogModel(IDialogService dialogService)
         {
-            SelectFolderCommand = new SelectFolderCommand(this);
-            OpenLogFolderCommand = new OpenLogFolderCommand(this);
+            SelectFolderCommand = new SelectFolderCommand(this, dialogService);
+            OpenLogFolderCommand = new OpenLogFolderCommand(this, dialogService);
         }
 
         public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; }

@@ -10,12 +10,21 @@ namespace Stein.ViewModels
     public class MainWindowViewModel
         : ViewModel
     {
-        public MainWindowViewModel()
+        private readonly IThemeService _themeService;
+
+        private readonly IProgressBarService _progressBarService;
+
+        public MainWindowViewModel(IDialogService dialogService, IViewModelService viewModelService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService)
         {
-            RefreshApplicationsCommand = new RefreshApplicationsCommand(this);
-            AddApplicationCommand = new AddApplicationCommand(this);
+            _themeService = themeService;
+            _themeService.ThemeChanged += (sender, args) => { RaisePropertyChanged(nameof(CurrentTheme)); };
+            _progressBarService = progressBarService;
+
+            RefreshApplicationsCommand = new RefreshApplicationsCommand(this, dialogService, viewModelService, configurationService, installService, msiService);
+            AddApplicationCommand = new AddApplicationCommand(this, dialogService, viewModelService);
             CancelOperationCommand = new CancelOperationCommand(this);
-            ShowInfoDialogCommand = new ShowInfoDialogCommand(this);
+            ShowInfoDialogCommand = new ShowInfoDialogCommand(this, dialogService, viewModelService);
+            ChangeThemeCommand = new ChangeThemeCommand(this);
 
             RefreshApplicationsCommand.Execute(null);
         }
@@ -30,6 +39,9 @@ namespace Stein.ViewModels
         public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; }
 
         public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; }
+
+        public ViewModelCommand<MainWindowViewModel> ChangeThemeCommand { get; }
+
         /// <summary>
         /// List of all applications
         /// </summary>
@@ -45,7 +57,7 @@ namespace Stein.ViewModels
             set
             {
                 if (SetProperty(ref _currentInstallation, value))
-                    ProgressBarService.Instance.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
+                    _progressBarService.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
             }
         }
 
@@ -57,6 +69,15 @@ namespace Stein.ViewModels
         {
             get => _installationResult;
             set => SetProperty(ref _installationResult, value);
+        }
+        
+        /// <summary>
+        /// Current UI theme
+        /// </summary>
+        public Theme CurrentTheme
+        {
+            get => _themeService.CurrentTheme;
+            set => _themeService.SetTheme(value);
         }
     }
 }

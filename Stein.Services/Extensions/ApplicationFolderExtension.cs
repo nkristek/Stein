@@ -41,7 +41,7 @@ namespace Stein.Services.Extensions
         /// Synchronize the ApplicationFolder with what exists on disk. It removes subfolders which aren't present anymore and adds new subfolders
         /// </summary>
         /// <param name="applicationFolder">The ApplicationFolder to synchronize</param>
-        public static void SyncWithDisk(this ApplicationFolder applicationFolder)
+        public static void SyncWithDisk(this ApplicationFolder applicationFolder, IMsiService msiService)
         {
             var subDirectoriesOnDisk = Directory.GetDirectories(applicationFolder.Path).Select(directoryName => new DirectoryInfo(directoryName)).ToList();
 
@@ -60,7 +60,7 @@ namespace Stein.Services.Extensions
                     };
                     applicationFolder.SubFolders.Add(folder);
                 }
-                folder.SyncWithDisk();
+                folder.SyncWithDisk(msiService);
             }
 
             applicationFolder.SubFolders = applicationFolder.SubFolders.OrderBy(subFolder => subFolder.Name).ToList();
@@ -71,11 +71,11 @@ namespace Stein.Services.Extensions
         /// </summary>
         /// <param name="applicationFolder">The ApplicationFolder to synchronize</param>
         /// <returns>The asynchronous Task</returns>
-        public static async Task SyncWithDiskAsync(this ApplicationFolder applicationFolder)
+        public static async Task SyncWithDiskAsync(this ApplicationFolder applicationFolder, IMsiService msiService)
         {
             await Task.Run(() =>
             {
-                applicationFolder.SyncWithDisk();
+                applicationFolder.SyncWithDisk(msiService);
             });
         }
     }

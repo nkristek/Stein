@@ -7,8 +7,6 @@ namespace Stein.Services
     public class ConfigurationService
         : IConfigurationService
     {
-        public static IConfigurationService Instance;
-
         public Configuration Configuration { get; private set; } = new Configuration();
 
         private readonly string _configuationPath;
@@ -21,22 +19,22 @@ namespace Stein.Services
             _configuationPath = configurationFilePath;
         }
 
-        public void LoadConfigurationFromDisk()
+        public void LoadConfiguration()
         {
             Configuration = Configuration.CreateFromFile(_configuationPath);
         }
         
-        public async Task LoadConfigurationFromDiskAsync()
+        public async Task LoadConfigurationAsync()
         {
             Configuration = await Configuration.CreateFromFileAsync(_configuationPath);
         }
         
-        public void SaveConfigurationToDisk()
+        public void SaveConfiguration()
         {
             Configuration.ToFile(_configuationPath);
         }
         
-        public async Task SaveConfigurationToDiskAsync()
+        public async Task SaveConfigurationAsync()
         {
             await Configuration.ToFileAsync(_configuationPath);
         }

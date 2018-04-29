@@ -15,8 +15,6 @@ namespace Stein.Services
     public class InstallService
         : IInstallService
     {
-        public static IInstallService Instance;
-
         private List<InstalledProgram> _installedPrograms;
 
         public IEnumerable<InstalledProgram> InstalledPrograms

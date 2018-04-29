@@ -13,23 +13,23 @@ namespace Stein.Services
         /// <summary>
         /// Loads the configuration file from the file system
         /// </summary>
-        void LoadConfigurationFromDisk();
+        void LoadConfiguration();
 
         /// <summary>
         /// Loads the configuration file from the file system asynchronously
         /// </summary>
         /// <returns>Task which loads the configuration file from the file system</returns>
-        Task LoadConfigurationFromDiskAsync();
+        Task LoadConfigurationAsync();
 
         /// <summary>
         /// Saves the configuration file to the file system
         /// </summary>
-        void SaveConfigurationToDisk();
+        void SaveConfiguration();
 
         /// <summary>
         /// Saves the configuration file to the file system asynchronously
         /// </summary>
         /// <returns>>Task which saves the configuration file to the file system</returns>
-        Task SaveConfigurationToDiskAsync();
+        Task SaveConfigurationAsync();
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using Stein.Services;
 using Stein.ViewModels.Commands.ApplicationViewModelCommands;
 
 namespace Stein.ViewModels
@@ -9,13 +10,13 @@ namespace Stein.ViewModels
     public class ApplicationViewModel
         : ViewModel
     {
-        public ApplicationViewModel()
+        public ApplicationViewModel(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
         {
-            EditApplicationCommand = new EditApplicationCommand(this);
-            DeleteApplicationCommand = new DeleteApplicationCommand(this);
-            InstallApplicationCommand = new InstallApplicationCommand(this);
-            UninstallApplicationCommand = new UninstallApplicationCommand(this);
-            CustomOperationApplicationCommand = new CustomOperationApplicationCommand(this);
+            EditApplicationCommand = new EditApplicationCommand(this, dialogService, viewModelService);
+            DeleteApplicationCommand = new DeleteApplicationCommand(this, dialogService, viewModelService);
+            InstallApplicationCommand = new InstallApplicationCommand(this, dialogService, installService);
+            UninstallApplicationCommand = new UninstallApplicationCommand(this, dialogService, installService);
+            CustomOperationApplicationCommand = new CustomOperationApplicationCommand(this, dialogService, installService);
         }
 
         [CommandCanExecuteSource(nameof(Parent))]

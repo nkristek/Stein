@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using log4net;
 using Stein.Services;
+using Stein.ViewModels;
 using Stein.Views;
 
 namespace Stein
@@ -31,31 +32,36 @@ namespace Stein
         
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
-            if (!Directory.Exists(appDataConfigurationPath))
-                Directory.CreateDirectory(appDataConfigurationPath);
-            
-            ConfigurationService.Instance = new ConfigurationService(Path.Combine(appDataConfigurationPath, "Config.xml"));
+            var mainWindow = new MainWindow();
+
+            var dialogService = new WpfDialogService(mainWindow);
+            var configurationService = new ConfigurationService(GetConfigurationFilePath());
             try
             {
-                ConfigurationService.Instance.LoadConfigurationFromDisk();
+                configurationService.LoadConfiguration();
             }
             catch (Exception exception)
             {
                 Log.Error("Load configuration", exception);
+                dialogService.ShowError(exception);
             }
+            var installService = new InstallService();
+            var viewModelService = new ViewModelService(dialogService, configurationService, installService);
+            var themeService = new WpfThemeService();
+            var progressBarService = new WpfTaskbarService(mainWindow);
+            var msiService = new MsiService();
+            var mainWindowViewModel = new MainWindowViewModel(dialogService, viewModelService, themeService, progressBarService, configurationService, installService, msiService);
 
-            InstallService.Instance = new InstallService();
+            mainWindow.DataContext = mainWindowViewModel;
+            mainWindow.Show();
+        }
 
-            MsiService.Instance = new MsiService();
-
-            ViewModelService.Instance = new ViewModelService();
-            
-            var rootWindow = new MainWindow();
-            DialogService.Instance = new WpfDialogService(rootWindow);
-            ProgressBarService.Instance = new TaskbarService(rootWindow);
-            
-            rootWindow.Show();
+        private static string GetConfigurationFilePath()
+        {
+            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
+            if (!Directory.Exists(appDataConfigurationPath))
+                Directory.CreateDirectory(appDataConfigurationPath);
+            return Path.Combine(appDataConfigurationPath, "Config.xml");
         }
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

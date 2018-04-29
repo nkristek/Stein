@@ -7,8 +7,6 @@ namespace Stein.Services
     public class MsiService
         : IMsiService
     {
-        public static IMsiService Instance;
-
         public Database GetMsiDatabase(string fileName)
         {
             try

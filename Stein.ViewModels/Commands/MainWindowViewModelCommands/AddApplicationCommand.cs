@@ -14,7 +14,15 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public AddApplicationCommand(MainWindowViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        private readonly IViewModelService _viewModelService;
+
+        public AddApplicationCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService) : base(parent)
+        {
+            _dialogService = dialogService;
+            _viewModelService = viewModelService;
+        }
 
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
@@ -23,24 +31,24 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override async Task DoExecute(MainWindowViewModel viewModel, object parameter)
         {
-            var dialogModel = ViewModelService.Instance.CreateViewModel<ApplicationDialogModel>(viewModel);
-            if (DialogService.Instance.ShowDialog(dialogModel) != true)
+            var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
+            if (_dialogService.ShowDialog(dialogModel) != true)
                 return;
 
             if (String.IsNullOrWhiteSpace(dialogModel.Path) || dialogModel.Path.ContainsInvalidPathChars() || !Directory.Exists(dialogModel.Path))
             {
-                DialogService.Instance.ShowMessage(Strings.SelectedPathNotValid);
+                _dialogService.ShowMessage(Strings.SelectedPathNotValid);
                 return;
             }
 
-            ViewModelService.Instance.SaveViewModel(dialogModel);
+            _viewModelService.SaveViewModel(dialogModel);
             await viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
         }
 
         protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
             viewModel.RefreshApplicationsCommand.Execute(null);
         }
     }

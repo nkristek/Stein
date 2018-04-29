@@ -14,7 +14,24 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public RefreshApplicationsCommand(MainWindowViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        private readonly IViewModelService _viewModelService;
+
+        private readonly IConfigurationService _configurationService;
+
+        private readonly IInstallService _installService;
+
+        private readonly IMsiService _msiService;
+
+        public RefreshApplicationsCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService) : base(parent)
+        {
+            _dialogService = dialogService;
+            _viewModelService = viewModelService;
+            _configurationService = configurationService;
+            _installService = installService;
+            _msiService = msiService;
+        }
 
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
@@ -25,26 +42,26 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         {
             // save changes from application viewmodels back to the configuration
             foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
-                ViewModelService.Instance.SaveViewModel(changedApplication);
+                _viewModelService.SaveViewModel(changedApplication);
 
             // get new installers
-            foreach (var applicationFolder in ConfigurationService.Instance.Configuration.ApplicationFolders)
+            foreach (var applicationFolder in _configurationService.Configuration.ApplicationFolders)
             {
                 try
                 {
-                    await applicationFolder.SyncWithDiskAsync();
+                    await applicationFolder.SyncWithDiskAsync(_msiService);
                 }
                 catch (Exception exception)
                 {
                     applicationFolder.SubFolders.Clear();
-                    DialogService.Instance.ShowMessage(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
+                    _dialogService.ShowMessage(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
                 }
             }
-            await ConfigurationService.Instance.SaveConfigurationToDiskAsync();
-            await Task.Run(() => InstallService.Instance.RefreshInstalledPrograms());
+            await _configurationService.SaveConfigurationAsync();
+            await Task.Run(() => _installService.RefreshInstalledPrograms());
 
             // update the viewmodels
-            var applications = ViewModelService.Instance.CreateViewModels(viewModel, viewModel.Applications.ToList());
+            var applications = _viewModelService.CreateViewModels(viewModel, viewModel.Applications.ToList());
             viewModel.Applications.Clear();
             foreach (var application in applications)
                 viewModel.Applications.Add(application);
@@ -55,7 +72,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
         }
     }
 }

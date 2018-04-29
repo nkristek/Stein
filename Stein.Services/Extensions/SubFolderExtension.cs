@@ -103,7 +103,7 @@ namespace Stein.Services.Extensions
         /// Synchronize the SubFolder with what exists on disk. It removes subfolders and installer files which aren't present anymore and adds new subfolders
         /// </summary>
         /// <param name="subFolder">The SubFolder to synchronize</param>
-        public static void SyncWithDisk(this SubFolder subFolder)
+        public static void SyncWithDisk(this SubFolder subFolder, IMsiService msiService)
         {
             var filesOnDisk = Directory.GetFiles(subFolder.Path, "*.msi").Select(fileName => new FileInfo(fileName)).ToList();
 
@@ -125,17 +125,17 @@ namespace Stein.Services.Extensions
                     subFolder.InstallerFiles.Remove(existingInstallerFile);
                 }
 
-                using (var database = MsiService.Instance.GetMsiDatabase(fileOnDisk.FullName))
+                using (var database = msiService.GetMsiDatabase(fileOnDisk.FullName))
                 {
                     subFolder.InstallerFiles.Add(new InstallerFile
                     {
                         Path = fileOnDisk.FullName,
                         IsEnabled = true,
                         Created = fileCreationTime,
-                        Name = MsiService.Instance.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductName),
-                        Version = new Version(MsiService.Instance.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductVersion)),
-                        Culture = new CultureInfo(int.Parse(MsiService.Instance.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductLanguage))).IetfLanguageTag,
-                        ProductCode = MsiService.Instance.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductCode)
+                        Name = msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductName),
+                        Version = new Version(msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductVersion)),
+                        Culture = new CultureInfo(int.Parse(msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductLanguage))).IetfLanguageTag,
+                        ProductCode = msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductCode)
                     });
                 }
             }

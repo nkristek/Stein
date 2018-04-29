@@ -11,7 +11,15 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public DeleteApplicationCommand(ApplicationViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        private readonly IViewModelService _viewModelService;
+
+        public DeleteApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IViewModelService viewModelService) : base(parent)
+        {
+            _dialogService = dialogService;
+            _viewModelService = viewModelService;
+        }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
@@ -20,7 +28,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override async Task DoExecute(ApplicationViewModel viewModel, object parameter)
         {
-            ViewModelService.Instance.DeleteViewModel(viewModel);
+            _viewModelService.DeleteViewModel(viewModel);
 
             await (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
         }
@@ -28,7 +36,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
         {
             Log.Error(exception);
-            DialogService.Instance.ShowError(exception);
+            _dialogService.ShowError(exception);
             (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.Execute(null);
         }
     }

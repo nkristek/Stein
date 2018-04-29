@@ -69,6 +69,7 @@
     <Compile Include="Commands\InstallerViewModelCommands\PreferUninstallCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\ChangeThemeCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\ShowInfoDialogCommand.cs" />
     <Compile Include="InstallationResultViewModel.cs" />
