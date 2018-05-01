@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using log4net;
 using nkristek.MVVMBase.Commands;
+using Stein.Presentation;
 using Stein.Services;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands

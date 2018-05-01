@@ -1,7 +1,7 @@
 ﻿using nkristek.MVVMBase.ViewModels;
 using System;
 
-namespace Stein.Services
+namespace Stein.Presentation
 {
     public interface IDialogService
     {

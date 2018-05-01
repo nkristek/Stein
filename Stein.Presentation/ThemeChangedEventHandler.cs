@@ -1,4 +1,4 @@
-﻿namespace Stein.Services.Types
+﻿namespace Stein.Presentation
 {
     /// <summary>Represents the method that will handle the <see cref="IThemeService.ThemeChanged" /> event raised when a theme is changed.</summary>
     /// <param name="sender">The source of the event. </param>

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
+using Stein.Presentation;
 using Stein.Services;
 using Stein.Services.Types;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;

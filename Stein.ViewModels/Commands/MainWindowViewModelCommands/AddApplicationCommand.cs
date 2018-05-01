@@ -6,6 +6,7 @@ using nkristek.MVVMBase.Commands;
 using Stein.Localizations;
 using Stein.Services;
 using Stein.Helpers;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {

@@ -2,8 +2,8 @@
 using log4net;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using nkristek.MVVMBase.Commands;
-using Stein.Services;
 using Stein.Localizations;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
 {

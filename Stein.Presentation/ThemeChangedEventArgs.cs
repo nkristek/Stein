@@ -1,5 +1,6 @@
 ﻿using System;
-namespace Stein.Services.Types
+
+namespace Stein.Presentation
 {
     public class ThemeChangedEventArgs
         : EventArgs

@@ -144,6 +144,10 @@
     <Resource Include="rock.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">
+      <Project>{46D38A7F-C1EE-4A83-B696-0D32BBDD069B}</Project>
+      <Name>Stein.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stein.Services\Stein.Services.csproj">
       <Project>{ccb623e3-0cc7-4a5c-b956-a591cc4bd3f5}</Project>
       <Name>Stein.Services</Name>

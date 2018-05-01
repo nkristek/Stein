@@ -5,6 +5,7 @@ using log4net;
 using nkristek.MVVMBase.Commands;
 using Stein.Services;
 using Stein.Localizations;
+using Stein.Presentation;
 using Stein.Services.Extensions;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands

@@ -1,6 +1,4 @@
-﻿using Stein.Services.Types;
-
-namespace Stein.Services
+﻿namespace Stein.Presentation
 {
     public interface IThemeService
     {

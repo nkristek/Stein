@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
+using Stein.Presentation;
 using Stein.Services;
 
 namespace Stein.Views

@@ -1,7 +1,6 @@
 ﻿using System;
 using log4net;
 using nkristek.MVVMBase.Commands;
-using Stein.Services;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
+using Stein.Presentation;
 using Stein.Services;
 using Stein.Services.Extensions;
 using Stein.Types.ConfigurationTypes;

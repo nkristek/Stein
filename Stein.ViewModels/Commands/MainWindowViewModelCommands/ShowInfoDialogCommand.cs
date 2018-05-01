@@ -1,4 +1,5 @@
 ﻿using nkristek.MVVMBase.Commands;
+using Stein.Presentation;
 using Stein.Services;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands

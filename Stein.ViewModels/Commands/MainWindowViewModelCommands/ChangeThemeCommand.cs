@@ -1,6 +1,6 @@
 ﻿using System;
 using nkristek.MVVMBase.Commands;
-using Stein.Services.Types;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {

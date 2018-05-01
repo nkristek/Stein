@@ -2,7 +2,7 @@
 using nkristek.MVVMBase.Commands;
 using nkristek.MVVMBase.ViewModels;
 using Stein.Localizations;
-using Stein.Services;
+using Stein.Presentation;
 using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 
 namespace Stein.ViewModels

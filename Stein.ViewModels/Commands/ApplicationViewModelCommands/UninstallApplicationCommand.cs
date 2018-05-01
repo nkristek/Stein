@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {

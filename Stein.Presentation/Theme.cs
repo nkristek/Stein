@@ -1,4 +1,4 @@
-﻿namespace Stein.Services.Types
+﻿namespace Stein.Presentation
 {
     public enum Theme
     {

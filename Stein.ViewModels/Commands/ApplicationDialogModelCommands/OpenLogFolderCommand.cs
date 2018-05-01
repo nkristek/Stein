@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using log4net;
 using nkristek.MVVMBase.Commands;
-using Stein.Services;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
 {
