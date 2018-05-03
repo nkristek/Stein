@@ -54,8 +54,18 @@ It will start installers with the "/norestart" option which means the installer 
 
 It will start installers with the "/L*V LOGPATH" option which means the installer should extensively log all operations.
 
-## Issues
+## Contribution
 
 If you find a bug feel free to open an issue. Contributions are also appreciated.
+
+## Dependencies
+
+This application depends on the following libraries:
+- [MVVMBase](https://github.com/nkristek/MVVMBase)
+- [Wpf.Converters](https://github.com/nkristek/Wpf.Converters)
+- [GongSolutions.WPF.DragDrop](https://github.com/punker76/gong-wpf-dragdrop)
+- [log4net](http://logging.apache.org/log4net/)
+- [Windows-API-Code-Pack](https://github.com/aybe/Windows-API-Code-Pack-1.1)
+- [Wix Toolset](http://wixtoolset.org/)
 
 The icons used by this application come from [fontawesome](fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
