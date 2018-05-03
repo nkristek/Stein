@@ -35,8 +35,6 @@ It will generate 4 installer bundles:
   - tmp02/installer1_deDE.msi
   - tmp02/installer2_deDE.msi
 
-The bundle with the newest file will be selected.
-
 ![Screenshot](Docs/Screenshot.PNG)
 
 ## Available options
@@ -68,4 +66,4 @@ This application depends on the following libraries:
 - [Windows-API-Code-Pack](https://github.com/aybe/Windows-API-Code-Pack-1.1)
 - [Wix Toolset](http://wixtoolset.org/)
 
-The icons used by this application come from [fontawesome](fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
+The icons used by this application come from [fontawesome](https://fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
