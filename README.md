@@ -2,7 +2,7 @@
 
 This application makes it easier to install, uninstall or reinstall multiple MSI-installers. It can be used in an environment, where there are regular builds of an application which are located inside a defined folder structure.
 
-**Please note:** This application need administrator privileges to operate on installers without UI.
+**Please note:** This application needs administrator privileges to operate on installers without UI.
 
 ## Supported folder structure
 
