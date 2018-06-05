@@ -8,6 +8,7 @@
              xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel, IsDesignTimeCreatable=True}">
 
@@ -15,7 +16,8 @@
               Margin="0,4" 
               SnapsToDevicePixels="True"
               HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch">
+              VerticalAlignment="Stretch"
+              adonisExtensions:LayerExtension.Layer="1">
         <GroupBox.Header>
             <Grid Grid.Column="7">
                 <Grid.ColumnDefinitions>

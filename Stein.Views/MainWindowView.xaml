@@ -44,8 +44,7 @@
 
                 <!-- Add Folder button -->
                 <Button Grid.Column="0"
-                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding AddApplicationCommand}">
                     <StackPanel Orientation="Horizontal">
                         <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
@@ -63,9 +62,8 @@
                         Width="28"
                         Height="28"
                         Padding="2"
-                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                         DataContext="{Binding RefreshApplicationsCommand}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding}">
                     <Button.Content>
                         <ContentControl Width="16"
@@ -116,8 +114,7 @@
                         Width="28"
                         Height="28"
                         Padding="4"
-                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding ChangeThemeCommand}">
                     <Button.ContentTemplate>
                         <MultiBinding Converter="{steinconverters:IntToNthValueConverter}">
@@ -133,9 +130,8 @@
                         Width="28"
                         Height="28"
                         Padding="4"
-                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                         ContentTemplate="{StaticResource InfoIconVariant}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding ShowInfoDialogCommand}"/>
             </Grid>
         </Grid>
