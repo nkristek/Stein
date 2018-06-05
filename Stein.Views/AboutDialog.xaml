@@ -35,6 +35,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Name, Version and GitHub link -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -63,11 +64,14 @@
             </TextBlock>
         </Grid>
 
+        <!-- Description -->
         <TextBlock Grid.Row="2"
                    Text="{Binding Description}"
                    TextWrapping="Wrap"/>
 
-        <Grid Grid.Row="4">
+        <!-- Dependencies -->
+        <Grid Grid.Row="4"
+              Visibility="{Binding Dependencies, Converter={converters:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="8"/>
@@ -92,10 +96,12 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
-        
+
+        <!-- Additional notes -->
         <TextBlock Grid.Row="8"
                    Text="{Binding AdditionalNotes}"/>
 
+        <!-- Copyright -->
         <TextBlock Grid.Row="10"
                    Text="{Binding Copyright}"/>
     </Grid>
