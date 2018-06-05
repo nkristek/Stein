@@ -186,6 +186,11 @@ namespace Stein.ViewModels
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
+                Name = "AdonisUI",
+                Uri = new Uri("https://github.com/benruehl/adonis-ui")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
                 Name = "GongSolutions.WPF.DragDrop",
                 Uri = new Uri("https://github.com/punker76/gong-wpf-dragdrop")
             });
