@@ -64,6 +64,7 @@ You have to have the [Wix Toolset](http://wixtoolset.org) installed in order to 
 This application depends on the following libraries:
 - [Smaragd](https://github.com/nkristek/Smaragd)
 - [Wpf.Converters](https://github.com/nkristek/Wpf.Converters)
+- [AdonisUI](https://github.com/benruehl/adonis-ui)
 - [GongSolutions.WPF.DragDrop](https://github.com/punker76/gong-wpf-dragdrop)
 - [log4net](http://logging.apache.org/log4net/)
 - [Windows-API-Code-Pack](https://github.com/aybe/Windows-API-Code-Pack-1.1)
