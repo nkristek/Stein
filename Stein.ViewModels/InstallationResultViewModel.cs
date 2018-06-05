@@ -1,10 +1,11 @@
 ﻿using System;
-using nkristek.MVVMBase.ViewModels;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
 
 namespace Stein.ViewModels
 {
-    public class InstallationResultViewModel
+    public sealed class InstallationResultViewModel
         : ViewModel
     {
         /// <summary>
@@ -29,7 +30,7 @@ namespace Stein.ViewModels
         public int InstallCount
         {
             get => _installCount;
-            set => SetProperty(ref _installCount, value);
+            set => SetProperty(ref _installCount, value, out _);
         }
 
         private int _uninstallCount;
@@ -39,7 +40,7 @@ namespace Stein.ViewModels
         public int UninstallCount
         {
             get => _uninstallCount;
-            set => SetProperty(ref _uninstallCount, value);
+            set => SetProperty(ref _uninstallCount, value, out _);
         }
 
         private int _reinstallCount;
@@ -49,7 +50,7 @@ namespace Stein.ViewModels
         public int ReinstallCount
         {
             get => _reinstallCount;
-            set => SetProperty(ref _reinstallCount, value);
+            set => SetProperty(ref _reinstallCount, value, out _);
         }
 
         private int _failedCount;
@@ -59,7 +60,10 @@ namespace Stein.ViewModels
         public int FailedCount
         {
             get => _failedCount;
-            set => SetProperty(ref _failedCount, value);
+            set => SetProperty(ref _failedCount, value, out _);
         }
+
+        [PropertySource(nameof(InstallCount), nameof(ReinstallCount), nameof(UninstallCount), nameof(FailedCount))]
+        public bool AnyOperationWasExecuted => InstallCount > 0 || ReinstallCount > 0 || UninstallCount > 0 || FailedCount > 0;
     }
 }

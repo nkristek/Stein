@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
-             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
@@ -24,104 +25,42 @@
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   FontWeight="Bold"
-                   Content="{Binding Name}"
-                   VerticalAlignment="Stretch"
-                   VerticalContentAlignment="Center"
-                   ToolTip="{Binding Path}"/>
+            <TextBlock Grid.Column="0"
+                       FontWeight="Bold"
+                       Text="{Binding Name}"
+                       VerticalAlignment="Center"
+                       ToolTip="{Binding Path}"/>
 
-            <Label Grid.Column="1"
-                   Foreground="Gray"
-                   Content="{Binding Version}"
-                   VerticalAlignment="Stretch"
-                   VerticalContentAlignment="Center"/>
+            <TextBlock Grid.Column="2"
+                       Text="{Binding Version}"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                       VerticalAlignment="Center"/>
         </Grid>
 
-        <Grid Grid.Column="2">
-            <Border BorderThickness="1" 
-                    SnapsToDevicePixels="True"
-                    BorderBrush="Gray"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                <UniformGrid Rows="1">
-                    <UniformGrid.Resources>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Width" 
-                                    Value="90" />
-                            <Setter Property="BorderThickness" 
-                                    Value="0" />
-                            <Setter Property="BorderBrush" 
-                                    Value="Gray" />
-                            <Setter Property="Background" 
-                                    Value="WhiteSmoke" />
-                            <Setter Property="Foreground" 
-                                    Value="Black" />
-                            <Setter Property="SnapsToDevicePixels" 
-                                    Value="True" />
+        <ListBox Grid.Column="2"
+                 ItemsSource="{Binding AvailableOperations}" 
+                 SelectedItem="{Binding PreferredOperation}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}" 
-                                                Padding="{TemplateBinding Padding}" 
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                BorderBrush="{TemplateBinding BorderBrush}">
-                                            <ContentPresenter HorizontalAlignment="Center" 
-                                                              VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Content="{Binding ., Converter={steinconverters:InstallerOperationToLocalizedStringConverter}}"
+                                 IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-                            <Style.Triggers>
-                                <Trigger Property="IsEnabled" 
-                                         Value="False">
-                                    <Setter Property="Background" 
-                                            Value="Gray"/>
-                                    <Setter Property="Foreground" 
-                                            Value="White"/>
-                                </Trigger>
-
-                                <Trigger Property="IsMouseOver" 
-                                         Value="True">
-                                    <Setter Property="Background" 
-                                            Value="Gray" />
-                                    <Setter Property="Foreground" 
-                                            Value="White" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </UniformGrid.Resources>
-
-                    <Button Content="{x:Static localization:Strings.Nothing}"
-                            Command="{Binding PreferNothingCommand}"/>
-
-                    <Button Content="{x:Static localization:Strings.Install}"
-                            BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={converters:BoolToNotVisibilityConverter}}"
-                            Command="{Binding PreferInstallCommand}"/>
-
-                    <Button Content="{x:Static localization:Strings.Reinstall}"
-                            BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={converters:BoolToVisibilityConverter}}"
-                            Command="{Binding PreferReinstallCommand}"/>
-
-                    <Button Content="{x:Static localization:Strings.Uninstall}"
-                            BorderThickness="1,0,0,0"
-                            Visibility="{Binding IsInstalled, Converter={converters:BoolToVisibilityConverter}}"
-                            Command="{Binding PreferUninstallCommand}"/>
-                </UniformGrid>
-            </Border>
-        </Grid>
-
-        <Label Grid.Column="5"
-               VerticalAlignment="Stretch"
-               VerticalContentAlignment="Center"
-               Visibility="{Binding Created, Converter={converters:ValueNotNullToVisibilityConverter}}"
-               Content="{Binding Created, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
+        <TextBlock Grid.Column="5"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding Created, Converter={converters:ValueNullToInverseVisibilityConverter}}"
+                   Text="{Binding Created, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
     </Grid>
 </UserControl>

@@ -1,39 +1,33 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using nkristek.MVVMBase.Commands;
-using nkristek.MVVMBase.ViewModels;
-using Stein.Presentation;
-using Stein.Services;
-using Stein.ViewModels.Commands.ApplicationViewModelCommands;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
+using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
 {
-    public class ApplicationViewModel
+    public sealed class ApplicationViewModel
         : ViewModel
     {
-        public ApplicationViewModel(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
+        public ApplicationViewModel()
         {
-            EditApplicationCommand = new EditApplicationCommand(this, dialogService, viewModelService);
-            DeleteApplicationCommand = new DeleteApplicationCommand(this, dialogService, viewModelService);
-            InstallApplicationCommand = new InstallApplicationCommand(this, dialogService, installService);
-            UninstallApplicationCommand = new UninstallApplicationCommand(this, dialogService, installService);
-            CustomOperationApplicationCommand = new CustomOperationApplicationCommand(this, dialogService, installService);
+            Children.AddCollection(InstallerBundles, nameof(InstallerBundles));
         }
 
         [CommandCanExecuteSource(nameof(Parent))]
-        public AsyncViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; }
+        public ViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(Parent))]
-        public AsyncViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; }
+        public ViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; }
+        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; }
+        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
-        public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; }
+        public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; set; }
         
         private string _name;
         /// <summary>
@@ -42,7 +36,7 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, out _);
         }
 
         private string _path;
@@ -52,7 +46,7 @@ namespace Stein.ViewModels
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value);
+            set => SetProperty(ref _path, value, out _);
         }
 
         private Guid _folderId;
@@ -62,7 +56,7 @@ namespace Stein.ViewModels
         public Guid FolderId
         {
             get => _folderId;
-            set => SetProperty(ref _folderId, value);
+            set => SetProperty(ref _folderId, value, out _);
         }
 
         private bool _enableSilentInstallation;
@@ -72,7 +66,7 @@ namespace Stein.ViewModels
         public bool EnableSilentInstallation
         {
             get => _enableSilentInstallation;
-            set => SetProperty(ref _enableSilentInstallation, value);
+            set => SetProperty(ref _enableSilentInstallation, value, out _);
         }
 
         private bool _disableReboot;
@@ -82,7 +76,7 @@ namespace Stein.ViewModels
         public bool DisableReboot
         {
             get => _disableReboot;
-            set => SetProperty(ref _disableReboot, value);
+            set => SetProperty(ref _disableReboot, value, out _);
         }
 
         private bool _enableInstallationLogging;
@@ -92,7 +86,7 @@ namespace Stein.ViewModels
         public bool EnableInstallationLogging
         {
             get => _enableInstallationLogging;
-            set => SetProperty(ref _enableInstallationLogging, value);
+            set => SetProperty(ref _enableInstallationLogging, value, out _);
         }
 
         /// <summary>
@@ -107,7 +101,8 @@ namespace Stein.ViewModels
         public InstallerBundleViewModel SelectedInstallerBundle
         {
             get => _selectedInstallerBundle;
-            set => SetProperty(ref _selectedInstallerBundle, value);
+            // do not register the viewmodel here because it will be already registered through the collection
+            set => SetProperty(ref _selectedInstallerBundle, value, out _);
         }
     }
 }

@@ -3,14 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using nkristek.MVVMBase.Commands;
+using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.Services;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
-    public class CustomOperationApplicationCommand
+    public sealed class CustomOperationApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -19,11 +19,14 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private readonly IInstallService _installService;
 
-        public CustomOperationApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) :
-            base(parent)
+        private readonly IViewModelService _viewModelService;
+
+        public CustomOperationApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService, IViewModelService viewModelService) 
+            : base(parent)
         {
             _dialogService = dialogService;
             _installService = installService;
+            _viewModelService = viewModelService;
         }
 
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
@@ -36,53 +39,43 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override async Task DoExecute(ApplicationViewModel viewModel, object parameter)
         {
-            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel))
+            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
+            if (mainWindowViewModel == null)
                 return;
 
-            mainWindowViewModel.CurrentInstallation = new InstallationViewModel
+            try
             {
-                Parent = mainWindowViewModel,
-                State = InstallationState.Preparing,
-                InstallerCount = 0,
-                CurrentIndex = 0
-            };
-            
-            var installationResult = await PerformOperationsOfSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
-            if (installationResult.InstallCount > 0 
-             || installationResult.ReinstallCount > 0 
-             || installationResult.UninstallCount > 0 
-             || installationResult.FailedCount > 0)
+                mainWindowViewModel.CurrentInstallation = new InstallationViewModel();
+
+                var installationResult = await PerformOperationsOfSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
+                mainWindowViewModel.InstallationResult = installationResult.AnyOperationWasExecuted ? installationResult : null;
+                if (installationResult.AnyOperationWasExecuted)
+                    mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+            }
+            catch (Exception exception)
             {
-                mainWindowViewModel.InstallationResult = installationResult;
+                Log.Error(exception);
+                _dialogService.ShowError(exception);
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
             }
-            
-            mainWindowViewModel.CurrentInstallation = null;
+            finally
+            {
+                mainWindowViewModel.CurrentInstallation = null;
+            }
         }
 
         private async Task<InstallationResultViewModel> PerformOperationsOfSelectedInstallerBundle(ApplicationViewModel application, InstallationViewModel currentInstallation)
         {
-            var installationResult = new InstallationResultViewModel
-            {
-                Parent = currentInstallation.Parent
-            };
-
-            var dialogModel = new InstallerBundleDialogModel
-            {
-                Parent = application.SelectedInstallerBundle,
-                Title = application.SelectedInstallerBundle.Name,
-                Name = application.SelectedInstallerBundle.Name,
-                Path = application.SelectedInstallerBundle.Path
-            };
-            foreach (var installer in application.SelectedInstallerBundle.Installers)
-                dialogModel.Installers.Add(installer);
+            var installationResult = new InstallationResultViewModel();
+            
+            var dialogModel = _viewModelService.CreateViewModel<InstallerBundleDialogModel>(application.SelectedInstallerBundle);
 
             var dialogResult = _dialogService.ShowDialog(dialogModel);
             if (dialogResult != true)
                 return installationResult;
 
             var installers = application.SelectedInstallerBundle.Installers
-                .Where(i => i.PreferredOperation != InstallerOperationType.DoNothing && !i.IsDisabled)
+                .Where(i => i.PreferredOperation != InstallerOperation.DoNothing && !i.IsDisabled)
                 .ToList();
 
             Log.Info($"Starting operation with {installers.Count} installers.");
@@ -106,7 +99,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
                     switch (installer.PreferredOperation)
                     {
-                        case InstallerOperationType.Install:
+                        case InstallerOperation.Install:
                             currentInstallation.State = InstallationState.Install;
                             Log.Info($"Installing {installer.Name}.");
                             
@@ -114,7 +107,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
                             installationResult.InstallCount++;
                             break;
-                        case InstallerOperationType.Reinstall:
+                        case InstallerOperation.Reinstall:
                             currentInstallation.State = InstallationState.Reinstall;
                             Log.Info($"Reinstalling {installer.Name}.");
 
@@ -125,7 +118,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
                             installationResult.ReinstallCount++;
                             break;
-                        case InstallerOperationType.Uninstall:
+                        case InstallerOperation.Uninstall:
                             currentInstallation.State = InstallationState.Uninstall;
                             Log.Info($"Uninstalling {installer.Name}.");
 
@@ -158,18 +151,6 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 throw new IOException("File already exists");
 
             return logFilePath;
-        }
-
-        protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
-        {
-            Log.Error(exception);
-            _dialogService.ShowError(exception);
-
-            if (!(viewModel.Parent is MainWindowViewModel mainViewModel))
-                return;
-
-            mainViewModel.CurrentInstallation = null;
-            mainViewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

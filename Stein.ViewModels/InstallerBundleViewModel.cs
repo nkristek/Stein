@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using nkristek.MVVMBase.ViewModels;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.ViewModels;
+using Stein.Localizations;
 
 namespace Stein.ViewModels
 {
-    public class InstallerBundleViewModel
+    public sealed class InstallerBundleViewModel
         : ViewModel
     {
+        public InstallerBundleViewModel()
+        {
+            Children.AddCollection(Installers, nameof(Installers));
+        }
+
         private string _name;
         /// <summary>
         /// The name of the folder of the installer bundle
@@ -16,17 +23,17 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, out _);
         }
 
-        private string _Path;
+        private string _path;
         /// <summary>
         /// The full path to the folder of the installer bundle
         /// </summary>
         public string Path
         {
-            get => _Path;
-            set => SetProperty(ref _Path, value);
+            get => _path;
+            set => SetProperty(ref _path, value, out _);
         }
 
         /// <summary>
@@ -37,43 +44,19 @@ namespace Stein.ViewModels
         /// <summary>
         /// Gets the culture of the installers, if the Culture property is the same on all Installers, otherwise null
         /// </summary>
-        [PropertySource(nameof(Installers))]
-        public string Culture
-        {
-            get
-            {
-                if (!Installers.Any())
-                    return null;
-                var culture = Installers.FirstOrDefault()?.Culture;
-                return Installers.All(i => i.Culture != null && i.Culture == culture) ? culture : null;
-            }
-        }
+        [PropertySource(nameof(Installers), NotifyCollectionChangedAction.Add, NotifyCollectionChangedAction.Remove, NotifyCollectionChangedAction.Replace, NotifyCollectionChangedAction.Reset)]
+        public string Culture => Installers.FirstOrDefault(i => !String.IsNullOrEmpty(i.Culture))?.Culture;
 
         /// <summary>
         /// Returns the newest creation time of all installers
         /// </summary>
-        [PropertySource(nameof(Installers))]
-        public DateTime? NewestInstallerCreationTime
-        {
-            get { return Installers.Select(i => i.Created).Max(); }
-        }
+        [PropertySource(nameof(Installers), NotifyCollectionChangedAction.Add, NotifyCollectionChangedAction.Remove, NotifyCollectionChangedAction.Replace, NotifyCollectionChangedAction.Reset)]
+        public DateTime? NewestInstallerCreationTime => Installers.Select(i => i.Created).Max();
 
         /// <summary>
-        /// Creates a unique string to identify this InstallerBundleViewModel
+        /// Returns how many installers are installed as a localized string
         /// </summary>
-        /// <returns>A unique string to identify this InstallerBundleViewModel</returns>
-        public override string ToString()
-        {
-            var builder = new StringBuilder();
-            builder.Append(Name);
-
-            if (Culture == null)
-                return builder.ToString();
-
-            builder.Append(" - ");
-            builder.Append(Culture);
-
-            return builder.ToString();
-        }
+        [PropertySource(nameof(Installers), NotifyCollectionChangedAction.Add, NotifyCollectionChangedAction.Remove, NotifyCollectionChangedAction.Replace, NotifyCollectionChangedAction.Reset)]
+        public string InstalledSummary => $"{Installers.Count(i => i.IsInstalled == true)}/{Installers.Count} {Strings.Installed}";
     }
 }

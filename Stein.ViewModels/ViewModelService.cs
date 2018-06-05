@@ -1,42 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using nkristek.MVVMBase.ViewModels;
+using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
 using Stein.Presentation;
 using Stein.Services;
 using Stein.Services.Extensions;
-using Stein.Types.ConfigurationTypes;
+using Stein.Services.Types;
+using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
+using Stein.ViewModels.Commands.ApplicationViewModelCommands;
+using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
 {
-    public class ViewModelService
+    public sealed class ViewModelService
         : IViewModelService
     {
         private readonly IDialogService _dialogService;
 
+        private readonly IThemeService _themeService;
+
+        private readonly IProgressBarService _progressBarService;
+
         private readonly IConfigurationService _configurationService;
 
         private readonly IInstallService _installService;
+        
+        private readonly IMsiService _msiService;
 
-        public ViewModelService(IDialogService dialogService, IConfigurationService configurationService, IInstallService installService)
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService)
         {
             _dialogService = dialogService;
+            _themeService = themeService;
+            _progressBarService = progressBarService;
             _configurationService = configurationService;
             _installService = installService;
+            _msiService = msiService;
         }
 
         public TViewModel CreateViewModel<TViewModel>(ViewModel parent = null) where TViewModel : ViewModel
         {
-            if (typeof(TViewModel) == typeof(ApplicationViewModel))
-                return CreateApplicationViewModel(parent) as TViewModel;
-            if (typeof(TViewModel) == typeof(ApplicationDialogModel))
-                return CreateApplicationDialogModel(parent) as TViewModel;
-            if (typeof(TViewModel) == typeof(AboutDialogModel))
-                return CreateAboutDialogModel(parent) as TViewModel;
-            throw new NotSupportedException(Strings.ViewModelNotSupported);
+            TViewModel viewModel;
+
+            if (typeof(TViewModel) == typeof(MainWindowViewModel))
+                viewModel = CreateMainWindowViewModel() as TViewModel;
+            else if (typeof(TViewModel) == typeof(ApplicationViewModel))
+                viewModel = CreateApplicationViewModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
+                viewModel = CreateApplicationDialogModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(InstallerBundleDialogModel))
+                viewModel = CreateInstallerBundleDialogModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(AboutDialogModel))
+                viewModel = CreateAboutDialogModel(parent) as TViewModel;
+            else
+                throw new NotSupportedException(Strings.ViewModelNotSupported);
+
+            if (viewModel != null)
+                viewModel.IsDirty = false;
+            return viewModel;
+        }
+
+        private MainWindowViewModel CreateMainWindowViewModel()
+        {
+            var viewModel = new MainWindowViewModel(_themeService, _progressBarService);
+            viewModel.RefreshApplicationsCommand = new RefreshApplicationsCommand(viewModel, _dialogService, this, _configurationService, _installService, _msiService);
+            viewModel.AddApplicationCommand = new AddApplicationCommand(viewModel, _dialogService, this);
+            viewModel.CancelOperationCommand = new CancelOperationCommand(viewModel, _dialogService);
+            viewModel.ShowInfoDialogCommand = new ShowInfoDialogCommand(viewModel, _dialogService, this);
+            viewModel.ChangeThemeCommand = new ChangeThemeCommand(viewModel, _dialogService);
+
+            foreach (var application in CreateApplicationViewModels(viewModel, Enumerable.Empty<ApplicationViewModel>()))
+                viewModel.Applications.Add(application);
+
+            viewModel.IsDirty = false;
+            return viewModel;
         }
 
         private ApplicationViewModel CreateApplicationViewModel(ViewModel parent, ApplicationFolder applicationFolder = null)
@@ -48,9 +86,10 @@ namespace Stein.ViewModels
                     Id = Guid.NewGuid()
                 };
                 _configurationService.Configuration.ApplicationFolders.Add(applicationFolder);
+                _configurationService.SaveConfiguration();
             }
 
-            var application = new ApplicationViewModel(_dialogService, this, _installService)
+            var viewModel = new ApplicationViewModel
             {
                 Parent = parent,
                 FolderId = applicationFolder.Id,
@@ -60,21 +99,28 @@ namespace Stein.ViewModels
                 DisableReboot = applicationFolder.DisableReboot,
                 EnableInstallationLogging = applicationFolder.EnableInstallationLogging
             };
-            var installerBundles = CreateOrUpdateInstallerBundleViewModels(applicationFolder, application).ToList();
-            application.InstallerBundles.Clear();
+            viewModel.EditApplicationCommand = new EditApplicationCommand(viewModel, _dialogService, this);
+            viewModel.DeleteApplicationCommand = new DeleteApplicationCommand(viewModel, _dialogService, this);
+            viewModel.InstallApplicationCommand = new InstallApplicationCommand(viewModel, _dialogService, _installService);
+            viewModel.UninstallApplicationCommand = new UninstallApplicationCommand(viewModel, _dialogService, _installService);
+            viewModel.CustomOperationApplicationCommand = new CustomOperationApplicationCommand(viewModel, _dialogService, _installService, this);
+            
+            var installerBundles = CreateOrUpdateInstallerBundleViewModels(applicationFolder, viewModel).ToList();
+            viewModel.InstallerBundles.Clear();
             foreach (var installerBundle in installerBundles)
-                application.InstallerBundles.Add(installerBundle);
-            application.SelectedInstallerBundle = application.InstallerBundles.LastOrDefault();
+                viewModel.InstallerBundles.Add(installerBundle);
+            viewModel.SelectedInstallerBundle = viewModel.InstallerBundles.LastOrDefault();
 
-            application.IsDirty = false;
-            return application;
+            viewModel.IsDirty = false;
+            return viewModel;
         }
 
         private ApplicationDialogModel CreateApplicationDialogModel(ViewModel parent)
         {
+            ApplicationDialogModel viewModel;
             if (parent is ApplicationViewModel application)
             {
-                return new ApplicationDialogModel(_dialogService)
+                viewModel = new ApplicationDialogModel
                 {
                     Parent = application,
                     Title = Strings.EditFolder,
@@ -86,44 +132,94 @@ namespace Stein.ViewModels
                     EnableInstallationLogging = application.EnableInstallationLogging
                 };
             }
-            return new ApplicationDialogModel(_dialogService)
+            else
             {
-                Parent = parent,
-                Title = Strings.AddFolder,
-                Name = String.Empty,
-                Path = String.Empty,
-                EnableSilentInstallation = true,
-                DisableReboot = true,
-                EnableInstallationLogging = true
+                viewModel = new ApplicationDialogModel
+                {
+                    Parent = parent,
+                    Title = Strings.AddFolder,
+                    Name = String.Empty,
+                    Path = String.Empty,
+                    EnableSilentInstallation = true,
+                    DisableReboot = true,
+                    EnableInstallationLogging = true
+                };
+            }
+
+            viewModel.SelectFolderCommand = new SelectFolderCommand(viewModel, _dialogService);
+            viewModel.OpenLogFolderCommand = new OpenLogFolderCommand(viewModel, _dialogService);
+
+            viewModel.IsDirty = false;
+            return viewModel;
+        }
+
+        private InstallerBundleDialogModel CreateInstallerBundleDialogModel(ViewModel parent)
+        {
+            if (!(parent is InstallerBundleViewModel installerBundle))
+                throw new ArgumentNullException(nameof(parent));
+
+            return new InstallerBundleDialogModel
+            {
+                Parent = installerBundle,
+                Title = installerBundle.Name,
+                Name = installerBundle.Name,
+                Path = installerBundle.Path,
+                IsDirty = false
             };
         }
 
         private static AboutDialogModel CreateAboutDialogModel(ViewModel parent)
         {
-            var assembly = Assembly.GetEntryAssembly();
-            var assemblyName = assembly.GetName();
-            var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
-            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
-            var publisher = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
-            return new AboutDialogModel
+            var viewModel = new AboutDialogModel
             {
-                Parent = parent,
-                Title = Strings.About,
-                Name = assemblyName.Name,
-                Description = description?.Description,
-                Version = assemblyName.Version,
-                Copyright = copyright?.Copyright,
-                AdditionalNotes = "",
-                Uri = new Uri("https://github.com/nkristek/Stein"),
-                Publisher = publisher?.Company
+                Parent = parent
             };
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "Smaragd",
+                Uri = new Uri("https://github.com/nkristek/Smaragd")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "Wpf.Converters",
+                Uri = new Uri("https://github.com/nkristek/Wpf.Converters")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "GongSolutions.WPF.DragDrop",
+                Uri = new Uri("https://github.com/punker76/gong-wpf-dragdrop")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "log4net",
+                Uri = new Uri("http://logging.apache.org/log4net/")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "Windows-API-Code-Pack",
+                Uri = new Uri("https://github.com/aybe/Windows-API-Code-Pack-1.1")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "Wix Toolset",
+                Uri = new Uri("http://wixtoolset.org/")
+            });
+            viewModel.IsDirty = false;
+            return viewModel;
         }
 
         public IEnumerable<TViewModel> CreateViewModels<TViewModel>(ViewModel parent = null, IEnumerable<TViewModel> existingViewModels = null) where TViewModel : ViewModel
         {
+            IEnumerable<TViewModel> viewModels;
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
-                return CreateApplicationViewModels(parent, existingViewModels as IEnumerable<ApplicationViewModel>) as IEnumerable<TViewModel>;
-            throw new NotSupportedException(Strings.ViewModelNotSupported);
+                viewModels = CreateApplicationViewModels(parent, existingViewModels as IEnumerable<ApplicationViewModel>) as IEnumerable<TViewModel>;
+            else
+                throw new NotSupportedException(Strings.ViewModelNotSupported);
+
+            var viewModelsList = viewModels?.ToList() ?? new List<TViewModel>();
+            foreach (var viewModel in viewModelsList)
+                viewModel.IsDirty = false;
+            return viewModelsList;
         }
 
         private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent, IEnumerable<ApplicationViewModel> existingViewModels)
@@ -150,58 +246,43 @@ namespace Stein.ViewModels
             if (!viewModel.IsDirty)
                 return;
 
-            if (typeof(TViewModel) == typeof(ApplicationViewModel))
-            {
+            if (typeof(TViewModel) == typeof(MainWindowViewModel))
+                SaveMainWindowViewModel(viewModel as MainWindowViewModel);
+            else if (typeof(TViewModel) == typeof(ApplicationViewModel))
                 SaveApplicationViewModel(viewModel as ApplicationViewModel);
-                return;
-            }
-            if (typeof(TViewModel) == typeof(ApplicationDialogModel))
-            {
+            else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
                 SaveApplicationDialogModel(viewModel as ApplicationDialogModel);
-                return;
-            }
-            throw new NotSupportedException(Strings.ViewModelNotSupported);
+            else
+                throw new NotSupportedException(Strings.ViewModelNotSupported);
+
+            viewModel.IsDirty = false;
+        }
+
+        private void SaveMainWindowViewModel(MainWindowViewModel viewModel)
+        {
+            foreach (var application in viewModel.Applications.Where(a => a.IsDirty))
+                SaveApplicationViewModel(application);
+
+            viewModel.IsDirty = false;
         }
         
         private void SaveApplicationViewModel(ApplicationViewModel application)
         {
-            var associatedApplicationFolder = _configurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
-            if (associatedApplicationFolder == null)
+            var applicationFolder = _configurationService.Configuration.ApplicationFolders.FirstOrDefault(af => af.Id == application.FolderId);
+            if (applicationFolder == null)
                 throw new Exception(Strings.EntityNotFound);
 
-            associatedApplicationFolder.Name = application.Name;
-            associatedApplicationFolder.Path = application.Path;
-            associatedApplicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
-            associatedApplicationFolder.DisableReboot = application.DisableReboot;
-            associatedApplicationFolder.EnableInstallationLogging = application.EnableInstallationLogging;
-
-            foreach (var installerBundle in application.InstallerBundles.Where(installerBundle => installerBundle.IsDirty))
-                SaveInstallerBundleViewModel(installerBundle, associatedApplicationFolder);
+            applicationFolder.Name = application.Name;
+            applicationFolder.Path = application.Path;
+            applicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
+            applicationFolder.DisableReboot = application.DisableReboot;
+            applicationFolder.EnableInstallationLogging = application.EnableInstallationLogging;
+            
+            _configurationService.SaveConfiguration();
 
             application.IsDirty = false;
         }
         
-        private static void SaveInstallerBundleViewModel(InstallerBundleViewModel installerBundle, ApplicationFolder parentApplicationFolder)
-        {
-            var associatedSubFolder = parentApplicationFolder.FindSubFolder(installerBundle.Path);
-            if (associatedSubFolder == null)
-                return;
-
-            foreach (var installer in installerBundle.Installers.Where(installer => installer.IsDirty))
-                SaveInstallerViewModel(installer, associatedSubFolder);
-            
-            installerBundle.IsDirty = false;
-        }
-        
-        private static void SaveInstallerViewModel(InstallerViewModel installer, SubFolder parentSubFolder)
-        {
-            var installerFile = parentSubFolder.FindInstallerFile(installer.Path);
-            if (installerFile == null)
-                return;
-
-            installer.IsDirty = false;
-        }
-
         private void SaveApplicationDialogModel(ApplicationDialogModel applicationDialog)
         {
             ApplicationFolder applicationFolder;
@@ -225,19 +306,31 @@ namespace Stein.ViewModels
             applicationFolder.DisableReboot = applicationDialog.DisableReboot;
             applicationFolder.EnableInstallationLogging = applicationDialog.EnableInstallationLogging;
 
-            applicationDialog.IsDirty = false;
+            _configurationService.SaveConfiguration();
         }
 
         public void UpdateViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
-            {
                 UpdateApplicationViewModel(viewModel as ApplicationViewModel);
-                return;
-            }
-            throw new NotSupportedException(Strings.ViewModelNotSupported);
+            else if (typeof(TViewModel) == typeof(MainWindowViewModel))
+                UpdateMainWindowViewModel(viewModel as MainWindowViewModel);
+            else
+                throw new NotSupportedException(Strings.ViewModelNotSupported);
+
+            viewModel.IsDirty = false;
         }
-        
+
+        private void UpdateMainWindowViewModel(MainWindowViewModel viewModel)
+        {
+            var applications = CreateViewModels(viewModel, viewModel.Applications.ToList());
+            viewModel.Applications.Clear();
+            foreach (var application in applications)
+                viewModel.Applications.Add(application);
+
+            viewModel.IsDirty = false;
+        }
+
         private void UpdateApplicationViewModel(ApplicationViewModel application, ApplicationFolder applicationFolder = null)
         {
             if (application.FolderId == default(Guid))
@@ -304,7 +397,7 @@ namespace Stein.ViewModels
                         installerViewModel = new InstallerViewModel
                         {
                             Parent = installerBundleViewModel,
-                            PreferredOperation = InstallerOperationType.DoNothing
+                            PreferredOperation = InstallerOperation.DoNothing
                         };
                         installerBundleViewModel.Installers.Add(installerViewModel);
                     }
@@ -316,34 +409,27 @@ namespace Stein.ViewModels
                     installerViewModel.ProductCode = installerFile.ProductCode;
                     installerViewModel.IsInstalled = _installService.IsProductCodeInstalled(installerFile.ProductCode);
                     installerViewModel.Created = installerFile.Created;
-                    installerViewModel.PreferredOperation = InstallerOperationType.DoNothing;
-
+                    installerViewModel.PreferredOperation = InstallerOperation.DoNothing;
                     installerViewModel.IsDirty = false;
                 }
 
                 installerBundleViewModel.IsDirty = false;
-
                 yield return installerBundleViewModel;
             }
-
-            foreach (var subSubFolder in subFolder.SubFolders)
-                foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subSubFolder, parent, existingInstallerBundles))
-                    yield return installerBundle;
         }
 
         public void DeleteViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
-            {
                 DeleteApplicationViewModel(viewModel as ApplicationViewModel);
-                return;
-            }
-            throw new NotSupportedException(Strings.ViewModelNotSupported);
+            else
+                throw new NotSupportedException(Strings.ViewModelNotSupported);
         }
 
         private void DeleteApplicationViewModel(ApplicationViewModel application)
         {
             _configurationService.Configuration.ApplicationFolders.RemoveAll(af => af.Id == application.FolderId);
+            _configurationService.SaveConfiguration();
         }
     }
 }

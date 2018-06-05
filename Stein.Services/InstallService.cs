@@ -67,7 +67,10 @@ namespace Stein.Services
         
         public bool IsProductCodeInstalled(string productCode)
         {
-            return !String.IsNullOrEmpty(productCode) && InstalledPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
+            if (_installedPrograms == null)
+                RefreshInstalledPrograms();
+
+            return !String.IsNullOrEmpty(productCode) && _installedPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
         }
         
         public void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
@@ -119,7 +122,6 @@ namespace Stein.Services
         
         public async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true)
         {
-            // Note: reinstalling with a different installer fails, so for now uninstall and install it.
             var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot);
             await reinstallProcess.WaitForExitAsync().ConfigureAwait(false);
         }

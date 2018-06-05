@@ -56,10 +56,13 @@ It will start installers with the "/L*V LOGPATH" option which means the installe
 
 If you find a bug feel free to open an issue. Contributions are also appreciated.
 
+**Please note**: 
+You have to have the [Wix Toolset](http://wixtoolset.org) installed in order to compile the [Stein.Services](../blob/master/Stein.Services) project. The version currently used to build this application is [3.11.1](http://wixtoolset.org/releases/v3.11.1/stable).
+
 ## Dependencies
 
 This application depends on the following libraries:
-- [MVVMBase](https://github.com/nkristek/MVVMBase)
+- [Smaragd](https://github.com/nkristek/Smaragd)
 - [Wpf.Converters](https://github.com/nkristek/Wpf.Converters)
 - [GongSolutions.WPF.DragDrop](https://github.com/punker76/gong-wpf-dragdrop)
 - [log4net](http://logging.apache.org/log4net/)

@@ -124,6 +124,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed: {0}  Reinstalled: {1}  Uninstalled: {2}.
         /// </summary>
         public static string DidInstallXPrograms {
@@ -160,11 +169,29 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ….
+        /// </summary>
+        public static string Hellip {
+            get {
+                return ResourceManager.GetString("Hellip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Install.
         /// </summary>
         public static string Install {
             get {
                 return ResourceManager.GetString("Install", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to installed.
+        /// </summary>
+        public static string Installed {
+            get {
+                return ResourceManager.GetString("Installed", resourceCulture);
             }
         }
         

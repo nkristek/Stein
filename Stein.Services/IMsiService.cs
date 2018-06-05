@@ -1,6 +1,6 @@
-﻿using Microsoft.Deployment.WindowsInstaller;
+﻿using System.Collections.Generic;
+using Microsoft.Deployment.WindowsInstaller;
 using Stein.Services.Types;
-using System.Collections.Generic;
 
 namespace Stein.Services
 {

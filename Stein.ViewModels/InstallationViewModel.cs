@@ -1,10 +1,10 @@
-﻿using System;
-using nkristek.MVVMBase.ViewModels;
+﻿using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.ViewModels;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
 {
-    public class InstallationViewModel
+    public sealed class InstallationViewModel
         : ViewModel
     {
         private string _name;
@@ -14,7 +14,7 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, out _);
         }
 
         private InstallationState _state;
@@ -24,7 +24,7 @@ namespace Stein.ViewModels
         public InstallationState State
         {
             get => _state;
-            set => SetProperty(ref _state, value);
+            set => SetProperty(ref _state, value, out _);
         }
         
         private int _installerCount;
@@ -34,7 +34,7 @@ namespace Stein.ViewModels
         public int InstallerCount
         {
             get => _installerCount;
-            set => SetProperty(ref _installerCount, value);
+            set => SetProperty(ref _installerCount, value, out _);
         }
 
         private int _currentIndex;
@@ -44,7 +44,7 @@ namespace Stein.ViewModels
         public int CurrentIndex
         {
             get => _currentIndex;
-            set => SetProperty(ref _currentIndex, value);
+            set => SetProperty(ref _currentIndex, value, out _);
         }
 
         /// <summary>

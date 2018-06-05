@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
-using Stein.Types.ConfigurationTypes;
+using Stein.Services.Types;
 
 namespace Stein.Services
 {
@@ -10,6 +12,19 @@ namespace Stein.Services
         public Configuration Configuration { get; private set; } = new Configuration();
 
         private readonly string _configuationPath;
+
+        public ConfigurationService()
+        {
+            _configuationPath = GetDefaultConfigurationFilePath();
+        }
+
+        private static string GetDefaultConfigurationFilePath()
+        {
+            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name);
+            if (!Directory.Exists(appDataConfigurationPath))
+                Directory.CreateDirectory(appDataConfigurationPath);
+            return Path.Combine(appDataConfigurationPath, "Config.xml");
+        }
 
         public ConfigurationService(string configurationFilePath)
         {

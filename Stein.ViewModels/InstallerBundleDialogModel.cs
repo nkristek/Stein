@@ -1,10 +1,12 @@
-﻿using nkristek.MVVMBase.ViewModels;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
 {
-    public class InstallerBundleDialogModel
+    public sealed class InstallerBundleDialogModel
         : DialogModel
     {
         private string _name;
@@ -16,8 +18,8 @@ namespace Stein.ViewModels
             get => _name;
             set
             {
-                if (SetProperty(ref _name, value))
-                    Title = _name;
+                if (SetProperty(ref _name, value, out _))
+                    Title = value;
             }
         }
 
@@ -28,18 +30,18 @@ namespace Stein.ViewModels
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value);
+            set => SetProperty(ref _path, value, out _);
         }
         
         /// <summary>
         /// List of installers in this installer bundle
         /// </summary>
-        public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();
+        public ObservableCollection<InstallerViewModel> Installers => (Parent as InstallerBundleViewModel)?.Installers;
 
         /// <summary>
         /// Gets the culture of the installers, if the Culture property is the same on all Installers, otherwise null
         /// </summary>
-        [PropertySource(nameof(Installers))]
+        [PropertySource(nameof(Installers), NotifyCollectionChangedAction.Add, NotifyCollectionChangedAction.Remove, NotifyCollectionChangedAction.Replace, NotifyCollectionChangedAction.Reset)]
         public string Culture
         {
             get

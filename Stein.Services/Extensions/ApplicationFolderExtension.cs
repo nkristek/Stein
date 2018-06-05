@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Stein.Types.ConfigurationTypes;
+using Stein.Services.Types;
 
 namespace Stein.Services.Extensions
 {

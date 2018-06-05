@@ -3,64 +3,100 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
+        xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="300"
-        MinHeight="200"
-        Width="500"
-        Height="300"
+        MinHeight="300"
+        SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
 
-    <Grid Margin="28,0,0,0">
+    <Window.Style>
+        <Style TargetType="Window"
+               BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
+
+    <Grid Margin="16,8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="8" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
-              Margin="-6,0,0,0">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   FontSize="28"
-                   VerticalAlignment="Bottom"
-                   Content="{Binding Name}"/>
-
-            <Label Grid.Column="1"
-                   Margin="0,0,0,2"
-                   VerticalAlignment="Bottom"
-                   FontSize="21"
-                   FontWeight="Light"
-                   Foreground="Gray"
-                   Content="{Binding Version}"/>
+            <TextBlock Grid.Column="0"
+                       FontSize="28"
+                       VerticalAlignment="Bottom"
+                       Text="{Binding Name}"/>
 
             <TextBlock Grid.Column="2"
-                       Margin="5,0,0,10"
                        VerticalAlignment="Bottom"
+                       FontSize="28"
+                       FontWeight="Light"
+                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                       Text="{Binding Version}"/>
+
+            <TextBlock Grid.Column="4"
+                       VerticalAlignment="Center"
                        FontSize="14">
                 <Hyperlink Command="{Binding OpenUriCommand}">GitHub</Hyperlink>
             </TextBlock>
         </Grid>
 
-        <TextBlock Grid.Row="1"
+        <TextBlock Grid.Row="2"
                    Text="{Binding Description}"
                    TextWrapping="Wrap"/>
 
-        <Label Grid.Row="2"
-               Content="{Binding AdditionalNotes}"/>
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Label Grid.Row="4"
-               Content="{Binding Copyright}"/>
+            <TextBlock Grid.Row="0"
+                       FontSize="20"
+                       Text="{x:Static localization:Strings.Dependencies}"/>
+
+            <ItemsControl Grid.Row="2" 
+                          ItemsSource="{Binding Dependencies}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:DependencyViewModel}">
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="14">
+                            <Hyperlink Command="{Binding OpenUriCommand}">
+                                <TextBlock Text="{Binding Name}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        
+        <TextBlock Grid.Row="8"
+                   Text="{Binding AdditionalNotes}"/>
+
+        <TextBlock Grid.Row="10"
+                   Text="{Binding Copyright}"/>
     </Grid>
 </Window>

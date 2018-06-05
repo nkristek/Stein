@@ -241,4 +241,13 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="Hellip" xml:space="preserve">
+    <value>…</value>
+  </data>
+  <data name="Installed" xml:space="preserve">
+    <value>installed</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Dependencies</value>
+  </data>
 </root>

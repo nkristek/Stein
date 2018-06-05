@@ -1,5 +1,5 @@
-﻿using nkristek.MVVMBase.ViewModels;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NKristek.Smaragd.ViewModels;
 
 namespace Stein.Services
 {

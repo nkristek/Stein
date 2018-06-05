@@ -7,8 +7,14 @@
         Title="Stein - Silent Temp Installer" 
         MinWidth="500"
         MinHeight="300"
-        SizeToContent="WidthAndHeight"
+        Width="600"
+        Height="400"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Style>
+        <Style TargetType="Window"
+               BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
 
     <ContentControl Content="{Binding}"/>
 </Window>

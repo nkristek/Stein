@@ -5,7 +5,11 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="pack://application:,,,/UiResources;component/Themes/Generic.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/Icons.xaml"/>
+
+        <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/VirtualizingItemsControl.xaml"/>
+
+        <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/ValidatingTextbox.xaml"/>
 
     </ResourceDictionary.MergedDictionaries>
 

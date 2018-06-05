@@ -1,16 +1,23 @@
 ﻿using System;
 using log4net;
-using nkristek.MVVMBase.Commands;
+using NKristek.Smaragd.Commands;
+using Stein.Presentation;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {
-    public class CancelOperationCommand
+    public sealed class CancelOperationCommand
         : ViewModelCommand<MainWindowViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public CancelOperationCommand(MainWindowViewModel parent) : base(parent) { }
+        private readonly IDialogService _dialogService;
+
+        public CancelOperationCommand(MainWindowViewModel parent, IDialogService dialogService) 
+            : base(parent)
+        {
+            _dialogService = dialogService;
+        }
 
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
@@ -21,12 +28,15 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
         {
-            viewModel.CurrentInstallation.State = InstallationState.Cancelled;
-        }
-
-        protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
-        {
-            Log.Error(exception);
+            try
+            {
+                viewModel.CurrentInstallation.State = InstallationState.Cancelled;
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+                _dialogService.ShowError(exception);
+            }
         }
     }
 }

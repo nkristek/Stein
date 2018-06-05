@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stein.Services</RootNamespace>
     <AssemblyName>Stein.Services</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,16 +35,11 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL" />
-    <Reference Include="nkristek.MVVMBase, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\nkristek.MVVMBase.1.4.2\lib\net47\nkristek.MVVMBase.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.2.1.4\lib\net47\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -53,15 +49,19 @@
     <Compile Include="IConfigurationService.cs" />
     <Compile Include="IInstallService.cs" />
     <Compile Include="IMsiService.cs" />
-    <Compile Include="IProgressBarService.cs" />
     <Compile Include="IViewModelService.cs" />
+    <Compile Include="Types\ApplicationFolder.cs" />
+    <Compile Include="Types\Configuration.cs" />
+    <Compile Include="Types\DateTimeXml.cs" />
+    <Compile Include="Types\InstallerFile.cs" />
     <Compile Include="Types\MsiPropertyName.cs" />
     <Compile Include="Types\InstalledProgram.cs" />
     <Compile Include="InstallService.cs" />
     <Compile Include="MsiService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\SubFolderExtension.cs" />
-    <Compile Include="Types\ProgressBarState.cs" />
+    <Compile Include="Types\SubFolder.cs" />
+    <Compile Include="Types\VersionXml.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Helpers\Stein.Helpers.csproj">
@@ -72,9 +72,9 @@
       <Project>{a84ba3a1-fd2d-4255-8a5c-73ab256c8edc}</Project>
       <Name>Stein.Localizations</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stein.Types\Stein.Types.csproj">
-      <Project>{83f4ecdb-bb76-499a-9765-482b54839245}</Project>
-      <Name>Stein.Types</Name>
+    <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">
+      <Project>{46D38A7F-C1EE-4A83-B696-0D32BBDD069B}</Project>
+      <Name>Stein.Presentation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

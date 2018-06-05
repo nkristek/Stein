@@ -1,34 +1,15 @@
 ﻿using System;
-using nkristek.MVVMBase.Commands;
-using nkristek.MVVMBase.ViewModels;
-using Stein.ViewModels.Commands.InstallerViewModelCommands;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.ViewModels;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
 {
-    public class InstallerViewModel
+    public sealed class InstallerViewModel
         : ViewModel
     {
-        public InstallerViewModel()
-        {
-            PreferNothingCommand = new PreferNothingCommand(this);
-            PreferInstallCommand = new PreferInstallCommand(this);
-            PreferReinstallCommand = new PreferReinstallCommand(this);
-            PreferUninstallCommand = new PreferUninstallCommand(this);
-        }
-
-        [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferNothingCommand { get; }
-
-        [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferInstallCommand { get; }
-
-        [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferReinstallCommand { get; }
-
-        [CommandCanExecuteSource(nameof(PreferredOperation), nameof(IsInstalled))]
-        public ViewModelCommand<InstallerViewModel> PreferUninstallCommand { get; }
-        
         private string _path;
         /// <summary>
         /// FilePath of the installer
@@ -36,17 +17,26 @@ namespace Stein.ViewModels
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value);
+            set => SetProperty(ref _path, value, out _);
         }
 
-        private InstallerOperationType _preferredOperation;
+        /// <summary>
+        /// Gets all available operations for this installer
+        /// </summary>
+        public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
+
+        private InstallerOperation _preferredOperation;
         /// <summary>
         /// If the installer is enabled by the user
         /// </summary>
-        public InstallerOperationType PreferredOperation
+        public InstallerOperation PreferredOperation
         {
             get => _preferredOperation;
-            set => SetProperty(ref _preferredOperation, value);
+            set
+            {
+                if (AvailableOperations.Contains(value))
+                    SetProperty(ref _preferredOperation, value, out _);
+            }
         }
         
         /// <summary>
@@ -62,7 +52,7 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, out _);
         }
 
         private Version _version;
@@ -72,7 +62,7 @@ namespace Stein.ViewModels
         public Version Version
         {
             get => _version;
-            set => SetProperty(ref _version, value);
+            set => SetProperty(ref _version, value, out _);
         }
 
         private string _culture;
@@ -82,7 +72,7 @@ namespace Stein.ViewModels
         public string Culture
         {
             get => _culture;
-            set => SetProperty(ref _culture, value);
+            set => SetProperty(ref _culture, value, out _);
         }
 
         private string _productCode;
@@ -92,7 +82,7 @@ namespace Stein.ViewModels
         public string ProductCode
         {
             get => _productCode;
-            set => SetProperty(ref _productCode, value);
+            set => SetProperty(ref _productCode, value, out _);
         }
 
         private bool? _isInstalled;
@@ -104,8 +94,29 @@ namespace Stein.ViewModels
             get => _isInstalled;
             set
             {
-                if (SetProperty(ref _isInstalled, value))
-                    PreferredOperation = InstallerOperationType.DoNothing;
+                if (SetProperty(ref _isInstalled, value, out _))
+                {
+                    PreferredOperation = InstallerOperation.DoNothing;
+
+                    AvailableOperations.Clear();
+                    foreach (var operation in GetAvailableOperations())
+                        AvailableOperations.Add(operation);
+                }
+            }
+        }
+
+        private IEnumerable<InstallerOperation> GetAvailableOperations()
+        {
+            yield return InstallerOperation.DoNothing;
+
+            if (IsInstalled == true)
+            {
+                yield return InstallerOperation.Reinstall;
+                yield return InstallerOperation.Uninstall;
+            }
+            else
+            {
+                yield return InstallerOperation.Install;
             }
         }
 
@@ -116,7 +127,7 @@ namespace Stein.ViewModels
         public DateTime? Created
         {
             get => _created;
-            set => SetProperty(ref _created, value);
+            set => SetProperty(ref _created, value, out _);
         }
     }
 }

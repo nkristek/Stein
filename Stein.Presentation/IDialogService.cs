@@ -1,5 +1,5 @@
-﻿using nkristek.MVVMBase.ViewModels;
-using System;
+﻿using System;
+using NKristek.Smaragd.ViewModels;
 
 namespace Stein.Presentation
 {

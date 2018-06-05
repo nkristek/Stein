@@ -241,4 +241,10 @@
   <data name="About" xml:space="preserve">
     <value>Über</value>
   </data>
+  <data name="Installed" xml:space="preserve">
+    <value>installiert</value>
+  </data>
+  <data name="Dependencies" xml:space="preserve">
+    <value>Abhängigkeiten</value>
+  </data>
 </root>

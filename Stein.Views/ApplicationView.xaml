@@ -3,19 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:BenRuehl.UiResources.Controls;assembly=UiResources"
-             xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+             xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel, IsDesignTimeCreatable=True}">
-    
+
     <GroupBox Padding="8" 
               Margin="0,4" 
               SnapsToDevicePixels="True"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
-
         <GroupBox.Header>
             <Grid Grid.Column="7">
                 <Grid.ColumnDefinitions>
@@ -26,18 +26,26 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="0"
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"
-                       Content="{Binding Name}"/>
+                <TextBlock Grid.Column="0"
+                           Margin="2,0,0,0"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Text="{Binding Name}"/>
 
                 <Button Grid.Column="3"
-                        Style="{DynamicResource IconButtonStyle}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Width="24"
+                        Height="24"
+                        Padding="4"
                         ContentTemplate="{DynamicResource EditIconVariant}"
                         Command="{Binding EditApplicationCommand}"/>
 
                 <Button Grid.Column="4"
-                        Style="{DynamicResource IconButtonStyle}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Width="24"
+                        Height="24"
+                        Padding="4"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding DeleteApplicationCommand}"/>
             </Grid>
@@ -54,21 +62,62 @@
                                   SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
-            <ComboBox ItemsSource="{Binding InstallerBundles}"
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding InstallerBundles}"
                       SelectedItem="{Binding SelectedInstallerBundle}"
-                      IsEnabled="{Binding InstallerBundles, Converter={converters:IEnumerableNotNullOrEmptyToBoolConverter}}"
-                      HorizontalAlignment="Stretch"/>
+                      IsEnabled="{Binding InstallerBundles, Converter={converters:ICollectionNullOrEmptyToInverseBoolConverter}}"
+                      HorizontalContentAlignment="Stretch"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      VirtualizingStackPanel.ScrollUnit="Pixel">
 
-            <!-- SelectedInstallerDate -->
-            <Label Grid.Column="2"
-                   DataContext="{Binding SelectedInstallerBundle}"
-                   Content="{Binding NewestInstallerCreationTime, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate >
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
 
-            <controls:SplitButton Grid.Column="4"
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewModels:InstallerBundleViewModel}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="12"/> <!-- TODO: temporary fix for https://github.com/benruehl/adonis-ui/issues/5 -->
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- Name & Culture --> 
+                            <TextBlock Grid.Column="0"
+                                       TextTrimming="CharacterEllipsis">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="Culture"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+
+                            <!-- Installed count -->  
+                            <TextBlock Grid.Column="2"
+                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                                       Text="{Binding InstalledSummary}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Column="2"
+                       VerticalAlignment="Center"
+                       DataContext="{Binding SelectedInstallerBundle}"
+                       Text="{Binding NewestInstallerCreationTime, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
+
+            <adonisControls:SplitButton Grid.Column="4"
                                   Content="{x:Static localization:Strings.Install}"
                                   Padding="16,4"
                                   Command="{Binding InstallApplicationCommand}">
-                <controls:SplitButton.SplitMenu>
+                <adonisControls:SplitButton.SplitMenu>
                     <ContextMenu>
                         <MenuItem Header="{x:Static localization:Strings.Install}"
                                   Command="{Binding InstallApplicationCommand}"/>
@@ -77,8 +126,8 @@
                         <MenuItem Header="{x:Static localization:Strings.Custom}" 
                                   Command="{Binding CustomOperationApplicationCommand}"/>
                     </ContextMenu>
-                </controls:SplitButton.SplitMenu>
-            </controls:SplitButton>
+                </adonisControls:SplitButton.SplitMenu>
+            </adonisControls:SplitButton>
         </Grid>
     </GroupBox>
 </UserControl>

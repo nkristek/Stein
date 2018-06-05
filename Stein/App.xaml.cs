@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using log4net;
+using Ninject;
+using Stein.Presentation;
 using Stein.Services;
 using Stein.ViewModels;
-using Stein.Views;
 
 namespace Stein
 {
@@ -33,63 +33,47 @@ namespace Stein
         
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
-
-            var dialogService = new WpfDialogService(mainWindow);
-            var configurationService = new ConfigurationService(GetConfigurationFilePath());
+            var rootWindow = new MainWindow();
+            var kernel = new StandardKernel(new AppModule(rootWindow));
+            
             try
             {
-                configurationService.LoadConfiguration();
+                kernel.Get<IConfigurationService>().LoadConfiguration();
             }
             catch (Exception exception)
             {
                 Log.Error("Load configuration", exception);
-                dialogService.ShowError(exception);
+                kernel.Get<IDialogService>().ShowError(exception);
             }
-            var installService = new InstallService();
-            var viewModelService = new ViewModelService(dialogService, configurationService, installService);
-            var themeService = new WpfThemeService();
-            var progressBarService = new WpfTaskbarService(mainWindow);
-            var msiService = new MsiService();
-            var mainWindowViewModel = new MainWindowViewModel(dialogService, viewModelService, themeService, progressBarService, configurationService, installService, msiService);
-
-            mainWindow.DataContext = mainWindowViewModel;
-            mainWindow.Show();
-        }
-
-        private static string GetConfigurationFilePath()
-        {
-            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein");
-            if (!Directory.Exists(appDataConfigurationPath))
-                Directory.CreateDirectory(appDataConfigurationPath);
-            return Path.Combine(appDataConfigurationPath, "Config.xml");
+            
+            rootWindow.DataContext = kernel.Get<IViewModelService>().CreateViewModel<MainWindowViewModel>();
+            rootWindow.Show();
         }
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            Log.Error("App_DispatcherUnhandledException", e.Exception);
+            Log.Error(e.Exception);
             DebugBreak();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            var exception = e.ExceptionObject as Exception;
-            if (exception == null)
+            if (!(e.ExceptionObject is Exception exception))
                 return;
 
-            Log.Error("CurrentDomain_UnhandledException", exception);
+            Log.Error(exception);
             DebugBreak();
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            Log.Error("TaskScheduler_UnobservedTaskException", e.Exception);
+            Log.Error(e.Exception);
             DebugBreak();
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            Log.Error("WinFormApplication_ThreadException", e.Exception);
+            Log.Error(e.Exception);
             DebugBreak();
         }
 

@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
+        xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        xmlns:adonisUI="clr-namespace:AdonisUI;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="500"
@@ -13,22 +14,12 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
-    
-    <Window.Resources>
-        <Style x:Key="ValidatingTextBox" 
-               TargetType="{x:Type TextBox}" 
-               BasedOn="{StaticResource {x:Type TextBox}}">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" 
-                         Value="true">
-                    <Setter Property="ToolTip" 
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                    <Setter Property="Tag" 
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
+
+    <Window.Style>
+        <Style TargetType="Window"
+               BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
+
     <Grid Margin="8"
           IsSharedSizeScope="True">
         <Grid.RowDefinitions>
@@ -49,30 +40,32 @@
         <!-- Name -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0"
                    HorizontalAlignment="Right"
-                   HorizontalContentAlignment="Right"
                    VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="{x:Static localization:Strings.Name}"/>
+                   Content="{x:Static localization:Strings.Name}"
+                   Target="NameTextBox"/>
 
-            <TextBox Grid.Column="2"
+            <TextBox x:Name="NameTextBox" 
+                     Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Style="{StaticResource ValidatingTextBox}"
+                     Style="{DynamicResource ValidatingTextBox}"
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         </Grid>
 
         <!-- Path -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="8"/>
@@ -81,20 +74,20 @@
 
             <Label Grid.Column="0"
                    HorizontalAlignment="Right"
-                   HorizontalContentAlignment="Right"
                    VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"
                    FontWeight="Bold"
-                   Content="{x:Static localization:Strings.Path}"/>
+                   Content="{x:Static localization:Strings.Path}"
+                   Target="SelectFolderButton"/>
 
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Style="{StaticResource ValidatingTextBox}"
+                     Style="{DynamicResource ValidatingTextBox}"
                      Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
-            <Button Grid.Column="4"
-                    Content="…"
+            <Button x:Name="SelectFolderButton" 
+                    Grid.Column="4"
+                    Content="{x:Static localization:Strings.Hellip}"
                     Padding="16,4"
                     Command="{Binding SelectFolderCommand}"/>
         </Grid>
@@ -102,7 +95,8 @@
         <!-- Silent Install -->
         <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -117,7 +111,8 @@
         <!-- Disable reboot -->
         <Grid Grid.Row="6">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -132,7 +127,8 @@
         <!-- Enable Installation Logging -->
         <Grid Grid.Row="8">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>
@@ -156,18 +152,31 @@
               Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="ButtonColumn"/>
                 <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
             <Button x:Name="OkButton" 
                     Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
                     Padding="16,4"
-                    Click="OnDialogOkButtonClick"
-                    IsDefault="True"
-                    IsEnabled="{Binding IsValid}"/>
+                    Click="OnDialogOkButtonClick">
+                <Button.IsDefault>
+                    <MultiBinding Converter="{converters:AllBoolToBoolConverter}">
+                        <Binding Path="IsValid"/>
+                        <Binding Path="IsDirty"/>
+                    </MultiBinding>
+                </Button.IsDefault>
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{converters:AllBoolToBoolConverter}">
+                        <Binding Path="IsValid"/>
+                        <Binding Path="IsDirty"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
 
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"

@@ -1,53 +1,43 @@
 ﻿using System;
-using nkristek.MVVMBase.Commands;
-using nkristek.MVVMBase.ViewModels;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
+using NKristek.Smaragd.Validation;
+using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
-using Stein.Presentation;
-using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 
 namespace Stein.ViewModels
 {
-    public class ApplicationDialogModel
+    public sealed class ApplicationDialogModel
         : DialogModel
     {
-        public ApplicationDialogModel(IDialogService dialogService)
+        public ApplicationDialogModel()
         {
-            SelectFolderCommand = new SelectFolderCommand(this, dialogService);
-            OpenLogFolderCommand = new OpenLogFolderCommand(this, dialogService);
+            AddValidation(() => Name, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.NameEmpty));
+            AddValidation(() => Path, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.PathEmpty));
         }
 
-        public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; }
+        public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; set; }
 
-        public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; }
+        public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; set; }
 
         private string _name;
         /// <summary>
         /// Name of the application folder
         /// </summary>
-        [InitiallyNotValid("")]
         public string Name
         {
             get => _name;
-            set
-            {
-                if (SetProperty(ref _name, value))
-                    SetValidationError(String.IsNullOrEmpty(value) ? Strings.NameEmpty : null);
-            }
+            set => SetProperty(ref _name, value, out _);
         }
 
         private string _path;
         /// <summary>
         /// Path to the application folder
         /// </summary>
-        [InitiallyNotValid("")]
         public string Path
         {
             get => _path;
-            set
-            {
-                if (SetProperty(ref _path, value))
-                    SetValidationError(String.IsNullOrEmpty(value) ? Strings.PathEmpty : null);
-            }
+            set => SetProperty(ref _path, value, out _);
         }
 
         private Guid _folderId;
@@ -57,7 +47,7 @@ namespace Stein.ViewModels
         public Guid FolderId
         {
             get => _folderId;
-            set => SetProperty(ref _folderId, value);
+            set => SetProperty(ref _folderId, value, out _);
         }
 
         private bool _enableSilentInstallation;
@@ -67,7 +57,7 @@ namespace Stein.ViewModels
         public bool EnableSilentInstallation
         {
             get => _enableSilentInstallation;
-            set => SetProperty(ref _enableSilentInstallation, value);
+            set => SetProperty(ref _enableSilentInstallation, value, out _);
         }
 
         private bool _disableReboot;
@@ -77,7 +67,7 @@ namespace Stein.ViewModels
         public bool DisableReboot
         {
             get => _disableReboot;
-            set => SetProperty(ref _disableReboot, value);
+            set => SetProperty(ref _disableReboot, value, out _);
         }
 
         private bool _enableInstallationLogging;
@@ -87,7 +77,7 @@ namespace Stein.ViewModels
         public bool EnableInstallationLogging
         {
             get => _enableInstallationLogging;
-            set => SetProperty(ref _enableInstallationLogging, value);
+            set => SetProperty(ref _enableInstallationLogging, value, out _);
         }
     }
 }

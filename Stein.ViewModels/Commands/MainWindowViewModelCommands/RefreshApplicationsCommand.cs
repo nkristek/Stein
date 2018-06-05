@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using nkristek.MVVMBase.Commands;
-using Stein.Services;
+using NKristek.Smaragd.Commands;
 using Stein.Localizations;
 using Stein.Presentation;
+using Stein.Services;
 using Stein.Services.Extensions;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {
-    public class RefreshApplicationsCommand
+    public sealed class RefreshApplicationsCommand
         : AsyncViewModelCommand<MainWindowViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -25,7 +24,8 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         private readonly IMsiService _msiService;
 
-        public RefreshApplicationsCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService) : base(parent)
+        public RefreshApplicationsCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService) 
+            : base(parent)
         {
             _dialogService = dialogService;
             _viewModelService = viewModelService;
@@ -41,39 +41,33 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override async Task DoExecute(MainWindowViewModel viewModel, object parameter)
         {
-            // save changes from application viewmodels back to the configuration
-            foreach (var changedApplication in viewModel.Applications.Where(application => application.IsDirty))
-                _viewModelService.SaveViewModel(changedApplication);
-
-            // get new installers
-            foreach (var applicationFolder in _configurationService.Configuration.ApplicationFolders)
+            try
             {
-                try
+                _viewModelService.SaveViewModel(viewModel);
+
+                foreach (var applicationFolder in _configurationService.Configuration.ApplicationFolders)
                 {
-                    await applicationFolder.SyncWithDiskAsync(_msiService);
+                    try
+                    {
+                        await applicationFolder.SyncWithDiskAsync(_msiService);
+                    }
+                    catch (Exception exception)
+                    {
+                        applicationFolder.SubFolders.Clear();
+                        _dialogService.ShowMessage(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
+                    }
                 }
-                catch (Exception exception)
-                {
-                    applicationFolder.SubFolders.Clear();
-                    _dialogService.ShowMessage(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
-                }
+
+                await _configurationService.SaveConfigurationAsync();
+                await Task.Run(() => _installService.RefreshInstalledPrograms());
+                
+                _viewModelService.UpdateViewModel(viewModel);
             }
-            await _configurationService.SaveConfigurationAsync();
-            await Task.Run(() => _installService.RefreshInstalledPrograms());
-
-            // update the viewmodels
-            var applications = _viewModelService.CreateViewModels(viewModel, viewModel.Applications.ToList());
-            viewModel.Applications.Clear();
-            foreach (var application in applications)
-                viewModel.Applications.Add(application);
-
-            viewModel.IsDirty = false;
-        }
-
-        protected override void OnThrownException(MainWindowViewModel viewModel, object parameter, Exception exception)
-        {
-            Log.Error(exception);
-            _dialogService.ShowError(exception);
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+                _dialogService.ShowError(exception);
+            }
         }
     }
 }

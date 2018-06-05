@@ -3,23 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:converters="clr-namespace:nkristek.Wpf.Converters;assembly=nkristek.Wpf.Converters"
+             xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-             xmlns:controls="clr-namespace:BenRuehl.UiResources.Controls;assembly=UiResources"
+             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="30"/>
+            <RowDefinition Height="Auto" MinHeight="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Application bar -->
-        <Grid>
-            <Border Background="{DynamicResource PrimaryBrush}">
+        <Grid Grid.Row="0">
+            <Border Background="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                 <Border.Effect>
                     <DropShadowEffect Direction="270"
                                       BlurRadius="28"
@@ -28,181 +29,225 @@
                 </Border.Effect>
             </Border>
 
-            <Grid Grid.Row="0"
-                  Grid.IsSharedSizeScope="True"
+            <Grid Grid.IsSharedSizeScope="True"
                   Margin="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto" MinWidth="30"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Add Folder button -->
                 <Button Grid.Column="0"
-                        Style="{DynamicResource PrimaryButton}"
+                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Command="{Binding AddApplicationCommand}">
                     <StackPanel Orientation="Horizontal">
-                        <ContentControl ContentTemplate="{DynamicResource AddIconVariant}"
-                                        Height="12"
-                                        Width="12"
+                        <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
+                                        Height="20"
+                                        Width="20"
                                         Margin="0, 0, 8, 0"/>
 
-                        <TextBlock Text="{x:Static localization:Strings.AddFolder}"/>
+                        <TextBlock FontSize="14"
+                                   Text="{x:Static localization:Strings.AddFolder}"/>
                     </StackPanel>
                 </Button>
 
-                <!--<Button Grid.Column="3"
-                        ContentTemplate="{StaticResource RefreshIconVariant}"
-                        Style="{DynamicResource PrimaryButton}"
-                        Width="20"
-                        Height="20"
-                        Padding="4"
-                        Command="{Binding RefreshApplicationsCommand}"/>-->
+                <!-- Refresh button -->
+                <Button Grid.Column="3"
+                        Width="28"
+                        Height="28"
+                        Padding="2"
+                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                        DataContext="{Binding RefreshApplicationsCommand}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Command="{Binding}">
+                    <Button.Content>
+                        <ContentControl Width="16"
+                                        Height="16"
+                                        ContentTemplate="{StaticResource RefreshIconVariant}">
+                            <ContentControl.Style>
+                                <Style TargetType="{x:Type ContentControl}" 
+                                       BasedOn="{StaticResource {x:Type ContentControl}}">
+                                    <Setter Property="LayoutTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="0"/>
+                                        </Setter.Value>
+                                    </Setter>
 
-                <controls:RotatingButton Grid.Column="3"
-                                         HorizontalAlignment="Center"
-                                         DataContext="{Binding RefreshApplicationsCommand}"
-                                         IsRotating="{Binding IsWorking}"
-                                         ContentTemplate="{DynamicResource RefreshIconVariant}"
-                                         Style="{DynamicResource PrimaryButton}"
-                                         Width="20"
-                                         Height="20"
-                                         Padding="4"
-                                         Command="{Binding}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsWorking}" 
+                                                     Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                                 From="0"
+                                                                 To="360"
+                                                                 Duration="0:0:2"
+                                                                 RepeatBehavior="Forever"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                                 To="0"
+                                                                 Duration="0:0:0" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </Button.Content>
+                </Button>
 
+                <!-- Theme switch button -->
                 <Button Grid.Column="5"
-                        ContentTemplate="{DynamicResource InfoIconVariant}"
-                        Style="{DynamicResource PrimaryButton}"
-                        Width="20"
-                        Height="20"
+                        Width="28"
+                        Height="28"
                         Padding="4"
+                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Command="{Binding ChangeThemeCommand}">
+                    <Button.ContentTemplate>
+                        <MultiBinding Converter="{steinconverters:IntToNthValueConverter}">
+                            <Binding Path="CurrentTheme"/>
+                            <Binding Source="{StaticResource DarkThemeIconVariant}"/>
+                            <Binding Source="{StaticResource LightThemeIconVariant}"/>
+                        </MultiBinding>
+                    </Button.ContentTemplate>
+                </Button>
+
+                <!-- Info dialog button -->
+                <Button Grid.Column="7"
+                        Width="28"
+                        Height="28"
+                        Padding="4"
+                        Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
+                        ContentTemplate="{StaticResource InfoIconVariant}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Command="{Binding ShowInfoDialogCommand}"/>
             </Grid>
         </Grid>
 
         <!-- Application content -->
-        <Grid Grid.Row="1" 
-              Margin="8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <ItemsControl Grid.Row="1" 
+                      Margin="8"
+                      ItemsSource="{Binding Applications}"
+                      IsEnabled="{Binding CurrentInstallation, Converter={converters:ValueNullToBoolConverter}}"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      VirtualizingStackPanel.ScrollUnit="Pixel">
 
-            <ScrollViewer Grid.Row="2" 
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Auto">
-                <ItemsControl Grid.IsSharedSizeScope="True"
-                              ItemsSource="{Binding Applications}"
-                              IsEnabled="{Binding CurrentInstallation, Converter={converters:ValueNullToBoolConverter}}"/>
-            </ScrollViewer>
-        </Grid>
-        
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer Padding="{TemplateBinding Control.Padding}" 
+                                  Focusable="False">
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+
+        <!-- Current installation -->
         <StatusBar Grid.Row="2"
                    HorizontalAlignment="Stretch"
                    Padding="8, 0">
-            <StatusBar.Style>
-                <Style TargetType="StatusBar">
-                    <Setter Property="Background" Value="{DynamicResource Neutral3Brush}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding CurrentInstallation, Converter={converters:ValueNotNullToBoolConverter}}" 
-                                     Value="True">
-                            <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StatusBar.Style>
 
-            <StatusBarItem Padding="0">
+            <!-- no installation -->
+            <StatusBarItem Padding="0"
+                           Margin="8"
+                           Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToVisibilityConverter}}">
                 <Grid>
-                    <!-- no installation -->
-                    <Grid Visibility="{Binding Visibility, ElementName=CurrentInstallationStatus, Converter={converters:VisibilityToInverseVisibilityConverter}}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Label Grid.Column="0" 
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" 
+                               FontSize="14"
                                Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={converters:VisibilityToInverseVisibilityConverter}}"
-                               Content="{x:Static localization:Strings.Ready}"
+                               Text="{x:Static localization:Strings.Ready}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"/>
 
-                        <Label x:Name="LoadingLabel"
+                    <TextBlock x:Name="LoadingLabel"
                                Grid.Column="0" 
-                               Content="{x:Static localization:Strings.Loading}"
+                               FontSize="14"
+                               Text="{x:Static localization:Strings.Loading}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                DataContext="{Binding RefreshApplicationsCommand}"
                                Visibility="{Binding IsWorking, Converter={converters:BoolToVisibilityConverter}, ConverterParameter=Hidden}"/>
 
-                        <Grid Grid.Column="2" 
-                              Visibility="{Binding InstallationResult, Converter={converters:ValueNotNullToVisibilityConverter}}">
-                            <Label DataContext="{Binding InstallationResult}"
-                                   Content="{Binding Result}"
+                    <Grid Grid.Column="2" 
+                          Visibility="{Binding InstallationResult, Converter={converters:ValueNullToInverseVisibilityConverter}}">
+                        <TextBlock DataContext="{Binding InstallationResult}"
+                                   FontSize="14"
+                                   Text="{Binding Result}"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"/>
-                        </Grid>
-                    </Grid>
-
-                    <!-- during installation -->
-                    <Grid x:Name="CurrentInstallationStatus"
-                          Visibility="{Binding CurrentInstallation, Converter={converters:ValueNotNullToVisibilityConverter}}">
-                        <Grid DataContext="{Binding CurrentInstallation}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0"
-                                   Content="{Binding ProgressString}"/>
-
-                            <Label Grid.Column="2" 
-                                   Content="{x:Static localization:Strings.Preparing}"
-                                   Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Preparing}"/>
-
-                            <Label Grid.Column="2" 
-                                   Content="{x:Static localization:Strings.Installing}"
-                                   Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Install}"/>
-
-                            <Label Grid.Column="2" 
-                                   Content="{x:Static localization:Strings.Reinstalling}"
-                                   Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Reinstall}"/>
-
-                            <Label Grid.Column="2" 
-                                   Content="{x:Static localization:Strings.Uninstalling}"
-                                   Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Uninstall}"/>
-
-                            <Label Grid.Column="2" 
-                                   Content="{x:Static localization:Strings.Cancelled}"
-                                   Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}"/>
-
-                            <Label Grid.Column="4"
-                                   Content="{Binding Name}"/>
-                        </Grid>
                     </Grid>
                 </Grid>
             </StatusBarItem>
 
+            <!-- during installation -->
             <StatusBarItem Padding="0"
-                           HorizontalAlignment="Right"/>
+                           Margin="8"
+                           Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToInverseVisibilityConverter}}">
+                <Grid DataContext="{Binding CurrentInstallation}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               FontSize="14"
+                               Text="{Binding ProgressString}"/>
+
+                    <TextBlock Grid.Column="2"
+                               FontSize="14" 
+                               Text="{Binding State, Converter={steinconverters:InstallationStateToLocalizedStringConverter}}"/>
+
+                    <TextBlock Grid.Column="4"
+                               FontSize="14"
+                               Text="{Binding Name}"/>
+                </Grid>
+            </StatusBarItem>
 
             <!-- Cancel button -->
             <StatusBarItem Padding="0"
                            HorizontalAlignment="Right">
-                <Button Style="{DynamicResource IconButtonStyle}"
+                <Button Width="20"
+                        Height="20"
+                        Padding="4"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding CancelOperationCommand}"
-                        Margin="0, 4"
                         ToolTip="{x:Static localization:Strings.Cancel}"
                         ToolTipService.InitialShowDelay="0"
-                        Visibility="{Binding CurrentInstallation, Converter={converters:ValueNotNullToVisibilityConverter}}"/>
+                        Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToInverseVisibilityConverter}}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

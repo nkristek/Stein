@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using log4net;
 using Stein.Services.Types;
-using Stein.Types;
-using Stein.Types.ConfigurationTypes;
 
 namespace Stein.Services.Extensions
 {

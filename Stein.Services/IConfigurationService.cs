@@ -1,5 +1,5 @@
-﻿using Stein.Types.ConfigurationTypes;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Stein.Services.Types;
 
 namespace Stein.Services
 {

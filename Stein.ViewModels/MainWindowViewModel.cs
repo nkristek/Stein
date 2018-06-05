@@ -1,47 +1,39 @@
 ﻿using System.Collections.ObjectModel;
-using nkristek.MVVMBase.Commands;
-using nkristek.MVVMBase.ViewModels;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
+using NKristek.Smaragd.ViewModels;
 using Stein.Presentation;
-using Stein.Services;
-using Stein.Services.Types;
-using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 
 namespace Stein.ViewModels
 {
-    public class MainWindowViewModel
+    public sealed class MainWindowViewModel
         : ViewModel
     {
         private readonly IThemeService _themeService;
-
+        
         private readonly IProgressBarService _progressBarService;
 
-        public MainWindowViewModel(IDialogService dialogService, IViewModelService viewModelService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IMsiService msiService)
+        public MainWindowViewModel(IThemeService themeService, IProgressBarService progressBarService)
         {
             _themeService = themeService;
             _themeService.ThemeChanged += (sender, args) => { RaisePropertyChanged(nameof(CurrentTheme)); };
             _progressBarService = progressBarService;
 
-            RefreshApplicationsCommand = new RefreshApplicationsCommand(this, dialogService, viewModelService, configurationService, installService, msiService);
-            AddApplicationCommand = new AddApplicationCommand(this, dialogService, viewModelService);
-            CancelOperationCommand = new CancelOperationCommand(this);
-            ShowInfoDialogCommand = new ShowInfoDialogCommand(this, dialogService, viewModelService);
-            ChangeThemeCommand = new ChangeThemeCommand(this);
-
-            RefreshApplicationsCommand.Execute(null);
+            Children.AddCollection(Applications, nameof(Applications));
         }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public AsyncViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; }
+        public ViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; }
+        public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; set; }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
-        public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; }
+        public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; set; }
 
-        public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; }
+        public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; set; }
 
-        public ViewModelCommand<MainWindowViewModel> ChangeThemeCommand { get; }
+        public ViewModelCommand<MainWindowViewModel> ChangeThemeCommand { get; set; }
 
         /// <summary>
         /// List of all applications
@@ -49,32 +41,53 @@ namespace Stein.ViewModels
         public ObservableCollection<ApplicationViewModel> Applications { get; } = new ObservableCollection<ApplicationViewModel>();
         
         private InstallationViewModel _currentInstallation;
+
         /// <summary>
         /// Is set if an operation is in progress
         /// </summary>
+        [IsDirtyIgnored]
         public InstallationViewModel CurrentInstallation
         {
             get => _currentInstallation;
             set
             {
-                if (SetProperty(ref _currentInstallation, value))
+                if (SetProperty(ref _currentInstallation, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        RemoveChildViewModel(oldValue);
+                    if (value != null)
+                        AddChildViewModel(value, false);
+
                     _progressBarService.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
+                } 
             }
         }
 
         private InstallationResultViewModel _installationResult;
+
         /// <summary>
         /// Is set if an operation was finished
         /// </summary>
+        [IsDirtyIgnored]
         public InstallationResultViewModel InstallationResult
         {
             get => _installationResult;
-            set => SetProperty(ref _installationResult, value);
+            set
+            {
+                if (SetProperty(ref _installationResult, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        RemoveChildViewModel(oldValue);
+                    if (value != null)
+                        AddChildViewModel(value, false);
+                }
+            }
         }
         
         /// <summary>
         /// Current UI theme
         /// </summary>
+        [IsDirtyIgnored]
         public Theme CurrentTheme
         {
             get => _themeService.CurrentTheme;

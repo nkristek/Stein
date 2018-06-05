@@ -1,16 +1,16 @@
-﻿using nkristek.MVVMBase.Commands;
-using Stein.Services;
-using Stein.ViewModels.Types;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using NKristek.Smaragd.Commands;
 using Stein.Presentation;
+using Stein.Services;
+using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
-    public class InstallApplicationCommand
+    public sealed class InstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -19,7 +19,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private readonly IInstallService _installService;
 
-        public InstallApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) : base(parent)
+        public InstallApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) 
+            : base(parent)
         {
             _dialogService = dialogService;
             _installService = installService;
@@ -39,30 +40,30 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             if (mainWindowViewModel == null)
                 return;
 
-            mainWindowViewModel.CurrentInstallation = new InstallationViewModel
+            try
             {
-                Parent = mainWindowViewModel,
-                State = InstallationState.Preparing,
-                InstallerCount = 0,
-                CurrentIndex = 0
-            };
+                mainWindowViewModel.CurrentInstallation = new InstallationViewModel();
 
-            var installationResult = await InstallSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
-            if (installationResult.InstallCount > 0 || installationResult.ReinstallCount > 0 || installationResult.FailedCount > 0)
+                var installationResult = await InstallSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
+                mainWindowViewModel.InstallationResult = installationResult.AnyOperationWasExecuted ? installationResult : null;
+                if (installationResult.AnyOperationWasExecuted)
+                    mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+            }
+            catch (Exception exception)
             {
-                mainWindowViewModel.InstallationResult = installationResult;
+                Log.Error(exception);
+                _dialogService.ShowError(exception);
                 mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
             }
-
-            mainWindowViewModel.CurrentInstallation = null;
+            finally
+            {
+                mainWindowViewModel.CurrentInstallation = null;
+            }
         }
 
         private async Task<InstallationResultViewModel> InstallSelectedInstallerBundle(ApplicationViewModel application, InstallationViewModel currentInstallation)
         {
-            var installationResult = new InstallationResultViewModel
-            {
-                Parent = currentInstallation.Parent
-            };
+            var installationResult = new InstallationResultViewModel();
 
             // filter installers with the same name 
             // if no name is set don't filter by grouping by path (which will always be distinct)
@@ -140,18 +141,6 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 throw new IOException("File already exists");
 
             return logFilePath;
-        }
-
-        protected override void OnThrownException(ApplicationViewModel viewModel, object parameter, Exception exception)
-        {
-            Log.Error(exception);
-            _dialogService.ShowError(exception);
-
-            if (!(viewModel.Parent is MainWindowViewModel mainViewModel))
-                return;
-
-            mainViewModel.CurrentInstallation = null;
-            mainViewModel.RefreshApplicationsCommand.Execute(null);
         }
     }
 }

@@ -1,29 +1,51 @@
 ﻿using System;
-using nkristek.MVVMBase.Commands;
-using nkristek.MVVMBase.ViewModels;
-using Stein.ViewModels.Commands.AboutDialogModelCommands;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Reflection;
+using NKristek.Smaragd.Commands;
+using NKristek.Smaragd.ViewModels;
+using Stein.Localizations;
 
 namespace Stein.ViewModels
 {
-    public class AboutDialogModel
+    public sealed class AboutDialogModel
         : DialogModel
     {
         public AboutDialogModel()
         {
-            OpenUriCommand = new OpenUriCommand(this);
+            var assembly = Assembly.GetEntryAssembly();
+            var assemblyName = assembly.GetName();
+            var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
+            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
+            var publisher = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
+            Title = Strings.About;
+            Name = assemblyName.Name;
+            Description = description?.Description;
+            Version = assemblyName.Version;
+            Copyright = copyright?.Copyright;
+            AdditionalNotes = "";
+            Uri = new Uri("https://github.com/nkristek/Stein");
+            Publisher = publisher?.Company;
+            OpenUriCommand = new RelayCommand(parameter => Process.Start(new ProcessStartInfo(Uri.AbsoluteUri)));
+
+            Children.AddCollection(Dependencies, nameof(Dependencies));
         }
 
-        public ViewModelCommand<AboutDialogModel> OpenUriCommand { get; }
+        public Command OpenUriCommand { get; }
+        
+        /// <summary>
+        /// All dependencies of this application
+        /// </summary>
+        public ObservableCollection<DependencyViewModel> Dependencies { get; } = new ObservableCollection<DependencyViewModel>();
 
         private string _name;
-
         /// <summary>
         /// Name of the application
         /// </summary>
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, out _);
         }
 
         private string _description;
@@ -33,7 +55,7 @@ namespace Stein.ViewModels
         public string Description
         {
             get => _description;
-            set => SetProperty(ref _description, value);
+            set => SetProperty(ref _description, value, out _);
         }
 
         private Version _version;
@@ -43,7 +65,7 @@ namespace Stein.ViewModels
         public Version Version
         {
             get => _version;
-            set => SetProperty(ref _version, value);
+            set => SetProperty(ref _version, value, out _);
         }
 
         private string _copyright;
@@ -53,7 +75,7 @@ namespace Stein.ViewModels
         public string Copyright
         {
             get => _copyright;
-            set => SetProperty(ref _copyright, value);
+            set => SetProperty(ref _copyright, value, out _);
         }
 
         private string _additionalNotes;
@@ -63,7 +85,7 @@ namespace Stein.ViewModels
         public string AdditionalNotes
         {
             get => _additionalNotes;
-            set => SetProperty(ref _additionalNotes, value);
+            set => SetProperty(ref _additionalNotes, value, out _);
         }
 
         private Uri _uri;
@@ -73,7 +95,7 @@ namespace Stein.ViewModels
         public Uri Uri
         {
             get => _uri;
-            set => SetProperty(ref _uri, value);
+            set => SetProperty(ref _uri, value, out _);
         }
 
         private string _publisher;
@@ -83,10 +105,7 @@ namespace Stein.ViewModels
         public string Publisher
         {
             get => _publisher;
-            set => SetProperty(ref _publisher, value);
+            set => SetProperty(ref _publisher, value, out _);
         }
-
-        //public ImageSource _ApplicationLogo;
-        //private ImageSource _PublisherLogo;
     }
 }

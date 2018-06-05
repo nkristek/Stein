@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Stein.Services.Types
+﻿namespace Stein.Services.Types
 {
     /// <summary>
     /// https://msdn.microsoft.com/en-us/library/windows/desktop/aa370905(v=vs.85).aspx
