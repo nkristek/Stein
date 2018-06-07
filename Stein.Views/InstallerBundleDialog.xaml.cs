@@ -16,10 +16,5 @@ namespace Stein.Views
         {
             DialogResult = true;
         }
-
-        private void OnDialogCancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-        }
     }
 }

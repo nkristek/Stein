@@ -10,7 +10,6 @@
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="500"
         MinHeight="230"
-        Width="500"
         Height="300"
         SizeToContent="Width"
         WindowStartupLocation="CenterOwner"
@@ -49,6 +48,7 @@
         </Grid>
 
         <ItemsControl Grid.Row="2" 
+                      Grid.IsSharedSizeScope="True"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Installers}"
                       dd:DragDrop.IsDragSource="True"
@@ -93,7 +93,7 @@
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"
                     Padding="16,4"
-                    Click="OnDialogCancelButtonClick"/>
+                    IsCancel="True"/>
         </Grid>
     </Grid>
 </Window>

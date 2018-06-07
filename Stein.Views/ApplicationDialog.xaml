@@ -6,7 +6,6 @@
         xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-        xmlns:adonisUI="clr-namespace:AdonisUI;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="500"
@@ -148,8 +147,7 @@
         </Grid>
 
         <!-- Dialog Buttons -->
-        <Grid Grid.Row="11"
-              Grid.IsSharedSizeScope="True">
+        <Grid Grid.Row="11">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" 
@@ -181,7 +179,7 @@
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"
                     Padding="16,4"
-                    Click="OnDialogCancelButtonClick"/>
+                    IsCancel="True"/>
         </Grid>
     </Grid>
 </Window>

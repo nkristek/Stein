@@ -17,21 +17,16 @@ namespace Stein.Views
 
         private void ApplicationDialog_KeyDown(object sender, KeyEventArgs e)
         {
-            if (OkButton.IsEnabled && e.Key == Key.Enter)
-            {
-                e.Handled = true;
-                DialogResult = true;
-            }
+            if (!OkButton.IsEnabled || e.Key != Key.Enter)
+                return;
+
+            e.Handled = true;
+            DialogResult = true;
         }
 
         private void OnDialogOkButtonClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
-        }
-
-        private void OnDialogCancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
         }
     }
 }

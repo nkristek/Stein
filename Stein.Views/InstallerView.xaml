@@ -13,15 +13,14 @@
     <Grid IsEnabled="{Binding IsDisabled, Converter={converters:BoolToInverseBoolConverter}}"
           Margin="0,2">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" 
-                              SharedSizeGroup="NameColumn"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Name & Version -->
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -32,6 +31,7 @@
             <TextBlock Grid.Column="0"
                        FontWeight="Bold"
                        Text="{Binding Name}"
+                       TextTrimming="CharacterEllipsis"
                        VerticalAlignment="Center"
                        ToolTip="{Binding Path}"/>
 
@@ -41,9 +41,11 @@
                        VerticalAlignment="Center"/>
         </Grid>
 
+        <!-- AvailableOperations -->
         <ListBox Grid.Column="2"
                  ItemsSource="{Binding AvailableOperations}" 
                  SelectedItem="{Binding PreferredOperation}">
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -52,13 +54,13 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <RadioButton Content="{Binding ., Converter={steinconverters:InstallerOperationToLocalizedStringConverter}}"
-                                 IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+                    <TextBlock Text="{Binding ., Converter={steinconverters:InstallerOperationToLocalizedStringConverter}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Grid.Column="5"
+        <!-- Created -->
+        <TextBlock Grid.Column="4"
                    VerticalAlignment="Center"
                    Visibility="{Binding Created, Converter={converters:ValueNullToInverseVisibilityConverter}}"
                    Text="{Binding Created, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>

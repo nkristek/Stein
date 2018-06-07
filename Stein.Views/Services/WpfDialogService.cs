@@ -24,9 +24,9 @@ namespace Stein.Views.Services
             popup.IsOpen = true;
         }
 
-        public bool? ShowDialog(DialogModel dialogViewModel)
+        public bool? ShowDialog(DialogModel dialogModel)
         {
-            var dialog = CreateView<Window>(dialogViewModel);
+            var dialog = CreateView<Window>(dialogModel);
             dialog.Owner = _windowStack.Peek();
 
             _windowStack.Push(dialog);

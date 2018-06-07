@@ -37,8 +37,8 @@
     <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net46\GongSolutions.Wpf.DragDrop.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.2.1.4\lib\net47\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.2.1.5\lib\net47\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="NKristek.Wpf.Converters, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NKristek.Wpf.Converters.1.4.0\lib\net47\NKristek.Wpf.Converters.dll</HintPath>
