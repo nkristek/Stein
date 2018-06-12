@@ -22,18 +22,18 @@ The supported folder structure is:
     - installer2_deDE.msi
    
 It will generate 4 installer bundles: 
-- tmp01 - enUS 
-  - tmp01/installer1_enUS.msi
-  - tmp01/installer2_enUS.msi
-- tmp01 - deDE
-  - tmp01/installer1_deDE.msi
-  - tmp01/installer2_deDE.msi
-- tmp02 - enUS
-  - tmp02/installer1_enUS.msi
-  - tmp02/installer2_enUS.msi
-- tmp02 - deDE
-  - tmp02/installer1_deDE.msi
-  - tmp02/installer2_deDE.msi
+- build01 - enUS 
+  - build01/installer1_enUS.msi
+  - build01/installer2_enUS.msi
+- build01 - deDE
+  - build01/installer1_deDE.msi
+  - build01/installer2_deDE.msi
+- build02 - enUS
+  - build02/installer1_enUS.msi
+  - build02/installer2_enUS.msi
+- build02 - deDE
+  - build02/installer1_deDE.msi
+  - build02/installer2_deDE.msi
 
 ![Screenshot](Docs/Screenshot.PNG)
 
