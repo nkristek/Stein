@@ -11,6 +11,7 @@ namespace Stein.ViewModels
         : ViewModel
     {
         private string _path;
+
         /// <summary>
         /// FilePath of the installer
         /// </summary>
@@ -26,6 +27,7 @@ namespace Stein.ViewModels
         public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
 
         private InstallerOperation _preferredOperation;
+
         /// <summary>
         /// If the installer is enabled by the user
         /// </summary>
@@ -46,6 +48,7 @@ namespace Stein.ViewModels
         public bool IsDisabled => IsInstalled == null;
 
         private string _name;
+
         /// <summary>
         /// Name of the installer (from the Msi-properties)
         /// </summary>
@@ -56,6 +59,7 @@ namespace Stein.ViewModels
         }
 
         private Version _version;
+
         /// <summary>
         /// Version of the installer (from the Msi-properties)
         /// </summary>
@@ -66,6 +70,7 @@ namespace Stein.ViewModels
         }
 
         private string _culture;
+
         /// <summary>
         /// Culture in IetfLanguageTag-format of the installer (from the Msi-properties)
         /// </summary>
@@ -76,6 +81,7 @@ namespace Stein.ViewModels
         }
 
         private string _productCode;
+
         /// <summary>
         /// ProductCode of the installer (from the Msi-properties)
         /// </summary>
@@ -86,6 +92,7 @@ namespace Stein.ViewModels
         }
 
         private bool? _isInstalled;
+
         /// <summary>
         /// If the installer is installed
         /// </summary>
@@ -121,6 +128,7 @@ namespace Stein.ViewModels
         }
 
         private DateTime? _created;
+
         /// <summary>
         /// When the installer file was created
         /// </summary>

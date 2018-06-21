@@ -18,8 +18,6 @@ namespace Stein.ViewModels
             _themeService = themeService;
             _themeService.ThemeChanged += (sender, args) => { RaisePropertyChanged(nameof(CurrentTheme)); };
             _progressBarService = progressBarService;
-
-            Children.AddCollection(Applications, nameof(Applications));
         }
 
         [CommandCanExecuteSource(nameof(CurrentInstallation))]
@@ -38,6 +36,7 @@ namespace Stein.ViewModels
         /// <summary>
         /// List of all applications
         /// </summary>
+        [ChildViewModelCollection]
         public ObservableCollection<ApplicationViewModel> Applications { get; } = new ObservableCollection<ApplicationViewModel>();
         
         private InstallationViewModel _currentInstallation;
@@ -46,20 +45,14 @@ namespace Stein.ViewModels
         /// Is set if an operation is in progress
         /// </summary>
         [IsDirtyIgnored]
+        [ChildViewModel]
         public InstallationViewModel CurrentInstallation
         {
             get => _currentInstallation;
             set
             {
-                if (SetProperty(ref _currentInstallation, value, out var oldValue))
-                {
-                    if (oldValue != null)
-                        Children.RemoveViewModel(oldValue);
-                    if (value != null)
-                        Children.AddViewModel(value, nameof(CurrentInstallation), false);
-
+                if (SetProperty(ref _currentInstallation, value, out _))
                     _progressBarService.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
-                } 
             }
         }
 
@@ -69,19 +62,11 @@ namespace Stein.ViewModels
         /// Is set if an operation was finished
         /// </summary>
         [IsDirtyIgnored]
+        [ChildViewModel]
         public InstallationResultViewModel InstallationResult
         {
             get => _installationResult;
-            set
-            {
-                if (SetProperty(ref _installationResult, value, out var oldValue))
-                {
-                    if (oldValue != null)
-                        Children.RemoveViewModel(oldValue);
-                    if (value != null)
-                        Children.AddViewModel(value, nameof(InstallationResult), false);
-                }
-            }
+            set => SetProperty(ref _installationResult, value, out _);
         }
         
         /// <summary>

@@ -24,6 +24,7 @@ namespace Stein.ViewModels
         }
 
         private int _installCount;
+
         /// <summary>
         /// How many installers were installed
         /// </summary>
@@ -34,6 +35,7 @@ namespace Stein.ViewModels
         }
 
         private int _uninstallCount;
+
         /// <summary>
         /// How many installers were uninstalled
         /// </summary>
@@ -44,6 +46,7 @@ namespace Stein.ViewModels
         }
 
         private int _reinstallCount;
+
         /// <summary>
         /// How many installers were reinstalled
         /// </summary>
@@ -54,6 +57,7 @@ namespace Stein.ViewModels
         }
 
         private int _failedCount;
+
         /// <summary>
         /// How many installers failed to process
         /// </summary>

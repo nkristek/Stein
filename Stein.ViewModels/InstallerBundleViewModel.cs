@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,12 +11,8 @@ namespace Stein.ViewModels
     public sealed class InstallerBundleViewModel
         : ViewModel
     {
-        public InstallerBundleViewModel()
-        {
-            Children.AddCollection(Installers, nameof(Installers));
-        }
-
         private string _name;
+
         /// <summary>
         /// The name of the folder of the installer bundle
         /// </summary>
@@ -28,6 +23,7 @@ namespace Stein.ViewModels
         }
 
         private string _path;
+
         /// <summary>
         /// The full path to the folder of the installer bundle
         /// </summary>
@@ -40,6 +36,7 @@ namespace Stein.ViewModels
         /// <summary>
         /// List of installers in this installer bundle
         /// </summary>
+        [ChildViewModelCollection]
         public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();
 
         /// <summary>

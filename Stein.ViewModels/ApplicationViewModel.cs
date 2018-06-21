@@ -9,11 +9,6 @@ namespace Stein.ViewModels
     public sealed class ApplicationViewModel
         : ViewModel
     {
-        public ApplicationViewModel()
-        {
-            Children.AddCollection(InstallerBundles, nameof(InstallerBundles));
-        }
-
         [CommandCanExecuteSource(nameof(Parent))]
         public ViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; set; }
 
@@ -30,6 +25,7 @@ namespace Stein.ViewModels
         public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; set; }
         
         private string _name;
+
         /// <summary>
         /// Name of the application folder
         /// </summary>
@@ -40,6 +36,7 @@ namespace Stein.ViewModels
         }
 
         private string _path;
+
         /// <summary>
         /// Path to the application folder
         /// </summary>
@@ -50,6 +47,7 @@ namespace Stein.ViewModels
         }
 
         private Guid _folderId;
+
         /// <summary>
         /// The Id of the ApplicationFolder in the configuration
         /// </summary>
@@ -60,6 +58,7 @@ namespace Stein.ViewModels
         }
 
         private bool _enableSilentInstallation;
+
         /// <summary>
         /// If the installations should proceed without UI
         /// </summary>
@@ -70,6 +69,7 @@ namespace Stein.ViewModels
         }
 
         private bool _disableReboot;
+
         /// <summary>
         /// If the installers should be able to automatically reboot if necessary
         /// </summary>
@@ -80,6 +80,7 @@ namespace Stein.ViewModels
         }
 
         private bool _enableInstallationLogging;
+
         /// <summary>
         /// If logging during installation should be enabled
         /// </summary>
@@ -92,16 +93,18 @@ namespace Stein.ViewModels
         /// <summary>
         /// List of all installer bundles of this application
         /// </summary>
+        [ChildViewModelCollection]
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
         
         private InstallerBundleViewModel _selectedInstallerBundle;
+
         /// <summary>
         /// The currently selected InstallerBundleViewModel
         /// </summary>
+        // do not mark the viewmodel as ChildViewModel because it will be already added through the collection
         public InstallerBundleViewModel SelectedInstallerBundle
         {
             get => _selectedInstallerBundle;
-            // do not register the viewmodel here because it will be already registered through the collection
             set => SetProperty(ref _selectedInstallerBundle, value, out _);
         }
     }

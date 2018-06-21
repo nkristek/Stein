@@ -10,6 +10,7 @@ namespace Stein.ViewModels
         : DialogModel
     {
         private string _name;
+
         /// <summary>
         /// The name of the folder of the installer bundle
         /// </summary>
@@ -24,6 +25,7 @@ namespace Stein.ViewModels
         }
 
         private string _path;
+
         /// <summary>
         /// The full path to the folder of the installer bundle
         /// </summary>

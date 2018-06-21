@@ -20,6 +20,7 @@ namespace Stein.ViewModels
         public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; set; }
 
         private string _name;
+
         /// <summary>
         /// Name of the application folder
         /// </summary>
@@ -30,6 +31,7 @@ namespace Stein.ViewModels
         }
 
         private string _path;
+
         /// <summary>
         /// Path to the application folder
         /// </summary>
@@ -40,6 +42,7 @@ namespace Stein.ViewModels
         }
 
         private Guid _folderId;
+
         /// <summary>
         /// The Id of the ApplicationFolder in the configuration
         /// </summary>
@@ -50,6 +53,7 @@ namespace Stein.ViewModels
         }
 
         private bool _enableSilentInstallation;
+
         /// <summary>
         /// If the installations should proceed without UI
         /// </summary>
@@ -60,6 +64,7 @@ namespace Stein.ViewModels
         }
 
         private bool _disableReboot;
+
         /// <summary>
         /// If the installers should be able to automatically reboot if necessary
         /// </summary>
@@ -70,6 +75,7 @@ namespace Stein.ViewModels
         }
 
         private bool _enableInstallationLogging;
+
         /// <summary>
         /// If logging during installation should be enabled
         /// </summary>

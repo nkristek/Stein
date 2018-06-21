@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
@@ -27,8 +28,6 @@ namespace Stein.ViewModels
             Uri = new Uri("https://github.com/nkristek/Stein");
             Publisher = publisher?.Company;
             OpenUriCommand = new RelayCommand(parameter => Process.Start(new ProcessStartInfo(Uri.AbsoluteUri)));
-
-            Children.AddCollection(Dependencies, nameof(Dependencies));
         }
 
         public Command OpenUriCommand { get; }
@@ -36,9 +35,11 @@ namespace Stein.ViewModels
         /// <summary>
         /// All dependencies of this application
         /// </summary>
+        [ChildViewModelCollection]
         public ObservableCollection<DependencyViewModel> Dependencies { get; } = new ObservableCollection<DependencyViewModel>();
 
         private string _name;
+
         /// <summary>
         /// Name of the application
         /// </summary>
@@ -49,6 +50,7 @@ namespace Stein.ViewModels
         }
 
         private string _description;
+
         /// <summary>
         /// Description of the application
         /// </summary>
@@ -59,6 +61,7 @@ namespace Stein.ViewModels
         }
 
         private Version _version;
+
         /// <summary>
         /// Version of the application
         /// </summary>
@@ -69,6 +72,7 @@ namespace Stein.ViewModels
         }
 
         private string _copyright;
+
         /// <summary>
         /// Copyright of the application
         /// </summary>
@@ -79,6 +83,7 @@ namespace Stein.ViewModels
         }
 
         private string _additionalNotes;
+
         /// <summary>
         /// Additional notes of the application
         /// </summary>
@@ -89,6 +94,7 @@ namespace Stein.ViewModels
         }
 
         private Uri _uri;
+
         /// <summary>
         /// Uri of the application
         /// </summary>
@@ -99,6 +105,7 @@ namespace Stein.ViewModels
         }
 
         private string _publisher;
+
         /// <summary>
         /// Publisher of the application
         /// </summary>

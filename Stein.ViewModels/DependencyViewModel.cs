@@ -14,6 +14,7 @@ namespace Stein.ViewModels
         }
 
         private string _name;
+
         /// <summary>
         /// Name of the application
         /// </summary>
@@ -24,6 +25,7 @@ namespace Stein.ViewModels
         }
 
         private Uri _uri;
+
         /// <summary>
         /// Uri of the application
         /// </summary>

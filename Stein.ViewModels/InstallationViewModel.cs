@@ -8,6 +8,7 @@ namespace Stein.ViewModels
         : ViewModel
     {
         private string _name;
+
         /// <summary>
         /// Name of the current installer
         /// </summary>
@@ -18,6 +19,7 @@ namespace Stein.ViewModels
         }
 
         private InstallationState _state;
+
         /// <summary>
         /// Current state of the installation
         /// </summary>
@@ -28,6 +30,7 @@ namespace Stein.ViewModels
         }
         
         private int _installerCount;
+
         /// <summary>
         /// Total count of operations of the current installation
         /// </summary>
@@ -38,6 +41,7 @@ namespace Stein.ViewModels
         }
 
         private int _currentIndex;
+
         /// <summary>
         /// At which installer the current operation is
         /// </summary>
