@@ -58,7 +58,7 @@ namespace Stein.Services.Types
             if (!long.TryParse(value, out var valueAsLong))
                 return null;
 
-            return DateTimeOffset.FromUnixTimeMilliseconds(valueAsLong).UtcDateTime;
+            return DateTimeOffset.FromUnixTimeMilliseconds(valueAsLong).LocalDateTime;
         }
 
         public static DateTime TrimDateTimeToXmlAccuracy(DateTime dateTime)

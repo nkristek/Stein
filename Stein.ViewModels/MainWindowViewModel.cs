@@ -54,9 +54,9 @@ namespace Stein.ViewModels
                 if (SetProperty(ref _currentInstallation, value, out var oldValue))
                 {
                     if (oldValue != null)
-                        RemoveChildViewModel(oldValue);
+                        Children.RemoveViewModel(oldValue);
                     if (value != null)
-                        AddChildViewModel(value, false);
+                        Children.AddViewModel(value, nameof(CurrentInstallation), false);
 
                     _progressBarService.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
                 } 
@@ -77,9 +77,9 @@ namespace Stein.ViewModels
                 if (SetProperty(ref _installationResult, value, out var oldValue))
                 {
                     if (oldValue != null)
-                        RemoveChildViewModel(oldValue);
+                        Children.RemoveViewModel(oldValue);
                     if (value != null)
-                        AddChildViewModel(value, false);
+                        Children.AddViewModel(value, nameof(InstallationResult), false);
                 }
             }
         }

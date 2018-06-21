@@ -78,10 +78,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdonisUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.1.0.0\lib\net461\AdonisUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\adonis-ui\AdonisUI.ClassicTheme\bin\Release\AdonisUI.dll</HintPath>
     </Reference>
     <Reference Include="AdonisUI.ClassicTheme, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.ClassicTheme.1.1.0\lib\net461\AdonisUI.ClassicTheme.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\adonis-ui\AdonisUI.ClassicTheme\bin\Release\AdonisUI.ClassicTheme.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -89,8 +91,8 @@
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.2.1.5\lib\net47\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.2.2.1\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />

@@ -32,13 +32,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdonisUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.1.0.0\lib\net461\AdonisUI.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\adonis-ui\AdonisUI.ClassicTheme\bin\Release\AdonisUI.dll</HintPath>
     </Reference>
     <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net46\GongSolutions.Wpf.DragDrop.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.2.1.5\lib\net47\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="NKristek.Smaragd, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.2.2.1\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="NKristek.Wpf.Converters, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NKristek.Wpf.Converters.1.4.0\lib\net47\NKristek.Wpf.Converters.dll</HintPath>
@@ -47,6 +51,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -54,9 +61,11 @@
     <Compile Include="AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DateTimeToRelativeStringConverter.cs" />
     <Compile Include="Converters\InstallationStateToLocalizedStringConverter.cs" />
     <Compile Include="Converters\InstallerOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\IntToNthValueConverter.cs" />
+    <Compile Include="Resources\PeriodicBindingUpdateBehavior.cs" />
     <Compile Include="Ressources.cs" />
     <Compile Include="Services\WpfDialogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,12 +118,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\ValidatingTextBox.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\VirtualizingItemsControl.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views.xaml">
       <Generator>MSBuild:Compile</Generator>

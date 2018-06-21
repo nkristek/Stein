@@ -7,6 +7,8 @@
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:resources="clr-namespace:Stein.Views.Resources"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
@@ -17,7 +19,7 @@
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="DateColumn"/>
         </Grid.ColumnDefinitions>
 
         <!-- Name & Version -->
@@ -63,6 +65,10 @@
         <TextBlock Grid.Column="4"
                    VerticalAlignment="Center"
                    Visibility="{Binding Created, Converter={converters:ValueNullToInverseVisibilityConverter}}"
-                   Text="{Binding Created, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
+                   Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}">
+            <i:Interaction.Behaviors>
+                <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
+            </i:Interaction.Behaviors>
+        </TextBlock>
     </Grid>
 </UserControl>

@@ -221,7 +221,7 @@
     <value>The installer file at {0} was not found.</value>
   </data>
   <data name="XInstallersFailed" xml:space="preserve">
-    <value>{3} installers failed.</value>
+    <value>{0} installers failed.</value>
   </data>
   <data name="DisableReboot" xml:space="preserve">
     <value>Disable reboot after installation</value>
@@ -249,5 +249,32 @@
   </data>
   <data name="Dependencies" xml:space="preserve">
     <value>Dependencies</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SwitchTheme" xml:space="preserve">
+    <value>Switch theme</value>
+  </data>
+  <data name="OneHourAgo" xml:space="preserve">
+    <value>1 hour ago</value>
+  </data>
+  <data name="OneMinuteAgo" xml:space="preserve">
+    <value>1 minute ago</value>
+  </data>
+  <data name="OneSecondAgo" xml:space="preserve">
+    <value>1 second ago</value>
+  </data>
+  <data name="XHoursAgo" xml:space="preserve">
+    <value>{0} hours ago</value>
+  </data>
+  <data name="XMinutesAgo" xml:space="preserve">
+    <value>{0} minutes ago</value>
+  </data>
+  <data name="XSecondsAgo" xml:space="preserve">
+    <value>{0} seconds ago</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Yesterday</value>
   </data>
 </root>

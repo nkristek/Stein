@@ -9,6 +9,9 @@
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:resources="clr-namespace:Stein.Views.Resources"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel, IsDesignTimeCreatable=True}">
 
@@ -87,7 +90,6 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="8"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="12"/> <!-- TODO: temporary fix for https://github.com/benruehl/adonis-ui/issues/5 -->
                             </Grid.ColumnDefinitions>
                             
                             <!-- Name & Culture --> 
@@ -113,7 +115,11 @@
             <TextBlock Grid.Column="2"
                        VerticalAlignment="Center"
                        DataContext="{Binding SelectedInstallerBundle}"
-                       Text="{Binding NewestInstallerCreationTime, Converter={converters:DateTimeToStringConverter}, ConverterParameter=g}"/>
+                       Text="{Binding NewestInstallerCreationTime, Converter={steinconverters:DateTimeToRelativeStringConverter}, ConverterParameter=g}"> 
+                <i:Interaction.Behaviors>
+                    <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
+                </i:Interaction.Behaviors>
+            </TextBlock>
 
             <adonisControls:SplitButton Grid.Column="4"
                                   Content="{x:Static localization:Strings.Install}"

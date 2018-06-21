@@ -64,7 +64,8 @@
                         Padding="2"
                         DataContext="{Binding RefreshApplicationsCommand}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
-                        Command="{Binding}">
+                        Command="{Binding}"
+                        ToolTip="{x:Static localization:Strings.Refresh}">
                     <Button.Content>
                         <ContentControl Width="16"
                                         Height="16"
@@ -115,7 +116,8 @@
                         Height="28"
                         Padding="4"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
-                        Command="{Binding ChangeThemeCommand}">
+                        Command="{Binding ChangeThemeCommand}"
+                        ToolTip="{x:Static localization:Strings.SwitchTheme}">
                     <Button.ContentTemplate>
                         <MultiBinding Converter="{steinconverters:IntToNthValueConverter}">
                             <Binding Path="CurrentTheme"/>
@@ -132,7 +134,8 @@
                         Padding="4"
                         ContentTemplate="{StaticResource InfoIconVariant}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
-                        Command="{Binding ShowInfoDialogCommand}"/>
+                        Command="{Binding ShowInfoDialogCommand}"
+                        ToolTip="{x:Static localization:Strings.About}"/>
             </Grid>
         </Grid>
 

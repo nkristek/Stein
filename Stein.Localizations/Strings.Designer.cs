@@ -286,6 +286,33 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1 hour ago.
+        /// </summary>
+        public static string OneHourAgo {
+            get {
+                return ResourceManager.GetString("OneHourAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 minute ago.
+        /// </summary>
+        public static string OneMinuteAgo {
+            get {
+                return ResourceManager.GetString("OneMinuteAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 second ago.
+        /// </summary>
+        public static string OneSecondAgo {
+            get {
+                return ResourceManager.GetString("OneSecondAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open Folder.
         /// </summary>
         public static string OpenFolder {
@@ -336,6 +363,15 @@ namespace Stein.Localizations {
         public static string Ready {
             get {
                 return ResourceManager.GetString("Ready", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
             }
         }
         
@@ -404,6 +440,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch theme.
+        /// </summary>
+        public static string SwitchTheme {
+            get {
+                return ResourceManager.GetString("SwitchTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uninstall.
         /// </summary>
         public static string Uninstall {
@@ -449,11 +494,47 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3} installers failed..
+        ///   Looks up a localized string similar to {0} hours ago.
+        /// </summary>
+        public static string XHoursAgo {
+            get {
+                return ResourceManager.GetString("XHoursAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} installers failed..
         /// </summary>
         public static string XInstallersFailed {
             get {
                 return ResourceManager.GetString("XInstallersFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes ago.
+        /// </summary>
+        public static string XMinutesAgo {
+            get {
+                return ResourceManager.GetString("XMinutesAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} seconds ago.
+        /// </summary>
+        public static string XSecondsAgo {
+            get {
+                return ResourceManager.GetString("XSecondsAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yesterday.
+        /// </summary>
+        public static string Yesterday {
+            get {
+                return ResourceManager.GetString("Yesterday", resourceCulture);
             }
         }
     }

@@ -247,4 +247,31 @@
   <data name="Dependencies" xml:space="preserve">
     <value>Abhängigkeiten</value>
   </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="SwitchTheme" xml:space="preserve">
+    <value>Design wechseln</value>
+  </data>
+  <data name="OneHourAgo" xml:space="preserve">
+    <value>Vor 1 Stunde</value>
+  </data>
+  <data name="OneMinuteAgo" xml:space="preserve">
+    <value>Vor 1 Minute</value>
+  </data>
+  <data name="OneSecondAgo" xml:space="preserve">
+    <value>Vor 1 Sekunde</value>
+  </data>
+  <data name="XHoursAgo" xml:space="preserve">
+    <value>Vor {0} Stunden</value>
+  </data>
+  <data name="XMinutesAgo" xml:space="preserve">
+    <value>Vor {0} Minuten</value>
+  </data>
+  <data name="XSecondsAgo" xml:space="preserve">
+    <value>Vor {0} Sekunden</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Gestern</value>
+  </data>
 </root>
