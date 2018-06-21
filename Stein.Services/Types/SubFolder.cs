@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Stein.Services.Types
@@ -7,11 +8,27 @@ namespace Stein.Services.Types
     [Serializable]
     public class SubFolder
     {
-        [XmlElement("Name")]
+        [XmlIgnore]
         public string Name;
 
-        [XmlElement("Path")]
+        [XmlElement("Name")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CData NameXml
+        {
+            get => Name;
+            set => Name = value;
+        }
+
+        [XmlIgnore]
         public string Path;
+
+        [XmlElement("Path")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CData PathXml
+        {
+            get => Path;
+            set => Path = value;
+        }
 
         [XmlArray("Installers")]
         [XmlArrayItem("Installer")]

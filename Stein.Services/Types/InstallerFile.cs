@@ -7,11 +7,27 @@ namespace Stein.Services.Types
     [Serializable]
     public class InstallerFile
     {
-        [XmlElement("Name")]
+        [XmlIgnore]
         public string Name;
 
-        [XmlElement("Path")]
+        [XmlElement("Name")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CData NameXml
+        {
+            get => Name;
+            set => Name = value;
+        }
+
+        [XmlIgnore]
         public string Path;
+
+        [XmlElement("Path")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public CData PathXml
+        {
+            get => Path;
+            set => Path = value;
+        }
 
         [XmlElement("IsEnabled")]
         public bool IsEnabled;

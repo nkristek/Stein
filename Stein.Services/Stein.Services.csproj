@@ -51,6 +51,7 @@
     <Compile Include="IMsiService.cs" />
     <Compile Include="IViewModelService.cs" />
     <Compile Include="Types\ApplicationFolder.cs" />
+    <Compile Include="Types\CData.cs" />
     <Compile Include="Types\Configuration.cs" />
     <Compile Include="Types\DateTimeXml.cs" />
     <Compile Include="Types\InstallerFile.cs" />
