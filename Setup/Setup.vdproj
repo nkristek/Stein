@@ -189,18 +189,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_22F16DC87B1F6B1836B0F38B2AB47752"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_22F16DC87B1F6B1836B0F38B2AB47752"
-        "OwnerKey" = "8:_AB5FECFACE79C26FF0F55AF49B47AA66"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_284EE1F96AFBC58C05F727880AE7429E"
         "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "MsmSig" = "8:_UNDEFINED"
@@ -364,18 +352,6 @@
         "Entry"
         {
         "MsmKey" = "8:_516E173C32DEAC358D988B1FFD1E76D8"
-        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5192ED1D138929D4B0ECB1091606DCDC"
-        "OwnerKey" = "8:_703015DF935AF957DD55989EDD342E8E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5192ED1D138929D4B0ECB1091606DCDC"
         "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -807,6 +783,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C15704A2A324BB4A6D80AC8D522F6035"
+        "OwnerKey" = "8:_703015DF935AF957DD55989EDD342E8E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C15704A2A324BB4A6D80AC8D522F6035"
+        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C3CA30450327A9BBAEA9CF7DD7C98187"
         "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
         "MsmSig" = "8:_UNDEFINED"
@@ -821,6 +809,18 @@
         {
         "MsmKey" = "8:_CA9F6894A56C739A7AE604AA6AA5A7B6"
         "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CEC146F2E7A162AD47D267850D53F573"
+        "OwnerKey" = "8:_E9FF6F79877B4E2487779AAD5EE23B4F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CEC146F2E7A162AD47D267850D53F573"
+        "OwnerKey" = "8:_AB5FECFACE79C26FF0F55AF49B47AA66"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1048,7 +1048,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5192ED1D138929D4B0ECB1091606DCDC"
+        "OwnerKey" = "8:_C15704A2A324BB4A6D80AC8D522F6035"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1108,13 +1108,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9285B754904A6929202817A784B9FA66"
+        "OwnerKey" = "8:_CEC146F2E7A162AD47D267850D53F573"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_22F16DC87B1F6B1836B0F38B2AB47752"
+        "OwnerKey" = "8:_9285B754904A6929202817A784B9FA66"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2491,37 +2491,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_22F16DC87B1F6B1836B0F38B2AB47752"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_22F16DC87B1F6B1836B0F38B2AB47752"
-                    {
-                    "Name" = "8:Microsoft.Deployment.WindowsInstaller.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Microsoft.Deployment.WindowsInstaller.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_284EE1F96AFBC58C05F727880AE7429E"
             {
             "AssemblyRegister" = "3:1"
@@ -2588,7 +2557,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.Helpers, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.Helpers, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_2965DB8630907F7A417987D4721BCE53"
@@ -3173,37 +3142,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5192ED1D138929D4B0ECB1091606DCDC"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_5192ED1D138929D4B0ECB1091606DCDC"
-                    {
-                    "Name" = "8:System.Windows.Interactivity.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Windows.Interactivity.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_581E55FF2EF671A12904B74C08313937"
             {
             "AssemblyRegister" = "3:1"
@@ -3394,7 +3332,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.Views, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.Views, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_703015DF935AF957DD55989EDD342E8E"
@@ -3425,7 +3363,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.Localizations, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.Localizations, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_71B15325C1A61D95D8284F6643C18DA1"
@@ -3921,7 +3859,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.Presentation, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.Presentation, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_9285B754904A6929202817A784B9FA66"
@@ -4386,7 +4324,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.Services, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.Services, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_AB5FECFACE79C26FF0F55AF49B47AA66"
@@ -4448,7 +4386,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Stein.ViewModels, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Stein.ViewModels, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_AC14922FD5C772A68023648D8D7E7171"
@@ -4785,6 +4723,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C15704A2A324BB4A6D80AC8D522F6035"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C15704A2A324BB4A6D80AC8D522F6035"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Windows.Interactivity.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C3CA30450327A9BBAEA9CF7DD7C98187"
             {
             "AssemblyRegister" = "3:1"
@@ -4861,6 +4830,37 @@
                     }
                 }
             "SourcePath" = "8:System.Diagnostics.Contracts.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CEC146F2E7A162AD47D267850D53F573"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_CEC146F2E7A162AD47D267850D53F573"
+                    {
+                    "Name" = "8:Microsoft.Deployment.WindowsInstaller.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Deployment.WindowsInstaller.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C156AECAB91447C7B68D3B0BD23A96EC"
@@ -5926,15 +5926,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Stein"
-        "ProductCode" = "8:{154F5AF4-2026-4265-BB82-05EA148CE2F6}"
-        "PackageCode" = "8:{E78254B8-34F3-46B1-88DF-C2B42C1E7E76}"
+        "ProductCode" = "8:{2EB9AAF0-C2BC-459E-A1CA-BFBDE52CDD4F}"
+        "PackageCode" = "8:{0691A82C-2478-4CD7-8934-64B7986E39D4}"
         "UpgradeCode" = "8:{86B46E18-3ED3-4E49-8A31-7FFB270816CC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.0.3"
         "Manufacturer" = "8:Niclas Kristek"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/nkristek/Stein"
