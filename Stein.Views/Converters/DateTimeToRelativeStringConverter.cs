@@ -53,13 +53,13 @@ namespace Stein.Views.Converters
             if (new DateTime(now.Year, now.Month, now.Day) < dateTime && dateTime < now.AddDays(-1))
             {
                 // is yesterday
-                return $"{Strings.Yesterday} {dateTime.ToShortTimeString()}";
+                return $"{Strings.Yesterday} {dateTime.ToString("t", culture)}";
             }
 
             if (parameter is string s && !String.IsNullOrEmpty(s))
-                return dateTime.ToString(s);
+                return dateTime.ToString(s, culture);
 
-            return dateTime.ToString(culture);
+            return dateTime.ToString("d", culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

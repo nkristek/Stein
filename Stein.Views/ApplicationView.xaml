@@ -115,7 +115,7 @@
             <TextBlock Grid.Column="2"
                        VerticalAlignment="Center"
                        DataContext="{Binding SelectedInstallerBundle}"
-                       Text="{Binding NewestInstallerCreationTime, Converter={steinconverters:DateTimeToRelativeStringConverter}, ConverterParameter=g}"> 
+                       Text="{Binding NewestInstallerCreationTime, Converter={steinconverters:DateTimeToRelativeStringConverter}}"> 
                 <i:Interaction.Behaviors>
                     <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
                 </i:Interaction.Behaviors>
