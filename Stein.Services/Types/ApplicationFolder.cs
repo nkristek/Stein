@@ -10,10 +10,10 @@ namespace Stein.Services.Types
     {
         [XmlElement("Id")]
         public Guid Id;
-
+        
         [XmlIgnore]
         public string Name;
-
+        
         [XmlElement("Name")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CData NameXml
@@ -24,7 +24,7 @@ namespace Stein.Services.Types
 
         [XmlIgnore]
         public string Path;
-
+        
         [XmlElement("Path")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CData PathXml
@@ -32,16 +32,22 @@ namespace Stein.Services.Types
             get => Path;
             set => Path = value;
         }
-
+        
         [XmlElement("EnableSilentInstallation")]
-        public bool EnableSilentInstallation;
-
+        public bool EnableSilentInstallation = true;
+        
         [XmlElement("DisableReboot")]
-        public bool DisableReboot;
-
+        public bool DisableReboot = true;
+        
         [XmlElement("EnableInstallationLogging")]
-        public bool EnableInstallationLogging;
-
+        public bool EnableInstallationLogging = true;
+        
+        [XmlElement("AutomaticallyDeleteInstallationLogs")]
+        public bool AutomaticallyDeleteInstallationLogs = true;
+        
+        [XmlElement("KeepNewestInstallationLogs")]
+        public int KeepNewestInstallationLogs = 10;
+        
         [XmlArray("SubFolders")]
         [XmlArrayItem("SubFolder")]
         public List<SubFolder> SubFolders = new List<SubFolder>();

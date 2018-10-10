@@ -73,7 +73,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
             Log.Info($"Starting uninstall operation with {installers.Count} installers.");
             currentInstallation.InstallerCount = installers.Count;
-            
+
+            var logFolderPath = application.EnableInstallationLogging ? GetLogFileFolderPathForApplication(application.Name) : null;
+
             foreach (var installer in installers)
             {
                 try
@@ -96,9 +98,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                     currentInstallation.State = InstallationState.Uninstall;
                     Log.Info($"Uninstalling {installer.Name}.");
 
-                    var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(application.Name, installer.Name, "uninstall") : null;
+                    var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "uninstall") : null;
                     await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
-
+                    
                     installationResult.UninstallCount++;
                 }
                 catch (Exception exception)
@@ -108,21 +110,52 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 }
             }
 
+            if (application.EnableInstallationLogging && application.AutomaticallyDeleteInstallationLogs)
+            {
+                try
+                {
+                    RemoveOldestFiles(logFolderPath, application.KeepNewestInstallationLogs);
+                }
+                catch (Exception exception)
+                {
+                    Log.Warn("Deleting old log files failed", exception);
+                }
+            }
+
             return installationResult;
         }
 
-        private static string GetLogFilePathForInstaller(string applicationName, string installerName, string installMethod)
+        private static void RemoveOldestFiles(string folderPath, int keepNewestLogFiles)
+        {
+            var logFolder = new DirectoryInfo(folderPath);
+            foreach (var file in logFolder.EnumerateFiles().OrderByDescending(f => f.CreationTime).Skip(Math.Max(0, keepNewestLogFiles)))
+            {
+                try
+                {
+                    file.Delete();
+                }
+                catch (Exception exception)
+                {
+                    Log.Warn("Deleting log file failed", exception);
+                }
+            }
+        }
+
+        private static string GetLogFileFolderPathForApplication(string applicationName)
         {
             var logFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
             if (!Directory.Exists(logFolderPath))
                 Directory.CreateDirectory(logFolderPath);
+            return logFolderPath;
+        }
 
+        private static string GetLogFilePathForInstaller(string applicationLogFolderName, string installerName, string installMethod)
+        {
             var currentDate = DateTime.Now;
             var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
-            var logFilePath = Path.Combine(logFolderPath, logFileName);
+            var logFilePath = Path.Combine(applicationLogFolderName, logFileName);
             if (File.Exists(logFilePath))
                 throw new IOException("File already exists");
-
             return logFilePath;
         }
     }

@@ -97,7 +97,9 @@ namespace Stein.ViewModels
                 Path = applicationFolder.Path,
                 EnableSilentInstallation = applicationFolder.EnableSilentInstallation,
                 DisableReboot = applicationFolder.DisableReboot,
-                EnableInstallationLogging = applicationFolder.EnableInstallationLogging
+                EnableInstallationLogging = applicationFolder.EnableInstallationLogging,
+                AutomaticallyDeleteInstallationLogs = applicationFolder.AutomaticallyDeleteInstallationLogs,
+                KeepNewestInstallationLogs = applicationFolder.KeepNewestInstallationLogs
             };
             viewModel.EditApplicationCommand = new EditApplicationCommand(viewModel, _dialogService, this);
             viewModel.DeleteApplicationCommand = new DeleteApplicationCommand(viewModel, _dialogService, this);
@@ -129,20 +131,25 @@ namespace Stein.ViewModels
                     Path = application.Path,
                     EnableSilentInstallation = application.EnableSilentInstallation,
                     DisableReboot = application.DisableReboot,
-                    EnableInstallationLogging = application.EnableInstallationLogging
+                    EnableInstallationLogging = application.EnableInstallationLogging,
+                    AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs,
+                    KeepNewestInstallationLogs = application.KeepNewestInstallationLogs
                 };
             }
             else
             {
+                var defaultValues = new ApplicationFolder();
                 viewModel = new ApplicationDialogModel
                 {
                     Parent = parent,
                     Title = Strings.AddFolder,
-                    Name = String.Empty,
-                    Path = String.Empty,
-                    EnableSilentInstallation = true,
-                    DisableReboot = true,
-                    EnableInstallationLogging = true
+                    Name = defaultValues.Name,
+                    Path = defaultValues.Path,
+                    EnableSilentInstallation = defaultValues.EnableSilentInstallation,
+                    DisableReboot = defaultValues.DisableReboot,
+                    EnableInstallationLogging = defaultValues.EnableInstallationLogging,
+                    AutomaticallyDeleteInstallationLogs = defaultValues.AutomaticallyDeleteInstallationLogs,
+                    KeepNewestInstallationLogs = defaultValues.KeepNewestInstallationLogs
                 };
             }
 
@@ -287,6 +294,8 @@ namespace Stein.ViewModels
             applicationFolder.EnableSilentInstallation = application.EnableSilentInstallation;
             applicationFolder.DisableReboot = application.DisableReboot;
             applicationFolder.EnableInstallationLogging = application.EnableInstallationLogging;
+            applicationFolder.AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs;
+            applicationFolder.KeepNewestInstallationLogs = application.KeepNewestInstallationLogs;
             
             _configurationService.SaveConfiguration();
 
@@ -315,6 +324,8 @@ namespace Stein.ViewModels
             applicationFolder.EnableSilentInstallation = applicationDialog.EnableSilentInstallation;
             applicationFolder.DisableReboot = applicationDialog.DisableReboot;
             applicationFolder.EnableInstallationLogging = applicationDialog.EnableInstallationLogging;
+            applicationFolder.AutomaticallyDeleteInstallationLogs = applicationDialog.AutomaticallyDeleteInstallationLogs;
+            applicationFolder.KeepNewestInstallationLogs = applicationDialog.KeepNewestInstallationLogs;
 
             _configurationService.SaveConfiguration();
         }
@@ -358,6 +369,8 @@ namespace Stein.ViewModels
             application.EnableSilentInstallation = applicationFolder.EnableSilentInstallation;
             application.DisableReboot = applicationFolder.DisableReboot;
             application.EnableInstallationLogging = applicationFolder.EnableInstallationLogging;
+            application.AutomaticallyDeleteInstallationLogs = applicationFolder.AutomaticallyDeleteInstallationLogs;
+            application.KeepNewestInstallationLogs = applicationFolder.KeepNewestInstallationLogs;
 
             var installerBundles = CreateOrUpdateInstallerBundleViewModels(applicationFolder, application, application.InstallerBundles).ToList();
             application.InstallerBundles.Clear();

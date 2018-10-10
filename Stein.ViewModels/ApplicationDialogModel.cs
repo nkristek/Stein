@@ -13,6 +13,8 @@ namespace Stein.ViewModels
         {
             AddValidation(() => Name, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.NameEmpty));
             AddValidation(() => Path, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.PathEmpty));
+            AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out _), Strings.NaN));
+            AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out var parsedValue) && parsedValue >= 1, Strings.NumberShouldBeGreaterThanZero));
         }
 
         public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; set; }
@@ -83,6 +85,37 @@ namespace Stein.ViewModels
         {
             get => _enableInstallationLogging;
             set => SetProperty(ref _enableInstallationLogging, value, out _);
+        }
+
+        private bool _automaticallyDeleteInstallationLogs;
+
+        /// <summary>
+        /// If installation logs should be deleted automatically
+        /// </summary>
+        public bool AutomaticallyDeleteInstallationLogs
+        {
+            get => _automaticallyDeleteInstallationLogs;
+            set => SetProperty(ref _automaticallyDeleteInstallationLogs, value, out _);
+        }
+
+        private string _keepNewestInstallationLogsString;
+
+        /// <summary>
+        /// How many installation logs should be kept. The oldest ones will be deleted first.
+        /// </summary>
+        public string KeepNewestInstallationLogsString
+        {
+            get => _keepNewestInstallationLogsString;
+            set => SetProperty(ref _keepNewestInstallationLogsString, value, out _);
+        }
+
+        /// <summary>
+        /// How many installation logs should be kept. The oldest ones will be deleted first.
+        /// </summary>
+        public int KeepNewestInstallationLogs
+        {
+            get => int.TryParse(KeepNewestInstallationLogsString, out var value) ? value : default(int);
+            set => KeepNewestInstallationLogsString = value.ToString();
         }
     }
 }

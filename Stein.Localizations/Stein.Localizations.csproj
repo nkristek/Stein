@@ -49,8 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.de.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.de.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

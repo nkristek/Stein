@@ -130,6 +130,10 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -142,6 +146,29 @@
                     Content="{x:Static localization:Strings.OpenFolder}"
                     Padding="16,4"
                     Command="{Binding OpenLogFolderCommand}"/>
+
+            <CheckBox Grid.Column="6"
+                      VerticalAlignment="Center"
+                      IsEnabled="{Binding EnableInstallationLogging}"
+                      IsChecked="{Binding AutomaticallyDeleteInstallationLogs}">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{x:Static localization:Strings.KeepNewest}"
+                               Margin="0, 0, 8, 0"/>
+
+                    <TextBox VerticalContentAlignment="Center"
+                             MinWidth="40"
+                             HorizontalContentAlignment="Right"
+                             Text="{Binding KeepNewestInstallationLogsString, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                             IsEnabled="{Binding AutomaticallyDeleteInstallationLogs}"/>
+
+                </StackPanel>
+                
+            </CheckBox>
+
+
+
         </Grid>
 
         <!-- Dialog Buttons -->

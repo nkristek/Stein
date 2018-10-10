@@ -277,4 +277,13 @@
   <data name="Yesterday" xml:space="preserve">
     <value>Yesterday</value>
   </data>
+  <data name="KeepNewest" xml:space="preserve">
+    <value>only keep newest</value>
+  </data>
+  <data name="NaN" xml:space="preserve">
+    <value>Not a valid number.</value>
+  </data>
+  <data name="NumberShouldBeGreaterThanZero" xml:space="preserve">
+    <value>The number has to be greater than 0.</value>
+  </data>
 </root>

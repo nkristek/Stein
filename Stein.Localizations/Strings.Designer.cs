@@ -232,6 +232,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to only keep newest.
+        /// </summary>
+        public static string KeepNewest {
+            get {
+                return ResourceManager.GetString("KeepNewest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading….
         /// </summary>
         public static string Loading {
@@ -259,6 +268,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not a valid number..
+        /// </summary>
+        public static string NaN {
+            get {
+                return ResourceManager.GetString("NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No dialog found to display this DialogModel..
         /// </summary>
         public static string NoDialogExistsForDialogModel {
@@ -273,6 +291,15 @@ namespace Stein.Localizations {
         public static string Nothing {
             get {
                 return ResourceManager.GetString("Nothing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The number has to be greater than 0..
+        /// </summary>
+        public static string NumberShouldBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("NumberShouldBeGreaterThanZero", resourceCulture);
             }
         }
         

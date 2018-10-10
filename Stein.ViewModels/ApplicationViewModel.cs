@@ -101,11 +101,33 @@ namespace Stein.ViewModels
         /// <summary>
         /// The currently selected InstallerBundleViewModel
         /// </summary>
-        // do not mark the viewmodel as ChildViewModel because it will be already added through the collection
+        // note: do not set ChildViewModelAttribute because it will be already added through the collection
         public InstallerBundleViewModel SelectedInstallerBundle
         {
             get => _selectedInstallerBundle;
             set => SetProperty(ref _selectedInstallerBundle, value, out _);
+        }
+
+        private bool _automaticallyDeleteInstallationLogs;
+
+        /// <summary>
+        /// If installation logs should be deleted automatically
+        /// </summary>
+        public bool AutomaticallyDeleteInstallationLogs
+        {
+            get => _automaticallyDeleteInstallationLogs;
+            set => SetProperty(ref _automaticallyDeleteInstallationLogs, value, out _);
+        }
+
+        private int _keepNewestInstallationLogs;
+
+        /// <summary>
+        /// How many installation logs should be kept. The oldest ones will be deleted first.
+        /// </summary>
+        public int KeepNewestInstallationLogs
+        {
+            get => _keepNewestInstallationLogs;
+            set => SetProperty(ref _keepNewestInstallationLogs, value, out _);
         }
     }
 }
