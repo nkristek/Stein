@@ -51,6 +51,7 @@ It will start installers with the "/norestart" option which means the installer 
 ### Install log
 
 It will start installers with the "/L*V LOGPATH" option which means the installer should extensively log all operations.
+You can optionally set a limit on how many log files should be kept. After an operation, the oldest log files will be deleted.
 
 ## Contribution
 
