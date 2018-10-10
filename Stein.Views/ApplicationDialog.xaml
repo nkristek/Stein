@@ -56,7 +56,6 @@
                      Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Style="{DynamicResource ValidatingTextBox}"
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         </Grid>
 
@@ -81,7 +80,6 @@
             <TextBox Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
-                     Style="{DynamicResource ValidatingTextBox}"
                      Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
             <Button x:Name="SelectFolderButton" 

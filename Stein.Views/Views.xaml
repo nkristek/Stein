@@ -7,8 +7,6 @@
 
         <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/Icons.xaml"/>
 
-        <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/ValidatingTextbox.xaml"/>
-
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Views -->
@@ -30,4 +28,5 @@
     <views:InstallerBundleDialog x:Key="{x:Type viewModels:InstallerBundleDialogModel}" x:Shared="False"/>
 
     <views:AboutDialog x:Key="{x:Type viewModels:AboutDialogModel}" x:Shared="False"/>
+
 </ResourceDictionary>
