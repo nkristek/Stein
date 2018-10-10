@@ -8,6 +8,7 @@
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel, IsDesignTimeCreatable=True}">
 
@@ -46,15 +47,19 @@
                 <Button Grid.Column="0"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding AddApplicationCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
-                                        Height="20"
-                                        Width="20"
-                                        Margin="0, 0, 8, 0"/>
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
+                                                Height="20"
+                                                Width="20"
+                                                Margin="0, 0, 8, 0"/>
 
-                        <TextBlock FontSize="14"
-                                   Text="{x:Static localization:Strings.AddFolder}"/>
-                    </StackPanel>
+                                <TextBlock FontSize="14"
+                                           Text="{x:Static localization:Strings.AddFolder}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
                 </Button>
 
                 <!-- Refresh button -->
@@ -66,48 +71,50 @@
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                         Command="{Binding}"
                         ToolTip="{x:Static localization:Strings.Refresh}">
-                    <Button.Content>
-                        <ContentControl Width="16"
-                                        Height="16"
-                                        ContentTemplate="{StaticResource RefreshIconVariant}">
-                            <ContentControl.Style>
-                                <Style TargetType="{x:Type ContentControl}" 
-                                       BasedOn="{StaticResource {x:Type ContentControl}}">
-                                    <Setter Property="LayoutTransform">
-                                        <Setter.Value>
-                                            <RotateTransform Angle="0"/>
-                                        </Setter.Value>
-                                    </Setter>
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <ContentControl Width="16"
+                                            Height="16"
+                                            ContentTemplate="{StaticResource RefreshIconVariant}">
+                                <ContentControl.Style>
+                                    <Style TargetType="{x:Type ContentControl}" 
+                                           BasedOn="{StaticResource {x:Type ContentControl}}">
+                                        <Setter Property="LayoutTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="0"/>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsWorking}" 
-                                                     Value="True">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
-                                                                 From="0"
-                                                                 To="360"
-                                                                 Duration="0:0:2"
-                                                                 RepeatBehavior="Forever"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
-                                                                 To="0"
-                                                                 Duration="0:0:0" />
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ContentControl.Style>
-                        </ContentControl>
-                    </Button.Content>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsWorking}" 
+                                                         Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                                     From="0"
+                                                                     To="360"
+                                                                     Duration="0:0:2"
+                                                                     RepeatBehavior="Forever"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                                     To="0"
+                                                                     Duration="0:0:0" />
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
                 </Button>
 
                 <!-- Theme switch button -->
