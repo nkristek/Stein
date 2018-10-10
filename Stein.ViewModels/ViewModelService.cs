@@ -201,6 +201,11 @@ namespace Stein.ViewModels
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
+                Name = "ninject",
+                Uri = new Uri("https://github.com/ninject/Ninject")
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
                 Name = "Windows-API-Code-Pack",
                 Uri = new Uri("https://github.com/aybe/Windows-API-Code-Pack-1.1")
             });

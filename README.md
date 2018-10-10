@@ -67,6 +67,7 @@ This application depends on the following libraries:
 - [AdonisUI](https://github.com/benruehl/adonis-ui)
 - [GongSolutions.WPF.DragDrop](https://github.com/punker76/gong-wpf-dragdrop)
 - [log4net](http://logging.apache.org/log4net/)
+- [ninject](https://github.com/ninject/Ninject)
 - [Windows-API-Code-Pack](https://github.com/aybe/Windows-API-Code-Pack-1.1)
 - [Wix Toolset](http://wixtoolset.org/)
 
