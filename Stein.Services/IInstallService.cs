@@ -30,7 +30,8 @@ namespace Stein.Services
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be installed without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
-        void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true);
+        /// <param name="additionalArguments">Additional arguments</param>
+        void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
 
         /// <summary>
         /// Installs a installer file asynchronously
@@ -39,8 +40,9 @@ namespace Stein.Services
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be installed without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        /// <param name="additionalArguments">Additional arguments</param>
         /// <returns>Task which installs a installer file</returns>
-        Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true);
+        Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
 
         /// <summary>
         /// Uninstalls and installs a installer file
@@ -50,7 +52,8 @@ namespace Stein.Services
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
-        void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true);
+        /// <param name="additionalArguments">Additional arguments</param>
+        void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
 
         /// <summary>
         /// Uninstalls and installs a installer file asynchronously
@@ -60,8 +63,9 @@ namespace Stein.Services
         /// <param name="reinstallLogFilePath">Path to a log file for uninstalling (optional)</param>
         /// <param name="quiet">If it should be reinstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        /// <param name="additionalArguments">Additional arguments</param>
         /// <returns>Task which uninstalls and installs a installer file</returns>
-        Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true);
+        Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
 
         /// <summary>
         /// Uninstalls a program
@@ -70,7 +74,8 @@ namespace Stein.Services
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be uninstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
-        void Uninstall(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true);
+        /// <param name="additionalArguments">Additional arguments</param>
+        void Uninstall(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
 
         /// <summary>
         /// Uninstalls a program asynchronously
@@ -79,7 +84,8 @@ namespace Stein.Services
         /// <param name="logFilePath">Path to a log file (optional)</param>
         /// <param name="quiet">If it should be uninstalled without UI</param>
         /// <param name="disableReboot">If automatic reboot should be disabled</param>
+        /// <param name="additionalArguments">Additional arguments</param>
         /// <returns>Task which uninstalls a installer file</returns>
-        Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true);
+        Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null);
     }
 }

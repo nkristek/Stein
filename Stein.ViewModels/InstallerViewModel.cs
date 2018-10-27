@@ -137,5 +137,16 @@ namespace Stein.ViewModels
             get => _created;
             set => SetProperty(ref _created, value, out _);
         }
+
+        private string _customOperationArguments;
+
+        /// <summary>
+        /// Additional arguments for custom operation.
+        /// </summary>
+        public string CustomOperationArguments
+        {
+            get => _customOperationArguments;
+            set => SetProperty(ref _customOperationArguments, value, out _);
+        }
     }
 }

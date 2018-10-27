@@ -105,7 +105,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             currentInstallation.State = InstallationState.Install;
                             Log.Info($"Installing {installer.Name}.");
 
-                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation, application.DisableReboot, installer.CustomOperationArguments);
 
                             installationResult.InstallCount++;
                             break;
@@ -114,9 +114,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             Log.Info($"Reinstalling {installer.Name}.");
 
                             // uninstall and install instead of reinstalling since the reinstall fails when another version of the installer was used (e.g. daily temps with the same version number)
-                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
-                            
-                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation, application.DisableReboot, installer.CustomOperationArguments);
+                            await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation, application.DisableReboot, installer.CustomOperationArguments);
 
                             installationResult.ReinstallCount++;
                             break;
@@ -124,7 +123,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                             currentInstallation.State = InstallationState.Uninstall;
                             Log.Info($"Uninstalling {installer.Name}.");
 
-                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation, application.DisableReboot, installer.CustomOperationArguments);
 
                             installationResult.UninstallCount++;
                             break;

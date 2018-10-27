@@ -73,19 +73,19 @@ namespace Stein.Services
             return !String.IsNullOrEmpty(productCode) && _installedPrograms.Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
         }
         
-        public void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        public void Install(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot, additionalArguments);
             process.WaitForExit();
         }
         
-        public async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        public async Task InstallAsync(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot);
+            var process = StartInstallProcess(installerPath, logFilePath, quiet, disableReboot, additionalArguments);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartInstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -106,6 +106,12 @@ namespace Stein.Services
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
 
+            if (!String.IsNullOrWhiteSpace(additionalArguments))
+            {
+                argumentsBuilder.Append(" ");
+                argumentsBuilder.Append(additionalArguments);
+            }
+
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
                 Arguments = argumentsBuilder.ToString()
@@ -114,19 +120,19 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
         
-        public void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true)
+        public void Reinstall(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot);
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot, additionalArguments);
             reinstallProcess.WaitForExit();
         }
         
-        public async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true)
+        public async Task ReinstallAsync(string installerPathToReinstall, string reinstallLogFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot);
+            var reinstallProcess = StartReinstallProcess(installerPathToReinstall, reinstallLogFilePath, quiet, disableReboot, additionalArguments);
             await reinstallProcess.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartReinstallProcess(string installerPath, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
             if (String.IsNullOrWhiteSpace(installerPath))
                 throw new ArgumentException(Strings.InstallerPathIsEmpty);
@@ -147,6 +153,12 @@ namespace Stein.Services
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
 
+            if (!String.IsNullOrWhiteSpace(additionalArguments))
+            {
+                argumentsBuilder.Append(" ");
+                argumentsBuilder.Append(additionalArguments);
+            }
+
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {
                 Arguments = argumentsBuilder.ToString()
@@ -155,19 +167,19 @@ namespace Stein.Services
             return Process.Start(startInfo);
         }
         
-        public void Uninstall(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        public void Uninstall(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot, additionalArguments);
             process.WaitForExit();
         }
         
-        public async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        public async Task UninstallAsync(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
-            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot);
+            var process = StartUninstallProcess(productCode, logFilePath, quiet, disableReboot, additionalArguments);
             await process.WaitForExitAsync().ConfigureAwait(false);
         }
         
-        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true)
+        private static Process StartUninstallProcess(string productCode, string logFilePath = null, bool quiet = true, bool disableReboot = true, string additionalArguments = null)
         {
             if (String.IsNullOrWhiteSpace(productCode))
                 throw new ArgumentException(Strings.ProductCodeIsEmpty);
@@ -184,6 +196,12 @@ namespace Stein.Services
 
             if (!String.IsNullOrEmpty(logFilePath))
                 argumentsBuilder.Append($" /L*V \"{logFilePath}\"");
+
+            if (!String.IsNullOrWhiteSpace(additionalArguments))
+            {
+                argumentsBuilder.Append(" ");
+                argumentsBuilder.Append(additionalArguments);
+            }
 
             var startInfo = new ProcessStartInfo("msiexec.exe")
             {

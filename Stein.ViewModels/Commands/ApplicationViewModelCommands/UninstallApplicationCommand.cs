@@ -99,7 +99,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                     Log.Info($"Uninstalling {installer.Name}.");
 
                     var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "uninstall") : null;
-                    await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                    await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation, application.DisableReboot);
                     
                     installationResult.UninstallCount++;
                 }

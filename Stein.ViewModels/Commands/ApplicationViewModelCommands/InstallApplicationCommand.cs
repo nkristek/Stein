@@ -96,7 +96,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                         Log.Info($"Installing {installer.Name}.");
 
                         var installLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "install") : null;
-                        await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                        await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation, application.DisableReboot);
 
                         installationResult.InstallCount++;
                     }
@@ -112,11 +112,11 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                         if (installer.IsInstalled == null || installer.IsInstalled.HasValue && installer.IsInstalled.Value)
                         {
                             var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "uninstall") : null;
-                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation);
+                            await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation, application.DisableReboot);
                         }
 
                         var installLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "install") : null;
-                        await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation);
+                        await _installService.InstallAsync(installer.Path, installLogFilePath, application.EnableSilentInstallation, application.DisableReboot);
 
                         installationResult.ReinstallCount++;
                     }

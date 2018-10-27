@@ -9,6 +9,7 @@
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Stein.Views.Resources"
+             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
@@ -18,6 +19,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="DateColumn"/>
         </Grid.ColumnDefinitions>
@@ -60,9 +63,16 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        
+        <!-- Custom Arguments -->
+        <TextBox Grid.Column="4"
+                 VerticalAlignment="Stretch"
+                 VerticalContentAlignment="Center"
+                 ToolTip="{x:Static localization:Strings.CustomArguments}"
+                 Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Created -->
-        <TextBlock Grid.Column="4"
+        <TextBlock Grid.Column="6"
                    VerticalAlignment="Center"
                    Visibility="{Binding Created, Converter={converters:ValueNullToInverseVisibilityConverter}}"
                    Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}">

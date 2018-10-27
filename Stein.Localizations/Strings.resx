@@ -286,4 +286,7 @@
   <data name="NumberShouldBeGreaterThanZero" xml:space="preserve">
     <value>The number has to be greater than 0.</value>
   </data>
+  <data name="CustomArguments" xml:space="preserve">
+    <value>Additional arguments</value>
+  </data>
 </root>

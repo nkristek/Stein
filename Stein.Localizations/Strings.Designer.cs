@@ -124,6 +124,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional arguments.
+        /// </summary>
+        public static string CustomArguments {
+            get {
+                return ResourceManager.GetString("CustomArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dependencies.
         /// </summary>
         public static string Dependencies {

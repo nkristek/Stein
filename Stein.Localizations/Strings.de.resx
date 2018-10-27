@@ -283,4 +283,7 @@
   <data name="NumberShouldBeGreaterThanZero" xml:space="preserve">
     <value>Die eingegebene Zahl muss größer als 0 sein.</value>
   </data>
+  <data name="CustomArguments" xml:space="preserve">
+    <value>Zusätzliche Argumente</value>
+  </data>
 </root>
