@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Markup;
 using log4net;
 using Ninject;
 using Stein.Presentation;
@@ -33,6 +35,14 @@ namespace Stein
         
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            // Ensure the current culture passed into bindings is the OS culture.
+            // By default, WPF uses en-US as the culture, regardless of the system settings.
+            // https://stackoverflow.com/a/520334
+            FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(FrameworkElement),
+                new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            // Initialize main window
             var rootWindow = new MainWindow();
             var kernel = new StandardKernel(new AppModule(rootWindow));
             
