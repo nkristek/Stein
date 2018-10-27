@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein", "Stein\Stein.csproj", "{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CE3354E6-BA26-4396-BA2D-FB741666F21E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Services", "Stein.Services\Stein.Services.csproj", "{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Helpers", "Stein.Helpers\Stein.Helpers.csproj", "{8B1A8F56-1C5C-4669-B42C-57117A00D116}"
@@ -41,10 +39,6 @@ Global
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|x64.ActiveCfg = Release|x64
 		{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}.Release|x64.Build.0 = Release|x64
-		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|Any CPU.ActiveCfg = Debug
-		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Debug|x64.ActiveCfg = Debug
-		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Release|Any CPU.ActiveCfg = Release
-		{CE3354E6-BA26-4396-BA2D-FB741666F21E}.Release|x64.ActiveCfg = Release
 		{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}.Debug|x64.ActiveCfg = Debug|Any CPU
