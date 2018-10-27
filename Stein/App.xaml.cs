@@ -42,8 +42,7 @@ namespace Stein
             }
             catch (Exception exception)
             {
-                Log.Error("Load configuration", exception);
-                kernel.Get<IDialogService>().ShowError(exception);
+                Log.Error("Loading configuration failed, will create a new one", exception);
             }
             
             rootWindow.DataContext = kernel.Get<IViewModelService>().CreateViewModel<MainWindowViewModel>();
