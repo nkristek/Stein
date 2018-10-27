@@ -8,7 +8,6 @@
              xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Stein.Views.Resources"
@@ -19,8 +18,7 @@
               Margin="0,4" 
               SnapsToDevicePixels="True"
               HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch"
-              adonisExtensions:LayerExtension.Layer="1">
+              VerticalAlignment="Stretch">
         <GroupBox.Header>
             <Grid Grid.Column="7">
                 <Grid.ColumnDefinitions>
