@@ -7,35 +7,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Stein.Helpers.Tests
 {
     [TestClass]
-    public class ExtensionsTests
+    public class IEnumerableExtensionsTests
     {
         [TestMethod]
-        public void TestIEnumerableExtensions()
+        public void TestIEnumerableForEach()
         {
             var testInput = new[] { new object(), new object(), new object() };
             var result = 0;
             testInput.ForEach(i => result++);
             Assert.AreEqual(3, result);
         }
-
-        [TestMethod]
-        public void TestStringExtensions()
-        {
-            var invalidPath = String.Concat(Path.GetInvalidPathChars());
-            Assert.IsTrue(invalidPath.ContainsInvalidPathChars());
-            Assert.IsFalse("test".ContainsInvalidPathChars());
-
-            var validPath = invalidPath.ReplaceInvalidPathChars('a');
-            Assert.IsFalse(validPath.ContainsInvalidPathChars());
-
-            var invalidFileName = String.Concat(Path.GetInvalidFileNameChars());
-            Assert.IsTrue(invalidFileName.ContainsInvalidFileNameChars());
-            Assert.IsFalse("test".ContainsInvalidFileNameChars());
-
-            var validFileName = invalidFileName.ReplaceInvalidFileNameChars('a');
-            Assert.IsFalse(validFileName.ContainsInvalidFileNameChars());
-        }
-
+        
         [TestMethod]
         public void TestMergeSequence()
         {

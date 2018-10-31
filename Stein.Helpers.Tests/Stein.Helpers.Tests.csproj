@@ -50,8 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposableTests.cs" />
-    <Compile Include="ExtensionsTests.cs" />
+    <Compile Include="IEnumerableExtensionsTests.cs" />
+    <Compile Include="ProcessExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExtensionsTests.cs" />
+    <Compile Include="StructExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Helpers\Stein.Helpers.csproj">
