@@ -6,6 +6,7 @@
         xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="500"
@@ -56,6 +57,7 @@
                      Grid.Column="2"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Center"
+                     adonisExtensions:ValidationExtension.ErrorMessagePlacement="Bottom"
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         </Grid>
 
