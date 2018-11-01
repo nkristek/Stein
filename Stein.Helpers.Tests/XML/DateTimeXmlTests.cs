@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Stein.Services.Types;
+using Stein.Helpers.XML;
 
-namespace Stein.Services.Tests
+namespace Stein.Helpers.Tests.XML
 {
     [TestClass]
     public class DateTimeXmlTests
@@ -12,6 +16,7 @@ namespace Stein.Services.Tests
         [Serializable]
         public class DateTimeXmlTestClass
         {
+            [XmlElement]
             public DateTimeXml Date;
 
             private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(DateTimeXmlTestClass), typeof(DateTimeXmlTestClass).GetNestedTypes());
@@ -35,14 +40,14 @@ namespace Stein.Services.Tests
         [TestMethod]
         public void TestDateTimeXml()
         {
-            var date = DateTimeXml.TrimDateTimeToXmlAccuracy(DateTime.Now);
+            var date = DateTime.Now;
             var instance = new DateTimeXmlTestClass
             {
                 Date = date
             };
             var serializedInstance = instance.ToXml();
             var deserializedInstance = DateTimeXmlTestClass.CreateFromXml(serializedInstance);
-            Assert.AreEqual(date, deserializedInstance.Date.Date);
+            Assert.AreEqual(date, deserializedInstance.Date.Value, serializedInstance);
         }
     }
 }

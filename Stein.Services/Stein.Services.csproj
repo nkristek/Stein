@@ -51,9 +51,7 @@
     <Compile Include="IMsiService.cs" />
     <Compile Include="IViewModelService.cs" />
     <Compile Include="Types\ApplicationFolder.cs" />
-    <Compile Include="Types\CData.cs" />
     <Compile Include="Types\Configuration.cs" />
-    <Compile Include="Types\DateTimeXml.cs" />
     <Compile Include="Types\InstallerFile.cs" />
     <Compile Include="Types\MsiPropertyName.cs" />
     <Compile Include="Types\InstalledProgram.cs" />
@@ -62,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\SubFolderExtension.cs" />
     <Compile Include="Types\SubFolder.cs" />
-    <Compile Include="Types\VersionXml.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Helpers\Stein.Helpers.csproj">
@@ -81,5 +78,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

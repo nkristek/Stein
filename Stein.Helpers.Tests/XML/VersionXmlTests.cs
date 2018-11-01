@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Stein.Services.Types;
+using Stein.Helpers.XML;
 
-namespace Stein.Services.Tests
+namespace Stein.Helpers.Tests.XML
 {
     [TestClass]
     public class VersionXmlTests
@@ -12,7 +16,7 @@ namespace Stein.Services.Tests
         [Serializable]
         public class VersionXmlTestClass
         {
-            [XmlElement("Version", typeof(VersionXml))]
+            [XmlElement(Type = typeof(VersionXml))]
             public Version Version;
 
             private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(VersionXmlTestClass), typeof(VersionXmlTestClass).GetNestedTypes());

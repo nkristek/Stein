@@ -20,7 +20,7 @@ namespace Stein.Services.Extensions
             if (!subFolderFullPath.StartsWith(applicationFolder.Path))
                 return null;
 
-            var relativePath = subFolderFullPath.Substring(applicationFolder.Path.Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
+            var relativePath = subFolderFullPath.Substring(((string)applicationFolder.Path).Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
             return applicationFolder.FindSubFolder(relativePath);
         }
 

@@ -2,50 +2,35 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using Stein.Helpers.XML;
 
 namespace Stein.Services.Types
 {
     [Serializable]
     public class ApplicationFolder
     {
-        [XmlElement("Id")]
+        [XmlElement]
         public Guid Id;
-        
-        [XmlIgnore]
-        public string Name;
-        
-        [XmlElement("Name")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData NameXml
-        {
-            get => Name;
-            set => Name = value;
-        }
 
-        [XmlIgnore]
-        public string Path;
+        [XmlElement]
+        public CDataString Name;
+
+        [XmlElement]
+        public CDataString Path;
         
-        [XmlElement("Path")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData PathXml
-        {
-            get => Path;
-            set => Path = value;
-        }
-        
-        [XmlElement("EnableSilentInstallation")]
+        [XmlElement]
         public bool EnableSilentInstallation = true;
         
-        [XmlElement("DisableReboot")]
+        [XmlElement]
         public bool DisableReboot = true;
         
-        [XmlElement("EnableInstallationLogging")]
+        [XmlElement]
         public bool EnableInstallationLogging = true;
         
-        [XmlElement("AutomaticallyDeleteInstallationLogs")]
+        [XmlElement]
         public bool AutomaticallyDeleteInstallationLogs = true;
         
-        [XmlElement("KeepNewestInstallationLogs")]
+        [XmlElement]
         public int KeepNewestInstallationLogs = 10;
         
         [XmlArray("SubFolders")]

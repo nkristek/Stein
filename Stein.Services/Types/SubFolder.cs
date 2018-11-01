@@ -1,34 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Xml.Serialization;
+using Stein.Helpers.XML;
 
 namespace Stein.Services.Types
 {
     [Serializable]
     public class SubFolder
     {
-        [XmlIgnore]
-        public string Name;
+        [XmlElement]
+        public CDataString Name;
 
-        [XmlElement("Name")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData NameXml
-        {
-            get => Name;
-            set => Name = value;
-        }
-
-        [XmlIgnore]
-        public string Path;
-
-        [XmlElement("Path")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData PathXml
-        {
-            get => Path;
-            set => Path = value;
-        }
+        [XmlElement]
+        public CDataString Path;
 
         [XmlArray("Installers")]
         [XmlArrayItem("Installer")]

@@ -1,63 +1,31 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Xml.Serialization;
+using Stein.Helpers.XML;
 
 namespace Stein.Services.Types
 {
     [Serializable]
     public class InstallerFile
     {
-        [XmlIgnore]
-        public string Name;
+        [XmlElement]
+        public CDataString Name;
 
-        [XmlElement("Name")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData NameXml
-        {
-            get => Name;
-            set => Name = value;
-        }
+        [XmlElement]
+        public CDataString Path;
 
-        [XmlIgnore]
-        public string Path;
-
-        [XmlElement("Path")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public CData PathXml
-        {
-            get => Path;
-            set => Path = value;
-        }
-
-        [XmlElement("IsEnabled")]
+        [XmlElement]
         public bool IsEnabled;
         
-        [XmlIgnore]
+        [XmlElement(Type = typeof(VersionXml))]
         public Version Version;
 
-        [XmlElement("Version")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public VersionXml VersionXml
-        {
-            get => Version;
-            set => Version = value;
-        }
-
-        [XmlElement("Culture")]
+        [XmlElement]
         public string Culture;
 
-        [XmlElement("ProductCode")]
+        [XmlElement]
         public string ProductCode;
         
-        [XmlIgnore]
-        public DateTime Created;
-
-        [XmlElement("Created")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public DateTimeXml CreatedXml
-        {
-            get => Created;
-            set => Created = value;
-        }
+        [XmlElement]
+        public DateTimeXml Created;
     }
 }

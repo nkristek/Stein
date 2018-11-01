@@ -11,7 +11,7 @@ namespace Stein.Services.Types
     [XmlRoot("Configuration")]
     public class Configuration
     {
-        [XmlElement("SelectedTheme")]
+        [XmlElement]
         public Theme SelectedTheme;
 
         [XmlArray("ApplicationFolders")]

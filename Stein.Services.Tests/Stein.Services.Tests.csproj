@@ -52,11 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationServiceTests.cs" />
-    <Compile Include="DateTimeXmlTests.cs" />
     <Compile Include="InstallServiceTests.cs" />
     <Compile Include="MsiServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VersionXmlTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Services\Stein.Services.csproj">

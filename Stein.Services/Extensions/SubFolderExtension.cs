@@ -23,7 +23,7 @@ namespace Stein.Services.Extensions
             if (!subFolderFullPath.StartsWith(folder.Path))
                 return null;
 
-            var relativePath = subFolderFullPath.Substring(folder.Path.Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
+            var relativePath = subFolderFullPath.Substring(((string)folder.Path).Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
             return folder.FindSubFolder(relativePath);
         }
 
@@ -58,7 +58,7 @@ namespace Stein.Services.Extensions
             if (!installerFileFullPath.StartsWith(folder.Path))
                 return null;
 
-            var relativePath = installerFileFullPath.Substring(folder.Path.Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
+            var relativePath = installerFileFullPath.Substring(((string)folder.Path).Length).Split('\\').Where(subString => !String.IsNullOrEmpty(subString));
             return folder.FindInstallerFile(relativePath);
         }
 
@@ -110,7 +110,7 @@ namespace Stein.Services.Extensions
 
             foreach (var fileOnDisk in filesOnDisk)
             {
-                var fileCreationTime = DateTimeXml.TrimDateTimeToXmlAccuracy(fileOnDisk.CreationTime);
+                var fileCreationTime = fileOnDisk.CreationTime;
                 var existingInstallerFile = subFolder.InstallerFiles.FirstOrDefault(installerFile => installerFile.Path == fileOnDisk.FullName);
                 if (existingInstallerFile != null)
                 {
