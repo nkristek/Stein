@@ -1,5 +1,8 @@
 # Stein - Silent Temp Installer
 
+![.NET Framework version: >= 4.7.1](https://img.shields.io/badge/.NET%20Framework-%3E%3D%204.7.1-green.svg)
+[![GitHub license](https://img.shields.io/github/license/nkristek/Stein.svg)](https://github.com/nkristek/Stein/blob/master/LICENSE)
+
 This application makes it easier to install, uninstall or reinstall multiple MSI-installers. It can be used in an environment, where there are regular builds of an application which are located inside a defined folder structure.
 
 **Please note:** This application needs administrator privileges to operate on installers without UI.
