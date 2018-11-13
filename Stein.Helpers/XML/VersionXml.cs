@@ -41,7 +41,7 @@ namespace Stein.Helpers.XML
         
         public static implicit operator Version(VersionXml versionXml)
         {
-            return versionXml.Value;
+            return versionXml?.Value;
         }
 
         public static implicit operator VersionXml(Version version)

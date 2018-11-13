@@ -45,7 +45,7 @@ namespace Stein.Helpers.XML
 
         public static implicit operator DateTime(DateTimeXml dateTimeXml)
         {
-            return dateTimeXml.Value;
+            return dateTimeXml?.Value ?? default(DateTime);
         }
         
         public override string ToString()

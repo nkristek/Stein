@@ -33,7 +33,7 @@ namespace Stein.Helpers.XML
         
         public static implicit operator string(CDataString cdata)
         {
-            return cdata._value;
+            return cdata?._value;
         }
         
         public override string ToString()
