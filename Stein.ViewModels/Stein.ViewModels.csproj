@@ -40,8 +40,8 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.2.2.2\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.3.0.1\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,6 +50,7 @@
     <Compile Include="AboutDialogModel.cs" />
     <Compile Include="ApplicationDialogModel.cs" />
     <Compile Include="ApplicationViewModel.cs" />
+    <Compile Include="Commands\AboutDialogModelCommands\OpenUriCommand.cs" />
     <Compile Include="Commands\ApplicationDialogModelCommands\OpenLogFolderCommand.cs" />
     <Compile Include="Commands\ApplicationDialogModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\CustomOperationApplicationCommand.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Commands\ApplicationViewModelCommands\EditApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
+    <Compile Include="Commands\DependencyViewModelCommands\OpenUriCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\ChangeThemeCommand.cs" />

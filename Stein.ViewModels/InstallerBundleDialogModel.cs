@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
-using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -43,7 +41,6 @@ namespace Stein.ViewModels
         /// <summary>
         /// Gets the culture of the installers, if the Culture property is the same on all Installers, otherwise null
         /// </summary>
-        [PropertySourceCollection(nameof(Installers), NotifyCollectionChangedAction.Add, NotifyCollectionChangedAction.Remove, NotifyCollectionChangedAction.Replace, NotifyCollectionChangedAction.Reset)]
         public string Culture
         {
             get

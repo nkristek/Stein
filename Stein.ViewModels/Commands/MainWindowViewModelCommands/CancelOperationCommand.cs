@@ -1,5 +1,6 @@
 ﻿using System;
 using log4net;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.ViewModels.Types;
@@ -19,6 +20,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _dialogService = dialogService;
         }
 
+        [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation))]
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
             return viewModel.CurrentInstallation != null 

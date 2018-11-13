@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Reflection;
-using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
@@ -27,15 +25,13 @@ namespace Stein.ViewModels
             AdditionalNotes = "";
             Uri = new Uri("https://github.com/nkristek/Stein");
             Publisher = publisher?.Company;
-            OpenUriCommand = new RelayCommand(parameter => Process.Start(new ProcessStartInfo(Uri.AbsoluteUri)));
         }
 
-        public Command OpenUriCommand { get; }
+        public ViewModelCommand<AboutDialogModel> OpenUriCommand { get; set; }
         
         /// <summary>
         /// All dependencies of this application
         /// </summary>
-        [ChildViewModelCollection]
         public ObservableCollection<DependencyViewModel> Dependencies { get; } = new ObservableCollection<DependencyViewModel>();
 
         private string _name;

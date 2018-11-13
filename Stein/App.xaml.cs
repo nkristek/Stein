@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
-using Stein.Presentation;
 using Stein.Services;
 using Stein.ViewModels;
 

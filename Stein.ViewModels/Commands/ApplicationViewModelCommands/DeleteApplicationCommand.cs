@@ -1,5 +1,6 @@
 ﻿using System;
 using log4net;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.Services;
@@ -22,6 +23,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             _viewModelService = viewModelService;
         }
 
+        [CanExecuteSource(nameof(ApplicationViewModel.Parent))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
             return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null;

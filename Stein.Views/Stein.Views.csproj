@@ -40,8 +40,8 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.2.2.2\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.3.0.1\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="NKristek.Wpf.Converters, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NKristek.Wpf.Converters.1.4.0\lib\net47\NKristek.Wpf.Converters.dll</HintPath>

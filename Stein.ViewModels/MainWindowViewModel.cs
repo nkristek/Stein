@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
@@ -19,14 +20,11 @@ namespace Stein.ViewModels
             _themeService.ThemeChanged += (sender, args) => { RaisePropertyChanged(nameof(CurrentTheme)); };
             _progressBarService = progressBarService;
         }
-
-        [CommandCanExecuteSource(nameof(CurrentInstallation))]
+        
         public ViewModelCommand<MainWindowViewModel> AddApplicationCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(CurrentInstallation))]
+        
         public AsyncViewModelCommand<MainWindowViewModel> RefreshApplicationsCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(CurrentInstallation))]
+        
         public ViewModelCommand<MainWindowViewModel> CancelOperationCommand { get; set; }
 
         public ViewModelCommand<MainWindowViewModel> ShowInfoDialogCommand { get; set; }
@@ -36,7 +34,6 @@ namespace Stein.ViewModels
         /// <summary>
         /// List of all applications
         /// </summary>
-        [ChildViewModelCollection]
         public ObservableCollection<ApplicationViewModel> Applications { get; } = new ObservableCollection<ApplicationViewModel>();
         
         private InstallationViewModel _currentInstallation;
@@ -45,15 +42,26 @@ namespace Stein.ViewModels
         /// Is set if an operation is in progress
         /// </summary>
         [IsDirtyIgnored]
-        [ChildViewModel]
         public InstallationViewModel CurrentInstallation
         {
             get => _currentInstallation;
             set
             {
-                if (SetProperty(ref _currentInstallation, value, out _))
+                if (SetProperty(ref _currentInstallation, value, out var oldValue))
+                { 
                     _progressBarService.SetState(value != null ? ProgressBarState.Indeterminate : ProgressBarState.None);
+
+                    if (oldValue != null)
+                        oldValue.PropertyChanged -= CurrentInstallationOnPropertyChanged;
+                    if (_currentInstallation != null)
+                        _currentInstallation.PropertyChanged += CurrentInstallationOnPropertyChanged;
+                }
             }
+        }
+
+        private void CurrentInstallationOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(CurrentInstallation));
         }
 
         private InstallationResultViewModel _installationResult;
@@ -62,13 +70,26 @@ namespace Stein.ViewModels
         /// Is set if an operation was finished
         /// </summary>
         [IsDirtyIgnored]
-        [ChildViewModel]
         public InstallationResultViewModel InstallationResult
         {
             get => _installationResult;
-            set => SetProperty(ref _installationResult, value, out _);
+            set
+            {
+                if (SetProperty(ref _installationResult, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.PropertyChanged -= InstallationResultOnPropertyChanged;
+                    if (_installationResult != null)
+                        _currentInstallation.PropertyChanged += InstallationResultOnPropertyChanged;
+                }
+            }
         }
-        
+
+        private void InstallationResultOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(InstallationResult));
+        }
+
         /// <summary>
         /// Current UI theme
         /// </summary>

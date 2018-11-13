@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 
@@ -8,11 +7,6 @@ namespace Stein.ViewModels
     public sealed class DependencyViewModel
         : ViewModel
     {
-        public DependencyViewModel()
-        {
-            OpenUriCommand = new RelayCommand(parameter => Process.Start(new ProcessStartInfo(Uri.AbsoluteUri)));
-        }
-
         private string _name;
 
         /// <summary>
@@ -35,6 +29,6 @@ namespace Stein.ViewModels
             set => SetProperty(ref _uri, value, out _);
         }
         
-        public Command OpenUriCommand { get; }
+        public ViewModelCommand<DependencyViewModel> OpenUriCommand { get; set; }
     }
 }

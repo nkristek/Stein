@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using log4net;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Localizations;
 using Stein.Presentation;
@@ -34,6 +35,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _msiService = msiService;
         }
 
+        [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation))]
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
             return viewModel.CurrentInstallation == null;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 
@@ -9,19 +8,14 @@ namespace Stein.ViewModels
     public sealed class ApplicationViewModel
         : ViewModel
     {
-        [CommandCanExecuteSource(nameof(Parent))]
         public ViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(Parent))]
+        
         public ViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
+        
         public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
+        
         public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; set; }
-
-        [CommandCanExecuteSource(nameof(Parent), nameof(SelectedInstallerBundle))]
+        
         public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; set; }
         
         private string _name;
@@ -93,7 +87,6 @@ namespace Stein.ViewModels
         /// <summary>
         /// List of all installer bundles of this application
         /// </summary>
-        [ChildViewModelCollection]
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
         
         private InstallerBundleViewModel _selectedInstallerBundle;
@@ -101,7 +94,6 @@ namespace Stein.ViewModels
         /// <summary>
         /// The currently selected InstallerBundleViewModel
         /// </summary>
-        // note: do not set ChildViewModelAttribute because it will be already added through the collection
         public InstallerBundleViewModel SelectedInstallerBundle
         {
             get => _selectedInstallerBundle;

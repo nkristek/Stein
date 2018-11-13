@@ -7,6 +7,7 @@ using Stein.Presentation;
 using Stein.Services;
 using Stein.Services.Extensions;
 using Stein.Services.Types;
+using Stein.ViewModels.Commands.AboutDialogModelCommands;
 using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 using Stein.ViewModels.Commands.ApplicationViewModelCommands;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
@@ -143,8 +144,8 @@ namespace Stein.ViewModels
                 {
                     Parent = parent,
                     Title = Strings.AddFolder,
-                    Name = defaultValues.Name,
-                    Path = defaultValues.Path,
+                    Name = String.Empty,
+                    Path = String.Empty,
                     EnableSilentInstallation = defaultValues.EnableSilentInstallation,
                     DisableReboot = defaultValues.DisableReboot,
                     EnableInstallationLogging = defaultValues.EnableInstallationLogging,
@@ -175,12 +176,14 @@ namespace Stein.ViewModels
             };
         }
 
-        private static AboutDialogModel CreateAboutDialogModel(ViewModel parent)
+        private AboutDialogModel CreateAboutDialogModel(ViewModel parent)
         {
             var viewModel = new AboutDialogModel
             {
                 Parent = parent
             };
+            viewModel.OpenUriCommand = new OpenUriCommand(viewModel, _dialogService);
+
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Smaragd",
@@ -221,6 +224,12 @@ namespace Stein.ViewModels
                 Name = "Wix Toolset",
                 Uri = new Uri("http://wixtoolset.org/")
             });
+            foreach (var dependency in viewModel.Dependencies)
+            { 
+                dependency.OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(dependency, _dialogService);
+                dependency.IsDirty = false;
+            }
+
             viewModel.IsDirty = false;
             return viewModel;
         }
@@ -249,20 +258,20 @@ namespace Stein.ViewModels
                 {
                     UpdateApplicationViewModel(existingViewModel, applicationFolder);
                     existingViewModel.Parent = parent;
+                    existingViewModel.IsDirty = false;
                     yield return existingViewModel;
                 }
                 else
                 {
-                    yield return CreateApplicationViewModel(parent, applicationFolder);
+                    var createdViewModel = CreateApplicationViewModel(parent, applicationFolder);
+                    createdViewModel.IsDirty = false;
+                    yield return createdViewModel;
                 }
             }
         }
 
         public void SaveViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
         {
-            if (!viewModel.IsDirty)
-                return;
-
             if (typeof(TViewModel) == typeof(MainWindowViewModel))
                 SaveMainWindowViewModel(viewModel as MainWindowViewModel);
             else if (typeof(TViewModel) == typeof(ApplicationViewModel))
@@ -328,6 +337,8 @@ namespace Stein.ViewModels
             applicationFolder.KeepNewestInstallationLogs = applicationDialog.KeepNewestInstallationLogs;
 
             _configurationService.SaveConfiguration();
+
+            applicationDialog.IsDirty = false;
         }
 
         public void UpdateViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel

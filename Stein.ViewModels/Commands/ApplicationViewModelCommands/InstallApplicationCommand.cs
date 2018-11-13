@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.Services;
@@ -26,6 +27,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             _installService = installService;
         }
 
+        [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
             if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel) || mainWindowViewModel.CurrentInstallation != null)
