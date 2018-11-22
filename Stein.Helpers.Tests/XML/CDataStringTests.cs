@@ -47,5 +47,28 @@ namespace Stein.Helpers.Tests.XML
             var deserializedInstance = CDataStringTestClass.CreateFromXml(serializedInstance);
             Assert.AreEqual(instance.String.ToString(), deserializedInstance.String.ToString());
         }
+
+        [TestMethod]
+        public void TestComparable()
+        {
+            var first = new CDataString();
+            var second = new CDataString();
+            Assert.AreEqual(0, first.CompareTo(second));
+
+            second = "test";
+            Assert.AreNotEqual(0, first.CompareTo(second));
+
+            first = "test";
+            Assert.AreEqual(0, first.CompareTo(second));
+
+            second = null;
+            Assert.AreNotEqual(0, first.CompareTo(second));
+
+            second = new CDataString(null);
+            Assert.AreNotEqual(0, first.CompareTo(second));
+
+            first = new CDataString(null);
+            Assert.AreEqual(0, first.CompareTo(second));
+        }
     }
 }

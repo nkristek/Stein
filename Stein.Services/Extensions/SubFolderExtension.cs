@@ -125,7 +125,7 @@ namespace Stein.Services.Extensions
 
                 using (var database = msiService.GetMsiDatabase(fileOnDisk.FullName))
                 {
-                    subFolder.InstallerFiles.Add(new InstallerFile
+                    var installer = new InstallerFile
                     {
                         Path = fileOnDisk.FullName,
                         IsEnabled = true,
@@ -134,11 +134,24 @@ namespace Stein.Services.Extensions
                         Version = new Version(msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductVersion)),
                         Culture = new CultureInfo(int.Parse(msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductLanguage))).IetfLanguageTag,
                         ProductCode = msiService.GetPropertyFromMsiDatabase(database, MsiPropertyName.ProductCode)
-                    });
+                    };
+                    subFolder.InstallerFiles.Add(installer);
+
+                    if (String.IsNullOrWhiteSpace(installer.Name))
+                        throw new Exception("MSI installer " + installer.Path + " has no ProductName property. This property is REQUIRED according to the official documentation: https://docs.microsoft.com/en-us/windows/desktop/msi/productname");
+
+                    if (installer.Version == null)
+                        throw new Exception("MSI installer " + installer.Path + " has no ProductVersion property. This property is REQUIRED according to the official documentation: https://docs.microsoft.com/en-us/windows/desktop/msi/productversion");
+
+                    if (String.IsNullOrWhiteSpace(installer.Culture))
+                        throw new Exception("MSI installer " + installer.Path + " has no ProductLanguage property. This property is REQUIRED according to the official documentation: https://docs.microsoft.com/en-us/windows/desktop/msi/productlanguage");
+
+                    if (String.IsNullOrWhiteSpace(installer.ProductCode))
+                        throw new Exception("MSI installer " + installer.Path + " has no ProductCode property. This property is REQUIRED according to the official documentation: https://docs.microsoft.com/en-us/windows/desktop/msi/productcode");
                 }
             }
-
-            subFolder.InstallerFiles = subFolder.InstallerFiles.OrderBy(installerFile => installerFile.Name).ToList();
+            
+            subFolder.InstallerFiles = subFolder.InstallerFiles.OrderBy(installerFile => installerFile.Path).ToList();
         }
     }
 }

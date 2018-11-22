@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace Stein.Helpers.XML
 {
@@ -13,7 +14,7 @@ namespace Stein.Helpers.XML
     /// </code>
     /// </example>
     /// </summary>
-    public class CDataString : IXmlSerializable
+    public class CDataString : IXmlSerializable, IComparable<CDataString>
     {
         private string _value;
 
@@ -35,7 +36,12 @@ namespace Stein.Helpers.XML
         {
             return cdata?._value;
         }
-        
+
+        public int CompareTo(CDataString other)
+        {
+            return String.Compare(ToString(), other?.ToString(), StringComparison.Ordinal);
+        }
+
         public override string ToString()
         {
             return _value;

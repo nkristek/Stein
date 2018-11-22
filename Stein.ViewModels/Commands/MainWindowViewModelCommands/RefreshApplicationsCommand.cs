@@ -55,6 +55,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
                     }
                     catch (Exception exception)
                     {
+                        Log.Error(exception);
                         applicationFolder.SubFolders.Clear();
                         _dialogService.ShowMessage(String.Format(Strings.RefreshFailed, applicationFolder.Path, exception.Message));
                     }
