@@ -10,6 +10,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Stein.Views.Resources"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
@@ -69,6 +70,7 @@
                  VerticalAlignment="Stretch"
                  VerticalContentAlignment="Center"
                  ToolTip="{x:Static localization:Strings.CustomArguments}"
+                 extensions:WatermarkExtension.Watermark="Test"
                  Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Created -->
