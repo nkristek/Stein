@@ -44,7 +44,7 @@
 
                 <!-- Add Folder button -->
                 <Button Grid.Column="0"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding AddApplicationCommand}">
                     <Button.ContentTemplate>
                         <DataTemplate>
@@ -67,7 +67,7 @@
                         Height="28"
                         Padding="2"
                         DataContext="{Binding RefreshApplicationsCommand}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding}"
                         ToolTip="{x:Static localization:Strings.Refresh}">
                     <Button.ContentTemplate>
@@ -121,7 +121,7 @@
                         Width="28"
                         Height="28"
                         Padding="4"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding ChangeThemeCommand}"
                         ToolTip="{x:Static localization:Strings.SwitchTheme}">
                     <Button.ContentTemplate>
@@ -139,7 +139,7 @@
                         Height="28"
                         Padding="4"
                         ContentTemplate="{StaticResource InfoIconVariant}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding ShowInfoDialogCommand}"
                         ToolTip="{x:Static localization:Strings.About}"/>
             </Grid>
