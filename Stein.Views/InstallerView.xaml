@@ -70,7 +70,7 @@
                  VerticalAlignment="Stretch"
                  VerticalContentAlignment="Center"
                  ToolTip="{x:Static localization:Strings.CustomArguments}"
-                 extensions:WatermarkExtension.Watermark="Test"
+                 extensions:WatermarkExtension.Watermark="{x:Static localization:Strings.CustomArguments}"
                  Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Created -->
