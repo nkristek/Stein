@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
@@ -71,7 +71,7 @@
 
         <!-- Dependencies -->
         <Grid Grid.Row="4"
-              Visibility="{Binding Dependencies, Converter={converters:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
+              Visibility="{Binding Dependencies, Converter={c:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="8"/>

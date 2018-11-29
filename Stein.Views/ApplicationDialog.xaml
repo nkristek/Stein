@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
@@ -190,13 +190,13 @@
                     Padding="16,4"
                     Click="OnDialogOkButtonClick">
                 <Button.IsDefault>
-                    <MultiBinding Converter="{converters:AllBoolToBoolConverter}">
+                    <MultiBinding Converter="{c:AllBoolToBoolConverter}">
                         <Binding Path="IsValid"/>
                         <Binding Path="IsDirty"/>
                     </MultiBinding>
                 </Button.IsDefault>
                 <Button.IsEnabled>
-                    <MultiBinding Converter="{converters:AllBoolToBoolConverter}">
+                    <MultiBinding Converter="{c:AllBoolToBoolConverter}">
                         <Binding Path="IsValid"/>
                         <Binding Path="IsDirty"/>
                     </MultiBinding>

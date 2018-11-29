@@ -8,10 +8,10 @@
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
-        MinWidth="550"
-        MinHeight="230"
+        MinWidth="450"
+        Width="600"
+        MinHeight="200"
         Height="300"
-        SizeToContent="Width"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
 

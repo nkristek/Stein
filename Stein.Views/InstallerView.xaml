@@ -3,25 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+             xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:resources="clr-namespace:Stein.Views.Resources"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
-             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
-    <Grid IsEnabled="{Binding IsDisabled, Converter={converters:BoolToInverseBoolConverter}}"
+    <Grid IsEnabled="{Binding IsDisabled, Converter={c:BoolToInverseBoolConverter}}"
           Margin="0,2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="DateColumn"/>
         </Grid.ColumnDefinitions>
@@ -70,13 +70,13 @@
                  VerticalAlignment="Stretch"
                  VerticalContentAlignment="Center"
                  ToolTip="{x:Static localization:Strings.CustomArguments}"
-                 extensions:WatermarkExtension.Watermark="{x:Static localization:Strings.CustomArguments}"
+                 adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.CustomArguments}"
                  Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Created -->
         <TextBlock Grid.Column="6"
                    VerticalAlignment="Center"
-                   Visibility="{Binding Created, Converter={converters:ValueNullToInverseVisibilityConverter}}"
+                   Visibility="{Binding Created, Converter={c:ValueNullToInverseVisibilityConverter}}"
                    Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}">
             <i:Interaction.Behaviors>
                 <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />

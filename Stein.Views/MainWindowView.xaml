@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+             xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
@@ -149,7 +149,7 @@
         <ItemsControl Grid.Row="1" 
                       Margin="8"
                       ItemsSource="{Binding Applications}"
-                      IsEnabled="{Binding CurrentInstallation, Converter={converters:ValueNullToBoolConverter}}"
+                      IsEnabled="{Binding CurrentInstallation, Converter={c:ValueNullToBoolConverter}}"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -179,7 +179,7 @@
             <!-- no installation -->
             <StatusBarItem Padding="0"
                            Margin="8"
-                           Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToVisibilityConverter}}">
+                           Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToVisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -189,7 +189,7 @@
 
                     <TextBlock Grid.Column="0" 
                                FontSize="14"
-                               Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={converters:VisibilityToInverseVisibilityConverter}}"
+                               Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={c:VisibilityToInverseVisibilityConverter}}"
                                Text="{x:Static localization:Strings.Ready}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"/>
@@ -201,10 +201,10 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                DataContext="{Binding RefreshApplicationsCommand}"
-                               Visibility="{Binding IsWorking, Converter={converters:BoolToVisibilityConverter}, ConverterParameter=Hidden}"/>
+                               Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}, ConverterParameter=Hidden}"/>
 
                     <Grid Grid.Column="2" 
-                          Visibility="{Binding InstallationResult, Converter={converters:ValueNullToInverseVisibilityConverter}}">
+                          Visibility="{Binding InstallationResult, Converter={c:ValueNullToInverseVisibilityConverter}}">
                         <TextBlock DataContext="{Binding InstallationResult}"
                                    FontSize="14"
                                    Text="{Binding Result}"
@@ -217,7 +217,7 @@
             <!-- during installation -->
             <StatusBarItem Padding="0"
                            Margin="8"
-                           Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToInverseVisibilityConverter}}">
+                           Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}">
                 <Grid DataContext="{Binding CurrentInstallation}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -252,7 +252,7 @@
                         Command="{Binding CancelOperationCommand}"
                         ToolTip="{x:Static localization:Strings.Cancel}"
                         ToolTipService.InitialShowDelay="0"
-                        Visibility="{Binding CurrentInstallation, Converter={converters:ValueNullToInverseVisibilityConverter}}"/>
+                        Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
