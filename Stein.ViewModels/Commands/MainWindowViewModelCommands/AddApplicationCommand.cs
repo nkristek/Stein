@@ -32,7 +32,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             return viewModel.CurrentInstallation == null;
         }
 
-        protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
+        protected override void Execute(MainWindowViewModel viewModel, object parameter)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             }
             finally
             {
-                viewModel.RefreshApplicationsCommand.Execute(null);
+                viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
             }
         }
     }

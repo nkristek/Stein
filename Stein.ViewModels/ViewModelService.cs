@@ -40,7 +40,8 @@ namespace Stein.ViewModels
             _msiService = msiService;
         }
 
-        public TViewModel CreateViewModel<TViewModel>(ViewModel parent = null) where TViewModel : ViewModel
+        /// <inheritdoc />
+        public TViewModel CreateViewModel<TViewModel>(IViewModel parent = null) where TViewModel : class, IViewModel
         {
             TViewModel viewModel;
 
@@ -78,7 +79,7 @@ namespace Stein.ViewModels
             return viewModel;
         }
 
-        private ApplicationViewModel CreateApplicationViewModel(ViewModel parent, ApplicationFolder applicationFolder = null)
+        private ApplicationViewModel CreateApplicationViewModel(IViewModel parent, ApplicationFolder applicationFolder = null)
         {
             if (applicationFolder == null)
             {
@@ -118,7 +119,7 @@ namespace Stein.ViewModels
             return viewModel;
         }
 
-        private ApplicationDialogModel CreateApplicationDialogModel(ViewModel parent)
+        private ApplicationDialogModel CreateApplicationDialogModel(IViewModel parent)
         {
             ApplicationDialogModel viewModel;
             if (parent is ApplicationViewModel application)
@@ -161,7 +162,7 @@ namespace Stein.ViewModels
             return viewModel;
         }
 
-        private InstallerBundleDialogModel CreateInstallerBundleDialogModel(ViewModel parent)
+        private InstallerBundleDialogModel CreateInstallerBundleDialogModel(IViewModel parent)
         {
             if (!(parent is InstallerBundleViewModel installerBundle))
                 throw new ArgumentNullException(nameof(parent));
@@ -176,7 +177,7 @@ namespace Stein.ViewModels
             };
         }
 
-        private AboutDialogModel CreateAboutDialogModel(ViewModel parent)
+        private AboutDialogModel CreateAboutDialogModel(IViewModel parent)
         {
             var viewModel = new AboutDialogModel
             {
@@ -234,7 +235,8 @@ namespace Stein.ViewModels
             return viewModel;
         }
 
-        public IEnumerable<TViewModel> CreateViewModels<TViewModel>(ViewModel parent = null, IEnumerable<TViewModel> existingViewModels = null) where TViewModel : ViewModel
+        /// <inheritdoc />
+        public IEnumerable<TViewModel> CreateViewModels<TViewModel>(IViewModel parent = null, IEnumerable<TViewModel> existingViewModels = null) where TViewModel : class, IViewModel
         {
             IEnumerable<TViewModel> viewModels;
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
@@ -248,7 +250,7 @@ namespace Stein.ViewModels
             return viewModelsList;
         }
 
-        private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(ViewModel parent, IEnumerable<ApplicationViewModel> existingViewModels)
+        private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(IViewModel parent, IEnumerable<ApplicationViewModel> existingViewModels)
         {
             var existingApplicationViewModels = existingViewModels.ToList();
             foreach (var applicationFolder in _configurationService.Configuration.ApplicationFolders)
@@ -270,7 +272,8 @@ namespace Stein.ViewModels
             }
         }
 
-        public void SaveViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
+        /// <inheritdoc />
+        public void SaveViewModel<TViewModel>(TViewModel viewModel) where TViewModel : class, IViewModel
         {
             if (typeof(TViewModel) == typeof(MainWindowViewModel))
                 SaveMainWindowViewModel(viewModel as MainWindowViewModel);
@@ -341,7 +344,8 @@ namespace Stein.ViewModels
             applicationDialog.IsDirty = false;
         }
 
-        public void UpdateViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
+        /// <inheritdoc />
+        public void UpdateViewModel<TViewModel>(TViewModel viewModel) where TViewModel : class, IViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
                 UpdateApplicationViewModel(viewModel as ApplicationViewModel);
@@ -393,14 +397,14 @@ namespace Stein.ViewModels
             application.IsDirty = false;
         }
 
-        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
+        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(ApplicationFolder applicationFolder, IViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingInstallerBundles = null)
         {
             foreach (var subFolder in applicationFolder.SubFolders)
                 foreach (var installerBundle in CreateOrUpdateInstallerBundleViewModels(subFolder, parent, existingInstallerBundles))
                     yield return installerBundle;
         }
 
-        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, ViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingViewModels = null)
+        private IEnumerable<InstallerBundleViewModel> CreateOrUpdateInstallerBundleViewModels(SubFolder subFolder, IViewModel parent = null, IEnumerable<InstallerBundleViewModel> existingViewModels = null)
         {
             var existingInstallerBundles = existingViewModels?.ToList();
             foreach (var installerFileGroup in subFolder.FindAllInstallerFiles().GroupBy(i => i.Culture).Select(ifg => ifg.ToList()))
@@ -452,7 +456,8 @@ namespace Stein.ViewModels
             }
         }
 
-        public void DeleteViewModel<TViewModel>(TViewModel viewModel) where TViewModel : ViewModel
+        /// <inheritdoc />
+        public void DeleteViewModel<TViewModel>(TViewModel viewModel) where TViewModel : class, IViewModel
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
                 DeleteApplicationViewModel(viewModel as ApplicationViewModel);

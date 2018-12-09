@@ -36,7 +36,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
         }
 
-        protected override async Task DoExecute(ApplicationViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
             var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
             if (mainWindowViewModel == null)
@@ -49,13 +49,13 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 var installationResult = await InstallSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
                 mainWindowViewModel.InstallationResult = installationResult.AnyOperationWasExecuted ? installationResult : null;
                 if (installationResult.AnyOperationWasExecuted)
-                    mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+                    await mainWindowViewModel.RefreshApplicationsCommand.ExecuteAsync(null);
             }
             catch (Exception exception)
             {
                 Log.Error(exception);
                 _dialogService.ShowError(exception);
-                mainWindowViewModel.RefreshApplicationsCommand.Execute(null);
+                await mainWindowViewModel.RefreshApplicationsCommand.ExecuteAsync(null);
             }
             finally
             {

@@ -41,7 +41,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             return viewModel.CurrentInstallation == null;
         }
 
-        protected override async Task DoExecute(MainWindowViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
         {
             try
             {

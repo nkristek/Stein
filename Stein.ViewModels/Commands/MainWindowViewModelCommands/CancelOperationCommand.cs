@@ -28,7 +28,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
                 && viewModel.CurrentInstallation.State != InstallationState.Cancelled;
         }
 
-        protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
+        protected override void Execute(MainWindowViewModel viewModel, object parameter)
         {
             try
             {

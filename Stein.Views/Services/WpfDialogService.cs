@@ -18,13 +18,13 @@ namespace Stein.Views.Services
             _windowStack.Push(root);
         }
 
-        public void ShowPopup(ViewModel contextViewModel)
+        public void ShowPopup(IViewModel contextViewModel)
         {
             var popup = CreateView<Popup>(contextViewModel);
             popup.IsOpen = true;
         }
 
-        public bool? ShowDialog(DialogModel dialogModel)
+        public bool? ShowDialog(IDialogModel dialogModel)
         {
             var dialog = CreateView<Window>(dialogModel);
             dialog.Owner = _windowStack.Peek();
@@ -44,7 +44,7 @@ namespace Stein.Views.Services
             return result;
         }
 
-        private TView CreateView<TView>(ViewModel contextViewModel) where TView : FrameworkElement
+        private TView CreateView<TView>(IViewModel contextViewModel) where TView : FrameworkElement
         {
             if (contextViewModel == null)
                 throw new ArgumentNullException(nameof(contextViewModel));

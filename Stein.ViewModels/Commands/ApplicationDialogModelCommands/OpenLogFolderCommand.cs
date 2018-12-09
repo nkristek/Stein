@@ -20,7 +20,7 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
             _dialogService = dialogService;
         }
         
-        protected override void DoExecute(ApplicationDialogModel viewModel, object parameter)
+        protected override void Execute(ApplicationDialogModel viewModel, object parameter)
         {
             try
             {

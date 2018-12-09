@@ -29,7 +29,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null;
         }
 
-        protected override void DoExecute(ApplicationViewModel viewModel, object parameter)
+        protected override void Execute(ApplicationViewModel viewModel, object parameter)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             }
             finally
             {
-                (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.Execute(null);
+                (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
             }
         }
     }

@@ -9,14 +9,14 @@ namespace Stein.Presentation
         /// Shows the corresponding popup of the <see cref="ViewModel"/>
         /// </summary>
         /// <param name="contextViewModel"></param>
-        void ShowPopup(ViewModel contextViewModel);
+        void ShowPopup(IViewModel contextViewModel);
 
         /// <summary>
         /// Shows the corresponding dialog of the <see cref="DialogModel"/>
         /// </summary>
         /// <param name="dialogViewModel">The <see cref="DialogModel"/> to show</param>
         /// <returns>The result of the dialog</returns>
-        bool? ShowDialog(DialogModel dialogViewModel);
+        bool? ShowDialog(IDialogModel dialogViewModel);
 
         /// <summary>
         /// Shows a dialog with the given message

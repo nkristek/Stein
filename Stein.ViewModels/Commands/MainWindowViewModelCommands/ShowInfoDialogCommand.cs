@@ -22,7 +22,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _viewModelService = viewModelService;
         }
         
-        protected override void DoExecute(MainWindowViewModel viewModel, object parameter)
+        protected override void Execute(MainWindowViewModel viewModel, object parameter)
         {
             try
             {
