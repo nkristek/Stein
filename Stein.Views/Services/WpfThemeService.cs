@@ -2,37 +2,25 @@
 using System.Windows;
 using AdonisUI;
 using Stein.Presentation;
-using Stein.Services;
 
 namespace Stein.Views.Services
 {
     public class WpfThemeService
         : IThemeService
     {
-        private readonly IConfigurationService _configurationService;
-
-        public WpfThemeService(IConfigurationService configurationService)
-        {
-            _configurationService = configurationService;
-            SetTheme(_configurationService.Configuration.SelectedTheme);
-        }
-
         private Theme _currentTheme;
 
         public Theme CurrentTheme
         {
             get => _currentTheme;
-            set
+            private set
             {
                 if (value == _currentTheme)
                     return;
 
                 var oldValue = _currentTheme;
                 _currentTheme = value;
-
-                _configurationService.Configuration.SelectedTheme = value;
-                _configurationService.SaveConfiguration();
-
+                
                 RaiseThemeChanged(oldValue, value);
             }
         }

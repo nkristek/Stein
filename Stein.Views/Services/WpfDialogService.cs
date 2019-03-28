@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
 using Stein.Presentation;
 
 namespace Stein.Views.Services
 {
-    public class WpfDialogService : IDialogService
+    public class WpfDialogService 
+        : IDialogService
     {
         private readonly Stack<Window> _windowStack = new Stack<Window>();
 
@@ -18,12 +18,7 @@ namespace Stein.Views.Services
             _windowStack.Push(root);
         }
 
-        public void ShowPopup(IViewModel contextViewModel)
-        {
-            var popup = CreateView<Popup>(contextViewModel);
-            popup.IsOpen = true;
-        }
-
+        /// <inheritdoc />
         public bool? ShowDialog(IDialogModel dialogModel)
         {
             var dialog = CreateView<Window>(dialogModel);
@@ -43,7 +38,7 @@ namespace Stein.Views.Services
 
             return result;
         }
-
+        
         private TView CreateView<TView>(IViewModel contextViewModel) where TView : FrameworkElement
         {
             if (contextViewModel == null)
@@ -63,17 +58,20 @@ namespace Stein.Views.Services
             return viewAsTargetType;
         }
 
+        /// <inheritdoc />
         public void ShowMessage(string message)
         {
             MessageBox.Show(message);
         }
-        
+
+        /// <inheritdoc />
         public void ShowError(Exception exception)
         {
+            // TODO: create ErrorDialogModel
             var exceptionMessage = BuildExceptionMessage(exception);
             ShowMessage(exceptionMessage);
         }
-
+        
         private static string BuildExceptionMessage(Exception exception)
         {
             var messageBuilder = new StringBuilder();

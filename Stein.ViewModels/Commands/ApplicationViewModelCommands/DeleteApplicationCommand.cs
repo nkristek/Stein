@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.Services;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
     public sealed class DeleteApplicationCommand
-        : ViewModelCommand<ApplicationViewModel>
+        : AsyncViewModelCommand<ApplicationViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -16,11 +17,10 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private readonly IViewModelService _viewModelService;
 
-        public DeleteApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IViewModelService viewModelService) 
-            : base(parent)
+        public DeleteApplicationCommand(IDialogService dialogService, IViewModelService viewModelService)
         {
-            _dialogService = dialogService;
-            _viewModelService = viewModelService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
 
         [CanExecuteSource(nameof(ApplicationViewModel.Parent))]
@@ -29,20 +29,20 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null;
         }
 
-        protected override void Execute(ApplicationViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
+            if (!(viewModel.Parent is MainWindowViewModel parent))
+                return;
+
             try
             {
-                _viewModelService.DeleteViewModel(viewModel);
+                await _viewModelService.DeleteViewModelAsync(viewModel);
+                parent.Applications.Remove(viewModel);
             }
             catch (Exception exception)
             {
                 Log.Error(exception);
                 _dialogService.ShowError(exception);
-            }
-            finally
-            {
-                (viewModel.Parent as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
             }
         }
     }

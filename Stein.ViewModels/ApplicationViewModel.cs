@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using NKristek.Smaragd.Commands;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -8,16 +8,30 @@ namespace Stein.ViewModels
     public sealed class ApplicationViewModel
         : ViewModel
     {
-        public ViewModelCommand<ApplicationViewModel> EditApplicationCommand { get; set; }
-        
-        public ViewModelCommand<ApplicationViewModel> DeleteApplicationCommand { get; set; }
-        
-        public AsyncViewModelCommand<ApplicationViewModel> InstallApplicationCommand { get; set; }
-        
-        public AsyncViewModelCommand<ApplicationViewModel> UninstallApplicationCommand { get; set; }
-        
-        public AsyncViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand { get; set; }
-        
+        private bool _isUpdating;
+
+        // TODO: move to base class
+        /// <summary>
+        /// If this <see cref="IViewModel"/> is updating.
+        /// </summary>
+        [IsDirtyIgnored]
+        public bool IsUpdating
+        {
+            get => _isUpdating;
+            set => SetProperty(ref _isUpdating, value, out _);
+        }
+
+        private Guid _entityId;
+
+        /// <summary>
+        /// The Id of the associated entity.
+        /// </summary>
+        public Guid EntityId
+        {
+            get => _entityId;
+            set => SetProperty(ref _entityId, value, out _);
+        }
+
         private string _name;
 
         /// <summary>
@@ -28,27 +42,21 @@ namespace Stein.ViewModels
             get => _name;
             set => SetProperty(ref _name, value, out _);
         }
-
-        private string _path;
+        
+        /// <summary>
+        /// List of all installer bundles of this application
+        /// </summary>
+        public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
+        
+        private InstallerBundleViewModel _selectedInstallerBundle;
 
         /// <summary>
-        /// Path to the application folder
+        /// The currently selected InstallerBundleViewModel
         /// </summary>
-        public string Path
+        public InstallerBundleViewModel SelectedInstallerBundle
         {
-            get => _path;
-            set => SetProperty(ref _path, value, out _);
-        }
-
-        private Guid _folderId;
-
-        /// <summary>
-        /// The Id of the ApplicationFolder in the configuration
-        /// </summary>
-        public Guid FolderId
-        {
-            get => _folderId;
-            set => SetProperty(ref _folderId, value, out _);
+            get => _selectedInstallerBundle;
+            set => SetProperty(ref _selectedInstallerBundle, value, out _);
         }
 
         private bool _enableSilentInstallation;
@@ -84,22 +92,6 @@ namespace Stein.ViewModels
             set => SetProperty(ref _enableInstallationLogging, value, out _);
         }
 
-        /// <summary>
-        /// List of all installer bundles of this application
-        /// </summary>
-        public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
-        
-        private InstallerBundleViewModel _selectedInstallerBundle;
-
-        /// <summary>
-        /// The currently selected InstallerBundleViewModel
-        /// </summary>
-        public InstallerBundleViewModel SelectedInstallerBundle
-        {
-            get => _selectedInstallerBundle;
-            set => SetProperty(ref _selectedInstallerBundle, value, out _);
-        }
-
         private bool _automaticallyDeleteInstallationLogs;
 
         /// <summary>
@@ -111,15 +103,24 @@ namespace Stein.ViewModels
             set => SetProperty(ref _automaticallyDeleteInstallationLogs, value, out _);
         }
 
-        private int _keepNewestInstallationLogs;
+        private string _keepNewestInstallationLogsString;
+
+        /// <summary>
+        /// How many installation logs should be kept. The oldest ones will be deleted first.
+        /// </summary>
+        public string KeepNewestInstallationLogsString
+        {
+            get => _keepNewestInstallationLogsString;
+            set => SetProperty(ref _keepNewestInstallationLogsString, value, out _);
+        }
 
         /// <summary>
         /// How many installation logs should be kept. The oldest ones will be deleted first.
         /// </summary>
         public int KeepNewestInstallationLogs
         {
-            get => _keepNewestInstallationLogs;
-            set => SetProperty(ref _keepNewestInstallationLogs, value, out _);
+            get => int.TryParse(KeepNewestInstallationLogsString, out var value) ? value : 0;
+            set => KeepNewestInstallationLogsString = value.ToString();
         }
     }
 }

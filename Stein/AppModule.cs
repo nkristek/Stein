@@ -1,8 +1,11 @@
 ﻿using System.Windows;
 using Ninject.Modules;
 using Stein.Presentation;
-using Stein.Services;
-using Stein.ViewModels;
+using Stein.Services.Configuration;
+using Stein.Services.InstallService;
+using Stein.Services.MsiService;
+using Stein.Services.ProductService;
+using Stein.ViewModels.Services;
 using Stein.Views.Services;
 
 namespace Stein
@@ -21,11 +24,12 @@ namespace Stein
         {
             Bind<Window>().ToConstant(_rootWindow);
             Bind<IDialogService>().To<WpfDialogService>().InSingletonScope();
-            Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
-            Bind<IInstallService>().To<InstallService>().InSingletonScope();
             Bind<IThemeService>().To<WpfThemeService>().InSingletonScope();
             Bind<IProgressBarService>().To<WpfTaskbarService>().InSingletonScope();
-            Bind<IMsiService>().To<MsiService>();
+            Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
+            Bind<IInstallService>().To<InstallService>().InSingletonScope();
+            Bind<IMsiService>().To<MsiService>().InSingletonScope();
+            Bind<IProductService>().To<ProductService>().InSingletonScope();
             Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
         }
     }

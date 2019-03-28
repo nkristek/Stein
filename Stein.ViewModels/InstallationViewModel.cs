@@ -1,4 +1,6 @@
-﻿using NKristek.Smaragd.Attributes;
+﻿using System.Diagnostics;
+using System.Threading;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
 using Stein.ViewModels.Types;
 
@@ -7,10 +9,20 @@ namespace Stein.ViewModels
     public sealed class InstallationViewModel
         : ViewModel
     {
+        public InstallationViewModel()
+        {
+            PropertyChanged += (sender, args) =>
+            {
+                // TODO
+                if (args.PropertyName == nameof(Progress))
+                    Debug.Print("Progress: " + Progress);
+            };
+        }
+
         private string _name;
 
         /// <summary>
-        /// Name of the current installer
+        /// Name of the current installation.
         /// </summary>
         public string Name
         {
@@ -21,12 +33,18 @@ namespace Stein.ViewModels
         private InstallationState _state;
 
         /// <summary>
-        /// Current state of the installation
+        /// Current state of the installation. If set to <see cref="InstallationState.Cancelled"/> it will cancel the <see cref="CancellationTokenSource"/> and won't change again.
         /// </summary>
         public InstallationState State
         {
             get => _state;
-            set => SetProperty(ref _state, value, out _);
+            set
+            {
+                if (_state == InstallationState.Cancelled)
+                    return;
+                if (SetProperty(ref _state, value, out _) && value == InstallationState.Cancelled)
+                    CancellationTokenSource.Cancel();
+            }
         }
         
         private int _installerCount;
@@ -40,21 +58,54 @@ namespace Stein.ViewModels
             set => SetProperty(ref _installerCount, value, out _);
         }
 
-        private int _currentIndex;
+        private int _currentInstallerIndex;
 
         /// <summary>
         /// At which installer the current operation is
         /// </summary>
-        public int CurrentIndex
+        public int CurrentInstallerIndex
         {
-            get => _currentIndex;
-            set => SetProperty(ref _currentIndex, value, out _);
+            get => _currentInstallerIndex;
+            set => SetProperty(ref _currentInstallerIndex, value, out _);
+        }
+
+        private double _downloadProgress;
+
+        /// <summary>
+        /// The progress of the file download.
+        /// </summary>
+        public double DownloadProgress
+        {
+            get => _downloadProgress;
+            set => SetProperty(ref _downloadProgress, value, out _);
+        }
+
+        private double _installationProgress;
+
+        /// <summary>
+        /// The progress of the installation.
+        /// </summary>
+        public double InstallationProgress
+        {
+            get => _installationProgress;
+            set => SetProperty(ref _installationProgress, value, out _);
         }
 
         /// <summary>
-        /// Returns a string representing the current progress
+        /// Progress of the entire operation.
         /// </summary>
-        [PropertySource(nameof(CurrentIndex), nameof(InstallerCount))]
-        public string ProgressString => $"{CurrentIndex}/{InstallerCount}";
+        [PropertySource(nameof(DownloadProgress), nameof(InstallationProgress))]
+        public double Progress => (DownloadProgress + InstallationProgress) / 2;
+        
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+        /// <summary>
+        /// Source for cancellation tokens. Used to cancel the current installation.
+        /// </summary>
+        public CancellationTokenSource CancellationTokenSource
+        {
+            get => _cancellationTokenSource;
+            set => SetProperty(ref _cancellationTokenSource, value, out _);
+        }
     }
 }

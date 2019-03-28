@@ -10,10 +10,5 @@
         // ReSharper disable once InconsistentNaming
         private readonly NKristek.Wpf.Converters.BoolToInverseBoolConverter _NKristekWpfConverter;
 #pragma warning restore 169
-
-#pragma warning disable 169
-        // ReSharper disable once InconsistentNaming
-        private readonly GongSolutions.Wpf.DragDrop.DefaultDragHandler _GongSolutionsWpfDragDrop;
-#pragma warning restore 169
     }
 }

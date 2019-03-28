@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
 
@@ -26,8 +25,6 @@ namespace Stein.ViewModels
             Uri = new Uri("https://github.com/nkristek/Stein");
             Publisher = publisher?.Company;
         }
-
-        public ViewModelCommand<AboutDialogModel> OpenUriCommand { get; set; }
         
         /// <summary>
         /// All dependencies of this application

@@ -25,7 +25,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
             <RowDefinition Height="8"/>
-            <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="8"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="8"/>
@@ -61,34 +61,118 @@
                      Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
         </Grid>
 
-        <!-- Path -->
+        <!-- Provider Configuration -->
         <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" 
-                                  SharedSizeGroup="LabelColumn"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
+                <RowDefinition Height="8"/>
+                <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
+            </Grid.RowDefinitions>
 
-            <Label Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"
-                   FontWeight="Bold"
-                   Content="{x:Static localization:Strings.Path}"
-                   Target="SelectFolderButton"/>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" 
+                                      SharedSizeGroup="LabelColumn"/>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="2"
-                     VerticalAlignment="Stretch"
-                     VerticalContentAlignment="Center"
-                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                <Label Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       Content="{x:Static localization:Strings.Type}"/>
 
-            <Button x:Name="SelectFolderButton" 
-                    Grid.Column="4"
-                    Content="{x:Static localization:Strings.Hellip}"
-                    Padding="16,4"
-                    Command="{Binding SelectFolderCommand}"/>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding AvailableProviders}"
+                          SelectedItem="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
+                          IsEnabled="{Binding AvailableProviders, Converter={c:ICollectionNullOrEmptyToInverseBoolConverter}}"
+                          HorizontalAlignment="Stretch"
+                          ScrollViewer.CanContentScroll="True"
+                          VirtualizingStackPanel.IsVirtualizing="True"
+                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          VirtualizingStackPanel.ScrollUnit="Pixel">
+
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+
+                    <ComboBox.Resources>
+                        <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
+                            <TextBlock TextTrimming="CharacterEllipsis"
+                                       Text="{x:Static localization:Strings.Disk}"/>
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
+                            <TextBlock TextTrimming="CharacterEllipsis"
+                                       Text="GitHub"/>
+                        </DataTemplate>
+                    </ComboBox.Resources>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.Resources>
+                    <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" 
+                                                  SharedSizeGroup="LabelColumn"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Content="{x:Static localization:Strings.Path}"
+                                   Target="PathTextBox"/>
+
+                            <TextBox x:Name="PathTextBox" 
+                                     Grid.Column="2"
+                                     VerticalAlignment="Stretch"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <Button Grid.Column="4"
+                                    Content="{x:Static localization:Strings.Hellip}"
+                                    Padding="16,4"
+                                    Command="{Binding Commands[Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands.SelectFolderCommand]}"/>
+                        </Grid>
+                    </DataTemplate>
+
+                    <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" 
+                                                  SharedSizeGroup="LabelColumn"/>
+                                <ColumnDefinition Width="8"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Content="{x:Static localization:Strings.Repository}"/>
+
+                            <TextBox Grid.Column="2"
+                                     VerticalAlignment="Stretch"
+                                     VerticalContentAlignment="Center"
+                                     adonisExtensions:WatermarkExtension.IsWatermarkVisible="True"
+                                     adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.RepositoryWatermark}"
+                                     Text="{Binding Repository, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                        </Grid>
+                    </DataTemplate>
+                </Grid.Resources>
+
+                <ContentControl Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"/>
+            </Grid>
         </Grid>
 
         <!-- Silent Install -->
@@ -147,7 +231,7 @@
             <Button Grid.Column="4"
                     Content="{x:Static localization:Strings.OpenFolder}"
                     Padding="16,4"
-                    Command="{Binding OpenLogFolderCommand}"/>
+                    Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationDialogModelCommands.OpenLogFolderCommand]}"/>
 
             <CheckBox Grid.Column="6"
                       VerticalAlignment="Center"

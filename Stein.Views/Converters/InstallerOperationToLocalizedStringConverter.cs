@@ -29,7 +29,6 @@ namespace Stein.Views.Converters
             {
                 case InstallerOperation.DoNothing: return Strings.Nothing;
                 case InstallerOperation.Install: return Strings.Install;
-                case InstallerOperation.Reinstall: return Strings.Reinstall;
                 case InstallerOperation.Uninstall: return Strings.Uninstall;
                 default: return value.ToString();
             }
@@ -45,8 +44,6 @@ namespace Stein.Views.Converters
                 return InstallerOperation.DoNothing;
             if (stringValue == Strings.Install)
                 return InstallerOperation.Install;
-            if (stringValue == Strings.Reinstall)
-                return InstallerOperation.Reinstall;
             if (stringValue == Strings.Uninstall)
                 return InstallerOperation.Uninstall;
 

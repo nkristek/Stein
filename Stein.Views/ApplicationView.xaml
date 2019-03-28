@@ -20,8 +20,11 @@
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
         <GroupBox.Header>
-            <Grid Grid.Column="7">
+            <Grid Grid.Column="7"
+                  IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="8"/>
                     <ColumnDefinition Width="*"/>
@@ -36,25 +39,33 @@
                            FontSize="14"
                            Text="{Binding Name}"/>
 
-                <Button Grid.Column="3"
+                <ContentControl Grid.Column="2"
+                                Focusable="False"
+                                ContentTemplate="{DynamicResource {x:Static adonisUi:Templates.LoadingCircle}}"
+                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                Width="14"
+                                Height="14"
+                                Visibility="{Binding IsUpdating, Converter={c:BoolToVisibilityConverter}}"/>
+
+                <Button Grid.Column="5"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Width="24"
                         Height="24"
                         Padding="4"
                         ContentTemplate="{DynamicResource EditIconVariant}"
-                        Command="{Binding EditApplicationCommand}"/>
+                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.EditApplicationCommand]}"/>
 
-                <Button Grid.Column="4"
+                <Button Grid.Column="6"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Width="24"
                         Height="24"
                         Padding="4"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
-                        Command="{Binding DeleteApplicationCommand}"/>
+                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.DeleteApplicationCommand]}"/>
             </Grid>
         </GroupBox.Header>
 
-        <Grid>
+        <Grid IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="8"/>
@@ -68,7 +79,6 @@
             <ComboBox Grid.Column="0"
                       ItemsSource="{Binding InstallerBundles}"
                       SelectedItem="{Binding SelectedInstallerBundle}"
-                      IsEnabled="{Binding InstallerBundles, Converter={c:ICollectionNullOrEmptyToInverseBoolConverter}}"
                       HorizontalContentAlignment="Stretch"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
@@ -83,29 +93,8 @@
 
                 <ComboBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:InstallerBundleViewModel}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="8"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <!-- Name & Culture --> 
-                            <TextBlock Grid.Column="0"
-                                       TextTrimming="CharacterEllipsis">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} - {1}">
-                                        <Binding Path="Name"/>
-                                        <Binding Path="Culture"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-
-                            <!-- Installed count -->  
-                            <TextBlock Grid.Column="2"
-                                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
-                                       Text="{Binding InstalledSummary}"/>
-                        </Grid>
+                        <TextBlock TextTrimming="CharacterEllipsis"
+                                   Text="{Binding Name}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -113,7 +102,7 @@
             <TextBlock Grid.Column="2"
                        VerticalAlignment="Center"
                        DataContext="{Binding SelectedInstallerBundle}"
-                       Text="{Binding NewestInstallerCreationTime, Converter={steinconverters:DateTimeToRelativeStringConverter}}"> 
+                       Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}"> 
                 <i:Interaction.Behaviors>
                     <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
                 </i:Interaction.Behaviors>
@@ -122,15 +111,15 @@
             <adonisControls:SplitButton Grid.Column="4"
                                   Content="{x:Static localization:Strings.Install}"
                                   Padding="16,4"
-                                  Command="{Binding InstallApplicationCommand}">
+                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
                 <adonisControls:SplitButton.SplitMenu>
                     <ContextMenu>
                         <MenuItem Header="{x:Static localization:Strings.Install}"
-                                  Command="{Binding InstallApplicationCommand}"/>
+                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}"/>
                         <MenuItem Header="{x:Static localization:Strings.Uninstall}"
-                                  Command="{Binding UninstallApplicationCommand}"/>
+                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.UninstallApplicationCommand]}"/>
                         <MenuItem Header="{x:Static localization:Strings.Custom}" 
-                                  Command="{Binding CustomOperationApplicationCommand}"/>
+                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.CustomOperationApplicationCommand]}"/>
                     </ContextMenu>
                 </adonisControls:SplitButton.SplitMenu>
             </adonisControls:SplitButton>

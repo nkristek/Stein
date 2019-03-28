@@ -60,7 +60,7 @@
             <TextBlock Grid.Column="4"
                        VerticalAlignment="Center"
                        FontSize="14">
-                <Hyperlink Command="{Binding OpenUriCommand}">GitHub</Hyperlink>
+                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.AboutDialogModelCommands.OpenUriCommand]}">GitHub</Hyperlink>
             </TextBlock>
         </Grid>
 
@@ -88,7 +88,7 @@
                     <DataTemplate DataType="{x:Type viewModels:DependencyViewModel}">
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="14">
-                            <Hyperlink Command="{Binding OpenUriCommand}">
+                            <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.DependencyViewModelCommands.OpenUriCommand]}">
                                 <TextBlock Text="{Binding Name}"/>
                             </Hyperlink>
                         </TextBlock>

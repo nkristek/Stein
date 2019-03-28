@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddFolder" xml:space="preserve">
-    <value>Add Folder</value>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
   </data>
   <data name="ApplicationFolderNotCached" xml:space="preserve">
     <value>The requested application folder is not cached and could not be updated.</value>
@@ -132,8 +132,8 @@
   <data name="Cancelled" xml:space="preserve">
     <value>Cancelled, finishing current operation…</value>
   </data>
-  <data name="EditFolder" xml:space="preserve">
-    <value>Edit Folder</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="Install" xml:space="preserve">
     <value>Install</value>
@@ -288,5 +288,32 @@
   </data>
   <data name="CustomArguments" xml:space="preserve">
     <value>Additional arguments</value>
+  </data>
+  <data name="Disk" xml:space="preserve">
+    <value>File system</value>
+  </data>
+  <data name="PathDoesNotExist" xml:space="preserve">
+    <value>The specified folder path does not exist.</value>
+  </data>
+  <data name="Repository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="RepositoryDoesNotContainSlash" xml:space="preserve">
+    <value>The specified repository name does not contain a / character (expected format "user/repository").</value>
+  </data>
+  <data name="RepositoryEmpty" xml:space="preserve">
+    <value>The specified repository name is empty.</value>
+  </data>
+  <data name="RepositoryWatermark" xml:space="preserve">
+    <value>The name of the GitHub repository in the "user/repository" format.</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="DialogInputNotValid" xml:space="preserve">
+    <value>The entered information is not valid.</value>
+  </data>
+  <data name="NoProvider" xml:space="preserve">
+    <value>No type selected.</value>
   </data>
 </root>

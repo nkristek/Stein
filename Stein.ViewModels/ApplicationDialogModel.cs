@@ -1,5 +1,6 @@
 ﻿using System;
-using NKristek.Smaragd.Commands;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using NKristek.Smaragd.Validation;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
@@ -12,14 +13,22 @@ namespace Stein.ViewModels
         public ApplicationDialogModel()
         {
             AddValidation(() => Name, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.NameEmpty));
-            AddValidation(() => Path, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.PathEmpty));
             AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out _), Strings.NaN));
             AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out var parsedValue) && parsedValue >= 1, Strings.NumberShouldBeGreaterThanZero));
+            AddValidation(() => SelectedProvider, new PredicateValidation<InstallerFileBundleProviderViewModel>(value => value != null, Strings.NoProvider));
+            AddValidation(() => SelectedProvider, new PredicateValidation<InstallerFileBundleProviderViewModel>(value => value != null && value.IsValid, Strings.DialogInputNotValid));
         }
+        
+        private Guid _entityId;
 
-        public ViewModelCommand<ApplicationDialogModel> SelectFolderCommand { get; set; }
-
-        public ViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand { get; set; }
+        /// <summary>
+        /// The Id of the associated entity.
+        /// </summary>
+        public Guid EntityId
+        {
+            get => _entityId;
+            set => SetProperty(ref _entityId, value, out _);
+        }
 
         private string _name;
 
@@ -31,29 +40,7 @@ namespace Stein.ViewModels
             get => _name;
             set => SetProperty(ref _name, value, out _);
         }
-
-        private string _path;
-
-        /// <summary>
-        /// Path to the application folder
-        /// </summary>
-        public string Path
-        {
-            get => _path;
-            set => SetProperty(ref _path, value, out _);
-        }
-
-        private Guid _folderId;
-
-        /// <summary>
-        /// The Id of the ApplicationFolder in the configuration
-        /// </summary>
-        public Guid FolderId
-        {
-            get => _folderId;
-            set => SetProperty(ref _folderId, value, out _);
-        }
-
+        
         private bool _enableSilentInstallation;
 
         /// <summary>
@@ -114,8 +101,38 @@ namespace Stein.ViewModels
         /// </summary>
         public int KeepNewestInstallationLogs
         {
-            get => int.TryParse(KeepNewestInstallationLogsString, out var value) ? value : default(int);
+            get => int.TryParse(KeepNewestInstallationLogsString, out var value) ? value : 0;
             set => KeepNewestInstallationLogsString = value.ToString();
+        }
+
+        /// <summary>
+        /// Gets all available installer file provider.
+        /// </summary>
+        public ObservableCollection<InstallerFileBundleProviderViewModel> AvailableProviders { get; } = new ObservableCollection<InstallerFileBundleProviderViewModel>();
+
+        private InstallerFileBundleProviderViewModel _selectedProvider;
+
+        /// <summary>
+        /// The selected installer file provider.
+        /// </summary>
+        public InstallerFileBundleProviderViewModel SelectedProvider
+        {
+            get => _selectedProvider;
+            set
+            {
+                if (SetProperty(ref _selectedProvider, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.PropertyChanged -= SelectedProviderOnPropertyChanged;
+                    if (value != null)
+                        value.PropertyChanged += SelectedProviderOnPropertyChanged;
+                }
+            }
+        }
+
+        private void SelectedProviderOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(SelectedProvider));
         }
     }
 }

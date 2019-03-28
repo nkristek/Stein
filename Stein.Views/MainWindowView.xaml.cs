@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using Stein.ViewModels;
+﻿using System.Windows.Controls;
 
 namespace Stein.Views
 {
@@ -12,13 +10,6 @@ namespace Stein.Views
         public MainWindowView()
         {
             InitializeComponent();
-
-            Loaded += OnLoaded;
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            (DataContext as MainWindowViewModel)?.RefreshApplicationsCommand.ExecuteAsync(null);
         }
     }
 }

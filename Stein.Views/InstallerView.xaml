@@ -14,8 +14,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
     
-    <Grid IsEnabled="{Binding IsDisabled, Converter={c:BoolToInverseBoolConverter}}"
-          Margin="0,2">
+    <Grid Margin="0,2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="8"/>
@@ -36,10 +35,9 @@
 
             <TextBlock Grid.Column="0"
                        FontWeight="Bold"
-                       Text="{Binding Name}"
+                       Text="{Binding FileName}"
                        TextTrimming="CharacterEllipsis"
-                       VerticalAlignment="Center"
-                       ToolTip="{Binding Path}"/>
+                       VerticalAlignment="Center"/>
 
             <TextBlock Grid.Column="2"
                        Text="{Binding Version}"

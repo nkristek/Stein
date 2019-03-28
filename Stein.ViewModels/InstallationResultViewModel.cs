@@ -1,73 +1,48 @@
-﻿using System;
-using NKristek.Smaragd.Attributes;
+﻿using System.Collections.ObjectModel;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localizations;
+using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
 {
     public sealed class InstallationResultViewModel
         : ViewModel
     {
-        /// <summary>
-        /// The result of the finished installation
-        /// </summary>
-        [PropertySource(nameof(InstallCount), nameof(ReinstallCount), nameof(UninstallCount), nameof(FailedCount))]
-        public string Result
-        {
-            get
-            {
-                var resultMessage = String.Format(Strings.DidInstallXPrograms, InstallCount, ReinstallCount, UninstallCount);
-                if (FailedCount > 0)
-                    resultMessage = String.Join("\n", resultMessage, String.Format(Strings.XInstallersFailed, FailedCount));
-                return resultMessage;
-            }
-        }
-
-        private int _installCount;
+        private string _installerName;
 
         /// <summary>
-        /// How many installers were installed
+        /// The name of the installer file.
         /// </summary>
-        public int InstallCount
+        public string InstallerName
         {
-            get => _installCount;
-            set => SetProperty(ref _installCount, value, out _);
+            get => _installerName;
+            set => SetProperty(ref _installerName, value, out _);
         }
+        
+        /// <summary>
+        /// The file paths to the log files created during installation. Maybe empty if logging was disabled or the download of the file failed.
+        /// </summary>
+        public ObservableCollection<string> InstallationLogFilePaths { get; } = new ObservableCollection<string>();
 
-        private int _uninstallCount;
+        private InstallationResultState _state;
 
         /// <summary>
-        /// How many installers were uninstalled
+        /// The state of the installation.
         /// </summary>
-        public int UninstallCount
+        public InstallationResultState State
         {
-            get => _uninstallCount;
-            set => SetProperty(ref _uninstallCount, value, out _);
+            get => _state;
+            set => SetProperty(ref _state, value, out _);
         }
 
-        private int _reinstallCount;
+        private ExceptionViewModel _exception;
 
         /// <summary>
-        /// How many installers were reinstalled
+        /// Contains information about an <see cref="Exception"/> that was thrown while downloading/installing the corresponding installer file. Maybe <c>null</c> if no exception occured.
         /// </summary>
-        public int ReinstallCount
+        public ExceptionViewModel Exception
         {
-            get => _reinstallCount;
-            set => SetProperty(ref _reinstallCount, value, out _);
+            get => _exception;
+            set => SetProperty(ref _exception, value, out _);
         }
-
-        private int _failedCount;
-
-        /// <summary>
-        /// How many installers failed to process
-        /// </summary>
-        public int FailedCount
-        {
-            get => _failedCount;
-            set => SetProperty(ref _failedCount, value, out _);
-        }
-
-        [PropertySource(nameof(InstallCount), nameof(ReinstallCount), nameof(UninstallCount), nameof(FailedCount))]
-        public bool AnyOperationWasExecuted => InstallCount > 0 || ReinstallCount > 0 || UninstallCount > 0 || FailedCount > 0;
     }
 }

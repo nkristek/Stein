@@ -1,17 +1,16 @@
 ﻿using System;
-using System.IO;
+using System.Threading.Tasks;
 using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using Stein.Helpers;
 using Stein.Localizations;
 using Stein.Presentation;
-using Stein.Services;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {
     public sealed class AddApplicationCommand
-        : ViewModelCommand<MainWindowViewModel>
+        : AsyncViewModelCommand<MainWindowViewModel>
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -19,11 +18,10 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         private readonly IViewModelService _viewModelService;
 
-        public AddApplicationCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService) 
-            : base(parent)
+        public AddApplicationCommand(IDialogService dialogService, IViewModelService viewModelService)
         {
-            _dialogService = dialogService;
-            _viewModelService = viewModelService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
 
         [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation))]
@@ -32,30 +30,28 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             return viewModel.CurrentInstallation == null;
         }
 
-        protected override void Execute(MainWindowViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
         {
             try
             {
                 var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
-                if (_dialogService.ShowDialog(dialogModel) != true)
-                    return;
-
-                if (String.IsNullOrWhiteSpace(dialogModel.Path) || dialogModel.Path.ContainsInvalidPathChars() || !Directory.Exists(dialogModel.Path))
+                do
                 {
-                    _dialogService.ShowMessage(Strings.SelectedPathNotValid);
-                    return;
-                }
+                    if (_dialogService.ShowDialog(dialogModel) != true)
+                        return;
 
-                _viewModelService.SaveViewModel(dialogModel);
+                    if (!dialogModel.IsValid)
+                        _dialogService.ShowMessage(Strings.DialogInputNotValid);
+                } while (!dialogModel.IsValid);
+
+                await _viewModelService.SaveViewModelAsync(dialogModel);
+                await _viewModelService.UpdateViewModelAsync(viewModel);
             }
             catch (Exception exception)
             {
                 Log.Error(exception);
                 _dialogService.ShowError(exception);
-            }
-            finally
-            {
-                viewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+                await _viewModelService.UpdateViewModelAsync(viewModel);
             }
         }
     }

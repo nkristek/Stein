@@ -29,4 +29,6 @@
 
     <views:AboutDialog x:Key="{x:Type viewModels:AboutDialogModel}" x:Shared="False"/>
 
+    <views:InstallationResultDialog x:Key="{x:Type viewModels:InstallationResultDialogModel}" x:Shared="False"/>
+
 </ResourceDictionary>

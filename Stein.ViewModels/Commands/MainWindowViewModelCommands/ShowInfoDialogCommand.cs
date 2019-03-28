@@ -2,7 +2,7 @@
 using log4net;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.Services;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 {
@@ -15,11 +15,10 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         private readonly IViewModelService _viewModelService;
 
-        public ShowInfoDialogCommand(MainWindowViewModel parent, IDialogService dialogService, IViewModelService viewModelService) 
-            : base(parent)
+        public ShowInfoDialogCommand(IDialogService dialogService, IViewModelService viewModelService)
         {
-            _dialogService = dialogService;
-            _viewModelService = viewModelService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
         
         protected override void Execute(MainWindowViewModel viewModel, object parameter)

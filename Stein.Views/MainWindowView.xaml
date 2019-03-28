@@ -45,18 +45,13 @@
                 <!-- Add Folder button -->
                 <Button Grid.Column="0"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding AddApplicationCommand}">
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.AddApplicationCommand]}">
                     <Button.ContentTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
-                                                Height="20"
-                                                Width="20"
-                                                Margin="0, 0, 8, 0"/>
-
-                                <TextBlock FontSize="14"
-                                           Text="{x:Static localization:Strings.AddFolder}"/>
-                            </StackPanel>
+                            <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
+                                            Height="20"
+                                            Width="20"
+                                            Margin="8, 0"/>
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
@@ -66,31 +61,34 @@
                         Width="28"
                         Height="28"
                         Padding="2"
-                        DataContext="{Binding RefreshApplicationsCommand}"
+                        Content="{Binding}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding}"
                         ToolTip="{x:Static localization:Strings.Refresh}">
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <ContentControl Width="16"
                                             Height="16"
+                                            SnapsToDevicePixels="True"
+                                            UseLayoutRounding="True"
+                                            RenderTransformOrigin="0.5,0.5"
                                             ContentTemplate="{StaticResource RefreshIconVariant}">
                                 <ContentControl.Style>
                                     <Style TargetType="{x:Type ContentControl}" 
                                            BasedOn="{StaticResource {x:Type ContentControl}}">
-                                        <Setter Property="LayoutTransform">
+                                        <Setter Property="RenderTransform">
                                             <Setter.Value>
                                                 <RotateTransform Angle="0"/>
                                             </Setter.Value>
                                         </Setter>
 
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsWorking}" 
+                                            <DataTrigger Binding="{Binding IsUpdating}" 
                                                          Value="True">
                                                 <DataTrigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
                                                                      From="0"
                                                                      To="360"
                                                                      Duration="0:0:2"
@@ -101,7 +99,7 @@
                                                 <DataTrigger.ExitActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(LayoutTransform).(RotateTransform.Angle)"
+                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
                                                                      To="0"
                                                                      Duration="0:0:0" />
                                                         </Storyboard>
@@ -122,7 +120,7 @@
                         Height="28"
                         Padding="4"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding ChangeThemeCommand}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.ChangeThemeCommand]}"
                         ToolTip="{x:Static localization:Strings.SwitchTheme}">
                     <Button.ContentTemplate>
                         <MultiBinding Converter="{steinconverters:IntToNthValueConverter}">
@@ -140,7 +138,7 @@
                         Padding="4"
                         ContentTemplate="{StaticResource InfoIconVariant}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding ShowInfoDialogCommand}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.ShowInfoDialogCommand]}"
                         ToolTip="{x:Static localization:Strings.About}"/>
             </Grid>
         </Grid>
@@ -200,7 +198,7 @@
                                Text="{x:Static localization:Strings.Loading}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               DataContext="{Binding RefreshApplicationsCommand}"
+                               DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
                                Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}, ConverterParameter=Hidden}"/>
 
                     <Grid Grid.Column="2" 
@@ -229,7 +227,7 @@
 
                     <TextBlock Grid.Column="0"
                                FontSize="14"
-                               Text="{Binding ProgressString}"/>
+                               Text="{Binding InstallationProgressString}"/>
 
                     <TextBlock Grid.Column="2"
                                FontSize="14" 
@@ -249,7 +247,7 @@
                         Padding="4"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
-                        Command="{Binding CancelOperationCommand}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.CancelOperationCommand]}"
                         ToolTip="{x:Static localization:Strings.Cancel}"
                         ToolTipService.InitialShowDelay="0"
                         Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}"/>

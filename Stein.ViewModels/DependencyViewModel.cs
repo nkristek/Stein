@@ -1,5 +1,4 @@
 ﻿using System;
-using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -28,7 +27,5 @@ namespace Stein.ViewModels
             get => _uri;
             set => SetProperty(ref _uri, value, out _);
         }
-        
-        public ViewModelCommand<DependencyViewModel> OpenUriCommand { get; set; }
     }
 }

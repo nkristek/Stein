@@ -70,11 +70,11 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Folder.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
-        public static string AddFolder {
+        public static string Add {
             get {
-                return ResourceManager.GetString("AddFolder", resourceCulture);
+                return ResourceManager.GetString("Add", resourceCulture);
             }
         }
         
@@ -142,6 +142,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The entered information is not valid..
+        /// </summary>
+        public static string DialogInputNotValid {
+            get {
+                return ResourceManager.GetString("DialogInputNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installed: {0}  Reinstalled: {1}  Uninstalled: {2}.
         /// </summary>
         public static string DidInstallXPrograms {
@@ -160,11 +169,20 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Folder.
+        ///   Looks up a localized string similar to File system.
         /// </summary>
-        public static string EditFolder {
+        public static string Disk {
             get {
-                return ResourceManager.GetString("EditFolder", resourceCulture);
+                return ResourceManager.GetString("Disk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         
@@ -295,6 +313,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No type selected..
+        /// </summary>
+        public static string NoProvider {
+            get {
+                return ResourceManager.GetString("NoProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing.
         /// </summary>
         public static string Nothing {
@@ -363,6 +390,15 @@ namespace Stein.Localizations {
         public static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified folder path does not exist..
+        /// </summary>
+        public static string PathDoesNotExist {
+            get {
+                return ResourceManager.GetString("PathDoesNotExist", resourceCulture);
             }
         }
         
@@ -440,6 +476,42 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repository.
+        /// </summary>
+        public static string Repository {
+            get {
+                return ResourceManager.GetString("Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified repository name does not contain a / character (expected format &quot;user/repository&quot;)..
+        /// </summary>
+        public static string RepositoryDoesNotContainSlash {
+            get {
+                return ResourceManager.GetString("RepositoryDoesNotContainSlash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified repository name is empty..
+        /// </summary>
+        public static string RepositoryEmpty {
+            get {
+                return ResourceManager.GetString("RepositoryEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name of the GitHub repository in the &quot;user/repository&quot; format..
+        /// </summary>
+        public static string RepositoryWatermark {
+            get {
+                return ResourceManager.GetString("RepositoryWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saving the configuration failed..
         /// </summary>
         public static string SaveConfigurationFailed {
@@ -481,6 +553,15 @@ namespace Stein.Localizations {
         public static string SwitchTheme {
             get {
                 return ResourceManager.GetString("SwitchTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

@@ -14,18 +14,15 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         private readonly IDialogService _dialogService;
 
-        public CancelOperationCommand(MainWindowViewModel parent, IDialogService dialogService) 
-            : base(parent)
+        public CancelOperationCommand(IDialogService dialogService)
         {
-            _dialogService = dialogService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation))]
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
-            return viewModel.CurrentInstallation != null 
-                && viewModel.CurrentInstallation.State != InstallationState.Preparing 
-                && viewModel.CurrentInstallation.State != InstallationState.Cancelled;
+            return viewModel.CurrentInstallation != null && !viewModel.CurrentInstallation.CancellationTokenSource.IsCancellationRequested;
         }
 
         protected override void Execute(MainWindowViewModel viewModel, object parameter)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using NKristek.Smaragd.Attributes;
+using System.Linq;
 using NKristek.Smaragd.ViewModels;
 using Stein.ViewModels.Types;
 
@@ -10,42 +10,30 @@ namespace Stein.ViewModels
     public sealed class InstallerViewModel
         : ViewModel
     {
-        private string _path;
-
-        /// <summary>
-        /// FilePath of the installer
-        /// </summary>
-        public string Path
+        public InstallerViewModel()
         {
-            get => _path;
-            set => SetProperty(ref _path, value, out _);
+            foreach (var operation in GetAvailableOperations())
+                AvailableOperations.Add(operation);
+            PreferredOperation = AvailableOperations.FirstOrDefault();
         }
 
-        /// <summary>
-        /// Gets all available operations for this installer
-        /// </summary>
-        public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
-
-        private InstallerOperation _preferredOperation;
-
-        /// <summary>
-        /// If the installer is enabled by the user
-        /// </summary>
-        public InstallerOperation PreferredOperation
+        private IEnumerable<InstallerOperation> GetAvailableOperations()
         {
-            get => _preferredOperation;
-            set
-            {
-                if (AvailableOperations.Contains(value))
-                    SetProperty(ref _preferredOperation, value, out _);
-            }
+            yield return InstallerOperation.DoNothing;
+            yield return InstallerOperation.Install;
+            yield return InstallerOperation.Uninstall;
         }
-        
+
+        private string _fileName;
+
         /// <summary>
-        /// If the installer is disabled by the system (for example when it isn't installed)
+        /// Name of the installer file
         /// </summary>
-        [PropertySource(nameof(IsInstalled))]
-        public bool IsDisabled => IsInstalled == null;
+        public string FileName
+        {
+            get => _fileName;
+            set => SetProperty(ref _fileName, value, out _);
+        }
 
         private string _name;
 
@@ -57,7 +45,7 @@ namespace Stein.ViewModels
             get => _name;
             set => SetProperty(ref _name, value, out _);
         }
-
+        
         private Version _version;
 
         /// <summary>
@@ -99,40 +87,15 @@ namespace Stein.ViewModels
         public bool? IsInstalled
         {
             get => _isInstalled;
-            set
-            {
-                if (SetProperty(ref _isInstalled, value, out _))
-                {
-                    PreferredOperation = InstallerOperation.DoNothing;
-
-                    AvailableOperations.Clear();
-                    foreach (var operation in GetAvailableOperations())
-                        AvailableOperations.Add(operation);
-                }
-            }
+            set => SetProperty(ref _isInstalled, value, out _);
         }
-
-        private IEnumerable<InstallerOperation> GetAvailableOperations()
-        {
-            yield return InstallerOperation.DoNothing;
-
-            if (IsInstalled == true)
-            {
-                yield return InstallerOperation.Reinstall;
-                yield return InstallerOperation.Uninstall;
-            }
-            else
-            {
-                yield return InstallerOperation.Install;
-            }
-        }
-
-        private DateTime? _created;
+        
+        private DateTime _created;
 
         /// <summary>
         /// When the installer file was created
         /// </summary>
-        public DateTime? Created
+        public DateTime Created
         {
             get => _created;
             set => SetProperty(ref _created, value, out _);
@@ -147,6 +110,37 @@ namespace Stein.ViewModels
         {
             get => _customOperationArguments;
             set => SetProperty(ref _customOperationArguments, value, out _);
+        }
+
+        /// <summary>
+        /// Gets all available operations for this installer
+        /// </summary>
+        public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
+
+        private InstallerOperation _preferredOperation;
+
+        /// <summary>
+        /// If the installer is enabled by the user
+        /// </summary>
+        public InstallerOperation PreferredOperation
+        {
+            get => _preferredOperation;
+            set
+            {
+                if (AvailableOperations.Contains(value))
+                    SetProperty(ref _preferredOperation, value, out _);
+            }
+        }
+        
+        private IInstallerFileProvider _installerFileProvider;
+
+        /// <summary>
+        /// The provider for the installer file.
+        /// </summary>
+        public IInstallerFileProvider InstallerFileProvider
+        {
+            get => _installerFileProvider;
+            set => SetProperty(ref _installerFileProvider, value, out _);
         }
     }
 }

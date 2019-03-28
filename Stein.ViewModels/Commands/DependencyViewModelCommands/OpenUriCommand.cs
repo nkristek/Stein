@@ -13,10 +13,9 @@ namespace Stein.ViewModels.Commands.DependencyViewModelCommands
 
         private readonly IDialogService _dialogService;
 
-        public OpenUriCommand(DependencyViewModel parent, IDialogService dialogService)
-            : base(parent)
+        public OpenUriCommand(IDialogService dialogService)
         {
-            _dialogService = dialogService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         protected override void Execute(DependencyViewModel viewModel, object parameter)

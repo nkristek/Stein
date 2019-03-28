@@ -6,18 +6,12 @@ namespace Stein.Presentation
     public interface IDialogService
     {
         /// <summary>
-        /// Shows the corresponding popup of the <see cref="ViewModel"/>
-        /// </summary>
-        /// <param name="contextViewModel"></param>
-        void ShowPopup(IViewModel contextViewModel);
-
-        /// <summary>
         /// Shows the corresponding dialog of the <see cref="DialogModel"/>
         /// </summary>
-        /// <param name="dialogViewModel">The <see cref="DialogModel"/> to show</param>
-        /// <returns>The result of the dialog</returns>
-        bool? ShowDialog(IDialogModel dialogViewModel);
-
+        /// <param name="dialogModel">The <see cref="DialogModel"/> to show.</param>
+        /// <returns>The result of the dialog.</returns>
+        bool? ShowDialog(IDialogModel dialogModel);
+        
         /// <summary>
         /// Shows a dialog with the given message
         /// </summary>

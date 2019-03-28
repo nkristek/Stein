@@ -19,6 +19,19 @@ namespace Stein.Helpers
         }
 
         /// <summary>
+        /// Returns an enumeration of elements that are distinct based on a key returned by the given <paramref name="keySelector"/>.
+        /// </summary>
+        /// <typeparam name="TSource">Type of an element of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TKey">Type of the key used to compare two elements.</typeparam>
+        /// <param name="source">The source enumeration.</param>
+        /// <param name="keySelector">A selector to the key of an element that should be used to compare two elements.</param>
+        /// <returns>An enumeration of elements that are distinct based on the given <paramref name="keySelector"/>.</returns>
+        public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+        {
+            return source.GroupBy(keySelector).Select(ig => ig.First());
+        }
+
+        /// <summary>
         /// This method merges two sequences.
         /// It works like <see cref="IEnumerable{T}.Union(IEnumerable{T}).Distinct()"/>, but also tries to preserve the order of the secondary sequence.
         /// </summary>

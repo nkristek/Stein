@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,22 +30,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdonisUI, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AdonisUI.1.5.1\lib\net40\AdonisUI.dll</HintPath>
-    </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net46\GongSolutions.Wpf.DragDrop.dll</HintPath>
+    <Reference Include="AdonisUI, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdonisUI.1.9.0\lib\net40\AdonisUI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Smaragd, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.4.0.0\lib\netstandard2.0\NKristek.Smaragd.dll</HintPath>
+    <Reference Include="NKristek.Smaragd, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Smaragd.4.1.1\lib\net471\NKristek.Smaragd.dll</HintPath>
     </Reference>
-    <Reference Include="NKristek.Wpf.Converters, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Wpf.Converters.1.4.0\lib\net47\NKristek.Wpf.Converters.dll</HintPath>
+    <Reference Include="NKristek.Wpf.Converters, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NKristek.Wpf.Converters.1.5.0\lib\net40\NKristek.Wpf.Converters.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -64,6 +63,10 @@
     <Compile Include="Converters\InstallationStateToLocalizedStringConverter.cs" />
     <Compile Include="Converters\InstallerOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\IntToNthValueConverter.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="InstallationResultDialog.xaml.cs">
+      <DependentUpon>InstallationResultDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\PeriodicBindingUpdateBehavior.cs" />
     <Compile Include="Ressources.cs" />
     <Compile Include="Services\WpfDialogService.cs" />
@@ -95,10 +98,6 @@
       <Project>{46D38A7F-C1EE-4A83-B696-0D32BBDD069B}</Project>
       <Name>Stein.Presentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Stein.Services\Stein.Services.csproj">
-      <Project>{ccb623e3-0cc7-4a5c-b956-a591cc4bd3f5}</Project>
-      <Name>Stein.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stein.ViewModels\Stein.ViewModels.csproj">
       <Project>{10538f60-6022-4815-82ea-36921d746583}</Project>
       <Name>Stein.ViewModels</Name>
@@ -109,6 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallationResultDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

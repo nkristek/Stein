@@ -1,30 +1,33 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.Services;
-using Stein.ViewModels.Types;
+using Stein.Services.InstallService;
+using Stein.ViewModels.Commands.MainWindowViewModelCommands;
+using Stein.ViewModels.Extensions;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
     public sealed class UninstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IDialogService _dialogService;
+
+        private readonly IViewModelService _viewModelService;
 
         private readonly IInstallService _installService;
 
-        public UninstallApplicationCommand(ApplicationViewModel parent, IDialogService dialogService, IInstallService installService) 
-            : base(parent)
+        private readonly IProgressBarService _progressBarService;
+
+        public UninstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, IProgressBarService progressBarService)
         {
-            _dialogService = dialogService;
-            _installService = installService;
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
+            _installService = installService ?? throw new ArgumentNullException(nameof(installService));
+            _progressBarService = progressBarService ?? throw new ArgumentNullException(nameof(progressBarService));
         }
 
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle))]
@@ -38,127 +41,42 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
-            var mainWindowViewModel = viewModel.Parent as MainWindowViewModel;
-            if (mainWindowViewModel == null)
+            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel))
                 return;
+
+            var installers = viewModel.SelectedInstallerBundle.Installers;
+            mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
+            mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
+            mainWindowViewModel.CurrentInstallation.InstallerCount = installers.Count;
+
             try
             {
-                mainWindowViewModel.CurrentInstallation = new InstallationViewModel();
+                var installationResult = await ViewModelInstallService.Uninstall(
+                    _viewModelService,
+                    _installService,
+                    _progressBarService,
+                    mainWindowViewModel.CurrentInstallation,
+                    installers,
+                    viewModel.EnableSilentInstallation,
+                    viewModel.DisableReboot,
+                    viewModel.EnableInstallationLogging,
+                    viewModel.AutomaticallyDeleteInstallationLogs,
+                    viewModel.KeepNewestInstallationLogs);
 
-                var installationResult = await UninstallSelectedInstallerBundle(viewModel, mainWindowViewModel.CurrentInstallation);
-                mainWindowViewModel.InstallationResult = installationResult.AnyOperationWasExecuted ? installationResult : null;
-                if (installationResult.AnyOperationWasExecuted)
-                    await mainWindowViewModel.RefreshApplicationsCommand.ExecuteAsync(null);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-                _dialogService.ShowError(exception);
-                await mainWindowViewModel.RefreshApplicationsCommand.ExecuteAsync(null);
+                Task refreshTask = null;
+                var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
+                if (refreshCommand != null)
+                    refreshTask = refreshCommand.ExecuteAsync(null);
+
+                _dialogService.ShowDialog(installationResult);
+
+                if (refreshTask != null)
+                    await refreshTask;
             }
             finally
             {
                 mainWindowViewModel.CurrentInstallation = null;
             }
-        }
-
-        private async Task<InstallationResultViewModel> UninstallSelectedInstallerBundle(ApplicationViewModel application, InstallationViewModel currentInstallation)
-        {
-            var installationResult = new InstallationResultViewModel();
-
-            // filter installers with the same name 
-            // if no name is set don't filter by grouping by path (which will always be distinct)
-            var installers = application.SelectedInstallerBundle.Installers
-                .Where(i => !i.IsDisabled)
-                .GroupBy(i => !String.IsNullOrEmpty(i.Name) ? i.Name : i.Path).Select(ig => ig.First())
-                .ToList();
-
-            Log.Info($"Starting uninstall operation with {installers.Count} installers.");
-            currentInstallation.InstallerCount = installers.Count;
-
-            var logFolderPath = application.EnableInstallationLogging ? GetLogFileFolderPathForApplication(application.Name) : null;
-
-            foreach (var installer in installers)
-            {
-                try
-                {
-                    if (currentInstallation.State == InstallationState.Cancelled)
-                    {
-                        Log.Info("Uninstall operation was cancelled.");
-                        break;
-                    }
-
-                    currentInstallation.Name = installer.Name;
-                    currentInstallation.CurrentIndex++;
-
-                    if (installer.IsInstalled == false)
-                        continue;
-
-                    if (installer.IsInstalled == null)
-                        Log.Info("There is no information if the installer is already installed, trying to uninstall.");
-
-                    currentInstallation.State = InstallationState.Uninstall;
-                    Log.Info($"Uninstalling {installer.Name}.");
-
-                    var uninstallLogFilePath = application.EnableInstallationLogging ? GetLogFilePathForInstaller(logFolderPath, installer.Name, "uninstall") : null;
-                    await _installService.UninstallAsync(installer.ProductCode, uninstallLogFilePath, application.EnableSilentInstallation, application.DisableReboot);
-                    
-                    installationResult.UninstallCount++;
-                }
-                catch (Exception exception)
-                {
-                    installationResult.FailedCount++;
-                    Log.Error(exception);
-                }
-            }
-
-            if (application.EnableInstallationLogging && application.AutomaticallyDeleteInstallationLogs)
-            {
-                try
-                {
-                    RemoveOldestFiles(logFolderPath, application.KeepNewestInstallationLogs);
-                }
-                catch (Exception exception)
-                {
-                    Log.Warn("Deleting old log files failed", exception);
-                }
-            }
-
-            return installationResult;
-        }
-
-        private static void RemoveOldestFiles(string folderPath, int keepNewestLogFiles)
-        {
-            var logFolder = new DirectoryInfo(folderPath);
-            foreach (var file in logFolder.EnumerateFiles().OrderByDescending(f => f.CreationTime).Skip(Math.Max(0, keepNewestLogFiles)))
-            {
-                try
-                {
-                    file.Delete();
-                }
-                catch (Exception exception)
-                {
-                    Log.Warn("Deleting log file failed", exception);
-                }
-            }
-        }
-
-        private static string GetLogFileFolderPathForApplication(string applicationName)
-        {
-            var logFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Stein", "Logs", applicationName);
-            if (!Directory.Exists(logFolderPath))
-                Directory.CreateDirectory(logFolderPath);
-            return logFolderPath;
-        }
-
-        private static string GetLogFilePathForInstaller(string applicationLogFolderName, string installerName, string installMethod)
-        {
-            var currentDate = DateTime.Now;
-            var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
-            var logFilePath = Path.Combine(applicationLogFolderName, logFileName);
-            if (File.Exists(logFilePath))
-                throw new IOException("File already exists");
-            return logFilePath;
         }
     }
 }

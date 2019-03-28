@@ -6,8 +6,12 @@ using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
-using Stein.Services;
+using Stein.Presentation;
+using Stein.Services.Configuration;
 using Stein.ViewModels;
+using Stein.ViewModels.Commands.MainWindowViewModelCommands;
+using Stein.ViewModels.Extensions;
+using Stein.ViewModels.Services;
 
 namespace Stein
 {
@@ -23,16 +27,14 @@ namespace Stein
             // uncomment to test localization
             //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             //Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
-
-            Startup += App_Startup;
-
+            
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
-        
-        private void App_Startup(object sender, StartupEventArgs e)
+
+        protected override async void OnStartup(StartupEventArgs e)
         {
             // Ensure the current culture passed into bindings is the OS culture.
             // By default, WPF uses en-US as the culture, regardless of the system settings.
@@ -41,27 +43,36 @@ namespace Stein
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            // Initialize main window
-            var rootWindow = new MainWindow();
-            var kernel = new StandardKernel(new AppModule(rootWindow));
-            
+            var mainWindow = new MainWindow();
+            var kernel = new StandardKernel(new AppModule(mainWindow));
+            var configurationService = kernel.Get<IConfigurationService>();
             try
             {
-                kernel.Get<IConfigurationService>().LoadConfiguration();
+                await configurationService.LoadConfigurationAsync();
             }
             catch (Exception exception)
             {
+                // TODO: show initial configuration screen
                 Log.Error("Loading configuration failed, will create a new one", exception);
             }
-            
-            rootWindow.DataContext = kernel.Get<IViewModelService>().CreateViewModel<MainWindowViewModel>();
-            rootWindow.Show();
+
+            var themeService = kernel.Get<IThemeService>();
+            themeService.SetTheme(configurationService.Configuration.SelectedTheme);
+
+            var viewModel = kernel.Get<IViewModelService>().CreateViewModel<MainWindowViewModel>();
+            viewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
+            mainWindow.DataContext = viewModel;
+
+            mainWindow.Show();
         }
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             Log.Error(e.Exception);
-            DebugBreak();
+#if DEBUG
+            if (Debugger.IsAttached)
+                Debugger.Break();
+#endif
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -70,26 +81,29 @@ namespace Stein
                 return;
 
             Log.Error(exception);
-            DebugBreak();
+
+#if DEBUG
+            if (Debugger.IsAttached)
+                Debugger.Break();
+#endif
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             Log.Error(e.Exception);
-            DebugBreak();
+#if DEBUG
+            if (Debugger.IsAttached)
+                Debugger.Break();
+#endif
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             Log.Error(e.Exception);
-            DebugBreak();
-        }
-
-        [Conditional("DEBUG")]
-        void DebugBreak()
-        {
+#if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
+#endif
         }
     }
 }

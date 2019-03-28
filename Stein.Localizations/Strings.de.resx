@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddFolder" xml:space="preserve">
-    <value>Ordner hinzufügen</value>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
   </data>
   <data name="ApplicationFolderNotCached" xml:space="preserve">
     <value>Der angeforderte Anwendungsordner ist nicht gecached und konnte nicht aktualisiert werden.</value>
@@ -132,8 +132,8 @@
   <data name="Cancelled" xml:space="preserve">
     <value>Abgebrochen, beende aktuelle Operation…</value>
   </data>
-  <data name="EditFolder" xml:space="preserve">
-    <value>Ordner bearbeiten</value>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
   <data name="Install" xml:space="preserve">
     <value>Installieren</value>
@@ -285,5 +285,32 @@
   </data>
   <data name="CustomArguments" xml:space="preserve">
     <value>Zusätzliche Argumente</value>
+  </data>
+  <data name="Disk" xml:space="preserve">
+    <value>Dateisystem</value>
+  </data>
+  <data name="PathDoesNotExist" xml:space="preserve">
+    <value>Der angegebene Ordnerpfad existiert nicht.</value>
+  </data>
+  <data name="Repository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="RepositoryDoesNotContainSlash" xml:space="preserve">
+    <value>Der angegebene Repository Name enthält kein / Zeichen (erwartetes Format "User/Repository"). </value>
+  </data>
+  <data name="RepositoryEmpty" xml:space="preserve">
+    <value>Der angegebene Repository Name ist leer.</value>
+  </data>
+  <data name="RepositoryWatermark" xml:space="preserve">
+    <value>Der Name vom GitHub Repository im Format "User/Repository".</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="DialogInputNotValid" xml:space="preserve">
+    <value>Die eingegebenen Informationen sind nicht gültig.</value>
+  </data>
+  <data name="NoProvider" xml:space="preserve">
+    <value>Kein Typ ausgewählt.</value>
   </data>
 </root>

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
-        xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="450"
@@ -29,7 +29,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"
+              Visibility="{Binding Culture, Converter={c:StringNullOrEmptyToInverseVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -51,8 +52,6 @@
                       Grid.IsSharedSizeScope="True"
                       HorizontalContentAlignment="Stretch"
                       ItemsSource="{Binding Installers}"
-                      dd:DragDrop.IsDragSource="True"
-                      dd:DragDrop.IsDropTarget="True"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
