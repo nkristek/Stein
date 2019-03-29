@@ -70,6 +70,7 @@
     <Compile Include="Commands\MainWindowViewModelCommands\ChangeThemeCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\ShowInfoDialogCommand.cs" />
+    <Compile Include="Commands\MainWindowViewModelCommands\ShowRecentInstallationResultCommand.cs" />
     <Compile Include="DependencyViewModel.cs" />
     <Compile Include="DiskInstallerFileBundleProviderViewModel.cs" />
     <Compile Include="ExceptionDialogModel.cs" />

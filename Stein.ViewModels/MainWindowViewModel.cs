@@ -69,5 +69,14 @@ namespace Stein.ViewModels
             get => _isUpdating;
             set => SetProperty(ref _isUpdating, value, out _);
         }
+
+        private InstallationResultDialogModel _recentInstallationResult;
+        
+        [IsDirtyIgnored]
+        public InstallationResultDialogModel RecentInstallationResult
+        {
+            get => _recentInstallationResult;
+            set => SetProperty(ref _recentInstallationResult, value, out _);
+        }
     }
 }

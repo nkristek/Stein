@@ -54,11 +54,10 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
             mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
             mainWindowViewModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
-
-            InstallationResultDialogModel installationResult;
+            
             try
             {
-                installationResult = await ViewModelInstallService.Custom(
+                mainWindowViewModel.RecentInstallationResult = await ViewModelInstallService.Custom(
                     _viewModelService,
                     _installService,
                     mainWindowViewModel.CurrentInstallation,
@@ -76,18 +75,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowViewModel.CurrentInstallation = null;
             }
 
-            Task refreshTask = null;
             var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
             if (refreshCommand != null)
-                refreshTask = refreshCommand.ExecuteAsync(null);
-
-            if (installationResult != null)
-                _dialogService.ShowDialog(installationResult);
-            else
-                Log.Warn("No installation result to show.");
-
-            if (refreshTask != null)
-                await refreshTask;
+                await refreshCommand.ExecuteAsync(null);
         }
     }
 }

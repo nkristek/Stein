@@ -171,19 +171,34 @@
             <Grid Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToVisibilityConverter}}"
                   extensions:LayerExtension.Layer="2"
                   Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}">
-                <TextBlock Text="{x:Static localization:Strings.Ready}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" 
+                           Text="{x:Static localization:Strings.Ready}"
                            Margin="{adonisUi:Space 1.5,0}"
                            VerticalAlignment="Center"
                            FontSize="14"
                            DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
                            Visibility="{Binding IsWorking, Converter={c:BoolToInverseVisibilityConverter}}"/>
 
-                <TextBlock Text="{x:Static localization:Strings.Loading}"
+                <TextBlock Grid.Column="0" 
+                           Text="{x:Static localization:Strings.Loading}"
                            Margin="{adonisUi:Space 1.5,0}"
                            VerticalAlignment="Center"
                            FontSize="14"
                            DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
                            Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}"/>
+
+                <Button Grid.Column="2"
+                        Content="{x:Static localization:Strings.Result}"
+                        Padding="{adonisUi:Space 3,1}"
+                        Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.ShowRecentInstallationResultCommand]}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"/>
             </Grid>
 
             <Grid Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}">
