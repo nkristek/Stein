@@ -48,8 +48,8 @@ namespace Stein.Services.ProductService
         {
             if (String.IsNullOrEmpty(productCode))
                 throw new ArgumentNullException(nameof(productCode));
-
-            return ReadInstalledPrograms().Any(program => !String.IsNullOrEmpty(program.UninstallString) && program.UninstallString.Contains(productCode));
+            
+            return ReadInstalledPrograms().Any(program => !String.IsNullOrEmpty(program.ProductCode) && program.ProductCode.Contains(productCode));
         }
     }
 }
