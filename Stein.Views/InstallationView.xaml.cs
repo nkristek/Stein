@@ -3,11 +3,11 @@
 namespace Stein.Views
 {
     /// <summary>
-    /// Interaction logic for InstallationResultView.xaml
+    /// Interaction logic for InstallationView.xaml
     /// </summary>
-    public partial class InstallationResultView : UserControl
+    public partial class InstallationView : UserControl
     {
-        public InstallationResultView()
+        public InstallationView()
         {
             InitializeComponent();
         }

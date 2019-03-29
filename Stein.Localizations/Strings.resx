@@ -120,26 +120,14 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="ApplicationFolderNotCached" xml:space="preserve">
-    <value>The requested application folder is not cached and could not be updated.</value>
-  </data>
   <data name="BundleLanguage" xml:space="preserve">
     <value>Bundle language:</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="Cancelled" xml:space="preserve">
-    <value>Cancelled, finishing current operation…</value>
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="Install" xml:space="preserve">
     <value>Install</value>
-  </data>
-  <data name="InstallerPathIsEmpty" xml:space="preserve">
-    <value>The file path of the installer is empty. The operation could not be executed.</value>
   </data>
   <data name="Installing" xml:space="preserve">
     <value>Installing…</value>
@@ -186,9 +174,6 @@
   <data name="Reinstalling" xml:space="preserve">
     <value>Reinstalling…</value>
   </data>
-  <data name="SaveConfigurationFailed" xml:space="preserve">
-    <value>Saving the configuration failed.</value>
-  </data>
   <data name="SelectedPathNotValid" xml:space="preserve">
     <value>The selected path is not valid.</value>
   </data>
@@ -209,13 +194,6 @@
   </data>
   <data name="ViewModelNotSupported" xml:space="preserve">
     <value>This ViewModel is not supported. The operation could not be executed.</value>
-  </data>
-  <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>Installed: {0}  Reinstalled: {1}  Uninstalled: {2}</value>
-  </data>
-  <data name="RefreshFailed" xml:space="preserve">
-    <value>Searching installerfiles in {0} failed.
-{1}</value>
   </data>
   <data name="InstallerNotFound" xml:space="preserve">
     <value>The installer file at {0} was not found.</value>
@@ -243,9 +221,6 @@
   </data>
   <data name="Hellip" xml:space="preserve">
     <value>…</value>
-  </data>
-  <data name="Installed" xml:space="preserve">
-    <value>installed</value>
   </data>
   <data name="Dependencies" xml:space="preserve">
     <value>Dependencies</value>
@@ -321,5 +296,44 @@
   </data>
   <data name="FilterDuplicateInstallersDetails" xml:space="preserve">
     <value>If multiple installers with the same application name should be filtered. Only the Install/Uninstall operation are affected, Custom is not.</value>
+  </data>
+  <data name="InstallationResults" xml:space="preserve">
+    <value>Installation results</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Open log file folder</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="InstallationCancelled" xml:space="preserve">
+    <value>The installation was cancelled.</value>
+  </data>
+  <data name="InstallationDownloadFailed" xml:space="preserve">
+    <value>The download failed.</value>
+  </data>
+  <data name="InstallationFailed" xml:space="preserve">
+    <value>The installation failed.</value>
+  </data>
+  <data name="InstallationSkipped" xml:space="preserve">
+    <value>The installation was skipped.</value>
+  </data>
+  <data name="InstallationSuccess" xml:space="preserve">
+    <value>The installer was successfully executed.</value>
+  </data>
+  <data name="InstallerPathIsEmpty" xml:space="preserve">
+    <value>The file path of the installer is empty. The operation could not be executed.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details:</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>An error occured while performing the last operation.</value>
   </data>
 </root>

@@ -22,6 +22,10 @@ namespace Stein
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private IViewModelService _viewModelService;
+
+        private IDialogService _dialogService;
+        
         public App()
         {
             // uncomment to test localization
@@ -52,14 +56,17 @@ namespace Stein
             }
             catch (Exception exception)
             {
-                // TODO: show initial configuration screen
+                // TODO: show welcome view
                 Log.Error("Loading configuration failed, will create a new one", exception);
             }
 
             var themeService = kernel.Get<IThemeService>();
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
 
-            var viewModel = kernel.Get<IViewModelService>().CreateViewModel<MainWindowViewModel>();
+            _viewModelService = kernel.Get<IViewModelService>();
+            _dialogService = kernel.Get<IDialogService>();
+
+            var viewModel = _viewModelService.CreateViewModel<MainWindowViewModel>();
             viewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
             mainWindow.DataContext = viewModel;
 
@@ -68,20 +75,25 @@ namespace Stein
         
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            Log.Error(e.Exception);
+            var exception = e.Exception;
+            Log.Error(exception);
+            ShowExceptionDialog(exception);
+
 #if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
 #endif
+
             e.Handled = true;
         }
-
+        
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (!(e.ExceptionObject is Exception exception))
                 return;
-
+            
             Log.Error(exception);
+            ShowExceptionDialog(exception);
 #if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
@@ -90,22 +102,36 @@ namespace Stein
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            Log.Error(e.Exception);
+            var exception = e.Exception;
+            Log.Error(exception);
+            ShowExceptionDialog(exception);
+
 #if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
 #endif
+
             if (!e.Observed)
                 e.SetObserved();
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            Log.Error(e.Exception);
+            var exception = e.Exception;
+            Log.Error(exception);
+            ShowExceptionDialog(exception);
+
 #if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
 #endif
+        }
+
+        private bool? ShowExceptionDialog(Exception exception)
+        {
+            var exceptionViewModel = _viewModelService.CreateViewModel<ExceptionViewModel>(null, exception);
+            var exceptionDialogModel = _viewModelService.CreateViewModel<ExceptionDialogModel>(exceptionViewModel);
+            return _dialogService.ShowDialog(exceptionDialogModel);
         }
     }
 }

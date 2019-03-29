@@ -120,26 +120,17 @@
   <data name="Add" xml:space="preserve">
     <value>Hinzufügen</value>
   </data>
-  <data name="ApplicationFolderNotCached" xml:space="preserve">
-    <value>Der angeforderte Anwendungsordner ist nicht gecached und konnte nicht aktualisiert werden.</value>
-  </data>
   <data name="BundleLanguage" xml:space="preserve">
     <value>Bundle-Sprache:</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="Cancelled" xml:space="preserve">
-    <value>Abgebrochen, beende aktuelle Operation…</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>
   <data name="Install" xml:space="preserve">
     <value>Installieren</value>
-  </data>
-  <data name="InstallerPathIsEmpty" xml:space="preserve">
-    <value>Der Dateipfad vom Installer ist leer. Die Operation kann nicht durchgeführt werden.</value>
   </data>
   <data name="Installing" xml:space="preserve">
     <value>Installiere…</value>
@@ -186,9 +177,6 @@
   <data name="Reinstalling" xml:space="preserve">
     <value>Reinstalliere…</value>
   </data>
-  <data name="SaveConfigurationFailed" xml:space="preserve">
-    <value>Das Speichern der Konfiguration ist fehlgeschlagen.</value>
-  </data>
   <data name="SelectedPathNotValid" xml:space="preserve">
     <value>Der ausgewählte Pfad ist nicht gültig.</value>
   </data>
@@ -209,13 +197,6 @@
   </data>
   <data name="ViewModelNotSupported" xml:space="preserve">
     <value>Dieses ViewModel wird nicht unterstützt. Die Operation kann nicht durchgeführt werden.</value>
-  </data>
-  <data name="DidInstallXPrograms" xml:space="preserve">
-    <value>Installiert: {0}  Erneut installiert: {1}  Deinstallliert: {2}</value>
-  </data>
-  <data name="RefreshFailed" xml:space="preserve">
-    <value>Suchen nach Installerdateien in {0} ist fehlgeschlagen.
-{1}</value>
   </data>
   <data name="InstallerNotFound" xml:space="preserve">
     <value>Die Installerdatei {0} wurde nicht gefunden.</value>
@@ -240,9 +221,6 @@
   </data>
   <data name="About" xml:space="preserve">
     <value>Über</value>
-  </data>
-  <data name="Installed" xml:space="preserve">
-    <value>installiert</value>
   </data>
   <data name="Dependencies" xml:space="preserve">
     <value>Abhängigkeiten</value>
@@ -318,5 +296,41 @@
   </data>
   <data name="FilterDuplicateInstallersDetails" xml:space="preserve">
     <value>Ob mehrere Installerdateien mit dem selben Anwendungsnamen gefiltert werden sollen. Nur die Installieren/Deinstallieren Aktionen sind hiervon betroffen, Benutzerdefiniert filtert nicht.</value>
+  </data>
+  <data name="InstallationResults" xml:space="preserve">
+    <value>Installationsergebnisse</value>
+  </data>
+  <data name="OpenLogFolder" xml:space="preserve">
+    <value>Öffne Ordner mit Log-Dateien</value>
+  </data>
+  <data name="InstallationCancelled" xml:space="preserve">
+    <value>Die Installation wurde abgebrochen.</value>
+  </data>
+  <data name="InstallationDownloadFailed" xml:space="preserve">
+    <value>Der Download ist fehlgeschlagen.</value>
+  </data>
+  <data name="InstallationFailed" xml:space="preserve">
+    <value>Die Installation ist fehlgeschlagen.</value>
+  </data>
+  <data name="InstallationSkipped" xml:space="preserve">
+    <value>Der Installer wurde übersprungen.</value>
+  </data>
+  <data name="InstallationSuccess" xml:space="preserve">
+    <value>Der Installer wurde erfolgreich ausgeführt.</value>
+  </data>
+  <data name="InstallerPathIsEmpty" xml:space="preserve">
+    <value>Der Dateipfad vom Installer ist leer. Die Operation kann nicht durchgeführt werden.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="CopyToClipboard" xml:space="preserve">
+    <value>In die Zwischenablage kopieren</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details:</value>
+  </data>
+  <data name="ErrorOccured" xml:space="preserve">
+    <value>Während der zuletzt ausgeführten Operation ist ein Fehler aufgetreten.</value>
   </data>
 </root>

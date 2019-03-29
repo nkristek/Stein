@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Stein.Views.ExceptionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stein.Views"
+             xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:localizations="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:ExceptionViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="{x:Static localizations:Strings.ErrorOccured}"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Text="{x:Static localizations:Strings.Details}"/>
+
+            <Button Grid.Column="2" 
+                    Height="{adonisUi:Space 3}"
+                    Width="{adonisUi:Space 3}"
+                    Padding="{adonisUi:Space 0.5}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.ExceptionViewModelCommands.CopyExceptionDetailsToClipboardCommand]}"
+                    ContentTemplate="{StaticResource CopyIconVariant}"
+                    Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                    ToolTip="{x:Static localizations:Strings.CopyToClipboard}"/>
+        </Grid>
+
+        <TextBox Grid.Row="4"
+                 Text="{Binding ExceptionText, Mode=OneWay}"
+                 IsReadOnly="True"/>
+    </Grid>
+</UserControl>

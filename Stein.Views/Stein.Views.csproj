@@ -63,12 +63,27 @@
     <Compile Include="Converters\InstallationOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\InstallerOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\IntToNthValueConverter.cs" />
+    <Compile Include="DependencyView.xaml.cs">
+      <DependentUpon>DependencyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionDialog.xaml.cs">
+      <DependentUpon>ExceptionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionView.xaml.cs">
+      <DependentUpon>ExceptionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="InstallationResultDialog.xaml.cs">
       <DependentUpon>InstallationResultDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstallationResultView.xaml.cs">
       <DependentUpon>InstallationResultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InstallationView.xaml.cs">
+      <DependentUpon>InstallationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InstallerBundleView.xaml.cs">
+      <DependentUpon>InstallerBundleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\PeriodicBindingUpdateBehavior.cs" />
     <Compile Include="Ressources.cs" />
@@ -114,11 +129,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DependencyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExceptionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExceptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="InstallationResultDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InstallationResultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallerBundleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

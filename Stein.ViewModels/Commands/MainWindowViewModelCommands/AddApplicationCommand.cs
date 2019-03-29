@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Localizations;
@@ -12,8 +12,6 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
     public sealed class AddApplicationCommand
         : AsyncViewModelCommand<MainWindowViewModel>
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IDialogService _dialogService;
 
         private readonly IViewModelService _viewModelService;
@@ -45,12 +43,9 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
                 } while (!dialogModel.IsValid);
 
                 await _viewModelService.SaveViewModelAsync(dialogModel);
-                await _viewModelService.UpdateViewModelAsync(viewModel);
             }
-            catch (Exception exception)
+            finally
             {
-                Log.Error(exception);
-                _dialogService.ShowError(exception);
                 await _viewModelService.UpdateViewModelAsync(viewModel);
             }
         }

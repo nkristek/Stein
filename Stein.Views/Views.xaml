@@ -18,12 +18,28 @@
         <views:ApplicationView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:InstallerBundleViewModel}">
+        <views:InstallerBundleView/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type viewModels:InstallerViewModel}">
         <views:InstallerView/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type viewModels:InstallationResultViewModel}">
         <views:InstallationResultView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:ExceptionViewModel}">
+        <views:ExceptionView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:DependencyViewModel}">
+        <views:DependencyView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:InstallationViewModel}">
+        <views:InstallationView/>
     </DataTemplate>
 
     <!-- Dialogs -->
@@ -34,5 +50,7 @@
     <views:AboutDialog x:Key="{x:Type viewModels:AboutDialogModel}" x:Shared="False"/>
 
     <views:InstallationResultDialog x:Key="{x:Type viewModels:InstallationResultDialogModel}" x:Shared="False"/>
+
+    <views:ExceptionDialog x:Key="{x:Type viewModels:ExceptionDialogModel}" x:Shared="False"/>
 
 </ResourceDictionary>

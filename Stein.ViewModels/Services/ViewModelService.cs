@@ -15,6 +15,7 @@ using Stein.ViewModels.Commands.AboutDialogModelCommands;
 using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 using Stein.ViewModels.Commands.ApplicationViewModelCommands;
 using Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands;
+using Stein.ViewModels.Commands.ExceptionViewModelCommands;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 using Stein.ViewModels.Types;
 
@@ -105,11 +106,16 @@ namespace Stein.ViewModels.Services
 
         private InstallationResultDialogModel CreateInstallationResultDialogModel(IViewModel parent)
         {
-            return new InstallationResultDialogModel
+            var dialogModel = new InstallationResultDialogModel
             {
                 Parent = parent,
                 IsDirty = false
             };
+            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand
+            {
+                Parent = dialogModel
+            });
+            return dialogModel;
         }
 
         private ExceptionViewModel CreateExceptionViewModel(IViewModel parent, Exception exception)
@@ -134,6 +140,11 @@ namespace Stein.ViewModels.Services
             {
                 exceptionViewModel.InnerExceptions.Add(CreateExceptionViewModel(exceptionViewModel, exception.InnerException));
             }
+
+            exceptionViewModel.AddCommand(new CopyExceptionDetailsToClipboardCommand
+            {
+                Parent = exceptionViewModel
+            });
 
             exceptionViewModel.IsReadOnly = true;
             exceptionViewModel.IsDirty = false;
@@ -161,7 +172,7 @@ namespace Stein.ViewModels.Services
                 Parent = parent
             };
 
-            viewModel.AddCommand(new RefreshApplicationsCommand(_dialogService, this)
+            viewModel.AddCommand(new RefreshApplicationsCommand(this)
             {
                 Parent = viewModel
             });
@@ -169,7 +180,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new CancelOperationCommand(_dialogService)
+            viewModel.AddCommand(new CancelOperationCommand
             {
                 Parent = viewModel
             });
@@ -177,7 +188,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new ChangeThemeCommand(_dialogService, this)
+            viewModel.AddCommand(new ChangeThemeCommand(this)
             {
                 Parent = viewModel
             });
@@ -216,7 +227,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new DeleteApplicationCommand(_dialogService, this)
+            viewModel.AddCommand(new DeleteApplicationCommand(this)
             {
                 Parent = viewModel
             });
@@ -298,7 +309,7 @@ namespace Stein.ViewModels.Services
                 dialogModel.SelectedProvider = dialogModel.AvailableProviders.FirstOrDefault();
             }
             
-            dialogModel.AddCommand(new OpenLogFolderCommand(_dialogService)
+            dialogModel.AddCommand(new OpenLogFolderCommand
             {
                 Parent = dialogModel
             });
@@ -314,7 +325,7 @@ namespace Stein.ViewModels.Services
                 Parent = parent,
                 IsDirty = false
             };
-            diskProvider.AddCommand(new SelectFolderCommand(_dialogService)
+            diskProvider.AddCommand(new SelectFolderCommand
             {
                 Parent = diskProvider
             });
@@ -393,14 +404,14 @@ namespace Stein.ViewModels.Services
                 IsDirty = false
             });
 
-            viewModel.AddCommand(new OpenUriCommand(_dialogService)
+            viewModel.AddCommand(new OpenUriCommand
             {
                 Parent = viewModel
             });
 
             foreach (var dependency in viewModel.Dependencies)
             { 
-                dependency.AddCommand(new Commands.DependencyViewModelCommands.OpenUriCommand(_dialogService)
+                dependency.AddCommand(new Commands.DependencyViewModelCommands.OpenUriCommand
                 {
                     Parent = dependency
                 });

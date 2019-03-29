@@ -11,63 +11,85 @@
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallationResultViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+    <Grid Margin="{adonisUi:Space 0,0.5}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Button Grid.Column="0"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource CancelIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Cancel"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="1"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource CopyIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Copy"/>
+            <TextBlock Grid.Column="0" 
+                       VerticalAlignment="Center"
+                       Text="{Binding InstallerName}"/>
 
-        <Button Grid.Column="2"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource ErrorIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Error"/>
+            <ContentControl Grid.Column="3"
+                            Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Success}"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ContentTemplate="{StaticResource SuccessIconVariant}"
+                            Foreground="ForestGreen"
+                            Width="{adonisUi:Space 2}"
+                            Height="{adonisUi:Space 2}"
+                            ToolTip="{x:Static localization:Strings.InstallationSuccess}"/>
 
-        <Button Grid.Column="3"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource LogFileIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Log file"/>
+            <ContentControl Grid.Column="3"
+                            Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ContentTemplate="{StaticResource CancelIconVariant}"
+                            Foreground="Yellow"
+                            Width="{adonisUi:Space 2}"
+                            Height="{adonisUi:Space 2}"
+                            ToolTip="{x:Static localization:Strings.InstallationCancelled}"/>
 
-        <Button Grid.Column="4"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource SkipIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Skip"/>
+            <ContentControl Grid.Column="3"
+                            Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=DownloadFailed}"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ContentTemplate="{StaticResource ErrorIconVariant}"
+                            Foreground="Red"
+                            Width="{adonisUi:Space 2}"
+                            Height="{adonisUi:Space 2}"
+                            ToolTip="{x:Static localization:Strings.InstallationDownloadFailed}"/>
 
-        <Button Grid.Column="5"
-                Height="{adonisUi:Space 5}"
-                Width="{adonisUi:Space 5}"
-                Padding="{adonisUi:Space 1}"
-                ContentTemplate="{StaticResource SuccessIconVariant}"
-                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                ToolTip="Success"/>
+            <ContentControl Grid.Column="3"
+                            Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=InstallationFailed}"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ContentTemplate="{StaticResource ErrorIconVariant}"
+                            Foreground="Red"
+                            Width="{adonisUi:Space 2}"
+                            Height="{adonisUi:Space 2}"
+                            ToolTip="{x:Static localization:Strings.InstallationFailed}"/>
+
+            <ContentControl Grid.Column="3"
+                            Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Skipped}"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ContentTemplate="{StaticResource SkipIconVariant}"
+                            Foreground="DodgerBlue"
+                            Width="{adonisUi:Space 2}"
+                            Height="{adonisUi:Space 2}"
+                            ToolTip="{x:Static localization:Strings.InstallationSkipped}"/>
+        </Grid>
+
+        <!-- Exception -->
+        <Grid Grid.Row="1"
+              Visibility="{Binding Exception, Converter={c:ValueNullToInverseVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{adonisUi:Space 1}"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ContentControl Grid.Row="1" 
+                            Content="{Binding Exception}"/>
+        </Grid>
     </Grid>
 </UserControl>

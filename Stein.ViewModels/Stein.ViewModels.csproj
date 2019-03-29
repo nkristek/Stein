@@ -45,6 +45,7 @@
     <Reference Include="NKristek.Smaragd, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NKristek.Smaragd.4.1.1\lib\net471\NKristek.Smaragd.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="WindowsBase" />
@@ -62,6 +63,8 @@
     <Compile Include="Commands\ApplicationViewModelCommands\InstallApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\UninstallApplicationCommand.cs" />
     <Compile Include="Commands\DependencyViewModelCommands\OpenUriCommand.cs" />
+    <Compile Include="Commands\ExceptionViewModelCommands\CopyExceptionDetailsToClipboardCommand.cs" />
+    <Compile Include="Commands\InstallationResultDialogModelCommands\OpenLogFolderCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\CancelOperationCommand.cs" />
     <Compile Include="Commands\MainWindowViewModelCommands\ChangeThemeCommand.cs" />
@@ -119,8 +122,6 @@
       <Name>Stein.Services</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\GitHubInstallerFileBundleProviderViewModelCommands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

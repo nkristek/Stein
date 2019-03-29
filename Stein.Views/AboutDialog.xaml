@@ -9,7 +9,7 @@
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}"
-        MinWidth="300"
+        MinWidth="500"
         MinHeight="300"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
@@ -83,18 +83,7 @@
                        Text="{x:Static localization:Strings.Dependencies}"/>
 
             <ItemsControl Grid.Row="2" 
-                          ItemsSource="{Binding Dependencies}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type viewModels:DependencyViewModel}">
-                        <TextBlock VerticalAlignment="Center"
-                                   FontSize="16">
-                            <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.DependencyViewModelCommands.OpenUriCommand]}">
-                                <TextBlock Text="{Binding Name}"/>
-                            </Hyperlink>
-                        </TextBlock>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                          ItemsSource="{Binding Dependencies}"/>
         </Grid>
 
         <!-- Additional notes -->

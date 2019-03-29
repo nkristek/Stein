@@ -79,15 +79,6 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested application folder is not cached and could not be updated..
-        /// </summary>
-        public static string ApplicationFolderNotCached {
-            get {
-                return ResourceManager.GetString("ApplicationFolderNotCached", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bundle language:.
         /// </summary>
         public static string BundleLanguage {
@@ -106,11 +97,11 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancelled, finishing current operation….
+        ///   Looks up a localized string similar to Copy to clipboard.
         /// </summary>
-        public static string Cancelled {
+        public static string CopyToClipboard {
             get {
-                return ResourceManager.GetString("Cancelled", resourceCulture);
+                return ResourceManager.GetString("CopyToClipboard", resourceCulture);
             }
         }
         
@@ -142,20 +133,20 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details:.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The entered information is not valid..
         /// </summary>
         public static string DialogInputNotValid {
             get {
                 return ResourceManager.GetString("DialogInputNotValid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Installed: {0}  Reinstalled: {1}  Uninstalled: {2}.
-        /// </summary>
-        public static string DidInstallXPrograms {
-            get {
-                return ResourceManager.GetString("DidInstallXPrograms", resourceCulture);
             }
         }
         
@@ -196,6 +187,24 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occured while performing the last operation..
+        /// </summary>
+        public static string ErrorOccured {
+            get {
+                return ResourceManager.GetString("ErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter duplicate installers.
         /// </summary>
         public static string FilterDuplicateInstallers {
@@ -232,11 +241,56 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to installed.
+        ///   Looks up a localized string similar to The installation was cancelled..
         /// </summary>
-        public static string Installed {
+        public static string InstallationCancelled {
             get {
-                return ResourceManager.GetString("Installed", resourceCulture);
+                return ResourceManager.GetString("InstallationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The download failed..
+        /// </summary>
+        public static string InstallationDownloadFailed {
+            get {
+                return ResourceManager.GetString("InstallationDownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The installation failed..
+        /// </summary>
+        public static string InstallationFailed {
+            get {
+                return ResourceManager.GetString("InstallationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation results.
+        /// </summary>
+        public static string InstallationResults {
+            get {
+                return ResourceManager.GetString("InstallationResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The installation was skipped..
+        /// </summary>
+        public static string InstallationSkipped {
+            get {
+                return ResourceManager.GetString("InstallationSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The installer was successfully executed..
+        /// </summary>
+        public static string InstallationSuccess {
+            get {
+                return ResourceManager.GetString("InstallationSuccess", resourceCulture);
             }
         }
         
@@ -403,6 +457,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open log file folder.
+        /// </summary>
+        public static string OpenLogFolder {
+            get {
+                return ResourceManager.GetString("OpenLogFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
         public static string Path {
@@ -466,16 +529,6 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Searching installerfiles in {0} failed.
-        ///{1}.
-        /// </summary>
-        public static string RefreshFailed {
-            get {
-                return ResourceManager.GetString("RefreshFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reinstall.
         /// </summary>
         public static string Reinstall {
@@ -526,15 +579,6 @@ namespace Stein.Localizations {
         public static string RepositoryWatermark {
             get {
                 return ResourceManager.GetString("RepositoryWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Saving the configuration failed..
-        /// </summary>
-        public static string SaveConfigurationFailed {
-            get {
-                return ResourceManager.GetString("SaveConfigurationFailed", resourceCulture);
             }
         }
         

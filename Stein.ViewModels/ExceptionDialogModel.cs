@@ -1,4 +1,5 @@
 ﻿using NKristek.Smaragd.ViewModels;
+using Stein.Localizations;
 
 namespace Stein.ViewModels
 {
@@ -6,7 +7,7 @@ namespace Stein.ViewModels
         : DialogModel
     {
         /// <inheritdoc />
-        public override string Title => Exception?.TypeName;
+        public override string Title => $"{Strings.Error}: {Exception?.TypeName}";
 
         private ExceptionViewModel _exception;
 
@@ -16,16 +17,7 @@ namespace Stein.ViewModels
         public ExceptionViewModel Exception
         {
             get => _exception;
-            set
-            {
-                if (SetProperty(ref _exception, value, out var oldValue))
-                {
-                    if (oldValue != null)
-                        oldValue.Parent = null;
-                    if (value != null)
-                        value.Parent = this;
-                }
-            }
+            set => SetProperty(ref _exception, value, out _);
         }
     }
 }

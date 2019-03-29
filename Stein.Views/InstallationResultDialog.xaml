@@ -10,7 +10,7 @@
         xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModels:InstallationResultDialogModel, IsDesignTimeCreatable=True}"
-        MinWidth="300"
+        MinWidth="500"
         MinHeight="300"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
@@ -23,13 +23,39 @@
 
     <Grid Margin="{adonisUi:Space 1}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ItemsControl Grid.Row="0" 
-                      Margin="{adonisUi:Space 1}"
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Text="{x:Static localization:Strings.InstallationResults}"
+                       FontWeight="Bold"
+                       FontSize="16"/>
+
+            <Button Grid.Column="2"
+                    VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Height="{adonisUi:Space 3}"
+                    Width="{adonisUi:Space 3}"
+                    Padding="{adonisUi:Space 0.5}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand]}"
+                    ContentTemplate="{StaticResource LogFileIconVariant}"
+                    Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                    ToolTip="{x:Static localization:Strings.OpenLogFolder}"/>
+        </Grid>
+
+        <ItemsControl Grid.Row="2" 
                       ItemsSource="{Binding InstallationResults}"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
@@ -52,9 +78,19 @@
             </ItemsControl.Template>
         </ItemsControl>
 
-        <TextBlock Grid.Row="2"
-                   Text="Work in progress"
-                   FontWeight="Bold"
-                   FontSize="24"/>
+        <Grid Grid.Row="4"
+              Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" 
+                    Content="{x:Static localization:Strings.Ok}"
+                    Padding="{adonisUi:Space 3,0.5}"
+                    IsDefault="True"
+                    Click="OnDialogOkButtonClick"
+                    IsEnabled="{Binding IsValid}"/>
+        </Grid>
     </Grid>
 </Window>

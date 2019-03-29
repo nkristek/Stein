@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using log4net;
 using Stein.Helpers;
-using Stein.Presentation;
 using Stein.Services.InstallService;
 using Stein.Services.InstallService.Arguments;
 using Stein.ViewModels.Types;
@@ -26,14 +25,14 @@ namespace Stein.ViewModels.Services
             public IList<KeyValuePair<InstallerViewModel, IDownloadResult>> CancelledDownloads = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
         }
         
-        public static async Task<InstallationResultDialogModel> Install(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallation, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot, bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
+        public static async Task<InstallationResultDialogModel> Install(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot, bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
             if (installService == null)
                 throw new ArgumentNullException(nameof(installService));
-            if (currentInstallation == null)
-                throw new ArgumentNullException(nameof(currentInstallation));
+            if (currentInstallationViewModel == null)
+                throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
 
@@ -43,7 +42,7 @@ namespace Stein.ViewModels.Services
             return await Custom(
                 viewModelService, 
                 installService, 
-                currentInstallation, 
+                currentInstallationViewModel, 
                 installerViewModels, 
                 enableSilentInstallation, 
                 disableReboot,
@@ -53,15 +52,15 @@ namespace Stein.ViewModels.Services
                 filterDuplicateInstallers);
         }
         
-        public static async Task<InstallationResultDialogModel> Uninstall(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallation, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
+        public static async Task<InstallationResultDialogModel> Uninstall(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
             bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
             if (installService == null)
                 throw new ArgumentNullException(nameof(installService));
-            if (currentInstallation == null)
-                throw new ArgumentNullException(nameof(currentInstallation));
+            if (currentInstallationViewModel == null)
+                throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
 
@@ -71,7 +70,7 @@ namespace Stein.ViewModels.Services
             return await Custom(
                 viewModelService,
                 installService,
-                currentInstallation,
+                currentInstallationViewModel,
                 installerViewModels,
                 enableSilentInstallation,
                 disableReboot,
@@ -81,24 +80,24 @@ namespace Stein.ViewModels.Services
                 filterDuplicateInstallers);
         }
         
-        public static async Task<InstallationResultDialogModel> Custom(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallation, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
+        public static async Task<InstallationResultDialogModel> Custom(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
             bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
             if (installService == null)
                 throw new ArgumentNullException(nameof(installService));
-            if (currentInstallation == null)
-                throw new ArgumentNullException(nameof(currentInstallation));
+            if (currentInstallationViewModel == null)
+                throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
 
-            var installationResult = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallation);
-            var cancellationToken = currentInstallation.CancellationTokenSource.Token;
+            var installationResultDialogModel = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallationViewModel);
+            var cancellationToken = currentInstallationViewModel.CancellationTokenSource.Token;
 
             using (var tempFileCollection = CreateTempFileCollection())
             {
-                var downloadResults = await Download(installerViewModels, tempFileCollection, currentInstallation);
+                var downloadResults = await Download(installerViewModels, tempFileCollection, currentInstallationViewModel);
 
                 foreach (var failedDownload in downloadResults.FailedDownloads)
                 {
@@ -117,7 +116,7 @@ namespace Stein.ViewModels.Services
                     }
 
                     installationResultViewModel.State = InstallationResultState.DownloadFailed;
-                    installationResult.InstallationResults.Add(installationResultViewModel);
+                    installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                 }
 
                 if (downloadResults.CancelledDownloads.Count > 0)
@@ -129,26 +128,27 @@ namespace Stein.ViewModels.Services
                         var installerViewModel = download.Key;
                         var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
                         installationResultViewModel.State = InstallationResultState.Cancelled;
-                        installationResult.InstallationResults.Add(installationResultViewModel);
+                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                     }
 
-                    return installationResult;
+                    return installationResultDialogModel;
                 }
 
                 if (!downloadResults.SucceededDownloads.Any())
                 {
                     Log.Info($"No download succeeded (failed: {downloadResults.FailedDownloads.Count}, cancelled: {downloadResults.CancelledDownloads.Count}).");
-                    return installationResult;
+                    return installationResultDialogModel;
                 }
 
                 Log.Info($"Starting operation with {downloadResults.SucceededDownloads.Count} installers.");
 
-                var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallation.Name) : null;
+                var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallationViewModel.Name) : null;
+                installationResultDialogModel.LogFolderPath = logFolderPath;
 
                 var installedInstallerViewModels = new List<InstallerViewModel>();
                 foreach (var download in downloadResults.SucceededDownloads)
                 {
-                    currentInstallation.CurrentInstallerIndex++;
+                    currentInstallationViewModel.CurrentInstallerIndex++;
                     var installerViewModel = download.Key;
                     var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
 
@@ -156,8 +156,8 @@ namespace Stein.ViewModels.Services
                     {
                         Log.Info("The operation was cancelled.");
                         installationResultViewModel.State = InstallationResultState.Cancelled;
-                        installationResult.InstallationResults.Add(installationResultViewModel);
-                        currentInstallation.ProcessedInstallerFileCount++;
+                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
@@ -168,17 +168,17 @@ namespace Stein.ViewModels.Services
                         var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
                         installationResultViewModel.Exception = exceptionViewModel;
                         installationResultViewModel.State = InstallationResultState.DownloadFailed;
-                        installationResult.InstallationResults.Add(installationResultViewModel);
-                        currentInstallation.ProcessedInstallerFileCount++;
+                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
                     if (filterDuplicateInstallers && installedInstallerViewModels.Any(i => i.Name == installerViewModel.Name))
                     {
-                        Log.Info($"Installer with the same name \"{installerViewModel.Name}\" already processed, will be skipped.");
+                        Log.Info($"Installer \"{installerViewModel.FileName}\" with the same application name \"{installerViewModel.Name}\" already processed, file will be skipped.");
                         installationResultViewModel.State = InstallationResultState.Skipped;
-                        installationResult.InstallationResults.Add(installationResultViewModel);
-                        currentInstallation.ProcessedInstallerFileCount++;
+                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
@@ -201,11 +201,11 @@ namespace Stein.ViewModels.Services
                                         var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
                                         installationResultViewModel.Exception = exceptionViewModel;
                                         installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                        installationResult.InstallationResults.Add(installationResultViewModel);
+                                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                                     }
                                     else
                                     {
-                                        currentInstallation.CurrentOperation = InstallationOperation.Uninstall;
+                                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
 
                                         var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
                                         installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
@@ -220,7 +220,7 @@ namespace Stein.ViewModels.Services
 
                                 Log.Info($"Installing \"{installerViewModel.FileName}\" now.");
 
-                                currentInstallation.CurrentOperation = InstallationOperation.Install;
+                                currentInstallationViewModel.CurrentOperation = InstallationOperation.Install;
 
                                 var installLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "install");
                                 installationResultViewModel.InstallationLogFilePaths.Add(installLogFilePath);
@@ -241,7 +241,7 @@ namespace Stein.ViewModels.Services
                                     var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
                                     installationResultViewModel.Exception = exceptionViewModel;
                                     installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                    installationResult.InstallationResults.Add(installationResultViewModel);
+                                    installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                                 }
                                 else
                                 {
@@ -257,11 +257,11 @@ namespace Stein.ViewModels.Services
                                         var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
                                         installationResultViewModel.Exception = exceptionViewModel;
                                         installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                        installationResult.InstallationResults.Add(installationResultViewModel);
+                                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                                     }
                                     else
                                     {
-                                        currentInstallation.CurrentOperation = InstallationOperation.Uninstall;
+                                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
 
                                         var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
                                         installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
@@ -277,8 +277,8 @@ namespace Stein.ViewModels.Services
                                 break;
                             default:
                                 installationResultViewModel.State = InstallationResultState.Skipped;
-                                installationResult.InstallationResults.Add(installationResultViewModel);
-                                currentInstallation.ProcessedInstallerFileCount++;
+                                installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                                currentInstallationViewModel.ProcessedInstallerFileCount++;
                                 continue;
                         }
                     }
@@ -288,17 +288,17 @@ namespace Stein.ViewModels.Services
                         var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
                         installationResultViewModel.Exception = exceptionViewModel;
                         installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                        installationResult.InstallationResults.Add(installationResultViewModel);
-                        currentInstallation.ProcessedInstallerFileCount++;
+                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
                     installationResultViewModel.State = InstallationResultState.Success;
-                    installationResult.InstallationResults.Add(installationResultViewModel);
-                    currentInstallation.ProcessedInstallerFileCount++;
+                    installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                    currentInstallationViewModel.ProcessedInstallerFileCount++;
                 }
 
-                currentInstallation.CurrentOperation = InstallationOperation.None;
+                currentInstallationViewModel.CurrentOperation = InstallationOperation.None;
 
                 if (enableInstallationLogging && automaticallyDeleteInstallationLogs)
                 {
@@ -313,8 +313,8 @@ namespace Stein.ViewModels.Services
                 }
             }
 
-            installationResult.IsReadOnly = true;
-            return installationResult;
+            installationResultDialogModel.IsReadOnly = true;
+            return installationResultDialogModel;
         }
 
         private static ITempFileCollection CreateTempFileCollection()

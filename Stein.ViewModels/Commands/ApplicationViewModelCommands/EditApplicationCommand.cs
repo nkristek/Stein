@@ -31,20 +31,12 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
-            try
-            {
-                var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
-                if (_dialogService.ShowDialog(dialogModel) != true)
-                    return;
+            var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
+            if (_dialogService.ShowDialog(dialogModel) != true)
+                return;
 
-                await _viewModelService.SaveViewModelAsync(dialogModel);
-                await _viewModelService.UpdateViewModelAsync(viewModel);
-            }
-            catch (Exception exception)
-            {
-                Log.Error(exception);
-                _dialogService.ShowError(exception);
-            }
+            await _viewModelService.SaveViewModelAsync(dialogModel);
+            await _viewModelService.UpdateViewModelAsync(viewModel);
         }
     }
 }
