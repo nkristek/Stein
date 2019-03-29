@@ -16,6 +16,7 @@ using Stein.ViewModels.Commands.ApplicationDialogModelCommands;
 using Stein.ViewModels.Commands.ApplicationViewModelCommands;
 using Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands;
 using Stein.ViewModels.Commands.ExceptionViewModelCommands;
+using Stein.ViewModels.Commands.InstallationViewModelCommands;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 using Stein.ViewModels.Types;
 
@@ -84,11 +85,16 @@ namespace Stein.ViewModels.Services
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)
         {
-            return new InstallationViewModel(_progressBarService)
+            var viewModel = new InstallationViewModel(_progressBarService)
             {
                 Parent = parent,
                 IsDirty = false
             };
+            viewModel.AddCommand(new CancelOperationCommand
+            {
+                Parent = viewModel
+            });
+            return viewModel;
         }
 
         private InstallationResultViewModel CreateInstallationResultViewModel(IViewModel parent)
@@ -177,10 +183,6 @@ namespace Stein.ViewModels.Services
                 Parent = viewModel
             });
             viewModel.AddCommand(new AddApplicationCommand(_dialogService, this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new CancelOperationCommand
             {
                 Parent = viewModel
             });
