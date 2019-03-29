@@ -26,6 +26,7 @@ namespace Stein.Services.Configuration
             return new List<IConfigurationUpgrader>
             {
                 new ConfigurationUpgraderFrom0To1(),
+                new ConfigurationUpgraderFrom1To2()
             };
         }
 

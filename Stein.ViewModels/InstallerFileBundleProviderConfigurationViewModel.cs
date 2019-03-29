@@ -1,5 +1,5 @@
 ﻿using NKristek.Smaragd.ViewModels;
-using Stein.Services.Configuration.v1;
+using Stein.Services.Configuration.v2;
 
 namespace Stein.ViewModels
 {

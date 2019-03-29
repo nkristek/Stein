@@ -42,5 +42,20 @@ namespace Stein.Services.InstallerFiles.Base
             provider.Configurator.LoadConfiguration(configuration.ToDictionary());
             return provider;
         }
+
+        public static IInstallerFileBundleProvider Create(Configuration.v2.InstallerFileBundleProviderConfiguration configuration)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            var provider = AllProviderTypes
+                .Select(Activator.CreateInstance).OfType<IInstallerFileBundleProvider>()
+                .FirstOrDefault(p => p.Type == configuration.Type);
+            if (provider == null)
+                throw new Exception($"The installer file provider set in the configuration file is unknown: {configuration.Type}");
+
+            provider.Configurator.LoadConfiguration(configuration.ToDictionary());
+            return provider;
+        }
     }
 }

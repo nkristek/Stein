@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("nkristek")]
 [assembly: AssemblyProduct("Stein")]
-[assembly: AssemblyCopyright("Copyright ©  2018 Niclas Kristek")]
+[assembly: AssemblyCopyright("Copyright ©  2019 Niclas Kristek")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

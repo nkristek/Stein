@@ -20,18 +20,18 @@
                BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
 
-    <Grid Margin="16,8">
+    <Grid Margin="{adonisUi:Space 2,1}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="8" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -39,7 +39,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="8" />
+                <ColumnDefinition Width="{adonisUi:Space 1}" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -59,7 +59,7 @@
 
             <TextBlock Grid.Column="4"
                        VerticalAlignment="Center"
-                       FontSize="14">
+                       FontSize="16">
                 <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.AboutDialogModelCommands.OpenUriCommand]}">GitHub</Hyperlink>
             </TextBlock>
         </Grid>
@@ -74,7 +74,7 @@
               Visibility="{Binding Dependencies, Converter={c:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="8"/>
+                <RowDefinition Height="{adonisUi:Space 1}"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -87,7 +87,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewModels:DependencyViewModel}">
                         <TextBlock VerticalAlignment="Center"
-                                   FontSize="14">
+                                   FontSize="16">
                             <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.DependencyViewModelCommands.OpenUriCommand]}">
                                 <TextBlock Text="{Binding Name}"/>
                             </Hyperlink>

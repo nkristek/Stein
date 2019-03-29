@@ -7,7 +7,7 @@ using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
 using Stein.Presentation;
 using Stein.Services.Configuration;
-using Stein.Services.Configuration.v1;
+using Stein.Services.Configuration.v2;
 using Stein.Services.InstallService;
 using Stein.Services.MsiService;
 using Stein.Services.ProductService;
@@ -83,7 +83,7 @@ namespace Stein.ViewModels.Services
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)
         {
-            return new InstallationViewModel
+            return new InstallationViewModel(_progressBarService)
             {
                 Parent = parent,
                 IsDirty = false
@@ -209,7 +209,8 @@ namespace Stein.ViewModels.Services
                 DisableReboot = application.DisableReboot,
                 EnableInstallationLogging = application.EnableInstallationLogging,
                 AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs,
-                KeepNewestInstallationLogs = application.KeepNewestInstallationLogs
+                KeepNewestInstallationLogs = application.KeepNewestInstallationLogs,
+                FilterDuplicateInstallers = application.FilterDuplicateInstallers
             };
             viewModel.AddCommand(new EditApplicationCommand(_dialogService, this)
             {
@@ -219,15 +220,15 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService, _progressBarService)
+            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService, _progressBarService)
+            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService, _progressBarService)
+            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService)
             {
                 Parent = viewModel
             });
@@ -259,7 +260,8 @@ namespace Stein.ViewModels.Services
                     DisableReboot = applicationViewModel.DisableReboot,
                     EnableInstallationLogging = applicationViewModel.EnableInstallationLogging,
                     AutomaticallyDeleteInstallationLogs = applicationViewModel.AutomaticallyDeleteInstallationLogs,
-                    KeepNewestInstallationLogs = applicationViewModel.KeepNewestInstallationLogs
+                    KeepNewestInstallationLogs = applicationViewModel.KeepNewestInstallationLogs,
+                    FilterDuplicateInstallers = applicationViewModel.FilterDuplicateInstallers
                 };
 
                 foreach (var provider in CreateAvailableProviderViewModels(dialogModel))
@@ -288,7 +290,8 @@ namespace Stein.ViewModels.Services
                     DisableReboot = defaultValues.DisableReboot,
                     EnableInstallationLogging = defaultValues.EnableInstallationLogging,
                     AutomaticallyDeleteInstallationLogs = defaultValues.AutomaticallyDeleteInstallationLogs,
-                    KeepNewestInstallationLogs = defaultValues.KeepNewestInstallationLogs
+                    KeepNewestInstallationLogs = defaultValues.KeepNewestInstallationLogs,
+                    FilterDuplicateInstallers = defaultValues.FilterDuplicateInstallers
                 };
                 foreach (var provider in CreateAvailableProviderViewModels(dialogModel))
                     dialogModel.AvailableProviders.Add(provider);
@@ -457,6 +460,7 @@ namespace Stein.ViewModels.Services
             applicationFolder.AutomaticallyDeleteInstallationLogs = applicationDialog.AutomaticallyDeleteInstallationLogs;
             applicationFolder.KeepNewestInstallationLogs = applicationDialog.KeepNewestInstallationLogs;
             applicationFolder.Configuration = applicationDialog.SelectedProvider.CreateConfiguration();
+            applicationFolder.FilterDuplicateInstallers = applicationDialog.FilterDuplicateInstallers;
 
             applicationDialog.IsDirty = false;
         }
@@ -477,35 +481,6 @@ namespace Stein.ViewModels.Services
         private async Task UpdateMainWindowViewModelAsync(MainWindowViewModel viewModel)
         {
             viewModel.IsUpdating = true;
-
-            //var existingApplicationViewModels = viewModel.Applications.ToList();
-            //var newViewModels = new List<ApplicationViewModel>();
-            //foreach (var application in _configurationService.Configuration.Applications)
-            //{
-            //    var newViewModel = existingApplicationViewModels.FirstOrDefault(vm => vm.EntityId.Equals(application.Id)) ??
-            //                       CreateApplicationViewModel(application, viewModel);
-            //    newViewModel.IsUpdating = true;
-            //    newViewModel.Parent = viewModel;
-            //    newViewModels.Add(newViewModel);
-            //}
-            //viewModel.Applications.Clear();
-            //foreach (var newViewModel in newViewModels)
-            //    viewModel.Applications.Add(newViewModel);
-
-            //var currentDispatcher = Dispatcher.CurrentDispatcher;
-            //await Task.Run(async () =>
-            //{
-            //    await currentDispatcher.InvokeAsync(() => viewModel.Applications.Clear());
-            //    foreach (var newViewModel in newViewModels)
-            //    {
-            //        await currentDispatcher.InvokeAsync(() =>
-            //        {
-            //            newViewModel.IsUpdating = true;
-            //            newViewModel.Parent = viewModel;
-            //            viewModel.Applications.Add(newViewModel);
-            //        });
-            //    }
-            //});
 
             foreach (var applicationViewModel in viewModel.Applications)
                 applicationViewModel.IsUpdating = true;
@@ -537,6 +512,7 @@ namespace Stein.ViewModels.Services
             viewModel.EnableInstallationLogging = application.EnableInstallationLogging;
             viewModel.AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs;
             viewModel.KeepNewestInstallationLogs = application.KeepNewestInstallationLogs;
+            viewModel.FilterDuplicateInstallers = application.FilterDuplicateInstallers;
 
             IList<IProduct> installedProducts = new List<IProduct>();
             try

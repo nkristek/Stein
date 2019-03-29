@@ -13,7 +13,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="60"/>
+            <RowDefinition Height="Auto" MinHeight="{adonisUi:Space 8}"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -23,52 +23,48 @@
             <Border Background="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
                 <Border.Effect>
                     <DropShadowEffect Direction="270"
-                                      BlurRadius="28"
-                                      ShadowDepth="7"
+                                      BlurRadius="32"
+                                      ShadowDepth="8"
                                       Opacity="0.25"/>
                 </Border.Effect>
             </Border>
 
             <Grid Grid.IsSharedSizeScope="True"
-                  Margin="8">
+                  Margin="{adonisUi:Space 1}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Add Folder button -->
                 <Button Grid.Column="0"
+                        Height="{adonisUi:Space 5}"
+                        Width="{adonisUi:Space 5}"
+                        Padding="{adonisUi:Space 1}"
+                        ContentTemplate="{StaticResource AddIconVariant}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.AddApplicationCommand]}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <ContentControl ContentTemplate="{StaticResource AddIconVariant}"
-                                            Height="20"
-                                            Width="20"
-                                            Margin="8, 0"/>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
-                </Button>
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.AddApplicationCommand]}"
+                        ToolTip="{x:Static localization:Strings.Add}"/>
 
                 <!-- Refresh button -->
                 <Button Grid.Column="3"
-                        Width="28"
-                        Height="28"
-                        Padding="2"
+                        Width="{adonisUi:Space 5}"
+                        Height="{adonisUi:Space 5}"
+                        Padding="{adonisUi:Space 1}"
                         Content="{Binding}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         ToolTip="{x:Static localization:Strings.Refresh}">
                     <Button.ContentTemplate>
                         <DataTemplate>
-                            <ContentControl Width="16"
-                                            Height="16"
+                            <ContentControl Width="{adonisUi:Space 3}"
+                                            Height="{adonisUi:Space 3}"
                                             SnapsToDevicePixels="True"
                                             UseLayoutRounding="True"
                                             RenderTransformOrigin="0.5,0.5"
@@ -116,9 +112,10 @@
 
                 <!-- Theme switch button -->
                 <Button Grid.Column="5"
-                        Width="28"
-                        Height="28"
-                        Padding="4"
+                        Height="{adonisUi:Space 5}"
+                        Width="{adonisUi:Space 5}"
+                        Padding="{adonisUi:Space 1}"
+                        Content="{Binding}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.ChangeThemeCommand]}"
                         ToolTip="{x:Static localization:Strings.SwitchTheme}">
@@ -133,9 +130,9 @@
 
                 <!-- Info dialog button -->
                 <Button Grid.Column="7"
-                        Width="28"
-                        Height="28"
-                        Padding="4"
+                        Width="{adonisUi:Space 5}"
+                        Height="{adonisUi:Space 5}"
+                        Padding="{adonisUi:Space 1}"
                         ContentTemplate="{StaticResource InfoIconVariant}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.ShowInfoDialogCommand]}"
@@ -145,9 +142,8 @@
 
         <!-- Application content -->
         <ItemsControl Grid.Row="1" 
-                      Margin="8"
+                      Margin="{adonisUi:Space 1}"
                       ItemsSource="{Binding Applications}"
-                      IsEnabled="{Binding CurrentInstallation, Converter={c:ValueNullToBoolConverter}}"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -170,88 +166,104 @@
         </ItemsControl>
 
         <!-- Current installation -->
-        <StatusBar Grid.Row="2"
-                   HorizontalAlignment="Stretch"
-                   Padding="8, 0">
+        <Grid Grid.Row="2">
+            <ProgressBar HorizontalAlignment="Stretch"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         VerticalContentAlignment="Stretch"
+                         
+                         Margin="{adonisUi:Space 0}"
+                         Padding="{adonisUi:Space 0}"
+                         DataContext="{Binding CurrentInstallation}"
+                         Value="{Binding Progress, Mode=OneWay}"
+                         Maximum="1"/>
 
-            <!-- no installation -->
-            <StatusBarItem Padding="0"
-                           Margin="8"
+            <StatusBar HorizontalAlignment="Stretch"
+                   Background="Transparent"
+                   Margin="{adonisUi:Space 0}"
+                   Padding="{adonisUi:Space 0.5,0,0,0}">
+
+                <!-- no installation -->
+                <StatusBarItem Height="{adonisUi:Space 5}"
+                           Padding="{adonisUi:Space 1}"
+                           HorizontalAlignment="Stretch"
+                           HorizontalContentAlignment="Stretch"
                            Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToVisibilityConverter}}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" 
-                               FontSize="14"
-                               Visibility="{Binding Visibility, ElementName=LoadingLabel, Converter={c:VisibilityToInverseVisibilityConverter}}"
-                               Text="{x:Static localization:Strings.Ready}"
+                    <Grid >
+                        <TextBlock Text="{x:Static localization:Strings.Ready}"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Center"/>
-
-                    <TextBlock x:Name="LoadingLabel"
-                               Grid.Column="0" 
+                               VerticalAlignment="Center"
                                FontSize="14"
+                               DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
+                               Visibility="{Binding IsWorking, Converter={c:BoolToInverseVisibilityConverter}}"/>
+
+                        <TextBlock x:Name="LoadingLabel"
                                Text="{x:Static localization:Strings.Loading}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.RefreshApplicationsCommand]}"
-                               Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}, ConverterParameter=Hidden}"/>
-
-                    <Grid Grid.Column="2" 
-                          Visibility="{Binding InstallationResult, Converter={c:ValueNullToInverseVisibilityConverter}}">
-                        <TextBlock DataContext="{Binding InstallationResult}"
-                                   FontSize="14"
-                                   Text="{Binding Result}"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"/>
+                               Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}"/>
                     </Grid>
-                </Grid>
-            </StatusBarItem>
+                </StatusBarItem>
 
-            <!-- during installation -->
-            <StatusBarItem Padding="0"
-                           Margin="8"
+                <!-- during installation -->
+                <StatusBarItem Height="{adonisUi:Space 5}"
+                           Padding="{adonisUi:Space 1}"
+                           HorizontalAlignment="Stretch"
+                           HorizontalContentAlignment="Stretch"
                            Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}">
-                <Grid DataContext="{Binding CurrentInstallation}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="8"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid DataContext="{Binding CurrentInstallation}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0"
-                               FontSize="14"
-                               Text="{Binding InstallationProgressString}"/>
-
-                    <TextBlock Grid.Column="2"
-                               FontSize="14" 
-                               Text="{Binding State, Converter={steinconverters:InstallationStateToLocalizedStringConverter}}"/>
-
-                    <TextBlock Grid.Column="4"
-                               FontSize="14"
+                        <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
                                Text="{Binding Name}"/>
-                </Grid>
-            </StatusBarItem>
 
-            <!-- Cancel button -->
-            <StatusBarItem Padding="0"
-                           HorizontalAlignment="Right">
-                <Button Width="20"
-                        Height="20"
-                        Padding="4"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                        ContentTemplate="{DynamicResource DeleteIconVariant}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.CancelOperationCommand]}"
-                        ToolTip="{x:Static localization:Strings.Cancel}"
-                        ToolTipService.InitialShowDelay="0"
-                        Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}"/>
-            </StatusBarItem>
-        </StatusBar>
+                        <Grid Grid.Column="2"
+                          Visibility="{Binding IsInstalling, Converter={c:BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                   VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} / {1}">
+                                        <Binding Path="CurrentInstallerIndex" />
+                                        <Binding Path="TotalInstallerFileCount" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
+
+                        <TextBlock Grid.Column="3"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Text="{Binding CurrentOperation, Converter={steinconverters:InstallationOperationToLocalizedStringConverter}}"/>
+
+                        <Button Grid.Column="6"
+                            Width="{adonisUi:Space 3}"
+                            Height="{adonisUi:Space 3}"
+                            Padding="{adonisUi:Space 0.5}"
+                            Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                            ContentTemplate="{DynamicResource DeleteIconVariant}"
+                            Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowViewModelCommands.CancelOperationCommand]}"
+                            ToolTip="{x:Static localization:Strings.Cancel}"
+                            ToolTipService.InitialShowDelay="0"/>
+                    </Grid>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
     </Grid>
 </UserControl>

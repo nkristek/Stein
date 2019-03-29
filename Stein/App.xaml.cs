@@ -73,6 +73,7 @@ namespace Stein
             if (Debugger.IsAttached)
                 Debugger.Break();
 #endif
+            e.Handled = true;
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -81,7 +82,6 @@ namespace Stein
                 return;
 
             Log.Error(exception);
-
 #if DEBUG
             if (Debugger.IsAttached)
                 Debugger.Break();
@@ -95,6 +95,8 @@ namespace Stein
             if (Debugger.IsAttached)
                 Debugger.Break();
 #endif
+            if (!e.Observed)
+                e.SetObserved();
         }
 
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

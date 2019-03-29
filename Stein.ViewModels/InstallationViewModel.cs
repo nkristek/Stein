@@ -1,7 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
+using Stein.Presentation;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
@@ -9,14 +12,33 @@ namespace Stein.ViewModels
     public sealed class InstallationViewModel
         : ViewModel
     {
-        public InstallationViewModel()
+        private readonly IProgressBarService _progressBarService;
+
+        public InstallationViewModel(IProgressBarService progressBarService)
         {
-            PropertyChanged += (sender, args) =>
+            _progressBarService = progressBarService ?? throw new ArgumentNullException(nameof(progressBarService));
+            PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Progress) && e.PropertyName != nameof(State))
+                return;
+
+            switch (State)
             {
-                // TODO
-                if (args.PropertyName == nameof(Progress))
-                    Debug.Print("Progress: " + Progress);
-            };
+                case InstallationState.Cancelled:
+                    _progressBarService.SetState(ProgressBarState.Indeterminate);
+                    break;
+                case InstallationState.Preparing:
+                case InstallationState.Install:
+                    _progressBarService.SetState(ProgressBarState.Normal);
+                    _progressBarService.SetProgress(Progress);
+                    break;
+                case InstallationState.Finished:
+                    _progressBarService.SetState(ProgressBarState.None);
+                    break;
+            }
         }
 
         private string _name;
@@ -42,17 +64,33 @@ namespace Stein.ViewModels
             {
                 if (_state == InstallationState.Cancelled)
                     return;
-                if (SetProperty(ref _state, value, out _) && value == InstallationState.Cancelled)
+                if (!SetProperty(ref _state, value, out _))
+                    return;
+                if (value == InstallationState.Cancelled)
                     CancellationTokenSource.Cancel();
             }
         }
+
+        private InstallationOperation _currentOperation;
+
+        /// <summary>
+        /// Current operation.
+        /// </summary>
+        public InstallationOperation CurrentOperation
+        {
+            get => _currentOperation;
+            set => SetProperty(ref _currentOperation, value, out _);
+        }
+
+        [PropertySource(nameof(CurrentOperation))]
+        public bool IsInstalling => CurrentOperation != InstallationOperation.None;
         
         private int _installerCount;
 
         /// <summary>
         /// Total count of operations of the current installation
         /// </summary>
-        public int InstallerCount
+        public int TotalInstallerFileCount
         {
             get => _installerCount;
             set => SetProperty(ref _installerCount, value, out _);
@@ -69,6 +107,14 @@ namespace Stein.ViewModels
             set => SetProperty(ref _currentInstallerIndex, value, out _);
         }
 
+        private int _processedInstallerFileCount;
+
+        public int ProcessedInstallerFileCount
+        {
+            get => _processedInstallerFileCount;
+            set => SetProperty(ref _processedInstallerFileCount, value, out _);
+        }
+
         private double _downloadProgress;
 
         /// <summary>
@@ -79,17 +125,12 @@ namespace Stein.ViewModels
             get => _downloadProgress;
             set => SetProperty(ref _downloadProgress, value, out _);
         }
-
-        private double _installationProgress;
-
+        
         /// <summary>
         /// The progress of the installation.
         /// </summary>
-        public double InstallationProgress
-        {
-            get => _installationProgress;
-            set => SetProperty(ref _installationProgress, value, out _);
-        }
+        [PropertySource(nameof(ProcessedInstallerFileCount), nameof(TotalInstallerFileCount))]
+        public double InstallationProgress => (double)ProcessedInstallerFileCount / TotalInstallerFileCount;
 
         /// <summary>
         /// Progress of the entire operation.

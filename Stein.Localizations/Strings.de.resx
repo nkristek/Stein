@@ -313,4 +313,10 @@
   <data name="NoProvider" xml:space="preserve">
     <value>Kein Typ ausgewählt.</value>
   </data>
+  <data name="FilterDuplicateInstallers" xml:space="preserve">
+    <value>Doppelte Installer filtern</value>
+  </data>
+  <data name="FilterDuplicateInstallersDetails" xml:space="preserve">
+    <value>Ob mehrere Installerdateien mit dem selben Anwendungsnamen gefiltert werden sollen. Nur die Installieren/Deinstallieren Aktionen sind hiervon betroffen, Benutzerdefiniert filtert nicht.</value>
+  </data>
 </root>

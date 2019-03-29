@@ -22,6 +22,10 @@
         <views:InstallerView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:InstallationResultViewModel}">
+        <views:InstallationResultView/>
+    </DataTemplate>
+
     <!-- Dialogs -->
     <views:ApplicationDialog x:Key="{x:Type viewModels:ApplicationDialogModel}" x:Shared="False"/>
     

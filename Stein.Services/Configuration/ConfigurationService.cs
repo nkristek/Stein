@@ -13,7 +13,7 @@ namespace Stein.Services.Configuration
         : IConfigurationService
     {
         /// <inheritdoc />
-        public v1.Configuration Configuration { get; private set; } = new v1.Configuration();
+        public v2.Configuration Configuration { get; private set; } = new v2.Configuration();
 
         private readonly string _configurationFolderPath;
 
@@ -37,7 +37,8 @@ namespace Stein.Services.Configuration
             return new List<Type>
             {
                 typeof(v0.Configuration),
-                typeof(v1.Configuration)
+                typeof(v1.Configuration),
+                typeof(v2.Configuration)
             };
         }
 
@@ -80,7 +81,7 @@ namespace Stein.Services.Configuration
         }
 
         // TODO: refactor to multiple methods
-        private async Task<v1.Configuration> CreateFromFileAndUpgradeAsync()
+        private async Task<v2.Configuration> CreateFromFileAndUpgradeAsync()
         {
             // get all file names in the folder according to the naming convention and parse the file version encoded in the file name
 
@@ -107,7 +108,7 @@ namespace Stein.Services.Configuration
             {
                 var oldConfigFileName = Path.Combine(_configurationFolderPath, "Config.xml");
                 if (!File.Exists(oldConfigFileName))
-                    return new v1.Configuration();
+                    return new v2.Configuration();
 
                 fileNameWithMatchingConfiguration = new Tuple<string, IConfiguration>(oldConfigFileName, new v0.Configuration());
             }
@@ -142,7 +143,7 @@ namespace Stein.Services.Configuration
             if (UpgradeManager.UpgradeToLatestFileVersion(deserializedConfiguration, out var upgradedConfiguration))
                 await ToFileAsync(upgradedConfiguration, GetConfigurationFilePath(Configuration));
             
-            return upgradedConfiguration as v1.Configuration ?? throw new Exception("The upgrade didn't upgrade the configuration to the latest version.");
+            return upgradedConfiguration as v2.Configuration ?? throw new Exception("The upgrade didn't upgrade the configuration to the latest version.");
         }
         
         /// <inheritdoc />

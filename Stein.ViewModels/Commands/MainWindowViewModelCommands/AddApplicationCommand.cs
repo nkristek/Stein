@@ -24,10 +24,10 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
 
-        [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation))]
+        [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation), nameof(MainWindowViewModel.IsUpdating))]
         protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
         {
-            return viewModel.CurrentInstallation == null;
+            return viewModel.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)

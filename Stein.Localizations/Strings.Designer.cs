@@ -196,6 +196,24 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter duplicate installers.
+        /// </summary>
+        public static string FilterDuplicateInstallers {
+            get {
+                return ResourceManager.GetString("FilterDuplicateInstallers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If multiple installers with the same application name should be filtered. Only the Install/Uninstall operation are affected, Custom is not..
+        /// </summary>
+        public static string FilterDuplicateInstallersDetails {
+            get {
+                return ResourceManager.GetString("FilterDuplicateInstallersDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ….
         /// </summary>
         public static string Hellip {

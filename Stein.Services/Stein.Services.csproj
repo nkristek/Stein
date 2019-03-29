@@ -59,6 +59,11 @@
     <Compile Include="Configuration\v1\Application.cs" />
     <Compile Include="Configuration\v1\Configuration.cs" />
     <Compile Include="Configuration\v1\InstallerFileBundleProviderConfigurationItem.cs" />
+    <Compile Include="Configuration\v2\Application.cs" />
+    <Compile Include="Configuration\v2\Configuration.cs" />
+    <Compile Include="Configuration\Upgrades\ConfigurationUpgraderFrom1To2.cs" />
+    <Compile Include="Configuration\v2\InstallerFileBundleProviderConfiguration.cs" />
+    <Compile Include="Configuration\v2\InstallerFileBundleProviderConfigurationItem.cs" />
     <Compile Include="InstallerFiles\Base\IInstallerFile.cs" />
     <Compile Include="InstallerFiles\Base\IInstallerFileBundle.cs" />
     <Compile Include="InstallerFiles\Base\IInstallerFileBundleProvider.cs" />

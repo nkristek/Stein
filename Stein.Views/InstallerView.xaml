@@ -13,15 +13,15 @@
              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InstallerViewModel, IsDesignTimeCreatable=True}">
-    
-    <Grid Margin="0,2">
+
+    <Grid Margin="{adonisUi:Space 0,0.5}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="{adonisUi:Space 1}"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+            <ColumnDefinition Width="{adonisUi:Space 17}"/>
+            <ColumnDefinition Width="{adonisUi:Space 1}"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="DateColumn"/>
         </Grid.ColumnDefinitions>
 
@@ -29,7 +29,7 @@
         <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 

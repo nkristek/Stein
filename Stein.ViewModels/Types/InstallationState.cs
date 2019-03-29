@@ -6,10 +6,8 @@
 
         Install,
 
-        Reinstall,
+        Cancelled,
 
-        Uninstall,
-
-        Cancelled
+        Finished
     }
 }

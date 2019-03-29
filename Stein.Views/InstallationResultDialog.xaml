@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:Stein.Views"
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+        xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         mc:Ignorable="d" 
         d:DataContext="{d:DesignInstance viewModels:InstallationResultDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="300"
@@ -19,7 +21,40 @@
                BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
 
-    <Grid>
-            
+    <Grid Margin="{adonisUi:Space 1}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ItemsControl Grid.Row="0" 
+                      Margin="{adonisUi:Space 1}"
+                      ItemsSource="{Binding InstallationResults}"
+                      ScrollViewer.CanContentScroll="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      VirtualizingStackPanel.ScrollUnit="Pixel">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer Padding="{TemplateBinding Control.Padding}" 
+                                  Focusable="False">
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+
+        <TextBlock Grid.Row="2"
+                   Text="Work in progress"
+                   FontWeight="Bold"
+                   FontSize="24"/>
     </Grid>
 </Window>

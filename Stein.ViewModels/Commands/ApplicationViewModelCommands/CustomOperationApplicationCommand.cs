@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
@@ -15,20 +16,19 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     public sealed class CustomOperationApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly IDialogService _dialogService;
 
         private readonly IViewModelService _viewModelService;
 
         private readonly IInstallService _installService;
 
-        private readonly IProgressBarService _progressBarService;
-
-        public CustomOperationApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, IProgressBarService progressBarService)
+        public CustomOperationApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
-            _progressBarService = progressBarService ?? throw new ArgumentNullException(nameof(progressBarService));
         }
 
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle))]
@@ -53,36 +53,41 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             var installers = viewModel.SelectedInstallerBundle.Installers.Where(i => i.PreferredOperation != InstallerOperation.DoNothing).ToList();
             mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
             mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
-            mainWindowViewModel.CurrentInstallation.InstallerCount = installers.Count;
+            mainWindowViewModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
 
+            InstallationResultDialogModel installationResult;
             try
             {
-                var installationResult = await ViewModelInstallService.Custom(
+                installationResult = await ViewModelInstallService.Custom(
                     _viewModelService,
                     _installService,
-                    _progressBarService,
                     mainWindowViewModel.CurrentInstallation,
                     installers,
                     viewModel.EnableSilentInstallation,
                     viewModel.DisableReboot,
                     viewModel.EnableInstallationLogging,
                     viewModel.AutomaticallyDeleteInstallationLogs,
-                    viewModel.KeepNewestInstallationLogs);
-
-                Task refreshTask = null;
-                var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
-                if (refreshCommand != null)
-                    refreshTask = refreshCommand.ExecuteAsync(null);
-
-                _dialogService.ShowDialog(installationResult);
-
-                if (refreshTask != null)
-                    await refreshTask;
+                    viewModel.KeepNewestInstallationLogs,
+                    false);
             }
             finally
             {
+                mainWindowViewModel.CurrentInstallation.State = InstallationState.Finished;
                 mainWindowViewModel.CurrentInstallation = null;
             }
+
+            Task refreshTask = null;
+            var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
+            if (refreshCommand != null)
+                refreshTask = refreshCommand.ExecuteAsync(null);
+
+            if (installationResult != null)
+                _dialogService.ShowDialog(installationResult);
+            else
+                Log.Warn("No installation result to show.");
+
+            if (refreshTask != null)
+                await refreshTask;
         }
     }
 }

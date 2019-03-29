@@ -83,6 +83,7 @@
     <Compile Include="Types\FailedDownloadResult.cs" />
     <Compile Include="Types\IDownloadResult.cs" />
     <Compile Include="Types\IInstallerFileProvider.cs" />
+    <Compile Include="Types\InstallationOperation.cs" />
     <Compile Include="Types\InstallationResultState.cs" />
     <Compile Include="Types\InstallationState.cs" />
     <Compile Include="InstallationViewModel.cs" />

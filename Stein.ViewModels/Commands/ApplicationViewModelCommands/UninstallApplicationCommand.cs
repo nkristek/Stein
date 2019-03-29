@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
@@ -8,26 +9,26 @@ using Stein.Services.InstallService;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
+using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
     public sealed class UninstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly IDialogService _dialogService;
 
         private readonly IViewModelService _viewModelService;
 
         private readonly IInstallService _installService;
 
-        private readonly IProgressBarService _progressBarService;
-
-        public UninstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, IProgressBarService progressBarService)
+        public UninstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
-            _progressBarService = progressBarService ?? throw new ArgumentNullException(nameof(progressBarService));
         }
 
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle))]
@@ -36,7 +37,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel) || mainWindowViewModel.CurrentInstallation != null)
                 return false;
 
-            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any(i => i.IsInstalled == true);
+            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
         }
         
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
@@ -47,36 +48,43 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             var installers = viewModel.SelectedInstallerBundle.Installers;
             mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
             mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
-            mainWindowViewModel.CurrentInstallation.InstallerCount = installers.Count;
+            mainWindowViewModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
 
+            InstallationResultDialogModel installationResult;
             try
             {
-                var installationResult = await ViewModelInstallService.Uninstall(
+                installationResult = await ViewModelInstallService.Uninstall(
                     _viewModelService,
                     _installService,
-                    _progressBarService,
                     mainWindowViewModel.CurrentInstallation,
                     installers,
                     viewModel.EnableSilentInstallation,
                     viewModel.DisableReboot,
                     viewModel.EnableInstallationLogging,
                     viewModel.AutomaticallyDeleteInstallationLogs,
-                    viewModel.KeepNewestInstallationLogs);
+                    viewModel.KeepNewestInstallationLogs,
+                    viewModel.FilterDuplicateInstallers);
 
-                Task refreshTask = null;
-                var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
-                if (refreshCommand != null)
-                    refreshTask = refreshCommand.ExecuteAsync(null);
-
-                _dialogService.ShowDialog(installationResult);
-
-                if (refreshTask != null)
-                    await refreshTask;
+                
             }
             finally
             {
+                mainWindowViewModel.CurrentInstallation.State = InstallationState.Finished;
                 mainWindowViewModel.CurrentInstallation = null;
             }
+
+            Task refreshTask = null;
+            var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
+            if (refreshCommand != null)
+                refreshTask = refreshCommand.ExecuteAsync(null);
+
+            if (installationResult != null)
+                _dialogService.ShowDialog(installationResult);
+            else
+                Log.Warn("No installation result to show.");
+
+            if (refreshTask != null)
+                await refreshTask;
         }
     }
 }

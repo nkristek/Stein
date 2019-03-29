@@ -134,5 +134,16 @@ namespace Stein.ViewModels
         {
             RaisePropertyChanged(nameof(SelectedProvider));
         }
+
+        private bool _filterDuplicateInstallers;
+
+        /// <summary>
+        /// If duplicate installers should be filtered while Install/Uninstall operation (Custom is not affected).
+        /// </summary>
+        public bool FilterDuplicateInstallers
+        {
+            get => _filterDuplicateInstallers;
+            set => SetProperty(ref _filterDuplicateInstallers, value, out _);
+        }
     }
 }

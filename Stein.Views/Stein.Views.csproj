@@ -60,12 +60,15 @@
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateTimeToRelativeStringConverter.cs" />
-    <Compile Include="Converters\InstallationStateToLocalizedStringConverter.cs" />
+    <Compile Include="Converters\InstallationOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\InstallerOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\IntToNthValueConverter.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="InstallationResultDialog.xaml.cs">
       <DependentUpon>InstallationResultDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="InstallationResultView.xaml.cs">
+      <DependentUpon>InstallationResultView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\PeriodicBindingUpdateBehavior.cs" />
     <Compile Include="Ressources.cs" />
@@ -112,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="InstallationResultDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallationResultView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using NKristek.Smaragd.Validation;
 using Stein.Localizations;
-using Stein.Services.Configuration.v1;
+using Stein.Services.Configuration.v2;
 
 namespace Stein.ViewModels
 {

@@ -6,6 +6,7 @@
         xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+        xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="450"
@@ -23,9 +24,9 @@
     <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="8"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="8"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -34,7 +35,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="9"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -78,20 +79,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
-                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
-                    Padding="16,4"
+                    Padding="{adonisUi:Space 2,0.5}"
                     IsDefault="True"
                     Click="OnDialogOkButtonClick"
                     IsEnabled="{Binding IsValid}"/>
 
             <Button Grid.Column="3" 
                     Content="{x:Static localization:Strings.Cancel}"
-                    Padding="16,4"
+                    Padding="{adonisUi:Space 2,0.5}"
                     IsCancel="True"/>
         </Grid>
     </Grid>

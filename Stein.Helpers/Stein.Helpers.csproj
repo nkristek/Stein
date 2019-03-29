@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HttpClientExtensions.cs" />
+    <Compile Include="ITempFileCollection.cs" />
     <Compile Include="StreamExtensions.cs" />
+    <Compile Include="TempFileCollection.cs" />
     <Compile Include="XML\CDataString.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="IEnumerableExtensions.cs" />

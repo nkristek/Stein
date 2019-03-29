@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="Stein.Views.InstallationResultView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stein.Views"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:InstallationResultViewModel, IsDesignTimeCreatable=True}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource CancelIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Cancel"/>
+
+        <Button Grid.Column="1"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource CopyIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Copy"/>
+
+        <Button Grid.Column="2"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource ErrorIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Error"/>
+
+        <Button Grid.Column="3"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource LogFileIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Log file"/>
+
+        <Button Grid.Column="4"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource SkipIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Skip"/>
+
+        <Button Grid.Column="5"
+                Height="{adonisUi:Space 5}"
+                Width="{adonisUi:Space 5}"
+                Padding="{adonisUi:Space 1}"
+                ContentTemplate="{StaticResource SuccessIconVariant}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                ToolTip="Success"/>
+    </Grid>
+</UserControl>

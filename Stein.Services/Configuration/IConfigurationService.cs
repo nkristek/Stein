@@ -10,7 +10,7 @@ namespace Stein.Services.Configuration
         /// <summary>
         /// The current configuration.
         /// </summary>
-        v1.Configuration Configuration { get; }
+        v2.Configuration Configuration { get; }
         
         /// <summary>
         /// Load the configuration asynchronously.

@@ -14,64 +14,62 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel, IsDesignTimeCreatable=True}">
 
-    <GroupBox Padding="8" 
-              Margin="0,4" 
+    <GroupBox Margin="{adonisUi:Space 0.5}" 
               SnapsToDevicePixels="True"
+              IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
         <GroupBox.Header>
-            <Grid Grid.Column="7"
-                  IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Margin="2,0,0,0"
+                           Margin="{adonisUi:Space 0.5,0}"
                            FontWeight="Bold"
+                           FontSize="16"
                            VerticalAlignment="Center"
-                           FontSize="14"
                            Text="{Binding Name}"/>
 
                 <ContentControl Grid.Column="2"
                                 Focusable="False"
                                 ContentTemplate="{DynamicResource {x:Static adonisUi:Templates.LoadingCircle}}"
                                 Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
-                                Width="14"
-                                Height="14"
+                                Width="{adonisUi:Space 2}"
+                                Height="{adonisUi:Space 2}"
                                 Visibility="{Binding IsUpdating, Converter={c:BoolToVisibilityConverter}}"/>
 
                 <Button Grid.Column="5"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                        Width="24"
-                        Height="24"
-                        Padding="4"
+                        Width="{adonisUi:Space 3}"
+                        Height="{adonisUi:Space 3}"
+                        Padding="{adonisUi:Space 0.5}"
                         ContentTemplate="{DynamicResource EditIconVariant}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.EditApplicationCommand]}"/>
 
                 <Button Grid.Column="6"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                        Width="24"
-                        Height="24"
-                        Padding="4"
+                        Width="{adonisUi:Space 3}"
+                        Height="{adonisUi:Space 3}"
+                        Padding="{adonisUi:Space 0.5}"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.DeleteApplicationCommand]}"/>
             </Grid>
         </GroupBox.Header>
 
-        <Grid IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto" 
                                   SharedSizeGroup="DateColumn"/>
-                <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="Auto" 
                                   SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
@@ -99,18 +97,26 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <TextBlock Grid.Column="2"
-                       VerticalAlignment="Center"
-                       DataContext="{Binding SelectedInstallerBundle}"
-                       Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}"> 
-                <i:Interaction.Behaviors>
-                    <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
-                </i:Interaction.Behaviors>
-            </TextBlock>
+            <Grid Grid.Column="2"
+                  Visibility="{Binding SelectedInstallerBundle, Converter={c:ValueNullToInverseVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                </Grid.ColumnDefinitions>
 
-            <adonisControls:SplitButton Grid.Column="4"
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           DataContext="{Binding SelectedInstallerBundle}"
+                           Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}"> 
+                    <i:Interaction.Behaviors>
+                        <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
+                    </i:Interaction.Behaviors>
+                </TextBlock>
+            </Grid>
+
+            <adonisControls:SplitButton Grid.Column="3"
                                   Content="{x:Static localization:Strings.Install}"
-                                  Padding="16,4"
+                                  Padding="{adonisUi:Space 2,1}"
                                   Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
                 <adonisControls:SplitButton.SplitMenu>
                     <ContextMenu>
