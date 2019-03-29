@@ -78,7 +78,6 @@
     <Compile Include="InstallationResultDialogModel.cs" />
     <Compile Include="InstallationResultViewModel.cs" />
     <Compile Include="InstallerFileBundleProviderConfigurationViewModel.cs" />
-    <Compile Include="Services\IViewModelInstallService.cs" />
     <Compile Include="Services\ViewModelInstallService.cs" />
     <Compile Include="Services\IViewModelService.cs" />
     <Compile Include="Types\CancelledDownloadResult.cs" />

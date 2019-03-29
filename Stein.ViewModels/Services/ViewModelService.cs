@@ -564,7 +564,7 @@ namespace Stein.ViewModels.Services
                             installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
                             installerViewModel.Version = installerFile.Version;
                             installerViewModel.ProductCode = installerFile.ProductCode;
-                            installerViewModel.IsInstalled = installedProducts.Any(p => p.ProductCode == installerFile.ProductCode);
+                            installerViewModel.IsInstalled = installedProducts.Any(p => !String.IsNullOrEmpty(p.ProductCode) && p.ProductCode.Contains(installerFile.ProductCode));
                         });
                         installerViewModel.IsDirty = false;
 
