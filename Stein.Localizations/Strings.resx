@@ -339,4 +339,13 @@
   <data name="Cancelling" xml:space="preserve">
     <value>Cancelled, finishing current operation…</value>
   </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="SelectOperationsToPerform" xml:space="preserve">
+    <value>Please select the operations to perform:</value>
+  </data>
+  <data name="InstallDescription" xml:space="preserve">
+    <value>The install operation will uninstall the application first, if it is already installed, and then proceed with the installation.</value>
+  </data>
 </root>

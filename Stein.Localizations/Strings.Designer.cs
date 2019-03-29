@@ -304,6 +304,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The install operation will uninstall the application first, if it is already installed, and then proceed with the installation..
+        /// </summary>
+        public static string InstallDescription {
+            get {
+                return ResourceManager.GetString("InstallDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The installer file at {0} was not found..
         /// </summary>
         public static string InstallerNotFound {
@@ -592,6 +601,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The selected path is not valid..
         /// </summary>
         public static string SelectedPathNotValid {
@@ -606,6 +624,15 @@ namespace Stein.Localizations {
         public static string SelectFolder {
             get {
                 return ResourceManager.GetString("SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select the operations to perform:.
+        /// </summary>
+        public static string SelectOperationsToPerform {
+            get {
+                return ResourceManager.GetString("SelectOperationsToPerform", resourceCulture);
             }
         }
         

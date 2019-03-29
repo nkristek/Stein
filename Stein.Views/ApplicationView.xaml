@@ -109,6 +109,7 @@
 
             <adonisControls:SplitButton Grid.Column="3"
                                   Content="{x:Static localization:Strings.Install}"
+                                  ToolTip="{x:Static localization:Strings.InstallDescription}"
                                   Padding="{adonisUi:Space 2,0.5}"
                                   Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
                 <adonisControls:SplitButton.SplitMenu>

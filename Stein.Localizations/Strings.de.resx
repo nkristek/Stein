@@ -336,4 +336,13 @@
   <data name="Cancelled" xml:space="preserve">
     <value>Abgebrochen, beende aktuelle Operation…</value>
   </data>
+  <data name="Result" xml:space="preserve">
+    <value>Ergebnisse</value>
+  </data>
+  <data name="SelectOperationsToPerform" xml:space="preserve">
+    <value>Bitte wählen Sie die Operationen aus, die ausgeführt werden sollen:</value>
+  </data>
+  <data name="InstallDescription" xml:space="preserve">
+    <value>Die Installieren-Aktion deinstalliert die Anwendung, sollte diese bereits installiert sein, und führt dann die Installation aus.</value>
+  </data>
 </root>

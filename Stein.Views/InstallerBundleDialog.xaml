@@ -7,6 +7,7 @@
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+        xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="450"
@@ -30,49 +31,65 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
-              Visibility="{Binding Culture, Converter={c:StringNullOrEmptyToInverseVisibilityConverter}}">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="1"
-                       FontWeight="Bold"
+            <TextBlock Grid.Column="0"
                        VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Text="{x:Static localization:Strings.SelectOperationsToPerform}"/>
+
+            <Grid Grid.Column="1"
+                  Visibility="{Binding Culture, Converter={c:StringNullOrEmptyToInverseVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="1"
+                       FontWeight="Bold"
+                       VerticalAlignment="Top"
                        Text="{x:Static localization:Strings.BundleLanguage}"/>
 
-            <TextBlock Grid.Column="3"
-                       VerticalAlignment="Center"
+                <TextBlock Grid.Column="3"
+                       VerticalAlignment="Top"
                        Text="{Binding Culture}"/>
+            </Grid>
         </Grid>
 
-        <ItemsControl Grid.Row="2" 
-                      Grid.IsSharedSizeScope="True"
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{Binding Installers}"
-                      ScrollViewer.CanContentScroll="True"
-                      VirtualizingStackPanel.IsVirtualizing="True"
-                      VirtualizingStackPanel.VirtualizationMode="Recycling"
-                      VirtualizingStackPanel.ScrollUnit="Pixel">
+        <Grid Grid.Row="2"
+              Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+              extensions:LayerExtension.Layer="1">
+            <ItemsControl Grid.IsSharedSizeScope="True"
+                          Margin="{adonisUi:Space 1,0.5}"
+                          HorizontalContentAlignment="Stretch"
+                          ItemsSource="{Binding Installers}"
+                          ScrollViewer.CanContentScroll="True"
+                          VirtualizingStackPanel.IsVirtualizing="True"
+                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          VirtualizingStackPanel.ScrollUnit="Pixel">
 
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-            <ItemsControl.Template>
-                <ControlTemplate>
-                    <ScrollViewer Padding="{TemplateBinding Control.Padding}" 
-                                  Focusable="False">
-                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                    </ScrollViewer>
-                </ControlTemplate>
-            </ItemsControl.Template>
-        </ItemsControl>
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer Padding="{TemplateBinding Control.Padding}" 
+                                      Focusable="False">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+            </ItemsControl>
+        </Grid>
 
         <Grid Grid.Row="4"
               Grid.IsSharedSizeScope="True">
