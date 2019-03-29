@@ -14,40 +14,6 @@ Support for dark mode
 
 ![Screenshot](Docs/Screenshot_dark.PNG)
 
-## Supported folder structure
-
-Installers are bundled by folder and by culture (ProductLanguage property on the MSI-file).
-
-The supported folder structure is:
-
-- selected folder
-  - build01
-    - installer1_enUS.msi
-    - installer1_deDE.msi
-    - installer2_enUS.msi
-    - installer2_deDE.msi
-  - build02
-    - installer1_enUS.msi
-    - installer1_deDE.msi
-    - installer2_enUS.msi
-    - installer2_deDE.msi
-   
-It will generate 4 installer bundles: 
-- build01 - enUS 
-  - build01/installer1_enUS.msi
-  - build01/installer2_enUS.msi
-- build01 - deDE
-  - build01/installer1_deDE.msi
-  - build01/installer2_deDE.msi
-- build02 - enUS
-  - build02/installer1_enUS.msi
-  - build02/installer2_enUS.msi
-- build02 - deDE
-  - build02/installer1_deDE.msi
-  - build02/installer2_deDE.msi
-
-When using the Install/Uninstall action, installers with the same name (Name property on the MSI-file) will be ignored (only one will be installed/uninstalled). 
-
 ## Available options
 
 ### No UI during install
@@ -58,6 +24,10 @@ When this option is set, the [Disable reboot after installation](#disable-reboot
 ### Disable reboot after installation
 
 It will start installers with the "/norestart" option which means the installer should not automatically reboot the system after installation. 
+
+### Filter duplicate installers
+
+If enabled, only one installer per application will be installed. This is usefull, when there are multiple installers which install the same application but different languages.
 
 ### Install log
 
