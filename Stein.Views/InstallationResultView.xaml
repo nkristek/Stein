@@ -47,7 +47,7 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             ContentTemplate="{StaticResource SuccessIconVariant}"
-                            Foreground="ForestGreen"
+                            Foreground="#2ecc71"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationSuccess}"/>
@@ -57,7 +57,7 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             ContentTemplate="{StaticResource CancelIconVariant}"
-                            Foreground="Yellow"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.AlertBrush}}"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationCancelled}"/>
@@ -67,7 +67,7 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             ContentTemplate="{StaticResource ErrorIconVariant}"
-                            Foreground="Red"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationDownloadFailed}"/>
@@ -77,7 +77,7 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             ContentTemplate="{StaticResource ErrorIconVariant}"
-                            Foreground="Red"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationFailed}"/>
@@ -87,7 +87,7 @@
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
                             ContentTemplate="{StaticResource SkipIconVariant}"
-                            Foreground="DodgerBlue"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationSkipped}"/>
