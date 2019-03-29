@@ -9,19 +9,27 @@
              xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallationResultViewModel, IsDesignTimeCreatable=True}">
-    <Grid Margin="{adonisUi:Space 0,0.5}">
+    <Grid Margin="{adonisUi:Space 0,0.5}"
+          Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+          extensions:LayerExtension.Layer="1">
         <Grid.RowDefinitions>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="1"
+              Margin="{adonisUi:Space 1,0}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -29,7 +37,12 @@
                        VerticalAlignment="Center"
                        Text="{Binding InstallerName}"/>
 
-            <ContentControl Grid.Column="3"
+            <CheckBox Grid.Column="3"
+                      IsChecked="{Binding IsExceptionVisible}"
+                      Visibility="{Binding Exception, Converter={c:ValueNullToInverseVisibilityConverter}}"
+                      Content="Show Details"/>
+
+            <ContentControl Grid.Column="5"
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Success}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -39,7 +52,7 @@
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationSuccess}"/>
 
-            <ContentControl Grid.Column="3"
+            <ContentControl Grid.Column="5"
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -49,7 +62,7 @@
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationCancelled}"/>
 
-            <ContentControl Grid.Column="3"
+            <ContentControl Grid.Column="5"
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=DownloadFailed}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -59,7 +72,7 @@
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationDownloadFailed}"/>
 
-            <ContentControl Grid.Column="3"
+            <ContentControl Grid.Column="5"
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=InstallationFailed}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -69,7 +82,7 @@
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationFailed}"/>
 
-            <ContentControl Grid.Column="3"
+            <ContentControl Grid.Column="5"
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Skipped}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
@@ -81,15 +94,21 @@
         </Grid>
 
         <!-- Exception -->
-        <Grid Grid.Row="1"
-              Visibility="{Binding Exception, Converter={c:ValueNullToInverseVisibilityConverter}}">
+        <Grid Grid.Row="2"
+              Visibility="{Binding IsExceptionVisible, Converter={c:BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="{adonisUi:Space 1}"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ContentControl Grid.Row="1" 
-                            Content="{Binding Exception}"/>
+            <Grid Grid.Row="1"
+                  Margin="{adonisUi:Space 1,0}"
+                  Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"
+                  extensions:LayerExtension.Layer="2">
+                <ContentControl Margin="{adonisUi:Space 1}"
+                                Content="{Binding Exception}"/>
+            </Grid>
         </Grid>
+        
     </Grid>
 </UserControl>

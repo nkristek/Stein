@@ -4,12 +4,21 @@ using System.Linq;
 using System.Text;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
+using Stein.Localizations;
 
 namespace Stein.ViewModels
 {
     public sealed class ExceptionViewModel
         : ViewModel
     {
+        private string _localizedReason = Strings.ErrorOccured;
+        
+        public string LocalizedReason
+        {
+            get => _localizedReason;
+            set => SetProperty(ref _localizedReason, value, out _);
+        }
+
         private string _typeName;
 
         /// <summary>

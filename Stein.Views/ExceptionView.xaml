@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
-                   Text="{x:Static localizations:Strings.ErrorOccured}"/>
+                   Text="{Binding LocalizedReason}"/>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

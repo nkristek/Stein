@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using NKristek.Smaragd.ViewModels;
+using Stein.Localizations;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
@@ -31,7 +32,21 @@ namespace Stein.ViewModels
         public InstallationResultState State
         {
             get => _state;
-            set => SetProperty(ref _state, value, out _);
+            set
+            {
+                if (!SetProperty(ref _state, value, out _))
+                    return;
+
+                SetLocalizedReason();
+            }
+        }
+
+        private bool _isExceptionVisible;
+        
+        public bool IsExceptionVisible
+        {
+            get => _isExceptionVisible;
+            set => SetProperty(ref _isExceptionVisible, value, out _);
         }
 
         private ExceptionViewModel _exception;
@@ -42,7 +57,41 @@ namespace Stein.ViewModels
         public ExceptionViewModel Exception
         {
             get => _exception;
-            set => SetProperty(ref _exception, value, out _);
+            set
+            {
+                if (!SetProperty(ref _exception, value, out _))
+                    return;
+
+                SetLocalizedReason();
+            }
+        }
+
+        private void SetLocalizedReason()
+        {
+            if (Exception == null)
+                return;
+
+            var isReadOnly = Exception.IsReadOnly;
+            Exception.IsReadOnly = false;
+            switch (State)
+            {
+                case InstallationResultState.Success:
+                    Exception.LocalizedReason = Strings.InstallationSuccess;
+                    break;
+                case InstallationResultState.Skipped:
+                    Exception.LocalizedReason = Strings.InstallationSkipped;
+                    break;
+                case InstallationResultState.Cancelled:
+                    Exception.LocalizedReason = Strings.InstallationCancelled;
+                    break;
+                case InstallationResultState.DownloadFailed:
+                    Exception.LocalizedReason = Strings.InstallationDownloadFailed;
+                    break;
+                case InstallationResultState.InstallationFailed:
+                    Exception.LocalizedReason = Strings.InstallationFailed;
+                    break;
+            }
+            Exception.IsReadOnly = isReadOnly;
         }
     }
 }

@@ -12,7 +12,9 @@
         d:DataContext="{d:DesignInstance viewModels:InstallationResultDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="500"
         MinHeight="300"
-        SizeToContent="WidthAndHeight"
+        Width="500"
+        Height="300"
+        SizeToContent="Manual"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
 
