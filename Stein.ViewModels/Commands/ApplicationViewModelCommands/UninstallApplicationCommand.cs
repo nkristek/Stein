@@ -46,6 +46,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 return;
 
             var installers = viewModel.SelectedInstallerBundle.Installers;
+            if (!installers.Any())
+                return;
+
             mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
             mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
             mainWindowViewModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
