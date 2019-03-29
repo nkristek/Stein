@@ -336,4 +336,7 @@
   <data name="ErrorOccured" xml:space="preserve">
     <value>An error occured while performing the last operation.</value>
   </data>
+  <data name="Cancelling" xml:space="preserve">
+    <value>Cancelled, finishing current operation…</value>
+  </data>
 </root>

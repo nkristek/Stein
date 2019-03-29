@@ -30,6 +30,7 @@
                 <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
@@ -56,11 +57,22 @@
             </Grid>
 
             <TextBlock Grid.Column="3"
-                       HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        Text="{Binding CurrentOperation, Converter={converters1:InstallationOperationToLocalizedStringConverter}}"/>
 
-            <Button Grid.Column="6"
+            <Grid Grid.Column="6"
+                  Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Text="{x:Static localization:Strings.Cancelling}"/>
+            </Grid>
+
+            <Button Grid.Column="7"
                     Width="{adonisUi:Space 3}"
                     Height="{adonisUi:Space 3}"
                     Padding="{adonisUi:Space 0.5}"

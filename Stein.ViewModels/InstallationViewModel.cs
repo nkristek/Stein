@@ -61,8 +61,6 @@ namespace Stein.ViewModels
             get => _state;
             set
             {
-                if (_state == InstallationState.Cancelled)
-                    return;
                 if (!SetProperty(ref _state, value, out _))
                     return;
                 if (value == InstallationState.Cancelled)

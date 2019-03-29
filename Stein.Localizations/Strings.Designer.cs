@@ -97,6 +97,15 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancelled, finishing current operation….
+        /// </summary>
+        public static string Cancelling {
+            get {
+                return ResourceManager.GetString("Cancelling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to clipboard.
         /// </summary>
         public static string CopyToClipboard {

@@ -312,7 +312,7 @@ namespace Stein.ViewModels.Services
                     }
                 }
             }
-
+            
             installationResultDialogModel.IsReadOnly = true;
             return installationResultDialogModel;
         }
