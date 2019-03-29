@@ -56,7 +56,7 @@ namespace Stein
             }
             catch (Exception exception)
             {
-                // TODO: show welcome view
+                // TODO GitHub issue #27: show welcome view
                 Log.Error("Loading configuration failed, will create a new one", exception);
             }
 
