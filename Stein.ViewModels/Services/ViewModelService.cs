@@ -68,7 +68,7 @@ namespace Stein.ViewModels.Services
             else if (typeof(TViewModel) == typeof(ExceptionViewModel))
                 viewModel = CreateExceptionViewModel(parent, entity as Exception) as TViewModel;
             else if (typeof(TViewModel) == typeof(ExceptionDialogModel))
-                viewModel = CreateExceptionDialogModel(parent) as TViewModel;
+                viewModel = CreateExceptionDialogModel(parent, entity as Exception) as TViewModel;
             else if (typeof(TViewModel) == typeof(InstallationResultViewModel))
                 viewModel = CreateInstallationResultViewModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(InstallationResultDialogModel))
@@ -157,15 +157,19 @@ namespace Stein.ViewModels.Services
             return exceptionViewModel;
         }
 
-        private ExceptionDialogModel CreateExceptionDialogModel(IViewModel parent)
+        private ExceptionDialogModel CreateExceptionDialogModel(IViewModel parent, Exception exception)
         {
-            if (!(parent is ExceptionViewModel exception))
-                throw new ArgumentException($"Argument has to be of type {nameof(ExceptionViewModel)}", nameof(parent));
+            var exceptionViewModel = parent as ExceptionViewModel;
+            if (exceptionViewModel == null && exception == null)
+                throw new ArgumentException($"Since no exception is provided via the entity parameter, parent has to be of type {nameof(ExceptionViewModel)}", nameof(parent));
+
+            if (exceptionViewModel == null)
+                exceptionViewModel = CreateExceptionViewModel(parent, exception);
 
             return new ExceptionDialogModel
             {
-                Exception = exception,
-                Parent = exception,
+                Exception = exceptionViewModel,
+                Parent = exceptionViewModel,
                 IsReadOnly = true,
                 IsDirty = false
             };

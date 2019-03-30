@@ -129,8 +129,7 @@ namespace Stein
 
         private bool? ShowExceptionDialog(Exception exception)
         {
-            var exceptionViewModel = _viewModelService.CreateViewModel<ExceptionViewModel>(null, exception);
-            var exceptionDialogModel = _viewModelService.CreateViewModel<ExceptionDialogModel>(exceptionViewModel);
+            var exceptionDialogModel = _viewModelService.CreateViewModel<ExceptionDialogModel>(null, exception);
             return _dialogService.ShowDialog(exceptionDialogModel);
         }
     }
