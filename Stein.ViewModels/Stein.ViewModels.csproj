@@ -84,6 +84,7 @@
     <Compile Include="Types\CancelledDownloadResult.cs" />
     <Compile Include="Types\DownloadResultState.cs" />
     <Compile Include="Types\FailedDownloadResult.cs" />
+    <Compile Include="Types\GitHubRepositoryPathValidation.cs" />
     <Compile Include="Types\IDownloadResult.cs" />
     <Compile Include="Types\IInstallerFileProvider.cs" />
     <Compile Include="Types\InstallationOperation.cs" />

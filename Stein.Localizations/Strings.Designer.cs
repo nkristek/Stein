@@ -574,20 +574,20 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified repository name does not contain a / character (expected format &quot;user/repository&quot;)..
-        /// </summary>
-        public static string RepositoryDoesNotContainSlash {
-            get {
-                return ResourceManager.GetString("RepositoryDoesNotContainSlash", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The specified repository name is empty..
         /// </summary>
         public static string RepositoryEmpty {
             get {
                 return ResourceManager.GetString("RepositoryEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified repository path is not valid (expected format &quot;user/repository&quot;)..
+        /// </summary>
+        public static string RepositoryPathInvalid {
+            get {
+                return ResourceManager.GetString("RepositoryPathInvalid", resourceCulture);
             }
         }
         

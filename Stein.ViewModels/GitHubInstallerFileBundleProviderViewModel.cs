@@ -4,6 +4,7 @@ using System.Linq;
 using NKristek.Smaragd.Validation;
 using Stein.Localizations;
 using Stein.Services.Configuration.v2;
+using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels
 {
@@ -13,7 +14,7 @@ namespace Stein.ViewModels
         public GitHubInstallerFileBundleProviderViewModel()
         {
             AddValidation(() => Repository, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.RepositoryEmpty));
-            AddValidation(() => Repository, new PredicateValidation<string>(value => value != null && value.Contains("/"), Strings.RepositoryDoesNotContainSlash));
+            AddValidation(() => Repository, new GitHubRepositoryPathValidation(Strings.RepositoryPathInvalid));
         }
 
         /// <inheritdoc />

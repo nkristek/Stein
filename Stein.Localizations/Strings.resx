@@ -273,8 +273,8 @@
   <data name="Repository" xml:space="preserve">
     <value>Repository</value>
   </data>
-  <data name="RepositoryDoesNotContainSlash" xml:space="preserve">
-    <value>The specified repository name does not contain a / character (expected format "user/repository").</value>
+  <data name="RepositoryPathInvalid" xml:space="preserve">
+    <value>The specified repository path is not valid (expected format "user/repository").</value>
   </data>
   <data name="RepositoryEmpty" xml:space="preserve">
     <value>The specified repository name is empty.</value>

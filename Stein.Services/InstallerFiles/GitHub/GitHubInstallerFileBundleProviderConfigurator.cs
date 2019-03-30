@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Stein.Services.InstallerFiles.Base;
 
 namespace Stein.Services.InstallerFiles.GitHub
@@ -8,12 +9,13 @@ namespace Stein.Services.InstallerFiles.GitHub
         : IInstallerFileBundleProviderConfigurator
     {
         public string Repository { get; private set; }
+
+        private static readonly Regex RepositoryRegex = new Regex("^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}\\/[^\\/]+$", RegexOptions.Compiled);
         
         /// <inheritdoc />
         public bool Validate()
         {
-            // TODO: validate with a regular expression like https://stackoverflow.com/q/2514859
-            return !String.IsNullOrWhiteSpace(Repository) && Repository.Contains("/");
+            return Repository != null && RepositoryRegex.IsMatch(Repository);
         }
 
         /// <inheritdoc />
