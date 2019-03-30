@@ -33,8 +33,6 @@ namespace Stein.Services.Configuration
         /// <inheritdoc />
         public bool UpgradeToLatestFileVersion(IConfiguration configuration, out IConfiguration upgradedConfiguration)
         {
-            // TODO: currently an upgrader should only upgrade in steps of one, maybe use something like dijkstra to find the most minimal count of upgrades instead
-            
             var currentConfiguration = configuration;
             foreach (var upgrader in AllConfigurationUpgraders)
             {
