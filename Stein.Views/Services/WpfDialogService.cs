@@ -63,31 +63,5 @@ namespace Stein.Views.Services
         {
             MessageBox.Show(message);
         }
-
-        /// <inheritdoc />
-        public void ShowError(Exception exception)
-        {
-            // TODO: create ErrorDialogModel
-            var exceptionMessage = BuildExceptionMessage(exception);
-            ShowMessage(exceptionMessage);
-        }
-        
-        private static string BuildExceptionMessage(Exception exception)
-        {
-            var messageBuilder = new StringBuilder();
-
-            messageBuilder.AppendLine(exception.Message);
-
-            var innerException = exception.InnerException;
-            while (innerException != null)
-            {
-                messageBuilder.AppendLine(innerException.Message);
-                innerException = innerException.InnerException;
-            }
-
-            messageBuilder.AppendLine(exception.StackTrace);
-
-            return messageBuilder.ToString();
-        }
     }
 }

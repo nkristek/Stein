@@ -17,11 +17,5 @@ namespace Stein.Presentation
         /// </summary>
         /// <param name="message"></param>
         void ShowMessage(string message);
-
-        /// <summary>
-        /// Shows a dialog with the given <see cref="Exception"/>
-        /// </summary>
-        /// <param name="exception"></param>
-        void ShowError(Exception exception);
     }
 }
