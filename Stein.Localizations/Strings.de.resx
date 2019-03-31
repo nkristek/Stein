@@ -337,7 +337,7 @@
     <value>Abgebrochen, beende aktuelle Operation…</value>
   </data>
   <data name="Result" xml:space="preserve">
-    <value>Ergebnisse</value>
+    <value>Bericht anzeigen</value>
   </data>
   <data name="SelectOperationsToPerform" xml:space="preserve">
     <value>Bitte wählen Sie die Operationen aus, die ausgeführt werden sollen:</value>

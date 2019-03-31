@@ -340,7 +340,7 @@
     <value>Cancelled, finishing current operation…</value>
   </data>
   <data name="Result" xml:space="preserve">
-    <value>Result</value>
+    <value>Show Report</value>
   </data>
   <data name="SelectOperationsToPerform" xml:space="preserve">
     <value>Please select the operations to perform:</value>

@@ -601,7 +601,7 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Result.
+        ///   Looks up a localized string similar to Show Report.
         /// </summary>
         public static string Result {
             get {
