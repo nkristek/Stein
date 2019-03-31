@@ -518,7 +518,8 @@ namespace Stein.ViewModels.Services
         {
             viewModel.IsUpdating = true;
 
-            // TODO: no refresh after adding an application
+            // TODO: modifying/replacing the ObservableCollection freezes WPF for a short time
+
             //var applications = new ObservableCollection<ApplicationViewModel>(CreateApplicationViewModels(viewModel));
             //viewModel.Applications = applications;
 
