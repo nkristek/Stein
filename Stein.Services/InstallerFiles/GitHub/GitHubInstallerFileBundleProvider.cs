@@ -57,13 +57,13 @@ namespace Stein.Services.InstallerFiles.GitHub
                     installerFiles.Add(new GitHubInstallerFile(asset.BrowserDownloadUrl)
                     {
                         FileName = asset.Name,
-                        Created = asset.CreatedAt
+                        Created = asset.CreatedAt.ToLocalTime()
                     });
                 }
                 installerFileBundles.Add(new GitHubInstallerFileBundle
                 {
                     Name = release.Name,
-                    Created = release.CreatedAt,
+                    Created = release.CreatedAt.ToLocalTime(),
                     InstallerFiles = installerFiles
                 });
             }
