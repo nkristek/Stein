@@ -6,6 +6,7 @@ namespace Stein.Services.Configuration.Upgrades
     /// <summary>
     /// This <see cref="T:System.Exception" /> is thrown when an <see cref="T:Stein.Services.Configuration.IConfigurationUpgrader" /> is given an <see cref="T:Stein.Services.Configuration.IConfiguration" /> with an invalid file version.
     /// </summary>
+    [Serializable]
     public class InvalidFileVersionException
         : Exception
     {

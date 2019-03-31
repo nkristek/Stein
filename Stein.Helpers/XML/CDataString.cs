@@ -14,6 +14,7 @@ namespace Stein.Helpers.XML
     /// </code>
     /// </example>
     /// </summary>
+    [Serializable]
     public class CDataString : IXmlSerializable, IComparable<CDataString>
     {
         private string _value;
