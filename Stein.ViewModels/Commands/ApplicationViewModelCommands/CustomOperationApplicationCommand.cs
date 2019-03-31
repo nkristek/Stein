@@ -50,7 +50,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             if (dialogResult != true)
                 return;
 
-            var installers = viewModel.SelectedInstallerBundle.Installers.Where(i => i.PreferredOperation != InstallerOperation.DoNothing).ToList();
+            var installers = viewModel.SelectedInstallerBundle.Installers.Where(i => i.SelectedOperation != InstallerOperation.DoNothing).ToList();
             if (!installers.Any())
                 return;
 
