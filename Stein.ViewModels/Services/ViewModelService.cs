@@ -297,7 +297,7 @@ namespace Stein.ViewModels.Services
                 if (application == null)
                     throw new InvalidOperationException(Strings.EntityNotFound);
 
-                var matchingProvider = dialogModel.AvailableProviders.FirstOrDefault(p => p.Type.ToString() == application.Configuration.ProviderType);
+                var matchingProvider = dialogModel.AvailableProviders.FirstOrDefault(p => p.ProviderType.ToString() == application.Configuration.ProviderType);
                 if (matchingProvider == null)
                     throw new InvalidOperationException("The installer file provider is not supported.");
 

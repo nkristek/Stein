@@ -14,7 +14,7 @@ namespace Stein.ViewModels
         {
             foreach (var operation in GetAvailableOperations())
                 AvailableOperations.Add(operation);
-            PreferredOperation = AvailableOperations.FirstOrDefault();
+            SelectedOperation = AvailableOperations.FirstOrDefault();
         }
 
         private IEnumerable<InstallerOperation> GetAvailableOperations()
@@ -25,10 +25,7 @@ namespace Stein.ViewModels
         }
 
         private string _fileName;
-
-        /// <summary>
-        /// Name of the installer file
-        /// </summary>
+        
         public string FileName
         {
             get => _fileName;
@@ -36,10 +33,7 @@ namespace Stein.ViewModels
         }
 
         private string _name;
-
-        /// <summary>
-        /// Name of the installer (from the Msi-properties)
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -47,10 +41,7 @@ namespace Stein.ViewModels
         }
         
         private Version _version;
-
-        /// <summary>
-        /// Version of the installer (from the Msi-properties)
-        /// </summary>
+        
         public Version Version
         {
             get => _version;
@@ -58,10 +49,7 @@ namespace Stein.ViewModels
         }
 
         private string _culture;
-
-        /// <summary>
-        /// Culture in IetfLanguageTag-format of the installer (from the Msi-properties)
-        /// </summary>
+        
         public string Culture
         {
             get => _culture;
@@ -69,10 +57,7 @@ namespace Stein.ViewModels
         }
 
         private string _productCode;
-
-        /// <summary>
-        /// ProductCode of the installer (from the Msi-properties)
-        /// </summary>
+        
         public string ProductCode
         {
             get => _productCode;
@@ -80,10 +65,7 @@ namespace Stein.ViewModels
         }
 
         private bool? _isInstalled;
-
-        /// <summary>
-        /// If the installer is installed
-        /// </summary>
+        
         public bool? IsInstalled
         {
             get => _isInstalled;
@@ -91,10 +73,7 @@ namespace Stein.ViewModels
         }
         
         private DateTime _created;
-
-        /// <summary>
-        /// When the installer file was created
-        /// </summary>
+        
         public DateTime Created
         {
             get => _created;
@@ -102,45 +81,29 @@ namespace Stein.ViewModels
         }
 
         private string _customOperationArguments;
-
-        /// <summary>
-        /// Additional arguments for custom operation.
-        /// </summary>
+        
         public string CustomOperationArguments
         {
             get => _customOperationArguments;
             set => SetProperty(ref _customOperationArguments, value, out _);
         }
-
-        /// <summary>
-        /// Gets all available operations for this installer
-        /// </summary>
-        public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
-
-        private InstallerOperation _preferredOperation;
-
-        /// <summary>
-        /// If the installer is enabled by the user
-        /// </summary>
-        public InstallerOperation PreferredOperation
-        {
-            get => _preferredOperation;
-            set
-            {
-                if (AvailableOperations.Contains(value))
-                    SetProperty(ref _preferredOperation, value, out _);
-            }
-        }
         
         private IInstallerFileProvider _installerFileProvider;
-
-        /// <summary>
-        /// The provider for the installer file.
-        /// </summary>
+        
         public IInstallerFileProvider InstallerFileProvider
         {
             get => _installerFileProvider;
             set => SetProperty(ref _installerFileProvider, value, out _);
+        }
+
+        public ObservableCollection<InstallerOperation> AvailableOperations { get; } = new ObservableCollection<InstallerOperation>();
+
+        private InstallerOperation _selectedOperation;
+
+        public InstallerOperation SelectedOperation
+        {
+            get => _selectedOperation;
+            set => SetProperty(ref _selectedOperation, value, out _);
         }
     }
 }

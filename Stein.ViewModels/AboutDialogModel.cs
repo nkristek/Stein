@@ -26,16 +26,10 @@ namespace Stein.ViewModels
             Publisher = publisher?.Company;
         }
         
-        /// <summary>
-        /// All dependencies of this application
-        /// </summary>
         public ObservableCollection<DependencyViewModel> Dependencies { get; } = new ObservableCollection<DependencyViewModel>();
 
         private string _name;
-
-        /// <summary>
-        /// Name of the application
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -43,10 +37,7 @@ namespace Stein.ViewModels
         }
 
         private string _description;
-
-        /// <summary>
-        /// Description of the application
-        /// </summary>
+        
         public string Description
         {
             get => _description;
@@ -54,10 +45,7 @@ namespace Stein.ViewModels
         }
 
         private Version _version;
-
-        /// <summary>
-        /// Version of the application
-        /// </summary>
+        
         public Version Version
         {
             get => _version;
@@ -65,10 +53,7 @@ namespace Stein.ViewModels
         }
 
         private string _copyright;
-
-        /// <summary>
-        /// Copyright of the application
-        /// </summary>
+        
         public string Copyright
         {
             get => _copyright;
@@ -76,10 +61,7 @@ namespace Stein.ViewModels
         }
 
         private string _additionalNotes;
-
-        /// <summary>
-        /// Additional notes of the application
-        /// </summary>
+        
         public string AdditionalNotes
         {
             get => _additionalNotes;
@@ -87,10 +69,7 @@ namespace Stein.ViewModels
         }
 
         private Uri _uri;
-
-        /// <summary>
-        /// Uri of the application
-        /// </summary>
+        
         public Uri Uri
         {
             get => _uri;
@@ -98,10 +77,7 @@ namespace Stein.ViewModels
         }
 
         private string _publisher;
-
-        /// <summary>
-        /// Publisher of the application
-        /// </summary>
+        
         public string Publisher
         {
             get => _publisher;

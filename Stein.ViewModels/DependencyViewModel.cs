@@ -7,10 +7,7 @@ namespace Stein.ViewModels
         : ViewModel
     {
         private string _name;
-
-        /// <summary>
-        /// Name of the application
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -18,10 +15,7 @@ namespace Stein.ViewModels
         }
 
         private Uri _uri;
-
-        /// <summary>
-        /// Uri of the application
-        /// </summary>
+        
         public Uri Uri
         {
             get => _uri;

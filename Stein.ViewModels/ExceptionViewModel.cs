@@ -20,10 +20,7 @@ namespace Stein.ViewModels
         }
 
         private string _typeName;
-
-        /// <summary>
-        /// The name of the type of the <see cref="Exception"/>.
-        /// </summary>
+        
         public string TypeName
         {
             get => _typeName;
@@ -31,10 +28,7 @@ namespace Stein.ViewModels
         }
 
         private string _message;
-
-        /// <summary>
-        /// Message of the <see cref="Exception"/>.
-        /// </summary>
+        
         public string Message
         {
             get => _message;
@@ -42,10 +36,7 @@ namespace Stein.ViewModels
         }
 
         private string _stackTrace;
-
-        /// <summary>
-        /// Stack trace of the <see cref="Exception"/>.
-        /// </summary>
+        
         public string StackTrace
         {
             get => _stackTrace;
@@ -75,10 +66,7 @@ namespace Stein.ViewModels
 
             return stringBuilder.ToString();
         }
-
-        /// <summary>
-        /// Inner exceptions of the <see cref="Exception"/>.
-        /// </summary>
+        
         public ObservableCollection<ExceptionViewModel> InnerExceptions { get; } = new ObservableCollection<ExceptionViewModel>();
     }
 }

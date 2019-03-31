@@ -17,22 +17,8 @@ namespace Stein.ViewModels
             _themeService.ThemeChanged += (sender, args) => RaisePropertyChanged(nameof(CurrentTheme));
         }
         
-        private ObservableCollection<ApplicationViewModel> _application = new ObservableCollection<ApplicationViewModel>();
-
-        /// <summary>
-        /// List of all applications
-        /// </summary>
-        public ObservableCollection<ApplicationViewModel> Applications
-        {
-            get => _application;
-            set => SetProperty(ref _application, value, out _);
-        } 
-        
         private InstallationViewModel _currentInstallation;
-
-        /// <summary>
-        /// Is set if an operation is in progress
-        /// </summary>
+        
         [IsDirtyIgnored]
         public InstallationViewModel CurrentInstallation
         {
@@ -53,10 +39,7 @@ namespace Stein.ViewModels
         {
             RaisePropertyChanged(nameof(CurrentInstallation));
         }
-
-        /// <summary>
-        /// Current UI theme
-        /// </summary>
+        
         public Theme CurrentTheme
         {
             get => _themeService.CurrentTheme;
@@ -70,6 +53,14 @@ namespace Stein.ViewModels
         {
             get => _recentInstallationResult;
             set => SetProperty(ref _recentInstallationResult, value, out _);
+        }
+
+        private ObservableCollection<ApplicationViewModel> _application = new ObservableCollection<ApplicationViewModel>();
+
+        public ObservableCollection<ApplicationViewModel> Applications
+        {
+            get => _application;
+            set => SetProperty(ref _application, value, out _);
         }
     }
 }

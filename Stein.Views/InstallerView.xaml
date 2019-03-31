@@ -48,7 +48,7 @@
         <!-- AvailableOperations -->
         <ListBox Grid.Column="2"
                  ItemsSource="{Binding AvailableOperations}" 
-                 SelectedItem="{Binding PreferredOperation}">
+                 SelectedItem="{Binding SelectedOperation}">
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -8,10 +8,7 @@ namespace Stein.ViewModels
         : ViewModel
     {
         private string _name;
-
-        /// <summary>
-        /// The name of the folder of the installer bundle
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -19,19 +16,13 @@ namespace Stein.ViewModels
         }
 
         private DateTime _created;
-
-        /// <summary>
-        /// When the installer file bundle was created.
-        /// </summary>
+        
         public DateTime Created
         {
             get => _created;
             set => SetProperty(ref _created, value, out _);
         }
-
-        /// <summary>
-        /// List of installers in this installer bundle
-        /// </summary>
+        
         public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();
     }
 }

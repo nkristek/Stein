@@ -10,10 +10,7 @@ namespace Stein.ViewModels
         public override string Title => Name;
 
         private string _name;
-
-        /// <summary>
-        /// The name of the application.
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -27,10 +24,7 @@ namespace Stein.ViewModels
             get => _logFolderPath;
             set => SetProperty(ref _logFolderPath, value, out _);
         }
-
-        /// <summary>
-        /// The results of each operation.
-        /// </summary>
+        
         public ObservableCollection<InstallationResultViewModel> InstallationResults { get; } = new ObservableCollection<InstallationResultViewModel>();
     }
 }

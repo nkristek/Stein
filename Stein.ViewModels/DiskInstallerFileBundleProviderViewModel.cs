@@ -17,18 +17,16 @@ namespace Stein.ViewModels
         }
 
         /// <inheritdoc />
-        public override string Type => "Disk";
-
-        public string LocalizedName => Strings.Disk;
-
+        public override string ProviderType => "Disk";
+        
         /// <inheritdoc />
         public override void LoadConfiguration(InstallerFileBundleProviderConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if (configuration.ProviderType != Type)
-                throw new ArgumentException($"Configuration with invalid type {configuration.ProviderType}, expected {Type}.");
+            if (configuration.ProviderType != ProviderType)
+                throw new ArgumentException($"Configuration with invalid type {configuration.ProviderType}, expected {ProviderType}.");
 
             if (configuration.Parameters.TryGetValue(nameof(Path), out var path))
                 Path = path;
@@ -38,14 +36,11 @@ namespace Stein.ViewModels
         public override InstallerFileBundleProviderConfiguration CreateConfiguration()
         {
             var dictionary = new Dictionary<string, string> { { nameof(Path), Path } };
-            return new InstallerFileBundleProviderConfiguration(Type, dictionary);
+            return new InstallerFileBundleProviderConfiguration(ProviderType, dictionary);
         }
 
         private string _path;
-
-        /// <summary>
-        /// Name of the application folder
-        /// </summary>
+        
         public string Path
         {
             get => _path;

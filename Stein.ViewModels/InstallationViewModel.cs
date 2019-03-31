@@ -41,10 +41,7 @@ namespace Stein.ViewModels
         }
 
         private string _name;
-
-        /// <summary>
-        /// Name of the current installation.
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -52,10 +49,7 @@ namespace Stein.ViewModels
         }
 
         private InstallationState _state;
-
-        /// <summary>
-        /// Current state of the installation. If set to <see cref="InstallationState.Cancelled"/> it will cancel the <see cref="CancellationTokenSource"/> and won't change again.
-        /// </summary>
+        
         public InstallationState State
         {
             get => _state;
@@ -69,10 +63,7 @@ namespace Stein.ViewModels
         }
 
         private InstallationOperation _currentOperation;
-
-        /// <summary>
-        /// Current operation.
-        /// </summary>
+        
         public InstallationOperation CurrentOperation
         {
             get => _currentOperation;
@@ -83,10 +74,7 @@ namespace Stein.ViewModels
         public bool IsInstalling => CurrentOperation != InstallationOperation.None;
         
         private int _installerCount;
-
-        /// <summary>
-        /// Total count of operations of the current installation
-        /// </summary>
+        
         public int TotalInstallerFileCount
         {
             get => _installerCount;
@@ -94,10 +82,7 @@ namespace Stein.ViewModels
         }
 
         private int _currentInstallerIndex;
-
-        /// <summary>
-        /// At which installer the current operation is
-        /// </summary>
+        
         public int CurrentInstallerIndex
         {
             get => _currentInstallerIndex;
@@ -113,33 +98,21 @@ namespace Stein.ViewModels
         }
 
         private double _downloadProgress;
-
-        /// <summary>
-        /// The progress of the file download.
-        /// </summary>
+        
         public double DownloadProgress
         {
             get => _downloadProgress;
             set => SetProperty(ref _downloadProgress, value, out _);
         }
         
-        /// <summary>
-        /// The progress of the installation.
-        /// </summary>
         [PropertySource(nameof(ProcessedInstallerFileCount), nameof(TotalInstallerFileCount))]
         public double InstallationProgress => (double)ProcessedInstallerFileCount / TotalInstallerFileCount;
-
-        /// <summary>
-        /// Progress of the entire operation.
-        /// </summary>
+        
         [PropertySource(nameof(DownloadProgress), nameof(InstallationProgress))]
         public double Progress => (DownloadProgress + InstallationProgress) / 2;
         
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        /// <summary>
-        /// Source for cancellation tokens. Used to cancel the current installation.
-        /// </summary>
+        
         public CancellationTokenSource CancellationTokenSource
         {
             get => _cancellationTokenSource;

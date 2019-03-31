@@ -10,10 +10,7 @@ namespace Stein.ViewModels
         public override string Title => $"{Strings.Error}: {Exception?.TypeName}";
 
         private ExceptionViewModel _exception;
-
-        /// <summary>
-        /// Contains information about an <see cref="Exception"/> that was thrown.
-        /// </summary>
+        
         public ExceptionViewModel Exception
         {
             get => _exception;

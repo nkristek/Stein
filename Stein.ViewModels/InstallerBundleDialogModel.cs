@@ -9,10 +9,7 @@ namespace Stein.ViewModels
         : DialogModel
     {
         private string _name;
-
-        /// <summary>
-        /// The name of the folder of the installer bundle
-        /// </summary>
+        
         public string Name
         {
             get => _name;
@@ -23,14 +20,6 @@ namespace Stein.ViewModels
             }
         }
         
-        /// <summary>
-        /// List of installers in this installer bundle
-        /// </summary>
-        public ObservableCollection<InstallerViewModel> Installers => (Parent as InstallerBundleViewModel)?.Installers;
-
-        /// <summary>
-        /// Gets the culture of the installers separated by a comma.
-        /// </summary>
         public string Culture
         {
             get
@@ -38,5 +27,7 @@ namespace Stein.ViewModels
                 return !Installers.Any() ? String.Empty : String.Join(", ", Installers.Where(i => !String.IsNullOrWhiteSpace(i.Culture)).Select(i => i.Culture).Distinct());
             }
         }
+
+        public ObservableCollection<InstallerViewModel> Installers => (Parent as InstallerBundleViewModel)?.Installers;
     }
 }

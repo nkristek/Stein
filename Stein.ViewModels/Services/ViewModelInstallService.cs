@@ -37,7 +37,7 @@ namespace Stein.ViewModels.Services
                 throw new ArgumentNullException(nameof(installerViewModels));
 
             foreach (var installer in installerViewModels)
-                installer.PreferredOperation = InstallerOperation.Install;
+                installer.SelectedOperation = InstallerOperation.Install;
 
             return await Custom(
                 viewModelService, 
@@ -65,7 +65,7 @@ namespace Stein.ViewModels.Services
                 throw new ArgumentNullException(nameof(installerViewModels));
 
             foreach (var installer in installerViewModels)
-                installer.PreferredOperation = InstallerOperation.Uninstall;
+                installer.SelectedOperation = InstallerOperation.Uninstall;
 
             return await Custom(
                 viewModelService,
@@ -184,7 +184,7 @@ namespace Stein.ViewModels.Services
 
                     try
                     {
-                        switch (installerViewModel.PreferredOperation)
+                        switch (installerViewModel.SelectedOperation)
                         {
                             case InstallerOperation.Install:
                                 if (installerViewModel.IsInstalled != false)

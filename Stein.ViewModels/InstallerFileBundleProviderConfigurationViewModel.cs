@@ -9,7 +9,7 @@ namespace Stein.ViewModels
         /// <summary>
         /// Type of the provider.
         /// </summary>
-        public abstract string Type { get; }
+        public abstract string ProviderType { get; }
 
         /// <summary>
         /// Load the given configuration.
