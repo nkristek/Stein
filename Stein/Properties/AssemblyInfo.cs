@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -54,3 +55,5 @@ using System.Windows;
 
 // log4net
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
+[assembly: NeutralResourcesLanguage("en")]
+
