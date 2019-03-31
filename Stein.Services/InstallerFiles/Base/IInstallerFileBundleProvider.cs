@@ -15,7 +15,12 @@ namespace Stein.Services.InstallerFiles.Base
         /// The type of this provider.
         /// </summary>
         string ProviderType { get; }
-        
+
+        /// <summary>
+        /// Link to the destination of the provider. Can be a web url or file system path.
+        /// </summary>
+        string ProviderLink { get; }
+
         /// <summary>
         /// Create an async <see cref="Task"/> to get all installer file bundles.
         /// </summary>

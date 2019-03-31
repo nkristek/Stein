@@ -7,6 +7,7 @@ namespace Stein.ViewModels.Commands.InstallationViewModelCommands
     public sealed class CancelOperationCommand
         : ViewModelCommand<InstallationViewModel>
     {
+        /// <inheritdoc />
         [CanExecuteSource(nameof(InstallationViewModel.State))]
         protected override bool CanExecute(InstallationViewModel viewModel, object parameter)
         {
@@ -14,6 +15,7 @@ namespace Stein.ViewModels.Commands.InstallationViewModelCommands
                 && viewModel.State != InstallationState.Finished;
         }
 
+        /// <inheritdoc />
         protected override void Execute(InstallationViewModel viewModel, object parameter)
         {
             viewModel.State = InstallationState.Cancelled;

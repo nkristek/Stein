@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 
 namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
@@ -9,6 +10,14 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
     public sealed class OpenLogFolderCommand
         : ViewModelCommand<ApplicationDialogModel>
     {
+        /// <inheritdoc />
+        [CanExecuteSource(nameof(ApplicationDialogModel.Name))]
+        protected override bool CanExecute(ApplicationDialogModel viewModel, object parameter)
+        {
+            return !String.IsNullOrEmpty(viewModel.Name);
+        }
+
+        /// <inheritdoc />
         protected override void Execute(ApplicationDialogModel viewModel, object parameter)
         {
             var directoryName = GetLogFolderPath(viewModel.Name);

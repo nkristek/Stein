@@ -56,6 +56,7 @@
     <Compile Include="ApplicationViewModel.cs" />
     <Compile Include="Commands\AboutDialogModelCommands\OpenUriCommand.cs" />
     <Compile Include="Commands\ApplicationDialogModelCommands\OpenLogFolderCommand.cs" />
+    <Compile Include="Commands\ApplicationViewModelCommands\OpenProviderLinkCommand.cs" />
     <Compile Include="Commands\DiskInstallerFileBundleProviderViewModelCommands\SelectFolderCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\CustomOperationApplicationCommand.cs" />
     <Compile Include="Commands\ApplicationViewModelCommands\DeleteApplicationCommand.cs" />

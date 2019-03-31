@@ -31,15 +31,17 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
         }
 
-        [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle))]
+        /// <inheritdoc />
+        [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle), nameof(ApplicationViewModel.IsUpdating))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
             if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel) || mainWindowViewModel.CurrentInstallation != null)
                 return false;
 
-            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any();
+            return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any() && !viewModel.IsUpdating;
         }
 
+        /// <inheritdoc />
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
             if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel))

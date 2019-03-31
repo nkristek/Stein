@@ -25,7 +25,10 @@ namespace Stein.Services.InstallerFiles.Disk
 
         /// <inheritdoc />
         public string ProviderType => "Disk";
-        
+
+        /// <inheritdoc />
+        public string ProviderLink => Path;
+
         /// <summary>
         /// The path of the folder which contains folders which contain installer files (.msi ending).
         /// </summary>

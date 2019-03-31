@@ -77,7 +77,21 @@ namespace Stein.ViewModels
             set => SetProperty(ref _filterDuplicateInstallers, value, out _);
         }
 
-        public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
+        private string _providerType;
+
+        public string ProviderType
+        {
+            get => _providerType;
+            set => SetProperty(ref _providerType, value, out _);
+        }
+
+        private string _providerLink;
+
+        public string ProviderLink
+        {
+            get => _providerLink;
+            set => SetProperty(ref _providerLink, value, out _);
+        }
 
         private InstallerBundleViewModel _selectedInstallerBundle;
 
@@ -86,5 +100,7 @@ namespace Stein.ViewModels
             get => _selectedInstallerBundle;
             set => SetProperty(ref _selectedInstallerBundle, value, out _);
         }
+
+        public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
     }
 }

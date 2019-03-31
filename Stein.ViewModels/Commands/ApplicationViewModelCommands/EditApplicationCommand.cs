@@ -23,12 +23,14 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
 
-        [CanExecuteSource(nameof(ApplicationViewModel.Parent))]
+        /// <inheritdoc />
+        [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.IsUpdating))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
-            return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null;
+            return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
+        /// <inheritdoc />
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
             var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);

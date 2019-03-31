@@ -27,7 +27,10 @@ namespace Stein.Services.InstallerFiles.GitHub
 
         /// <inheritdoc />
         public string ProviderType => "GitHub";
-        
+
+        /// <inheritdoc />
+        public string ProviderLink => String.Concat("https://github.com/", Repository);
+
         /// <summary>
         /// The name of the GitHub repository including the user name (e.g. nkristek/Stein).
         /// </summary>

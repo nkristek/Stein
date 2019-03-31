@@ -236,7 +236,8 @@ namespace Stein.ViewModels.Services
                 EnableInstallationLogging = application.EnableInstallationLogging,
                 AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs,
                 KeepNewestInstallationLogs = application.KeepNewestInstallationLogs,
-                FilterDuplicateInstallers = application.FilterDuplicateInstallers
+                FilterDuplicateInstallers = application.FilterDuplicateInstallers,
+                ProviderType = application.Configuration?.ProviderType
             };
             viewModel.AddCommand(new EditApplicationCommand(_dialogService, this)
             {
@@ -255,6 +256,10 @@ namespace Stein.ViewModels.Services
                 Parent = viewModel
             });
             viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService)
+            {
+                Parent = viewModel
+            });
+            viewModel.AddCommand(new OpenProviderLinkCommand
             {
                 Parent = viewModel
             });
@@ -558,6 +563,7 @@ namespace Stein.ViewModels.Services
             viewModel.AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs;
             viewModel.KeepNewestInstallationLogs = application.KeepNewestInstallationLogs;
             viewModel.FilterDuplicateInstallers = application.FilterDuplicateInstallers;
+            viewModel.ProviderType = application.Configuration?.ProviderType;
 
             IList<IProduct> installedProducts = new List<IProduct>();
             try
@@ -578,6 +584,8 @@ namespace Stein.ViewModels.Services
 
                 using (var provider = _installerFileBundleProviderFactory.Create(configuration))
                 {
+                    viewModel.ProviderLink = provider.ProviderLink;
+
                     var installerBundles = await provider.GetInstallerFileBundlesAsync();
                     foreach (var installerBundle in installerBundles)
                     {

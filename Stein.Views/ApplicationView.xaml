@@ -26,19 +26,64 @@
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0"
+                <Button Grid.Column="0"
+                        Height="{adonisUi:Space 3}"
+                        Width="{adonisUi:Space 3}"
+                        Padding="{adonisUi:Space 0.5}"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Content="{Binding}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.OpenProviderLinkCommand]}"
+                        ToolTip="{Binding ProviderLink}">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <ContentControl VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            DataContext="{Binding ProviderType}"
+                                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                            Width="{adonisUi:Space 2}"
+                                            Height="{adonisUi:Space 2}">
+                                <ContentControl.Style>
+                                    <Style TargetType="{x:Type ContentControl}"
+                                           BasedOn="{StaticResource {x:Type ContentControl}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding}" 
+                                                         Value="Disk">
+                                                <Setter Property="ContentTemplate" 
+                                                        Value="{StaticResource HddIconVariant}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding}" 
+                                                         Value="GitHub">
+                                                <Setter Property="ContentTemplate" 
+                                                        Value="{StaticResource GitHubIconVariant}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentControl.Style>
+                            </ContentControl>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+
+                </Button>
+
+                <TextBlock Grid.Column="2"
                            Margin="{adonisUi:Space 0.5,0}"
                            FontWeight="Bold"
                            FontSize="14"
                            VerticalAlignment="Center"
                            Text="{Binding Name}"/>
 
-                <ContentControl Grid.Column="2"
+                <ContentControl Grid.Column="4"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
                                 Focusable="False"
                                 ContentTemplate="{DynamicResource {x:Static adonisUi:Templates.LoadingCircle}}"
                                 Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
@@ -46,7 +91,7 @@
                                 Height="{adonisUi:Space 2}"
                                 Visibility="{Binding IsUpdating, Converter={c:BoolToVisibilityConverter}}"/>
 
-                <Button Grid.Column="5"
+                <Button Grid.Column="7"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"
@@ -54,7 +99,7 @@
                         ContentTemplate="{DynamicResource EditIconVariant}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.EditApplicationCommand]}"/>
 
-                <Button Grid.Column="6"
+                <Button Grid.Column="8"
                         Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"

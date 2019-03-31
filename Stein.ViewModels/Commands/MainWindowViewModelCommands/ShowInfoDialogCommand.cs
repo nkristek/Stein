@@ -17,7 +17,8 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
-        
+
+        /// <inheritdoc />
         protected override void Execute(MainWindowViewModel viewModel, object parameter)
         {
             var dialogModel = _viewModelService.CreateViewModel<AboutDialogModel>(viewModel);

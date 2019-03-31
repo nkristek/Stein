@@ -27,9 +27,10 @@ namespace Stein.Services.Configuration.v2
             Items.AddRange(parameters.Select(kvp => new InstallerFileBundleProviderConfigurationItem(kvp.Key, kvp.Value)));
         }
 
+        /// <inheritdoc />
         [XmlElement("Type")]
         public string ProviderType { get; set; }
-        
+
         [XmlIgnore]
         public IDictionary<string, string> Parameters
         {

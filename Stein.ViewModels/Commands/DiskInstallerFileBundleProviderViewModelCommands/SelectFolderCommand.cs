@@ -7,6 +7,7 @@ namespace Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelComm
     public sealed class SelectFolderCommand
         : ViewModelCommand<DiskInstallerFileBundleProviderViewModel>
     {
+        /// <inheritdoc />
         protected override void Execute(DiskInstallerFileBundleProviderViewModel viewModel, object parameter)
         {
             using (var dialog = new CommonOpenFileDialog())

@@ -16,6 +16,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
         }
 
+        /// <inheritdoc />
         protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
         {
             if (parameter is string parameterAsString && Enum.TryParse(parameterAsString, out Theme theme))
