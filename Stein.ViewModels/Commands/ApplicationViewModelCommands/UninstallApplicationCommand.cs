@@ -71,7 +71,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             }
             finally
             {
-                mainWindowViewModel.CurrentInstallation.State = InstallationState.Finished;
+                mainWindowViewModel.CurrentInstallation.Dispose();
                 mainWindowViewModel.CurrentInstallation = null;
             }
 

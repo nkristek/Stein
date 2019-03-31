@@ -9,7 +9,7 @@ using Stein.ViewModels.Types;
 namespace Stein.ViewModels
 {
     public sealed class InstallationViewModel
-        : ViewModel
+        : ViewModel, IDisposable
     {
         private readonly IProgressBarService _progressBarService;
 
@@ -144,6 +144,13 @@ namespace Stein.ViewModels
         {
             get => _cancellationTokenSource;
             set => SetProperty(ref _cancellationTokenSource, value, out _);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            State = InstallationState.Finished;
+            _cancellationTokenSource?.Dispose();
         }
     }
 }
