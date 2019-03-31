@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
+using Ninject.Parameters;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.ViewModels;
@@ -49,7 +52,12 @@ namespace Stein
 
             var mainWindow = new MainWindow();
             var kernel = new StandardKernel(new AppModule(mainWindow));
-            var configurationService = kernel.Get<IConfigurationService>();
+
+            var configurationNamePrefix = "config";
+            var configurationFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name);
+            var configurationService = kernel.Get<IConfigurationService>(
+                new ConstructorArgument("configurationFileNamePrefix", configurationNamePrefix),
+                new ConstructorArgument("configurationFolderPath", configurationFolderPath));
             try
             {
                 await configurationService.LoadConfigurationAsync();
@@ -72,7 +80,7 @@ namespace Stein
 
             mainWindow.Show();
         }
-        
+
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             var exception = e.Exception;

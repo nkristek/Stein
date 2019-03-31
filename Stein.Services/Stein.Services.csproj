@@ -50,10 +50,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ConfigurationFactory.cs" />
     <Compile Include="Configuration\ConfigurationUpgradeManager.cs" />
     <Compile Include="Configuration\IConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationFactory.cs" />
     <Compile Include="Configuration\IConfigurationUpgradeManager.cs" />
-    <Compile Include="Configuration\IConfigurationUpgrader.cs" />
+    <Compile Include="Configuration\Upgrades\ConfigurationUpgraderFactory.cs" />
+    <Compile Include="Configuration\Upgrades\IConfigurationUpgrader.cs" />
+    <Compile Include="Configuration\Upgrades\IConfigurationUpgraderFactory.cs" />
     <Compile Include="Configuration\v1\InstallerFileBundleProviderConfiguration.cs" />
     <Compile Include="Configuration\Upgrades\InvalidFileVersionException.cs" />
     <Compile Include="Configuration\Upgrades\ConfigurationUpgraderFrom0To1.cs" />
@@ -70,19 +74,18 @@
     <Compile Include="InstallerFiles\Base\IInstallerFile.cs" />
     <Compile Include="InstallerFiles\Base\IInstallerFileBundle.cs" />
     <Compile Include="InstallerFiles\Base\IInstallerFileBundleProvider.cs" />
-    <Compile Include="InstallerFiles\Base\IInstallerFileBundleProviderConfigurator.cs" />
+    <Compile Include="InstallerFiles\Base\IInstallerFileBundleProviderConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationService.cs" />
+    <Compile Include="InstallerFiles\Base\IInstallerFileBundleProviderFactory.cs" />
     <Compile Include="InstallerFiles\Base\InstallerFile.cs" />
-    <Compile Include="InstallerFiles\Base\InstallerFileBundleProvider.cs" />
+    <Compile Include="InstallerFiles\Base\InstallerFileBundleProviderFactory.cs" />
     <Compile Include="InstallerFiles\Disk\DiskInstallerFile.cs" />
     <Compile Include="InstallerFiles\Disk\DiskInstallerFileBundle.cs" />
     <Compile Include="InstallerFiles\Disk\DiskInstallerFileBundleProvider.cs" />
-    <Compile Include="InstallerFiles\Disk\DiskInstallerFileBundleProviderConfigurator.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubAsset.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubInstallerFile.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubInstallerFileBundle.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubInstallerFileBundleProvider.cs" />
-    <Compile Include="InstallerFiles\GitHub\GitHubInstallerFileBundleProviderConfigurator.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubRelease.cs" />
     <Compile Include="InstallerFiles\GitHub\GitHubUser.cs" />
     <Compile Include="Configuration\IConfigurationService.cs" />

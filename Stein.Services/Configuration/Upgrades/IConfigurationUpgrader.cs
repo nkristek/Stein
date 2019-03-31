@@ -1,6 +1,4 @@
-﻿using Stein.Services.Configuration.Upgrades;
-
-namespace Stein.Services.Configuration
+﻿namespace Stein.Services.Configuration.Upgrades
 {
     /// <summary>
     /// Upgrades a configuration from one file version to another. 

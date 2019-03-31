@@ -1,24 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stein.Services.InstallerFiles.Base
 {
     /// <summary>
-    /// A provider for installer files. It can be configured using its <see cref="Configurator"/>.
+    /// A provider for installer files.
     /// </summary>
     public interface IInstallerFileBundleProvider
+        : IDisposable
     {
         /// <summary>
         /// The type of this provider.
         /// </summary>
-        string Type { get; }
+        string ProviderType { get; }
         
-        /// <summary>
-        /// A configurator to configure this <see cref="IInstallerFileBundleProvider"/>.
-        /// </summary>
-        IInstallerFileBundleProviderConfigurator Configurator { get; }
-
         /// <summary>
         /// Create an async <see cref="Task"/> to get all installer file bundles.
         /// </summary>

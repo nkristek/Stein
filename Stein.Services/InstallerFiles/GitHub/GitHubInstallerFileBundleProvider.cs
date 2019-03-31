@@ -13,18 +13,25 @@ namespace Stein.Services.InstallerFiles.GitHub
     public class GitHubInstallerFileBundleProvider
         : Disposable, IInstallerFileBundleProvider
     {
+        public GitHubInstallerFileBundleProvider(IInstallerFileBundleProviderConfiguration configuration)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (configuration.ProviderType != ProviderType)
+                throw new ArgumentException($"Invalid provider type (expected \"{ProviderType}\", got \"{configuration.ProviderType}\"", nameof(configuration));
+
+            if (configuration.Parameters.TryGetValue(nameof(Repository), out var repository))
+                Repository = repository;
+        }
+
         /// <inheritdoc />
-        public string Type => "GitHub";
+        public string ProviderType => "GitHub";
         
-        private readonly GitHubInstallerFileBundleProviderConfigurator _configurator = new GitHubInstallerFileBundleProviderConfigurator();
-
-        /// <inheritdoc />
-        public IInstallerFileBundleProviderConfigurator Configurator => _configurator;
-
         /// <summary>
         /// The name of the GitHub repository including the user name (e.g. nkristek/Stein).
         /// </summary>
-        public string RepositoryName => _configurator.Repository;
+        public string Repository { get; }
 
         private readonly HttpClient _httpClient = new HttpClient
         {
@@ -35,7 +42,7 @@ namespace Stein.Services.InstallerFiles.GitHub
         /// <inheritdoc />
         public async Task<IEnumerable<IInstallerFileBundle>> GetInstallerFileBundlesAsync(CancellationToken cancellationToken = default)
         {
-            var response = await _httpClient.GetAsync(RepositoryName + "/releases", cancellationToken);
+            var response = await _httpClient.GetAsync(Repository + "/releases", cancellationToken);
             response.EnsureSuccessStatusCode();
 
             var releases = await ParseResponse(response, cancellationToken);

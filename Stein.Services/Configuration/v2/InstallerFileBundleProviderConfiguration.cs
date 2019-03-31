@@ -2,34 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
+using Stein.Services.InstallerFiles.Base;
 
 namespace Stein.Services.Configuration.v2
 {
     [Serializable]
     public class InstallerFileBundleProviderConfiguration
+        : IInstallerFileBundleProviderConfiguration
     {
-        [XmlElement]
-        public string Type;
-
-        [XmlArray, XmlArrayItem(typeof(InstallerFileBundleProviderConfigurationItem), ElementName = "item")]
-        public List<InstallerFileBundleProviderConfigurationItem> Items = new List<InstallerFileBundleProviderConfigurationItem>();
-
         public InstallerFileBundleProviderConfiguration()
         {
         }
 
-        public InstallerFileBundleProviderConfiguration(string type, IDictionary<string, string> configuration)
+        public InstallerFileBundleProviderConfiguration(string providerType, IDictionary<string, string> parameters)
         {
-            Type = type;
-            Items.AddRange(configuration.Select(kvp => new InstallerFileBundleProviderConfigurationItem(kvp.Key, kvp.Value)));
+            if (String.IsNullOrEmpty(providerType))
+                throw new ArgumentNullException(nameof(providerType));
+
+            ProviderType = providerType;
+
+            if (parameters == null)
+                throw new ArgumentNullException(nameof(parameters));
+
+            Items.AddRange(parameters.Select(kvp => new InstallerFileBundleProviderConfigurationItem(kvp.Key, kvp.Value)));
         }
 
-        public IDictionary<string, string> ToDictionary()
+        [XmlElement("Type")]
+        public string ProviderType { get; set; }
+        
+        [XmlIgnore]
+        public IDictionary<string, string> Parameters
         {
-            var dictionary = new Dictionary<string, string>();
-            foreach (var item in Items)
-                dictionary[item.Key] = item.Value;
-            return dictionary;
+            get
+            {
+                var dictionary = new Dictionary<string, string>();
+                foreach (var item in Items)
+                    dictionary[item.Key] = item.Value;
+                return dictionary;
+            }
         }
+
+        [XmlArray, XmlArrayItem(typeof(InstallerFileBundleProviderConfigurationItem), ElementName = "item")]
+        public List<InstallerFileBundleProviderConfigurationItem> Items = new List<InstallerFileBundleProviderConfigurationItem>();
     }
 }

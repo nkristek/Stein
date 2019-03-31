@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NKristek.Smaragd.Validation;
 using Stein.Localizations;
 using Stein.Services.Configuration.v2;
@@ -26,12 +25,11 @@ namespace Stein.ViewModels
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if (configuration.Type != Type)
-                throw new ArgumentException($"Configuration with invalid type {configuration.Type}, expected {Type}.");
+            if (configuration.ProviderType != Type)
+                throw new ArgumentException($"Configuration with invalid type {configuration.ProviderType}, expected {Type}.");
 
-            var repositoryItem = configuration.Items.FirstOrDefault(i => i.Key == "Repository");
-            if (repositoryItem != null)
-                Repository = repositoryItem.Value;
+            if (configuration.Parameters.TryGetValue(nameof(Repository), out var repository))
+                Repository = repository;
         }
 
         /// <inheritdoc />

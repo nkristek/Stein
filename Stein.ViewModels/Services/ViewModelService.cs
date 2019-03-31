@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
@@ -8,6 +9,7 @@ using Stein.Localizations;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.Configuration.v2;
+using Stein.Services.InstallerFiles.Base;
 using Stein.Services.InstallService;
 using Stein.Services.MsiService;
 using Stein.Services.ProductService;
@@ -41,7 +43,9 @@ namespace Stein.ViewModels.Services
         
         private readonly IMsiService _msiService;
 
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService)
+        private readonly IInstallerFileBundleProviderFactory _installerFileBundleProviderFactory;
+
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
@@ -50,6 +54,7 @@ namespace Stein.ViewModels.Services
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _msiService = msiService ?? throw new ArgumentNullException(nameof(msiService));
+            _installerFileBundleProviderFactory = installerFileBundleProviderFactory ?? throw new ArgumentNullException(nameof(installerFileBundleProviderFactory));
         }
 
         /// <inheritdoc />
@@ -292,7 +297,7 @@ namespace Stein.ViewModels.Services
                 if (application == null)
                     throw new InvalidOperationException(Strings.EntityNotFound);
 
-                var matchingProvider = dialogModel.AvailableProviders.FirstOrDefault(p => p.Type.ToString() == application.Configuration.Type);
+                var matchingProvider = dialogModel.AvailableProviders.FirstOrDefault(p => p.Type.ToString() == application.Configuration.ProviderType);
                 if (matchingProvider == null)
                     throw new InvalidOperationException("The installer file provider is not supported.");
 
@@ -458,12 +463,16 @@ namespace Stein.ViewModels.Services
         
         private void SaveApplicationDialogModel(ApplicationDialogModel applicationDialog)
         {
+            if (applicationDialog.SelectedProvider == null)
+                throw new ArgumentException("The selected provider is null", nameof(applicationDialog));
+
             Application applicationFolder;
             if (applicationDialog.EntityId == default)
             {
+                applicationDialog.EntityId = GetNewApplicationId();
                 applicationFolder = new Application
                 {
-                    Id = GetNewApplicationId()
+                    Id = applicationDialog.EntityId
                 };
                 _configurationService.Configuration.Applications.Add(applicationFolder);
             }
@@ -482,6 +491,12 @@ namespace Stein.ViewModels.Services
             applicationFolder.KeepNewestInstallationLogs = applicationDialog.KeepNewestInstallationLogs;
             applicationFolder.Configuration = applicationDialog.SelectedProvider.CreateConfiguration();
             applicationFolder.FilterDuplicateInstallers = applicationDialog.FilterDuplicateInstallers;
+
+            if (applicationDialog.Parent is MainWindowViewModel mainWindowViewModel)
+            {
+                var applicationViewModel = CreateApplicationViewModel(applicationFolder, mainWindowViewModel);
+                mainWindowViewModel.Applications.Add(applicationViewModel);
+            }
 
             applicationDialog.IsDirty = false;
         }
@@ -502,6 +517,14 @@ namespace Stein.ViewModels.Services
         private async Task UpdateMainWindowViewModelAsync(MainWindowViewModel viewModel)
         {
             viewModel.IsUpdating = true;
+
+            // TODO: no refresh after adding an application
+            //var applications = new ObservableCollection<ApplicationViewModel>(CreateApplicationViewModels(viewModel));
+            //viewModel.Applications = applications;
+
+            //viewModel.Applications.Clear();
+            //foreach (var applicationViewModel in CreateApplicationViewModels(viewModel))
+            //    viewModel.Applications.Add(applicationViewModel);
 
             foreach (var applicationViewModel in viewModel.Applications)
                 applicationViewModel.IsUpdating = true;
@@ -548,38 +571,45 @@ namespace Stein.ViewModels.Services
             viewModel.InstallerBundles.Clear();
             try
             {
-                var installerBundles = await application.Provider.GetInstallerFileBundlesAsync();
-                foreach (var installerBundle in installerBundles)
-                {
-                    var bundleViewModel = new InstallerBundleViewModel
-                    {
-                        Parent = viewModel,
-                        Name = installerBundle.Name,
-                        Created = installerBundle.Created,
-                    };
-                    foreach (var installerFile in installerBundle.InstallerFiles)
-                    {
-                        var installerViewModel = new InstallerViewModel
-                        {
-                            Parent = bundleViewModel,
-                            FileName = installerFile.FileName,
-                            Created = installerFile.Created
-                        };
-                        installerViewModel.InstallerFileProvider = new InstallerFileProvider(async (filePath, progress, cancellationToken) =>
-                        {
-                            await installerFile.SaveFileAsync(filePath, _msiService, progress, cancellationToken);
-                            installerViewModel.Name = installerFile.Name;
-                            installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
-                            installerViewModel.Version = installerFile.Version;
-                            installerViewModel.ProductCode = installerFile.ProductCode;
-                            installerViewModel.IsInstalled = installedProducts.Any(p => !String.IsNullOrEmpty(p.ProductCode) && p.ProductCode.Contains(installerFile.ProductCode));
-                        });
-                        installerViewModel.IsDirty = false;
+                var configuration = application.Configuration;
+                if (configuration == null)
+                    throw new Exception("No configuration is set");
 
-                        bundleViewModel.Installers.Add(installerViewModel);
+                using (var provider = _installerFileBundleProviderFactory.Create(configuration))
+                {
+                    var installerBundles = await provider.GetInstallerFileBundlesAsync();
+                    foreach (var installerBundle in installerBundles)
+                    {
+                        var bundleViewModel = new InstallerBundleViewModel
+                        {
+                            Parent = viewModel,
+                            Name = installerBundle.Name,
+                            Created = installerBundle.Created,
+                        };
+                        foreach (var installerFile in installerBundle.InstallerFiles)
+                        {
+                            var installerViewModel = new InstallerViewModel
+                            {
+                                Parent = bundleViewModel,
+                                FileName = installerFile.FileName,
+                                Created = installerFile.Created
+                            };
+                            installerViewModel.InstallerFileProvider = new InstallerFileProvider(async (filePath, progress, cancellationToken) =>
+                            {
+                                await installerFile.SaveFileAsync(filePath, _msiService, progress, cancellationToken);
+                                installerViewModel.Name = installerFile.Name;
+                                installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
+                                installerViewModel.Version = installerFile.Version;
+                                installerViewModel.ProductCode = installerFile.ProductCode;
+                                installerViewModel.IsInstalled = installedProducts.Any(p => !String.IsNullOrEmpty(p.ProductCode) && p.ProductCode.Contains(installerFile.ProductCode));
+                            });
+                            installerViewModel.IsDirty = false;
+
+                            bundleViewModel.Installers.Add(installerViewModel);
+                        }
+                        viewModel.InstallerBundles.Add(bundleViewModel);
+                        bundleViewModel.IsDirty = false;
                     }
-                    viewModel.InstallerBundles.Add(bundleViewModel);
-                    bundleViewModel.IsDirty = false;
                 }
             }
             catch (Exception exception)

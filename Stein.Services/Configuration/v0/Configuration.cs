@@ -13,7 +13,7 @@ namespace Stein.Services.Configuration.v0
         /// <inheritdoc />
         [XmlIgnore]
         public long FileVersion { get; }
-
+        
         [XmlElement]
         public Theme SelectedTheme;
 

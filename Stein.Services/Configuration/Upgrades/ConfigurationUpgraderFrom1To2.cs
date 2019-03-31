@@ -34,7 +34,7 @@ namespace Stein.Services.Configuration.Upgrades
                     AutomaticallyDeleteInstallationLogs = a.AutomaticallyDeleteInstallationLogs,
                     KeepNewestInstallationLogs = a.KeepNewestInstallationLogs,
                     FilterDuplicateInstallers = true,
-                    Configuration = new v2.InstallerFileBundleProviderConfiguration(a.Configuration.Type, a.Configuration.ToDictionary())
+                    Configuration = new v2.InstallerFileBundleProviderConfiguration(a.Configuration.ProviderType, a.Configuration.Parameters)
                 }).ToList()
             };
         }

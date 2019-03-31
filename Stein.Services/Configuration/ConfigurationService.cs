@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -15,65 +14,28 @@ namespace Stein.Services.Configuration
         /// <inheritdoc />
         public v2.Configuration Configuration { get; private set; } = new v2.Configuration();
 
-        private readonly string _configurationFolderPath;
+        private readonly IConfigurationFactory _configurationFactory;
 
+        private readonly IConfigurationUpgradeManager _upgradeManager;
+        
         private readonly string _configurationFileNamePrefix;
 
-        private static readonly IConfigurationUpgradeManager UpgradeManager = new ConfigurationUpgradeManager();
+        private readonly string _configurationFolderPath;
 
-        private static readonly IReadOnlyList<Type> AllConfigurationTypes = GetAllAvailableConfigurationTypes();
-
-        /// <summary>
-        /// Get all types that implement <see cref="IConfiguration"/>.
-        /// </summary>
-        /// <returns>A list all types that implement <see cref="IConfiguration"/>.</returns>
-        private static IReadOnlyList<Type> GetAllAvailableConfigurationTypes()
+        public ConfigurationService(IConfigurationFactory configurationFactory, IConfigurationUpgradeManager upgradeManager, string configurationFileNamePrefix, string configurationFolderPath)
         {
-            // TODO
-            //return AppDomain.CurrentDomain.GetAssemblies()
-            //    .SelectMany(assembly => assembly.GetTypes())
-            //    .Where(type => !type.IsAbstract && !type.IsInterface && typeof(IConfiguration).IsAssignableFrom(type))
-            //    .ToList();
-            return new List<Type>
-            {
-                typeof(v0.Configuration),
-                typeof(v1.Configuration),
-                typeof(v2.Configuration)
-            };
-        }
+            _configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+            _upgradeManager = upgradeManager ?? throw new ArgumentNullException(nameof(upgradeManager));
 
-        public ConfigurationService()
-        {
-            _configurationFileNamePrefix = "config";
-            _configurationFolderPath = GetDefaultConfigurationFolderPath();
-        }
-
-        private static string GetDefaultConfigurationFolderPath()
-        {
-            var appDataConfigurationPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name);
-            if (!Directory.Exists(appDataConfigurationPath))
-                Directory.CreateDirectory(appDataConfigurationPath);
-            return appDataConfigurationPath;
-        }
-
-        private string GetConfigurationFilePath(IConfiguration configuration)
-        {
-            var fileName = String.Concat(_configurationFileNamePrefix, ".v", configuration.FileVersion, ".xml");
-            return Path.Combine(_configurationFolderPath, fileName);
-        }
-
-        public ConfigurationService(string configurationName, string configurationFolderPath)
-        {
-            if (String.IsNullOrEmpty(configurationName))
-                throw new ArgumentNullException(nameof(configurationName));
+            if (String.IsNullOrEmpty(configurationFileNamePrefix))
+                throw new ArgumentNullException(nameof(configurationFileNamePrefix));
+            _configurationFileNamePrefix = configurationFileNamePrefix;
 
             if (String.IsNullOrEmpty(configurationFolderPath))
                 throw new ArgumentNullException(nameof(configurationFolderPath));
-
-            _configurationFileNamePrefix = configurationName;
             _configurationFolderPath = configurationFolderPath;
         }
-
+        
         /// <inheritdoc />
         public async Task LoadConfigurationAsync()
         {
@@ -85,10 +47,8 @@ namespace Stein.Services.Configuration
             var fileNames = GetExistingConfigFileNames(_configurationFolderPath, _configurationFileNamePrefix).ToList();
             var fileNameWithMatchingConfigurationType = CreateLatestConfigurationType(fileNames);
             var configuration = DeserializeConfiguration(fileNameWithMatchingConfigurationType.Item1, fileNameWithMatchingConfigurationType.Item2);
-            
-            if (UpgradeManager.UpgradeToLatestFileVersion(configuration, out var upgradedConfiguration))
-                await ToFileAsync(upgradedConfiguration, GetConfigurationFilePath(Configuration));
-            
+            if (_upgradeManager.UpgradeToLatestFileVersion(configuration, out var upgradedConfiguration))
+                await ToFileAsync(upgradedConfiguration);
             return upgradedConfiguration as v2.Configuration ?? throw new Exception("The upgrade didn't upgrade the configuration to the latest version.");
         }
 
@@ -99,47 +59,32 @@ namespace Stein.Services.Configuration
 
         private Tuple<string, Type> CreateLatestConfigurationType(IEnumerable<string> fileNames)
         {
-            var fileNamesWithDescendingVersion = fileNames.Select(fileName =>
-            {
-                var splitFileName = fileName.Split('.');
-                if (splitFileName.Length != 3)
-                    return new Tuple<string, long?>(fileName, null);
-                var fileVersionString = String.Join(String.Empty, splitFileName[1].Skip(1));
-                return long.TryParse(fileVersionString, out var fileVersion)
-                    ? new Tuple<string, long?>(fileName, fileVersion)
-                    : new Tuple<string, long?>(fileName, null);
-            })
+            var fileNameWithHighestVersion = fileNames.Select(fileName =>
+                {
+                    var splitFileName = fileName.Split('.');
+                    if (splitFileName.Length != 3)
+                        return new Tuple<string, long?>(fileName, null);
+                    var fileVersionString = String.Join(String.Empty, splitFileName[1].Skip(1));
+                    return long.TryParse(fileVersionString, out var fileVersion)
+                        ? new Tuple<string, long?>(fileName, fileVersion)
+                        : new Tuple<string, long?>(fileName, null);
+                })
                 .Where(f => f.Item2.HasValue)
                 .Select(f => new Tuple<string, long>(f.Item1, f.Item2.Value))
                 .OrderByDescending(f => f.Item2)
-                .ToList();
-
-            Tuple<string, IConfiguration> fileNameWithMatchingConfiguration = null;
-            if (fileNamesWithDescendingVersion.Count == 0)
+                .FirstOrDefault();
+            
+            if (fileNameWithHighestVersion == null)
             {
                 var oldConfigFileName = Path.Combine(_configurationFolderPath, "Config.xml");
                 if (!File.Exists(oldConfigFileName))
                     throw new Exception("No configuration file found.");
 
-                fileNameWithMatchingConfiguration = new Tuple<string, IConfiguration>(oldConfigFileName, new v0.Configuration());
-            }
-            else
-            {
-                var configurations = AllConfigurationTypes.Select(Activator.CreateInstance).OfType<IConfiguration>().ToList();
-                foreach (var fileNameWithVersion in fileNamesWithDescendingVersion)
-                {
-                    var matchingConfiguration = configurations.FirstOrDefault(c => c.FileVersion == fileNameWithVersion.Item2);
-                    if (matchingConfiguration == null)
-                        continue;
-                    fileNameWithMatchingConfiguration = new Tuple<string, IConfiguration>(fileNameWithVersion.Item1, matchingConfiguration);
-                    break;
-                }
-
-                if (fileNameWithMatchingConfiguration == null)
-                    throw new Exception("No configuration type found to deserialize the configuration.");
+                return new Tuple<string, Type>(oldConfigFileName, typeof(v0.Configuration));
             }
 
-            return new Tuple<string, Type>(fileNameWithMatchingConfiguration.Item1, fileNameWithMatchingConfiguration.Item2.GetType());
+            var configuration = _configurationFactory.Create(fileNameWithHighestVersion.Item2);
+            return new Tuple<string, Type>(fileNameWithHighestVersion.Item1, configuration.GetType());
         }
 
         private static IConfiguration DeserializeConfiguration(string configurationFileName, Type configurationType)
@@ -154,10 +99,23 @@ namespace Stein.Services.Configuration
                 return xmlSerializer.Deserialize(fileReader) as IConfiguration;
         }
 
+        private string GetConfigurationFilePath(IConfiguration configuration)
+        {
+            if (!Directory.Exists(_configurationFolderPath))
+                Directory.CreateDirectory(_configurationFolderPath);
+            var fileName = String.Concat(_configurationFileNamePrefix, ".v", configuration.FileVersion, ".xml");
+            return Path.Combine(_configurationFolderPath, fileName);
+        }
+
         /// <inheritdoc />
         public async Task SaveConfigurationAsync()
         {
-            await ToFileAsync(Configuration, GetConfigurationFilePath(Configuration));
+            await ToFileAsync(Configuration);
+        }
+
+        private async Task ToFileAsync(IConfiguration configuration)
+        {
+            await ToFileAsync(configuration, GetConfigurationFilePath(configuration));
         }
 
         private static async Task ToFileAsync(IConfiguration configuration, string filePath)

@@ -17,10 +17,16 @@ namespace Stein.ViewModels
             _themeService.ThemeChanged += (sender, args) => RaisePropertyChanged(nameof(CurrentTheme));
         }
         
+        private ObservableCollection<ApplicationViewModel> _application = new ObservableCollection<ApplicationViewModel>();
+
         /// <summary>
         /// List of all applications
         /// </summary>
-        public ObservableCollection<ApplicationViewModel> Applications { get; } = new ObservableCollection<ApplicationViewModel>();
+        public ObservableCollection<ApplicationViewModel> Applications
+        {
+            get => _application;
+            set => SetProperty(ref _application, value, out _);
+        } 
         
         private InstallationViewModel _currentInstallation;
 
@@ -57,19 +63,6 @@ namespace Stein.ViewModels
             set => _themeService.SetTheme(value);
         }
         
-        private bool _isUpdating;
-
-        // TODO: move to base class
-        /// <summary>
-        /// If this <see cref="IViewModel"/> is updating.
-        /// </summary>
-        [IsDirtyIgnored]
-        public bool IsUpdating
-        {
-            get => _isUpdating;
-            set => SetProperty(ref _isUpdating, value, out _);
-        }
-
         private InstallationResultDialogModel _recentInstallationResult;
         
         [IsDirtyIgnored]

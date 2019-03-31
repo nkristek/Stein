@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using NKristek.Smaragd.Validation;
 using Stein.Localizations;
 using Stein.Services.Configuration.v2;
@@ -28,12 +27,11 @@ namespace Stein.ViewModels
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration));
 
-            if (configuration.Type != Type)
-                throw new ArgumentException($"Configuration with invalid type {configuration.Type}, expected {Type}.");
+            if (configuration.ProviderType != Type)
+                throw new ArgumentException($"Configuration with invalid type {configuration.ProviderType}, expected {Type}.");
 
-            var pathItem = configuration.Items.FirstOrDefault(i => i.Key == "Path");
-            if (pathItem != null)
-                Path = pathItem.Value;
+            if (configuration.Parameters.TryGetValue(nameof(Path), out var path))
+                Path = path;
         }
 
         /// <inheritdoc />

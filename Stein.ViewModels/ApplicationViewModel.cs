@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -8,19 +7,6 @@ namespace Stein.ViewModels
     public sealed class ApplicationViewModel
         : ViewModel
     {
-        private bool _isUpdating;
-
-        // TODO: move to base class
-        /// <summary>
-        /// If this <see cref="IViewModel"/> is updating.
-        /// </summary>
-        [IsDirtyIgnored]
-        public bool IsUpdating
-        {
-            get => _isUpdating;
-            set => SetProperty(ref _isUpdating, value, out _);
-        }
-
         private Guid _entityId;
 
         /// <summary>

@@ -11,18 +11,25 @@ namespace Stein.Services.InstallerFiles.Disk
     public class DiskInstallerFileBundleProvider
         : IInstallerFileBundleProvider
     {
+        public DiskInstallerFileBundleProvider(IInstallerFileBundleProviderConfiguration configuration)
+        {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (configuration.ProviderType != ProviderType)
+                throw new ArgumentException($"Invalid provider type (expected \"{ProviderType}\", got \"{configuration.ProviderType}\"", nameof(configuration));
+
+            if (configuration.Parameters.TryGetValue(nameof(Path), out var path))
+                Path = path;
+        }
+
         /// <inheritdoc />
-        public string Type => "Disk";
+        public string ProviderType => "Disk";
         
-        private readonly DiskInstallerFileBundleProviderConfigurator _configurator = new DiskInstallerFileBundleProviderConfigurator();
-
-        /// <inheritdoc />
-        public IInstallerFileBundleProviderConfigurator Configurator => _configurator;
-
         /// <summary>
         /// The path of the folder which contains folders which contain installer files (.msi ending).
         /// </summary>
-        public string Path => _configurator.Path;
+        public string Path { get; }
 
         /// <inheritdoc />
         public async Task<IEnumerable<IInstallerFileBundle>> GetInstallerFileBundlesAsync(CancellationToken cancellationToken = default)
@@ -58,6 +65,11 @@ namespace Stein.Services.InstallerFiles.Disk
                     FileName = file.Name,
                     Created = file.CreationTime
                 };
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
         }
     }
 }

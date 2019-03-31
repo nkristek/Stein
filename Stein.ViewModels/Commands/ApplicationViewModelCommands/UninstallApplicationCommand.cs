@@ -9,7 +9,6 @@ using Stein.Services.InstallService;
 using Stein.ViewModels.Commands.MainWindowViewModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
-using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {

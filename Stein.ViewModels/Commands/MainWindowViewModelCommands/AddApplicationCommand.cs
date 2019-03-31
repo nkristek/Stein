@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
@@ -30,24 +29,18 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
 
         protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
         {
-            try
+            var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
+            do
             {
-                var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
-                do
-                {
-                    if (_dialogService.ShowDialog(dialogModel) != true)
-                        return;
+                if (_dialogService.ShowDialog(dialogModel) != true)
+                    return;
 
-                    if (!dialogModel.IsValid)
-                        _dialogService.ShowMessage(Strings.DialogInputNotValid);
-                } while (!dialogModel.IsValid);
+                if (!dialogModel.IsValid)
+                    _dialogService.ShowMessage(Strings.DialogInputNotValid);
+            } while (!dialogModel.IsValid);
 
-                await _viewModelService.SaveViewModelAsync(dialogModel);
-            }
-            finally
-            {
-                await _viewModelService.UpdateViewModelAsync(viewModel);
-            }
+            await _viewModelService.SaveViewModelAsync(dialogModel);
+            await _viewModelService.UpdateViewModelAsync(viewModel);
         }
     }
 }

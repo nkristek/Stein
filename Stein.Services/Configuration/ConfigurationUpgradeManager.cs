@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Stein.Services.Configuration.Upgrades;
 
@@ -8,36 +7,21 @@ namespace Stein.Services.Configuration
     public class ConfigurationUpgradeManager
         : IConfigurationUpgradeManager
     {
-        private static readonly IReadOnlyList<IConfigurationUpgrader> AllConfigurationUpgraders = GetAllAvailableConfigurationUpgraders();
+        private readonly IConfigurationUpgraderFactory _upgraderFactory;
 
-        /// <summary>
-        /// Create instances of all types that implement <see cref="IConfigurationUpgrader"/>.
-        /// </summary>
-        /// <returns>A list of instances of all types that implement <see cref="IConfigurationUpgrader"/>.</returns>
-        private static IReadOnlyList<IConfigurationUpgrader> GetAllAvailableConfigurationUpgraders()
+        public ConfigurationUpgradeManager(IConfigurationUpgraderFactory upgraderFactory)
         {
-            // TODO
-            //return AppDomain.CurrentDomain.GetAssemblies()
-            //    .SelectMany(assembly => assembly.GetTypes())
-            //    .Where(type => !type.IsAbstract && !type.IsInterface && typeof(IConfigurationUpgrader).IsAssignableFrom(type))
-            //    .Select(Activator.CreateInstance).OfType<IConfigurationUpgrader>()
-            //    .OrderBy(u => u.SourceFileVersion)
-            //    .ToList();
-            return new List<IConfigurationUpgrader>
-            {
-                new ConfigurationUpgraderFrom0To1(),
-                new ConfigurationUpgraderFrom1To2()
-            };
+            _upgraderFactory = upgraderFactory ?? throw new ArgumentNullException(nameof(upgraderFactory));
         }
 
         /// <inheritdoc />
         public bool UpgradeToLatestFileVersion(IConfiguration configuration, out IConfiguration upgradedConfiguration)
         {
             var currentConfiguration = configuration;
-            foreach (var upgrader in AllConfigurationUpgraders)
+            foreach (var upgrader in _upgraderFactory.CreateAll().OrderBy(u => u.SourceFileVersion))
             {
                 if (currentConfiguration.FileVersion < upgrader.SourceFileVersion)
-                    throw new Exception($"No upgrade was found to upgrade the configuration from {currentConfiguration.FileVersion} to {AllConfigurationUpgraders.Max(u => u.TargetFileVersion)}.");
+                    throw new Exception("No upgrade was found to upgrade the configuration.");
                 if (currentConfiguration.FileVersion == upgrader.SourceFileVersion)
                     currentConfiguration = upgrader.Upgrade(currentConfiguration);
             }
