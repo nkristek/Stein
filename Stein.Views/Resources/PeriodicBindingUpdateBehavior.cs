@@ -7,11 +7,12 @@ using System.Windows.Interactivity;
 
 namespace Stein.Views.Resources
 {
+    /// <inheritdoc cref="Behavior{T}" />
     /// <summary>
-    /// https://stackoverflow.com/a/44253691
+    /// Taken from https://stackoverflow.com/a/44253691
     /// </summary>
     internal class PeriodicBindingUpdateBehavior
-        : Behavior<DependencyObject>
+        : Behavior<DependencyObject>, IDisposable
     {
         public TimeSpan Interval { get; set; }
 
@@ -54,6 +55,12 @@ namespace Stein.Views.Resources
             _timer.Dispose();
             _timerCallback = null;
             base.OnDetaching();
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _timer?.Dispose();
         }
     }
 
