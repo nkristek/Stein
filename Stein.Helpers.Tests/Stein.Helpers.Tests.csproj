@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionDisposableTests.cs" />
     <Compile Include="DisposableTests.cs" />
     <Compile Include="IEnumerableExtensionsTests.cs" />
     <Compile Include="ProcessExtensionsTests.cs" />
