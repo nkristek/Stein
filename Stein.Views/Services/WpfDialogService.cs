@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;

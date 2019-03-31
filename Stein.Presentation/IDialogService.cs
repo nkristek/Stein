@@ -1,5 +1,4 @@
-﻿using System;
-using NKristek.Smaragd.ViewModels;
+﻿using NKristek.Smaragd.ViewModels;
 
 namespace Stein.Presentation
 {
