@@ -11,9 +11,9 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
         MinWidth="450"
-        Width="600"
+        Width="700"
         MinHeight="200"
-        Height="300"
+        Height="400"
         WindowStartupLocation="CenterOwner"
         Title="{Binding Title}">
 
