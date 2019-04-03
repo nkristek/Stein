@@ -247,11 +247,11 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService)
+            viewModel.AddCommand(new InstallApplicationCommand(this, _installService)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService)
+            viewModel.AddCommand(new UninstallApplicationCommand(this, _installService)
             {
                 Parent = viewModel
             });

@@ -15,17 +15,12 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     public sealed class InstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private readonly IDialogService _dialogService;
-
         private readonly IViewModelService _viewModelService;
 
         private readonly IInstallService _installService;
 
-        public InstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
+        public InstallApplicationCommand(IViewModelService viewModelService, IInstallService installService)
         {
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
         }

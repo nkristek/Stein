@@ -16,8 +16,6 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
     public sealed class CustomOperationApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IDialogService _dialogService;
 
         private readonly IViewModelService _viewModelService;
