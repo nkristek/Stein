@@ -117,8 +117,12 @@ namespace Stein.ViewModels.Services
 
         private InstallationResultDialogModel CreateInstallationResultDialogModel(IViewModel parent)
         {
+            if (!(parent is InstallationViewModel installationViewModel))
+                throw new ArgumentException($"Argument has to be of type {nameof(InstallationViewModel)}", nameof(parent));
+
             var dialogModel = new InstallationResultDialogModel
             {
+                Name = installationViewModel.Name,
                 Parent = parent,
                 IsDirty = false
             };
