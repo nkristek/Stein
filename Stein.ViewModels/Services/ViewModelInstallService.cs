@@ -95,9 +95,12 @@ namespace Stein.ViewModels.Services
             var installationResultDialogModel = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallationViewModel);
             var cancellationToken = currentInstallationViewModel.CancellationTokenSource.Token;
 
+            var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallationViewModel.Name) : null;
+            installationResultDialogModel.LogFolderPath = logFolderPath;
+
             using (var tempFileCollection = CreateTempFileCollection())
             {
-                var downloadResults = await Download(installerViewModels, tempFileCollection, currentInstallationViewModel);
+                var downloadResults = await Download(installerViewModels, currentInstallationViewModel, tempFileCollection, 3, cancellationToken);
 
                 foreach (var failedDownload in downloadResults.FailedDownloads)
                 {
@@ -141,10 +144,7 @@ namespace Stein.ViewModels.Services
                 }
 
                 Log.Info($"Starting operation with {downloadResults.SucceededDownloads.Count} installers.");
-
-                var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallationViewModel.Name) : null;
-                installationResultDialogModel.LogFolderPath = logFolderPath;
-
+                
                 var installedInstallerViewModels = new List<InstallerViewModel>();
                 foreach (var download in downloadResults.SucceededDownloads)
                 {
@@ -154,7 +154,6 @@ namespace Stein.ViewModels.Services
 
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        Log.Info("The operation was cancelled.");
                         installationResultViewModel.State = InstallationResultState.Cancelled;
                         installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                         currentInstallationViewModel.ProcessedInstallerFileCount++;
@@ -304,7 +303,7 @@ namespace Stein.ViewModels.Services
                 {
                     try
                     {
-                        RemoveOldestFiles(logFolderPath, keepNewestInstallationLogs);
+                        RemoveOldestLogFiles(logFolderPath, keepNewestInstallationLogs);
                     }
                     catch (Exception exception)
                     {
@@ -330,95 +329,66 @@ namespace Stein.ViewModels.Services
             return downloadFolderPath;
         }
 
-        private static async Task<DownloadResult> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, ITempFileCollection tempFileCollection, InstallationViewModel currentInstallation)
+        private static async Task<DownloadResult> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, InstallationViewModel currentInstallation, ITempFileCollection tempFileCollection, int parallelDownloads = 3, CancellationToken cancellationToken = default)
         {
             Log.Info($"Starting download of {installerViewModels.Count} files.");
-
-            var progress = new Progress<double>(input => currentInstallation.DownloadProgress = input);
-            var downloadResults = (await Download(installerViewModels, tempFileCollection, progress, 3, currentInstallation.CancellationTokenSource.Token)).ToList();
-
-            var succeededDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.CompletedSuccessfully).ToList();
-            var failedDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Failed).ToList();
-            var cancelledDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Cancelled).ToList();
-
-            Log.Info($"Download finished. {succeededDownloads.Count} succeeded, {failedDownloads.Count} failed and {cancelledDownloads.Count} cancelled.");
-
-            return new DownloadResult
-            {
-                SucceededDownloads = succeededDownloads,
-                FailedDownloads = failedDownloads,
-                CancelledDownloads = cancelledDownloads
-            };
-        }
-
-        private static async Task<IEnumerable<KeyValuePair<InstallerViewModel, IDownloadResult>>> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, ITempFileCollection tempFileCollection, IProgress<double> progress, int parallelDownloads = 3, CancellationToken cancellationToken = default)
-        {
+            
             using (var semaphore = new SemaphoreSlim(parallelDownloads))
             {
                 var downloadTasks = new List<KeyValuePair<InstallerViewModel, Task<IDownloadResult>>>();
                 var progressValues = new ConcurrentDictionary<InstallerViewModel, double>();
-                var results = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
+                var downloadResults = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
 
                 foreach (var installer in installerViewModels)
                 {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(installer, new CancelledDownloadResult()));
-                        continue;
-                    }
-                    
-                    await semaphore.WaitAsync(cancellationToken);
-
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(installer, new CancelledDownloadResult()));
-                        semaphore.Release();
-                        continue;
-                    }
-
                     var installerFileProvider = installer.InstallerFileProvider;
                     if (installerFileProvider == null)
                         continue;
-                    
+
                     var filePath = tempFileCollection.CreateUniqueFileName("msi");
-                    var individualProgress = progress != null ? new Progress<double>(input =>
+                    var individualProgress = new Progress<double>(input =>
                     {
                         progressValues[installer] = input;
-                        progress.Report(progressValues.Values.Sum() / installerViewModels.Count);
-                    }) : null;
-
-                    downloadTasks.Add(new KeyValuePair<InstallerViewModel, Task<IDownloadResult>>(installer, Task.Run(async () =>
-                    {
-                        try
-                        {
-                            return await Download(installerFileProvider, filePath, individualProgress, cancellationToken);
-                        }
-                        finally
-                        {
-                            // ReSharper disable once AccessToDisposedClosure
-                            // note: semaphore will only be disposed after all tasks are finished since every task is awaited
-                            semaphore.Release();
-                        }
-                    })));
+                        currentInstallation.DownloadProgress = progressValues.Values.Sum() / installerViewModels.Count;
+                    });
+                    var downloadTask = Download(installerFileProvider, filePath, semaphore, individualProgress, cancellationToken);
+                    downloadTasks.Add(new KeyValuePair<InstallerViewModel, Task<IDownloadResult>>(installer, downloadTask));
                 }
 
                 foreach (var task in downloadTasks)
-                    results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(task.Key, await task.Value));
-                return results;
+                    downloadResults.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(task.Key, await task.Value));
+
+                var succeededDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.CompletedSuccessfully).ToList();
+                var failedDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Failed).ToList();
+                var cancelledDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Cancelled).ToList();
+
+                Log.Info($"Download finished. {succeededDownloads.Count} succeeded, {failedDownloads.Count} failed and {cancelledDownloads.Count} cancelled.");
+
+                return new DownloadResult
+                {
+                    SucceededDownloads = succeededDownloads,
+                    FailedDownloads = failedDownloads,
+                    CancelledDownloads = cancelledDownloads
+                };
             }
         }
 
-        private static async Task<IDownloadResult> Download(IInstallerFileProvider installerFileProvider, string filePath, IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        private static async Task<IDownloadResult> Download(IInstallerFileProvider installerFileProvider, string filePath, SemaphoreSlim semaphore, IProgress<double> progress = null, CancellationToken cancellationToken = default)
         {
             try
             {
                 if (installerFileProvider == null)
                     throw new ArgumentNullException(nameof(installerFileProvider));
-                if (String.IsNullOrWhiteSpace(filePath))
+                if (String.IsNullOrEmpty(filePath))
                     throw new ArgumentNullException(nameof(filePath));
 
                 cancellationToken.ThrowIfCancellationRequested();
+                await semaphore.WaitAsync(cancellationToken);
+
+                cancellationToken.ThrowIfCancellationRequested();
                 await installerFileProvider.SaveFileAsync(filePath, progress, cancellationToken);
+
+                cancellationToken.ThrowIfCancellationRequested();
                 return new SucceededDownloadResult(filePath);
             }
             catch (OperationCanceledException)
@@ -429,9 +399,19 @@ namespace Stein.ViewModels.Services
             {
                 return new FailedDownloadResult(exception);
             }
+            finally
+            {
+                try
+                {
+                    semaphore.Release();
+                }
+                catch
+                {
+                }
+            }
         }
 
-        private static void RemoveOldestFiles(string folderPath, int keepNewestLogFiles)
+        private static void RemoveOldestLogFiles(string folderPath, int keepNewestLogFiles)
         {
             foreach (var file in new DirectoryInfo(folderPath).EnumerateFiles().OrderByDescending(f => f.CreationTime).Skip(Math.Max(0, keepNewestLogFiles)))
             {
