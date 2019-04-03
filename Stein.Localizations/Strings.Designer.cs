@@ -223,7 +223,7 @@ namespace Stein.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If multiple installers with the same application name should be filtered. Only the Install/Uninstall operation are affected, Custom is not..
+        ///   Looks up a localized string similar to If multiple installers with the same application name should be skipped. Only the Install/Uninstall operations are affected, Custom ignores this setting..
         /// </summary>
         public static string FilterDuplicateInstallersDetails {
             get {

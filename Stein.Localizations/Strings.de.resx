@@ -295,7 +295,9 @@
     <value>Doppelte Installer filtern</value>
   </data>
   <data name="FilterDuplicateInstallersDetails" xml:space="preserve">
-    <value>Ob mehrere Installerdateien mit dem selben Anwendungsnamen gefiltert werden sollen. Nur die Installieren/Deinstallieren Aktionen sind hiervon betroffen, Benutzerdefiniert filtert nicht.</value>
+    <value>Gibt an, ob Installerdateien mit doppeltem Namen übersprungen werden sollen. Dabei sind nur
+die Aktionen zum Installieren und Deinstallieren betroffen. Die benutzerdefinierte Installation
+ignoriert diese Einstellung.</value>
   </data>
   <data name="InstallationResults" xml:space="preserve">
     <value>Installationsergebnisse</value>

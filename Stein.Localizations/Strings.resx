@@ -295,7 +295,7 @@
     <value>Filter duplicate installers</value>
   </data>
   <data name="FilterDuplicateInstallersDetails" xml:space="preserve">
-    <value>If multiple installers with the same application name should be filtered. Only the Install/Uninstall operation are affected, Custom is not.</value>
+    <value>If multiple installers with the same application name should be skipped. Only the Install/Uninstall operations are affected, Custom ignores this setting.</value>
   </data>
   <data name="InstallationResults" xml:space="preserve">
     <value>Installation results</value>
