@@ -357,10 +357,24 @@ namespace Stein.ViewModels.Services
             {
                 var downloadTasks = new List<KeyValuePair<InstallerViewModel, Task<IDownloadResult>>>();
                 var progressValues = new ConcurrentDictionary<InstallerViewModel, double>();
+                var results = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
 
                 foreach (var installer in installerViewModels)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(installer, new CancelledDownloadResult()));
+                        continue;
+                    }
+                    
                     await semaphore.WaitAsync(cancellationToken);
+
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(installer, new CancelledDownloadResult()));
+                        semaphore.Release();
+                        continue;
+                    }
 
                     var installerFileProvider = installer.InstallerFileProvider;
                     if (installerFileProvider == null)
@@ -388,7 +402,6 @@ namespace Stein.ViewModels.Services
                     })));
                 }
 
-                var results = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
                 foreach (var task in downloadTasks)
                     results.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(task.Key, await task.Value));
                 return results;
