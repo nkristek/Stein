@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using log4net;
 using Stein.Helpers;
+using Stein.Localizations;
 using Stein.Services.InstallService;
 using Stein.Services.InstallService.Arguments;
 using Stein.ViewModels.Types;
@@ -17,13 +19,6 @@ namespace Stein.ViewModels.Services
     public static class ViewModelInstallService
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private class DownloadResult
-        {
-            public IList<KeyValuePair<InstallerViewModel, IDownloadResult>> SucceededDownloads = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
-            public IList<KeyValuePair<InstallerViewModel, IDownloadResult>> FailedDownloads = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
-            public IList<KeyValuePair<InstallerViewModel, IDownloadResult>> CancelledDownloads = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
-        }
         
         public static async Task<InstallationResultDialogModel> Install(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot, bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
         {
@@ -92,82 +87,84 @@ namespace Stein.ViewModels.Services
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
 
-            var installationResultDialogModel = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallationViewModel);
             var cancellationToken = currentInstallationViewModel.CancellationTokenSource.Token;
+            var installationResultDialogModel = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallationViewModel);
 
             var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallationViewModel.Name) : null;
             installationResultDialogModel.LogFolderPath = logFolderPath;
 
             using (var tempFileCollection = CreateTempFileCollection())
             {
+                Log.Info($"Starting download of {installerViewModels.Count} files.");
                 var downloadResults = await Download(installerViewModels, currentInstallationViewModel, tempFileCollection, 3, cancellationToken);
+                Log.Info($"Download finished.");
 
-                foreach (var failedDownload in downloadResults.FailedDownloads)
-                {
-                    var installerViewModel = failedDownload.Key;
-                    var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
-                    if (!(failedDownload.Value is FailedDownloadResult downloadResult))
-                    {
-                        var exception = new Exception($"Unexpected download result type \"{failedDownload.Value.GetType().Name}\", should be \"{nameof(FailedDownloadResult)}\"");
-                        Log.Error(exception);
-                        var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                        installationResultViewModel.Exception = exceptionViewModel;
-                    }
-                    else
-                    {
-                        installationResultViewModel.Exception = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, downloadResult.Exception);
-                    }
-
-                    installationResultViewModel.State = InstallationResultState.DownloadFailed;
-                    installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                }
-
-                if (downloadResults.CancelledDownloads.Count > 0)
+                if (downloadResults.Any(dr => dr.Value.Result == DownloadResultState.Cancelled))
                 {
                     Log.Info("At least one download was cancelled, installation will be skipped.");
 
-                    foreach (var download in downloadResults.CancelledDownloads.Concat(downloadResults.SucceededDownloads))
+                    foreach (var download in downloadResults)
                     {
+                        currentInstallationViewModel.CurrentInstallerIndex++;
                         var installerViewModel = download.Key;
-                        var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
-                        installationResultViewModel.State = InstallationResultState.Cancelled;
+                        var downloadResult = download.Value;
+
+                        var installationResultViewModel = downloadResult.Result == DownloadResultState.Failed 
+                            ? CreateDownloadFailedResult(viewModelService, installerViewModel, downloadResult) 
+                            : CreateCancelledResult(viewModelService, installerViewModel);
+
                         installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
                     }
 
                     return installationResultDialogModel;
                 }
-
-                if (!downloadResults.SucceededDownloads.Any())
+                
+                if (downloadResults.All(dr => dr.Value.Result != DownloadResultState.CompletedSuccessfully))
                 {
-                    Log.Info($"No download succeeded (failed: {downloadResults.FailedDownloads.Count}, cancelled: {downloadResults.CancelledDownloads.Count}).");
-                    return installationResultDialogModel;
+                    var failedCount = downloadResults.Count(dr => dr.Value.Result == DownloadResultState.Failed);
+                    Log.Warn($"No download succeeded (failed downloads: {failedCount}).");
+                }
+                else
+                {
+                    var succeededCount = downloadResults.Count(dr => dr.Value.Result == DownloadResultState.CompletedSuccessfully);
+                    currentInstallationViewModel.TotalInstallerFileCount = succeededCount;
+                    Log.Info($"Starting operation with {succeededCount} installers.");
                 }
 
-                Log.Info($"Starting operation with {downloadResults.SucceededDownloads.Count} installers.");
-                
                 var installedInstallerViewModels = new List<InstallerViewModel>();
-                foreach (var download in downloadResults.SucceededDownloads)
+                foreach (var download in downloadResults)
                 {
                     currentInstallationViewModel.CurrentInstallerIndex++;
                     var installerViewModel = download.Key;
-                    var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+                    var downloadResult = download.Value;
 
+                    if (downloadResult.Result == DownloadResultState.Failed)
+                    {
+                        var failedResultViewModel = CreateDownloadFailedResult(viewModelService, installerViewModel, downloadResult);
+                        installationResultDialogModel.InstallationResults.Add(failedResultViewModel);
+                        currentInstallationViewModel.ProcessedInstallerFileCount++;
+                        continue;
+                    }
+                    
                     if (cancellationToken.IsCancellationRequested)
                     {
-                        installationResultViewModel.State = InstallationResultState.Cancelled;
-                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        var cancelledResultViewModel = CreateCancelledResult(viewModelService, installerViewModel);
+                        installationResultDialogModel.InstallationResults.Add(cancelledResultViewModel);
                         currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
-                    if (!(download.Value is SucceededDownloadResult downloadResult))
+                    if (!(downloadResult is SucceededDownloadResult succeededDownloadResult))
                     {
-                        var exception = new Exception($"Unexpected download result type \"{download.Value.GetType().Name}\", should be \"{nameof(SucceededDownloadResult)}\"");
+                        var exception = new Exception($"Unexpected download result type \"{downloadResult.GetType().Name}\", should be \"{nameof(SucceededDownloadResult)}\"");
                         Log.Error(exception);
-                        var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                        installationResultViewModel.Exception = exceptionViewModel;
-                        installationResultViewModel.State = InstallationResultState.DownloadFailed;
-                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+#if DEBUG
+                        if (Debugger.IsAttached)
+                            Debugger.Break();
+#endif
+                        var failedResultViewModel = CreateDownloadFailedResult(viewModelService, installerViewModel, exception);
+                        installationResultDialogModel.InstallationResults.Add(failedResultViewModel);
                         currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
@@ -175,124 +172,23 @@ namespace Stein.ViewModels.Services
                     if (filterDuplicateInstallers && installedInstallerViewModels.Any(i => i.Name == installerViewModel.Name))
                     {
                         Log.Info($"Installer \"{installerViewModel.FileName}\" with the same application name \"{installerViewModel.Name}\" already processed, file will be skipped.");
-                        installationResultViewModel.State = InstallationResultState.Skipped;
-                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
+                        var skippedResultViewModel = CreateSkippedResult(viewModelService, installerViewModel);
+                        installationResultDialogModel.InstallationResults.Add(skippedResultViewModel);
                         currentInstallationViewModel.ProcessedInstallerFileCount++;
                         continue;
                     }
 
-                    try
-                    {
-                        switch (installerViewModel.SelectedOperation)
-                        {
-                            case InstallerOperation.Install:
-                                if (installerViewModel.IsInstalled != false)
-                                {
-                                    if (installerViewModel.IsInstalled == null)
-                                        Log.Warn($"Installation status of file \"{installerViewModel.FileName}\" is unavailable, trying to uninstall.");
-                                    else
-                                        Log.Info($"The application \"{installerViewModel.Name}\" is already installed. It will now be uninstalled first.");
-
-                                    if (String.IsNullOrWhiteSpace(installerViewModel.ProductCode))
-                                    {
-                                        var exception = new Exception($"Uninstalling \"{installerViewModel.FileName}\" failed: ProductCode is not set.");
-                                        Log.Error(exception);
-                                        var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                                        installationResultViewModel.Exception = exceptionViewModel;
-                                        installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                                    }
-                                    else
-                                    {
-                                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
-
-                                        var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
-                                        installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
-                                        var uninstallArguments = GetArguments(
-                                            enableSilentInstallation,
-                                            disableReboot,
-                                            enableInstallationLogging,
-                                            uninstallLogFilePath).ToArray();
-                                        await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
-                                    }
-                                }
-
-                                Log.Info($"Installing \"{installerViewModel.FileName}\" now.");
-
-                                currentInstallationViewModel.CurrentOperation = InstallationOperation.Install;
-
-                                var installLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "install");
-                                installationResultViewModel.InstallationLogFilePaths.Add(installLogFilePath);
-                                var installArguments = GetArguments(
-                                    enableSilentInstallation,
-                                    disableReboot,
-                                    enableInstallationLogging,
-                                    installLogFilePath).ToArray();
-                                await installService.PerformAsync(new Operation(downloadResult.TempFileName, OperationType.Install, installArguments));
-
-                                installedInstallerViewModels.Add(installerViewModel);
-                                break;
-                            case InstallerOperation.Uninstall:
-                                if (installerViewModel.IsInstalled == false)
-                                {
-                                    var exception = new InvalidOperationException($"Application \"{installerViewModel.Name}\" is not installed. Uninstall is not possible.");
-                                    Log.Warn(exception);
-                                    var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                                    installationResultViewModel.Exception = exceptionViewModel;
-                                    installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                    installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                                }
-                                else
-                                {
-                                    if (installerViewModel.IsInstalled == null)
-                                        Log.Warn($"Installation status of file \"{installerViewModel.FileName}\" is unavailable, trying to uninstall.");
-                                    else
-                                        Log.Info($"The application \"{installerViewModel.Name}\" will now be uninstalled.");
-
-                                    if (String.IsNullOrWhiteSpace(installerViewModel.ProductCode))
-                                    {
-                                        var exception = new Exception($"Uninstalling \"{installerViewModel.FileName}\" failed: ProductCode is not set.");
-                                        Log.Error(exception);
-                                        var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                                        installationResultViewModel.Exception = exceptionViewModel;
-                                        installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                                    }
-                                    else
-                                    {
-                                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
-
-                                        var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
-                                        installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
-                                        var uninstallArguments = GetArguments(
-                                            enableSilentInstallation,
-                                            disableReboot,
-                                            enableInstallationLogging,
-                                            uninstallLogFilePath).ToArray();
-                                        await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
-                                    }
-                                }
-                                installedInstallerViewModels.Add(installerViewModel);
-                                break;
-                            default:
-                                installationResultViewModel.State = InstallationResultState.Skipped;
-                                installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                                currentInstallationViewModel.ProcessedInstallerFileCount++;
-                                continue;
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception);
-                        var exceptionViewModel = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
-                        installationResultViewModel.Exception = exceptionViewModel;
-                        installationResultViewModel.State = InstallationResultState.InstallationFailed;
-                        installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
-                        currentInstallationViewModel.ProcessedInstallerFileCount++;
-                        continue;
-                    }
-
-                    installationResultViewModel.State = InstallationResultState.Success;
+                    var installationResultViewModel = await PerformOperation(
+                        viewModelService, 
+                        installService, 
+                        installerViewModel, 
+                        currentInstallationViewModel, 
+                        succeededDownloadResult.TempFileName, 
+                        enableSilentInstallation, 
+                        disableReboot, 
+                        enableInstallationLogging, 
+                        logFolderPath);
+                    installedInstallerViewModels.Add(installerViewModel);
                     installationResultDialogModel.InstallationResults.Add(installationResultViewModel);
                     currentInstallationViewModel.ProcessedInstallerFileCount++;
                 }
@@ -316,6 +212,153 @@ namespace Stein.ViewModels.Services
             return installationResultDialogModel;
         }
 
+        private static async Task<InstallationResultViewModel> PerformOperation(IViewModelService viewModelService, IInstallService installService, InstallerViewModel installerViewModel, InstallationViewModel currentInstallationViewModel, string installerFilePath, bool enableSilentInstallation, bool disableReboot,
+        bool enableInstallationLogging, string logFolderPath = null)
+        {
+            var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+            var installLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "install");
+            var installArguments = GetArguments(
+                enableSilentInstallation,
+                disableReboot,
+                enableInstallationLogging,
+                installLogFilePath).ToArray();
+            var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
+            var uninstallArguments = GetArguments(
+                enableSilentInstallation,
+                disableReboot,
+                enableInstallationLogging,
+                uninstallLogFilePath).ToArray();
+            try
+            {
+                switch (installerViewModel.SelectedOperation)
+                {
+                    case InstallerOperation.Install:
+                        if (installerViewModel.IsInstalled != false)
+                        {
+                            if (installerViewModel.IsInstalled == null)
+                                Log.Warn($"Installation status of file \"{installerViewModel.FileName}\" is unavailable, trying to uninstall.");
+                            else
+                                Log.Info($"The application \"{installerViewModel.Name}\" with ProductCode \"{installerViewModel.ProductCode}\" is already installed. It will now be uninstalled first.");
+
+                            if (String.IsNullOrWhiteSpace(installerViewModel.ProductCode))
+                            {
+                                var exception = new Exception($"Uninstalling \"{installerViewModel.FileName}\" failed: ProductCode is not set.");
+                                Log.Error(exception);
+                                return CreateInstallationFailedResult(viewModelService, installerViewModel, exception);
+                            }
+
+                            Log.Info($"Uninstalling application of installer \"{installerViewModel.FileName}\" now.");
+                            currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
+                            
+                            installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
+                            try
+                            {
+                                await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
+                            }
+                            catch
+                            {
+                                // suppress exception if installation status is unknown
+                                if (installerViewModel.IsInstalled == true)
+                                    throw;
+                            }
+                        }
+
+                        Log.Info($"Installing \"{installerViewModel.FileName}\" now.");
+                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Install;
+                        installationResultViewModel.InstallationLogFilePaths.Add(installLogFilePath);
+                        await installService.PerformAsync(new Operation(installerFilePath, OperationType.Install, installArguments));
+                        installationResultViewModel.State = InstallationResultState.Success;
+                        break;
+                    case InstallerOperation.Uninstall:
+                        if (installerViewModel.IsInstalled == null)
+                            Log.Warn($"Installation status of file \"{installerViewModel.FileName}\" is unavailable, trying to uninstall.");
+                        else if (installerViewModel.IsInstalled == false)
+                            Log.Warn($"The application \"{installerViewModel.Name}\" with ProductCode \"{installerViewModel.ProductCode}\" is not installed. Trying to uninstall anyways but it will likely fail.");
+                        else
+                            Log.Info($"The application \"{installerViewModel.Name}\" with ProductCode \"{installerViewModel.ProductCode}\" will now be uninstalled.");
+
+                        if (String.IsNullOrWhiteSpace(installerViewModel.ProductCode))
+                        {
+                            var exception = new Exception($"Uninstalling \"{installerViewModel.FileName}\" failed: ProductCode is not set.");
+                            Log.Error(exception);
+                            return CreateInstallationFailedResult(viewModelService, installerViewModel, exception);
+                        }
+
+                        Log.Info($"Uninstalling application of installer \"{installerViewModel.FileName}\" now.");
+                        currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
+                        installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
+                        await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
+                        installationResultViewModel.State = InstallationResultState.Success;
+                        break;
+                    default:
+                        installationResultViewModel.State = InstallationResultState.Skipped;
+                        break;
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception);
+                return CreateInstallationFailedResult(viewModelService, installerViewModel, exception);
+            }
+
+            return installationResultViewModel;
+        }
+
+        private static InstallationResultViewModel CreateDownloadFailedResult(IViewModelService viewModelService, InstallerViewModel installerViewModel, IDownloadResult downloadResult)
+        {
+            if (downloadResult.Result != DownloadResultState.Failed)
+                throw new ArgumentException($"Result is {downloadResult.Result.ToString()}, expected {nameof(DownloadResultState.Failed)}.", nameof(downloadResult));
+
+            Exception exception;
+            if (downloadResult is FailedDownloadResult failedDownloadResult)
+            {
+                exception = failedDownloadResult.Exception;
+            }
+            else
+            {
+                exception = new Exception(Strings.ErrorOccured);
+                Log.Error($"DownloadResult with failed state is not of type {nameof(FailedDownloadResult)}.");
+#if DEBUG
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+#endif
+            }
+
+            return CreateDownloadFailedResult(viewModelService, installerViewModel, exception);
+        }
+
+        private static InstallationResultViewModel CreateDownloadFailedResult(IViewModelService viewModelService, InstallerViewModel installerViewModel,
+            Exception exception)
+        {
+            var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+            installationResultViewModel.State = InstallationResultState.DownloadFailed;
+            installationResultViewModel.Exception = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
+            return installationResultViewModel;
+        }
+
+        private static InstallationResultViewModel CreateInstallationFailedResult(IViewModelService viewModelService, InstallerViewModel installerViewModel,
+            Exception exception)
+        {
+            var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+            installationResultViewModel.State = InstallationResultState.InstallationFailed;
+            installationResultViewModel.Exception = viewModelService.CreateViewModel<ExceptionViewModel>(installationResultViewModel, exception);
+            return installationResultViewModel;
+        }
+
+        private static InstallationResultViewModel CreateCancelledResult(IViewModelService viewModelService, InstallerViewModel installerViewModel)
+        {
+            var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+            installationResultViewModel.State = InstallationResultState.Cancelled;
+            return installationResultViewModel;
+        }
+
+        private static InstallationResultViewModel CreateSkippedResult(IViewModelService viewModelService, InstallerViewModel installerViewModel)
+        {
+            var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
+            installationResultViewModel.State = InstallationResultState.Skipped;
+            return installationResultViewModel;
+        }
+
         private static ITempFileCollection CreateTempFileCollection()
         {
             return new TempFileCollection(GetDownloadPath());
@@ -329,15 +372,12 @@ namespace Stein.ViewModels.Services
             return downloadFolderPath;
         }
 
-        private static async Task<DownloadResult> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, InstallationViewModel currentInstallation, ITempFileCollection tempFileCollection, int parallelDownloads = 3, CancellationToken cancellationToken = default)
+        private static async Task<IList<KeyValuePair<InstallerViewModel, IDownloadResult>>> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, InstallationViewModel currentInstallation, ITempFileCollection tempFileCollection, int parallelDownloads = 3, CancellationToken cancellationToken = default)
         {
-            Log.Info($"Starting download of {installerViewModels.Count} files.");
-            
             using (var semaphore = new SemaphoreSlim(parallelDownloads))
             {
                 var downloadTasks = new List<KeyValuePair<InstallerViewModel, Task<IDownloadResult>>>();
                 var progressValues = new ConcurrentDictionary<InstallerViewModel, double>();
-                var downloadResults = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
 
                 foreach (var installer in installerViewModels)
                 {
@@ -355,21 +395,11 @@ namespace Stein.ViewModels.Services
                     downloadTasks.Add(new KeyValuePair<InstallerViewModel, Task<IDownloadResult>>(installer, downloadTask));
                 }
 
+                var downloadResults = new List<KeyValuePair<InstallerViewModel, IDownloadResult>>();
                 foreach (var task in downloadTasks)
                     downloadResults.Add(new KeyValuePair<InstallerViewModel, IDownloadResult>(task.Key, await task.Value));
-
-                var succeededDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.CompletedSuccessfully).ToList();
-                var failedDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Failed).ToList();
-                var cancelledDownloads = downloadResults.Where(dr => dr.Value.Result == DownloadResultState.Cancelled).ToList();
-
-                Log.Info($"Download finished. {succeededDownloads.Count} succeeded, {failedDownloads.Count} failed and {cancelledDownloads.Count} cancelled.");
-
-                return new DownloadResult
-                {
-                    SucceededDownloads = succeededDownloads,
-                    FailedDownloads = failedDownloads,
-                    CancelledDownloads = cancelledDownloads
-                };
+                
+                return downloadResults;
             }
         }
 
