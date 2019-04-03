@@ -91,6 +91,7 @@
     <Compile Include="Configuration\IConfigurationService.cs" />
     <Compile Include="InstallService\Arguments\DisableRebootArgument.cs" />
     <Compile Include="InstallService\IInstallService.cs" />
+    <Compile Include="InstallService\OperationFailedException.cs" />
     <Compile Include="ProductService\ProductService.cs" />
     <Compile Include="MsiService\IMsiService.cs" />
     <Compile Include="InstallService\IOperation.cs" />

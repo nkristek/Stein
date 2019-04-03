@@ -24,6 +24,8 @@ namespace Stein.Services.InstallService
                 var contextArgument = GetContextArgument(operation);
                 var process = StartProcess(contextArgument, operation.Arguments.Select(a => a.Value));
                 process.WaitForExit();
+                if (process.HasExited && process.ExitCode != 0)
+                    throw new OperationFailedException(operation, process.ExitCode);
             }
         }
         
@@ -38,6 +40,8 @@ namespace Stein.Services.InstallService
                 var contextArgument = GetContextArgument(operation);
                 var process = StartProcess(contextArgument, operation.Arguments.Select(a => a.Value));
                 await process.WaitForExitAsync().ConfigureAwait(false);
+                if (process.HasExited && process.ExitCode != 0)
+                    throw new OperationFailedException(operation, process.ExitCode);
             }
         }
 
