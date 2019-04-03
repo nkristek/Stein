@@ -31,6 +31,8 @@ namespace Stein.ViewModels
                         oldValue.PropertyChanged -= CurrentInstallationOnPropertyChanged;
                     if (value != null)
                         value.PropertyChanged += CurrentInstallationOnPropertyChanged;
+                    foreach (var applicationViewModel in Applications)
+                        applicationViewModel.RaisePropertyChanged(nameof(Parent));
                 }
             }
         }

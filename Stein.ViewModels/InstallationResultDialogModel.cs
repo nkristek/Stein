@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -7,6 +8,7 @@ namespace Stein.ViewModels
         : DialogModel
     {
         /// <inheritdoc />
+        [PropertySource(nameof(Name))]
         public override string Title => Name;
 
         private string _name;
