@@ -158,10 +158,6 @@ namespace Stein.ViewModels.Services
                     {
                         var exception = new Exception($"Unexpected download result type \"{downloadResult.GetType().Name}\", should be \"{nameof(SucceededDownloadResult)}\"");
                         Log.Error(exception);
-#if DEBUG
-                        if (Debugger.IsAttached)
-                            Debugger.Break();
-#endif
                         var failedResultViewModel = CreateDownloadFailedResult(viewModelService, installerViewModel, exception);
                         installationResultDialogModel.InstallationResults.Add(failedResultViewModel);
                         currentInstallationViewModel.ProcessedInstallerFileCount++;
@@ -317,10 +313,6 @@ namespace Stein.ViewModels.Services
             {
                 exception = new Exception(Strings.ErrorOccured);
                 Log.Error($"DownloadResult with failed state is not of type {nameof(FailedDownloadResult)}.");
-#if DEBUG
-                if (Debugger.IsAttached)
-                    Debugger.Break();
-#endif
             }
 
             return CreateDownloadFailedResult(viewModelService, installerViewModel, exception);

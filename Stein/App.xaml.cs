@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
@@ -105,11 +104,6 @@ namespace Stein
             {
                 Log.Error(exception);
                 ShowExceptionDialog(exception);
-
-#if DEBUG
-                if (Debugger.IsAttached)
-                    Debugger.Break();
-#endif
             }
             catch
             {
