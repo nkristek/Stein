@@ -15,7 +15,19 @@ namespace Stein.Helpers.Tests
             testInput.ForEach(i => result++);
             Assert.AreEqual(3, result);
         }
-        
+
+        [TestMethod]
+        public void TestDistinctBy()
+        {
+            var first = new KeyValuePair<int, string>(1, "test");
+            var second = new KeyValuePair<int, string>(2, "test");
+            var third = new KeyValuePair<int, string>(3, "test2");
+            var sequence = new List<KeyValuePair<int, string>> { first, second, third };
+            var expectedDistinctValues = new List<KeyValuePair<int, string>> { first, third };
+            var actualDistinctValues = sequence.DistinctBy(kvp => kvp.Value);
+            Assert.IsTrue(expectedDistinctValues.SequenceEqual(actualDistinctValues));
+        }
+
         [TestMethod]
         public void TestMergeSequence()
         {
