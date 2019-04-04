@@ -72,7 +72,6 @@
     <Compile Include="ExceptionView.xaml.cs">
       <DependentUpon>ExceptionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="InstallationResultDialog.xaml.cs">
       <DependentUpon>InstallationResultDialog.xaml</DependentUpon>
     </Compile>
