@@ -76,13 +76,7 @@ namespace Stein
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             var exception = e.Exception;
-            Log.Error(exception);
-            ShowExceptionDialog(exception);
-
-#if DEBUG
-            if (Debugger.IsAttached)
-                Debugger.Break();
-#endif
+            HandleException(exception);
 
             e.Handled = true;
         }
@@ -91,25 +85,14 @@ namespace Stein
         {
             if (!(e.ExceptionObject is Exception exception))
                 return;
-            
-            Log.Error(exception);
-            ShowExceptionDialog(exception);
-#if DEBUG
-            if (Debugger.IsAttached)
-                Debugger.Break();
-#endif
+
+            HandleException(exception);
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             var exception = e.Exception;
-            Log.Error(exception);
-            ShowExceptionDialog(exception);
-
-#if DEBUG
-            if (Debugger.IsAttached)
-                Debugger.Break();
-#endif
+            HandleException(exception);
 
             if (!e.Observed)
                 e.SetObserved();
@@ -118,19 +101,39 @@ namespace Stein
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             var exception = e.Exception;
-            Log.Error(exception);
-            ShowExceptionDialog(exception);
+            HandleException(exception);
+        }
+
+        private void HandleException(Exception exception)
+        {
+            try
+            {
+                Log.Error(exception);
+                ShowExceptionDialog(exception);
 
 #if DEBUG
-            if (Debugger.IsAttached)
-                Debugger.Break();
+                if (Debugger.IsAttached)
+                    Debugger.Break();
 #endif
+            }
+            catch
+            {
+                // no further escalation
+            }
         }
 
         private bool? ShowExceptionDialog(Exception exception)
         {
-            var exceptionDialogModel = _viewModelService.CreateViewModel<ExceptionDialogModel>(null, exception);
-            return _dialogService.ShowDialog(exceptionDialogModel);
+            return Dispatcher.Invoke(() =>
+            {
+                if (_viewModelService == null || _dialogService == null)
+                {
+                    MessageBox.Show(exception.ToString(), "Error");
+                    Environment.Exit(1);
+                }
+                var exceptionDialogModel = _viewModelService.CreateViewModel<ExceptionDialogModel>(null, exception);
+                return _dialogService.ShowDialog(exceptionDialogModel);
+            });
         }
     }
 }
