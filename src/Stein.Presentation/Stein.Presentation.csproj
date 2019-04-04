@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NKristek.Smaragd, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NKristek.Smaragd.4.2.1\lib\net472\NKristek.Smaragd.dll</HintPath>
+      <HintPath>..\..\packages\NKristek.Smaragd.4.2.1\lib\net472\NKristek.Smaragd.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
