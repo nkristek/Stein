@@ -16,8 +16,6 @@ namespace Stein.Helpers
         {
             if (String.IsNullOrEmpty(folderPath))
                 throw new ArgumentNullException(nameof(folderPath));
-            if (!Directory.Exists(folderPath))
-                throw new DirectoryNotFoundException($"Directory \"{folderPath}\" does not exist.");
 
             _folderPath = folderPath;
         }
@@ -42,7 +40,7 @@ namespace Stein.Helpers
                 fileName = Path.Combine(_folderPath, Path.GetFileName(Path.GetTempFileName()));
                 if (!String.IsNullOrWhiteSpace(fileExtension))
                     fileName = Path.ChangeExtension(fileName, fileExtension);
-            } while (_tempFileNames.Contains(fileName) && !File.Exists(fileName));
+            } while (_tempFileNames.Contains(fileName) || File.Exists(fileName));
 
             _tempFileNames.Add(fileName);
             return fileName;
