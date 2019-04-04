@@ -31,10 +31,6 @@ namespace Stein
         
         public App()
         {
-            // uncomment to test localization
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
-            
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
