@@ -38,7 +38,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
                     return;
 
                 if (!dialogModel.IsValid)
-                    _dialogService.ShowMessage(Strings.DialogInputNotValid);
+                    _dialogService.ShowErrorDialog(Strings.DialogInputNotValid, Strings.Error);
             } while (!dialogModel.IsValid);
 
             await _viewModelService.SaveViewModelAsync(dialogModel);

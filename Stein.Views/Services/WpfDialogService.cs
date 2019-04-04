@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localizations;
@@ -21,21 +22,18 @@ namespace Stein.Views.Services
         public bool? ShowDialog(IDialogModel dialogModel)
         {
             var dialog = CreateView<Window>(dialogModel);
-            dialog.Owner = _windowStack.Peek();
-
+            if (_windowStack.Any())
+                dialog.Owner = _windowStack.Peek();
             _windowStack.Push(dialog);
-            
-            bool? result;
+
             try
             {
-                result = dialog.ShowDialog();
+                return dialog.ShowDialog();
             }
             finally
             {
                 _windowStack.Pop();
             }
-
-            return result;
         }
         
         private TView CreateView<TView>(IViewModel contextViewModel) where TView : FrameworkElement
@@ -44,23 +42,55 @@ namespace Stein.Views.Services
                 throw new ArgumentNullException(nameof(contextViewModel));
 
             var resourceKey = contextViewModel.GetType();
-            var view = Application.Current.TryFindResource(resourceKey) ?? Application.Current.MainWindow?.TryFindResource(resourceKey);
+            var view = Application.Current?.TryFindResource(resourceKey) ?? Application.Current?.MainWindow?.TryFindResource(resourceKey);
             if (view == null)
                 throw new NotSupportedException(Strings.NoDialogExistsForDialogModel);
-
-            if (!(view is TView))
+            if (!(view is TView viewAsTargetType))
                 throw new Exception(String.Format(Strings.ViewHasWrongTypeX, resourceKey.Name, view.GetType().Name, typeof(TView).Name));
-
-            var viewAsTargetType = (TView)view;
             viewAsTargetType.DataContext = contextViewModel;
-
             return viewAsTargetType;
         }
 
         /// <inheritdoc />
-        public void ShowMessage(string message)
+        public bool? ShowInfoDialog(string message, string title = null)
         {
-            MessageBox.Show(message);
+            var result = MessageBox.Show(_windowStack.Peek(), message, title ?? String.Empty, MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+            return GetMessageBoxResult(result);
+        }
+
+        /// <inheritdoc />
+        public bool? ShowConfirmDialog(string message, string title = null)
+        {
+            var result = MessageBox.Show(_windowStack.Peek(), message, title ?? String.Empty, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+            return GetMessageBoxResult(result);
+        }
+
+        /// <inheritdoc />
+        public bool? ShowWarningDialog(string message, string title = null)
+        {
+            var result = MessageBox.Show(_windowStack.Peek(), message, title ?? String.Empty, MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.OK);
+            return GetMessageBoxResult(result);
+        }
+
+        /// <inheritdoc />
+        public bool? ShowErrorDialog(string message, string title = null)
+        {
+            var result = MessageBox.Show(_windowStack.Peek(), message, title ?? String.Empty, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+            return GetMessageBoxResult(result);
+        }
+
+        private static bool? GetMessageBoxResult(MessageBoxResult messageBoxResult)
+        {
+            switch (messageBoxResult)
+            {
+                case MessageBoxResult.OK:
+                case MessageBoxResult.Yes: return true;
+                case MessageBoxResult.No: return false;
+                case MessageBoxResult.None:
+                case MessageBoxResult.Cancel: return null;
+            }
+
+            return null;
         }
     }
 }
