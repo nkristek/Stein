@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.Services.InstallService;
-using Stein.ViewModels.Commands.MainWindowViewModelCommands;
+using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
 using Stein.ViewModels.Types;
@@ -33,7 +32,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle), nameof(ApplicationViewModel.IsUpdating))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
-            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel) || mainWindowViewModel.CurrentInstallation != null)
+            if (!(viewModel.Parent is MainWindowDialogModel mainWindowDialogModel) || mainWindowDialogModel.CurrentInstallation != null)
                 return false;
 
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any() && !viewModel.IsUpdating;
@@ -42,7 +41,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         /// <inheritdoc />
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
-            if (!(viewModel.Parent is MainWindowViewModel mainWindowViewModel))
+            if (!(viewModel.Parent is MainWindowDialogModel mainWindowDialogModel))
                 return;
 
             var dialogModel = _viewModelService.CreateViewModel<InstallerBundleDialogModel>(viewModel.SelectedInstallerBundle);
@@ -54,16 +53,16 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             if (!installers.Any())
                 return;
 
-            mainWindowViewModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowViewModel);
-            mainWindowViewModel.CurrentInstallation.Name = viewModel.Name;
-            mainWindowViewModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
+            mainWindowDialogModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowDialogModel);
+            mainWindowDialogModel.CurrentInstallation.Name = viewModel.Name;
+            mainWindowDialogModel.CurrentInstallation.TotalInstallerFileCount = installers.Count;
             
             try
             {
-                mainWindowViewModel.RecentInstallationResult = await ViewModelInstallService.Custom(
+                mainWindowDialogModel.RecentInstallationResult = await ViewModelInstallService.Custom(
                     _viewModelService,
                     _installService,
-                    mainWindowViewModel.CurrentInstallation,
+                    mainWindowDialogModel.CurrentInstallation,
                     installers,
                     viewModel.EnableSilentInstallation,
                     viewModel.DisableReboot,
@@ -74,11 +73,11 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             }
             finally
             {
-                mainWindowViewModel.CurrentInstallation.Dispose();
-                mainWindowViewModel.CurrentInstallation = null;
+                mainWindowDialogModel.CurrentInstallation.Dispose();
+                mainWindowDialogModel.CurrentInstallation = null;
             }
 
-            var refreshCommand = mainWindowViewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>();
+            var refreshCommand = mainWindowDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>();
             if (refreshCommand != null)
                 await refreshCommand.ExecuteAsync(null);
         }

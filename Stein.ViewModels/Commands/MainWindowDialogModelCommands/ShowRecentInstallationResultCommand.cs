@@ -3,10 +3,10 @@ using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 
-namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
+namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {
     public class ShowRecentInstallationResultCommand
-        : ViewModelCommand<MainWindowViewModel>
+        : ViewModelCommand<MainWindowDialogModel>
     {
         private readonly IDialogService _dialogService;
 
@@ -16,14 +16,14 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(MainWindowViewModel.RecentInstallationResult))]
-        protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
+        [CanExecuteSource(nameof(MainWindowDialogModel.RecentInstallationResult))]
+        protected override bool CanExecute(MainWindowDialogModel viewModel, object parameter)
         {
             return viewModel.RecentInstallationResult != null;
         }
 
         /// <inheritdoc />
-        protected override void Execute(MainWindowViewModel viewModel, object parameter)
+        protected override void Execute(MainWindowDialogModel viewModel, object parameter)
         {
             _dialogService.ShowDialog(viewModel.RecentInstallationResult);
         }

@@ -6,10 +6,10 @@ using Stein.Localizations;
 using Stein.Presentation;
 using Stein.ViewModels.Services;
 
-namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
+namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {
     public sealed class AddApplicationCommand
-        : AsyncViewModelCommand<MainWindowViewModel>
+        : AsyncViewModelCommand<MainWindowDialogModel>
     {
         private readonly IDialogService _dialogService;
 
@@ -22,14 +22,14 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(MainWindowViewModel.CurrentInstallation), nameof(MainWindowViewModel.IsUpdating))]
-        protected override bool CanExecute(MainWindowViewModel viewModel, object parameter)
+        [CanExecuteSource(nameof(MainWindowDialogModel.CurrentInstallation), nameof(MainWindowDialogModel.IsUpdating))]
+        protected override bool CanExecute(MainWindowDialogModel viewModel, object parameter)
         {
             return viewModel.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowDialogModel viewModel, object parameter)
         {
             var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
             do

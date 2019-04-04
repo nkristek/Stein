@@ -8,21 +8,18 @@ namespace Stein.Views.Services
     public class WpfTaskbarService
         : IProgressBarService
     {
-        private readonly Window _window;
-
-        public WpfTaskbarService(Window rootWindow)
-        {
-            _window = rootWindow;
-        }
-        
         public void SetState(ProgressBarState state)
         {
-            if (_window.TaskbarItemInfo == null)
-                _window.TaskbarItemInfo = new TaskbarItemInfo();
+            var window = Application.Current?.MainWindow;
+            if (window == null)
+                return;
+
+            if (window.TaskbarItemInfo == null)
+                window.TaskbarItemInfo = new TaskbarItemInfo();
 
             var taskbarState = GetTaskbarState(state);
-            if (_window.TaskbarItemInfo.ProgressState != taskbarState)
-                _window.TaskbarItemInfo.ProgressState = taskbarState;
+            if (window.TaskbarItemInfo.ProgressState != taskbarState)
+                window.TaskbarItemInfo.ProgressState = taskbarState;
         }
 
         private TaskbarItemProgressState GetTaskbarState(ProgressBarState state)
@@ -41,8 +38,12 @@ namespace Stein.Views.Services
         
         public void SetProgress(double progress)
         {
+            var window = Application.Current?.MainWindow;
+            if (window == null)
+                return;
+
             SetState(ProgressBarState.Normal);
-            _window.TaskbarItemInfo.ProgressValue = progress;
+            window.TaskbarItemInfo.ProgressValue = progress;
         }
     }
 }

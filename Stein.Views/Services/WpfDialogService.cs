@@ -13,9 +13,13 @@ namespace Stein.Views.Services
     {
         private readonly Stack<Window> _windowStack = new Stack<Window>();
 
-        public WpfDialogService(Window root)
+        /// <inheritdoc />
+        public void Show(IDialogModel dialogModel)
         {
-            _windowStack.Push(root);
+            var dialog = CreateView<Window>(dialogModel);
+            if (!_windowStack.Any())
+                _windowStack.Push(dialog);
+            dialog.Show();
         }
 
         /// <inheritdoc />

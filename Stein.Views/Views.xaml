@@ -10,9 +10,6 @@
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Views -->
-    <DataTemplate DataType="{x:Type viewModels:MainWindowViewModel}">
-        <views:MainWindowView/>
-    </DataTemplate>
     
     <DataTemplate DataType="{x:Type viewModels:ApplicationViewModel}">
         <views:ApplicationView/>
@@ -43,6 +40,8 @@
     </DataTemplate>
 
     <!-- Dialogs -->
+    <views:MainWindowDialog x:Key="{x:Type viewModels:MainWindowDialogModel}" x:Shared="False"/>
+
     <views:ApplicationDialog x:Key="{x:Type viewModels:ApplicationDialogModel}" x:Shared="False"/>
     
     <views:InstallerBundleDialog x:Key="{x:Type viewModels:InstallerBundleDialogModel}" x:Shared="False"/>

@@ -102,8 +102,8 @@
     <Compile Include="InstallerView.xaml.cs">
       <DependentUpon>InstallerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowView.xaml.cs">
-      <DependentUpon>MainWindowView.xaml</DependentUpon>
+    <Compile Include="MainWindowDialog.xaml.cs">
+      <DependentUpon>MainWindowDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\WpfThemeService.cs" />
   </ItemGroup>
@@ -181,7 +181,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindowView.xaml">
+    <Page Include="MainWindowDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

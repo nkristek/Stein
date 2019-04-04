@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
 using NKristek.Smaragd.ViewModels;
@@ -19,7 +19,7 @@ using Stein.ViewModels.Commands.ApplicationViewModelCommands;
 using Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands;
 using Stein.ViewModels.Commands.ExceptionViewModelCommands;
 using Stein.ViewModels.Commands.InstallationViewModelCommands;
-using Stein.ViewModels.Commands.MainWindowViewModelCommands;
+using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Services
@@ -62,8 +62,8 @@ namespace Stein.ViewModels.Services
         {
             TViewModel viewModel;
 
-            if (typeof(TViewModel) == typeof(MainWindowViewModel))
-                viewModel = CreateMainWindowViewModel(parent) as TViewModel;
+            if (typeof(TViewModel) == typeof(MainWindowDialogModel))
+                viewModel = CreateMainWindowDialogModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
                 viewModel = CreateApplicationDialogModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(InstallerBundleDialogModel))
@@ -184,12 +184,13 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private MainWindowViewModel CreateMainWindowViewModel(IViewModel parent = null)
+        private MainWindowDialogModel CreateMainWindowDialogModel(IViewModel parent = null)
         {
-            var viewModel = new MainWindowViewModel(_themeService)
+            var viewModel = new MainWindowDialogModel(_themeService)
             {
-                Parent = parent
-            };
+                Parent = parent,
+                Title = Assembly.GetEntryAssembly().GetName().Name
+        };
 
             viewModel.AddCommand(new RefreshApplicationsCommand(this)
             {
@@ -453,8 +454,8 @@ namespace Stein.ViewModels.Services
             if (!viewModel.IsDirty)
                 return;
 
-            if (typeof(TViewModel) == typeof(MainWindowViewModel))
-                SaveMainWindowViewModel(viewModel as MainWindowViewModel);
+            if (typeof(TViewModel) == typeof(MainWindowDialogModel))
+                SaveMainWindowDialogModel(viewModel as MainWindowDialogModel);
             else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
                 SaveApplicationDialogModel(viewModel as ApplicationDialogModel);
             else
@@ -464,7 +465,7 @@ namespace Stein.ViewModels.Services
             viewModel.IsDirty = false;
         }
 
-        private void SaveMainWindowViewModel(MainWindowViewModel viewModel)
+        private void SaveMainWindowDialogModel(MainWindowDialogModel viewModel)
         {
             _configurationService.Configuration.SelectedTheme = viewModel.CurrentTheme;
             viewModel.IsDirty = false;
@@ -501,10 +502,10 @@ namespace Stein.ViewModels.Services
             applicationFolder.Configuration = applicationDialog.SelectedProvider.CreateConfiguration();
             applicationFolder.FilterDuplicateInstallers = applicationDialog.FilterDuplicateInstallers;
 
-            if (applicationDialog.Parent is MainWindowViewModel mainWindowViewModel)
+            if (applicationDialog.Parent is MainWindowDialogModel mainWindowDialogModel)
             {
-                var applicationViewModel = CreateApplicationViewModel(applicationFolder, mainWindowViewModel);
-                mainWindowViewModel.Applications.Add(applicationViewModel);
+                var applicationViewModel = CreateApplicationViewModel(applicationFolder, mainWindowDialogModel);
+                mainWindowDialogModel.Applications.Add(applicationViewModel);
             }
 
             applicationDialog.IsDirty = false;
@@ -515,15 +516,15 @@ namespace Stein.ViewModels.Services
         {
             if (typeof(TViewModel) == typeof(ApplicationViewModel))
                 await UpdateApplicationViewModelAsync(viewModel as ApplicationViewModel);
-            else if (typeof(TViewModel) == typeof(MainWindowViewModel))
-                await UpdateMainWindowViewModelAsync(viewModel as MainWindowViewModel);
+            else if (typeof(TViewModel) == typeof(MainWindowDialogModel))
+                await UpdateMainWindowDialogModelAsync(viewModel as MainWindowDialogModel);
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
             viewModel.IsDirty = false;
         }
 
-        private async Task UpdateMainWindowViewModelAsync(MainWindowViewModel viewModel)
+        private async Task UpdateMainWindowDialogModelAsync(MainWindowDialogModel viewModel)
         {
             viewModel.IsUpdating = true;
 

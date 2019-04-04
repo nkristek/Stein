@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using log4net;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
@@ -25,7 +24,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.IsUpdating))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
-            return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
+            return viewModel.Parent is MainWindowDialogModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />

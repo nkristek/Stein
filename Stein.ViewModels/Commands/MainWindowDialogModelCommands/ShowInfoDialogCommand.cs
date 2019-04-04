@@ -3,10 +3,10 @@ using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.ViewModels.Services;
 
-namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
+namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {
     public sealed class ShowInfoDialogCommand
-        : ViewModelCommand<MainWindowViewModel>
+        : ViewModelCommand<MainWindowDialogModel>
     {
         private readonly IDialogService _dialogService;
 
@@ -19,7 +19,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override void Execute(MainWindowViewModel viewModel, object parameter)
+        protected override void Execute(MainWindowDialogModel viewModel, object parameter)
         {
             var dialogModel = _viewModelService.CreateViewModel<AboutDialogModel>(viewModel);
             _dialogService.ShowDialog(dialogModel);

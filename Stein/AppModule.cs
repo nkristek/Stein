@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.Configuration.Upgrades;
@@ -15,16 +14,8 @@ namespace Stein
     internal class AppModule
         : NinjectModule
     {
-        private readonly Window _rootWindow;
-
-        internal AppModule(Window rootWindow)
-        {
-            _rootWindow = rootWindow;
-        }
-
         public override void Load()
         {
-            Bind<Window>().ToConstant(_rootWindow);
             Bind<IDialogService>().To<WpfDialogService>().InSingletonScope();
             Bind<IThemeService>().To<WpfThemeService>().InSingletonScope();
             Bind<IProgressBarService>().To<WpfTaskbarService>().InSingletonScope();

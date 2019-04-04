@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
-using Ninject.Parameters;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.ViewModels;
-using Stein.ViewModels.Commands.MainWindowViewModelCommands;
+using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
 
@@ -36,9 +33,11 @@ namespace Stein
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
-
+        
         protected override async void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+            
             // Ensure the current culture passed into bindings is the OS culture.
             // By default, WPF uses en-US as the culture, regardless of the system settings.
             // https://stackoverflow.com/a/520334
@@ -46,8 +45,9 @@ namespace Stein
                 typeof(FrameworkElement),
                 new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-            var mainWindow = new MainWindow();
-            var kernel = new StandardKernel(new AppModule(mainWindow));
+            var kernel = new StandardKernel(new AppModule());
+            _dialogService = kernel.Get<IDialogService>();
+            _viewModelService = kernel.Get<IViewModelService>();
 
             var configurationService = kernel.Get<IConfigurationService>();
             try
@@ -62,15 +62,10 @@ namespace Stein
 
             var themeService = kernel.Get<IThemeService>();
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
-
-            _viewModelService = kernel.Get<IViewModelService>();
-            _dialogService = kernel.Get<IDialogService>();
-
-            var viewModel = _viewModelService.CreateViewModel<MainWindowViewModel>();
-            viewModel.GetCommand<MainWindowViewModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
-            mainWindow.DataContext = viewModel;
-
-            mainWindow.Show();
+            
+            var viewModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
+            viewModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
+            _dialogService.Show(viewModel);
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

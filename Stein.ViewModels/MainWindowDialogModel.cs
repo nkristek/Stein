@@ -6,17 +6,17 @@ using Stein.Presentation;
 
 namespace Stein.ViewModels
 {
-    public sealed class MainWindowViewModel
-        : ViewModel
+    public sealed class MainWindowDialogModel
+        : DialogModel
     {
         private readonly IThemeService _themeService;
 
-        public MainWindowViewModel(IThemeService themeService)
+        public MainWindowDialogModel(IThemeService themeService)
         {
             _themeService = themeService;
             _themeService.ThemeChanged += (sender, args) => RaisePropertyChanged(nameof(CurrentTheme));
         }
-        
+
         private InstallationViewModel _currentInstallation;
         
         [IsDirtyIgnored]

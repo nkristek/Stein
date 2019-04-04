@@ -20,13 +20,13 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.IsUpdating))]
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
-            return viewModel.Parent is MainWindowViewModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
+            return viewModel.Parent is MainWindowDialogModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
         protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
         {
-            if (!(viewModel.Parent is MainWindowViewModel parent))
+            if (!(viewModel.Parent is MainWindowDialogModel parent))
                 return;
 
             await _viewModelService.DeleteViewModelAsync(viewModel);

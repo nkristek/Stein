@@ -5,7 +5,13 @@ namespace Stein.Presentation
     public interface IDialogService
     {
         /// <summary>
-        /// Shows the corresponding dialog of the <see cref="DialogModel"/>
+        /// Shows the corresponding dialog of the <see cref="DialogModel"/>. It will not wait for the opened dialog to close.
+        /// </summary>
+        /// <param name="dialogModel">The <see cref="DialogModel"/> to show.</param>
+        void Show(IDialogModel dialogModel);
+
+        /// <summary>
+        /// Shows the corresponding dialog of the <see cref="DialogModel"/> and waits for the result.
         /// </summary>
         /// <param name="dialogModel">The <see cref="DialogModel"/> to show.</param>
         /// <returns>The result of the dialog.</returns>

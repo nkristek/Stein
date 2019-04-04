@@ -66,12 +66,12 @@
     <Compile Include="Commands\DependencyViewModelCommands\OpenUriCommand.cs" />
     <Compile Include="Commands\ExceptionViewModelCommands\CopyExceptionDetailsToClipboardCommand.cs" />
     <Compile Include="Commands\InstallationResultDialogModelCommands\OpenLogFolderCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\AddApplicationCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\AddApplicationCommand.cs" />
     <Compile Include="Commands\InstallationViewModelCommands\CancelOperationCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\ChangeThemeCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\RefreshApplicationsCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\ShowInfoDialogCommand.cs" />
-    <Compile Include="Commands\MainWindowViewModelCommands\ShowRecentInstallationResultCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\ChangeThemeCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\RefreshApplicationsCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\ShowInfoDialogCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\ShowRecentInstallationResultCommand.cs" />
     <Compile Include="DependencyViewModel.cs" />
     <Compile Include="DiskInstallerFileBundleProviderViewModel.cs" />
     <Compile Include="ExceptionDialogModel.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="InstallerBundleDialogModel.cs" />
     <Compile Include="InstallerBundleViewModel.cs" />
     <Compile Include="InstallerViewModel.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="MainWindowDialogModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\InstallerFileProvider.cs" />
     <Compile Include="Types\InstallerOperation.cs" />

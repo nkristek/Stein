@@ -4,10 +4,10 @@ using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 using Stein.ViewModels.Services;
 
-namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
+namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {
     public sealed class ChangeThemeCommand
-        : AsyncViewModelCommand<MainWindowViewModel>
+        : AsyncViewModelCommand<MainWindowDialogModel>
     {
         private readonly IViewModelService _viewModelService;
 
@@ -17,7 +17,7 @@ namespace Stein.ViewModels.Commands.MainWindowViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(MainWindowViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowDialogModel viewModel, object parameter)
         {
             if (parameter is string parameterAsString && Enum.TryParse(parameterAsString, out Theme theme))
             {
