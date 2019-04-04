@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Localizations", "Stei
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.ViewModels", "Stein.ViewModels\Stein.ViewModels.csproj", "{10538F60-6022-4815-82EA-36921D746583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.ViewModels.Tests", "Stein.ViewModels.Tests\Stein.ViewModels.Tests.csproj", "{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Views", "Stein.Views\Stein.Views.csproj", "{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Presentation", "Stein.Presentation\Stein.Presentation.csproj", "{46D38A7F-C1EE-4A83-B696-0D32BBDD069B}"
@@ -87,14 +85,6 @@ Global
 		{10538F60-6022-4815-82EA-36921D746583}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10538F60-6022-4815-82EA-36921D746583}.Release|x64.ActiveCfg = Release|Any CPU
 		{10538F60-6022-4815-82EA-36921D746583}.Release|x64.Build.0 = Release|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Debug|x64.Build.0 = Debug|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Release|x64.ActiveCfg = Release|Any CPU
-		{DAAC1BB7-99E8-4C36-97BE-6F5CA08FBF7F}.Release|x64.Build.0 = Release|Any CPU
 		{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}.Debug|x64.ActiveCfg = Debug|Any CPU
