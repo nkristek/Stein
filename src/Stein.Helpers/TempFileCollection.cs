@@ -37,7 +37,7 @@ namespace Stein.Helpers
             string fileName;
             do
             {
-                fileName = Path.Combine(_folderPath, Path.GetFileName(Path.GetTempFileName()));
+                fileName = Path.Combine(_folderPath, Guid.NewGuid().ToString());
                 if (!String.IsNullOrWhiteSpace(fileExtension))
                     fileName = Path.ChangeExtension(fileName, fileExtension);
             } while (_tempFileNames.Contains(fileName) || File.Exists(fileName));

@@ -73,7 +73,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>rock.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\images\app.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -138,7 +138,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="rock.ico" />
+    <Resource Include="..\..\images\app.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">

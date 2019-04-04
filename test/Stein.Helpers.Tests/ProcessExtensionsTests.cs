@@ -1,15 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Stein.Helpers.Tests
 {
-    [TestClass]
     public class ProcessExtensionsTests
     {
-        [TestMethod]
-        public async Task TestWaitForExitAsync()
+        [Fact]
+        public async Task WaitForExitAsync()
         {
             // start process
             var process = new Process
@@ -22,14 +21,14 @@ namespace Stein.Helpers.Tests
                     UseShellExecute = false
                 }
             };
-            Assert.IsTrue(process.Start());
+            Assert.True(process.Start());
 
             // wait for the process to finish
             await process.WaitForExitAsync();
         }
 
-        [TestMethod]
-        public void TestWaitForExitAsyncCancellationToken()
+        [Fact]
+        public void WaitForExitAsync_CancellationToken()
         {
             // start process
             var process = new Process
@@ -42,18 +41,18 @@ namespace Stein.Helpers.Tests
                     UseShellExecute = false
                 }
             };
-            Assert.IsTrue(process.Start());
+            Assert.True(process.Start());
 
             // wait on process with cancellation token
             var tokenSource = new CancellationTokenSource();
             var cancelTask = process.WaitForExitAsync(tokenSource.Token);
-            Assert.IsFalse(cancelTask.IsCanceled, "The task is already cancelled.");
-            Assert.IsFalse(cancelTask.IsCompleted, "The task is already completed.");
-            Assert.IsFalse(cancelTask.IsFaulted, "The task is already faulted.");
+            Assert.False(cancelTask.IsCanceled, "The task is already cancelled.");
+            Assert.False(cancelTask.IsCompleted, "The task is already completed.");
+            Assert.False(cancelTask.IsFaulted, "The task is already faulted.");
 
             // cancel waiting
             tokenSource.Cancel();
-            Assert.IsTrue(cancelTask.IsCanceled, "The task should be cancelled now.");
+            Assert.True(cancelTask.IsCanceled, "The task should be cancelled now.");
 
             // wait for the process to finish
             process.WaitForExit();

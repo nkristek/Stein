@@ -8,11 +8,11 @@ It was built for an environment with regular builds of an application.
 
 **Please note:** This application needs administrator privileges to operate on installers without UI.
 
-![Screenshot](Docs/Screenshot.PNG)
+![screenshot_light](docs/Screenshot.PNG)
 
 Support for dark mode
 
-![Screenshot](Docs/Screenshot_dark.PNG)
+![screenshot_dark](docs/Screenshot_dark.PNG)
 
 ## Available options
 
