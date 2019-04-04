@@ -78,6 +78,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Stein.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdonisUI, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AdonisUI.1.9.0\lib\net40\AdonisUI.dll</HintPath>
