@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -21,6 +22,15 @@ namespace Stein.Services.Configuration
         private readonly string _configurationFileNamePrefix;
 
         private readonly string _configurationFolderPath;
+
+        public ConfigurationService(IConfigurationFactory configurationFactory, IConfigurationUpgradeManager upgradeManager)
+        {
+            _configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+            _upgradeManager = upgradeManager ?? throw new ArgumentNullException(nameof(upgradeManager));
+            
+            _configurationFileNamePrefix = "config";
+            _configurationFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name);
+        }
 
         public ConfigurationService(IConfigurationFactory configurationFactory, IConfigurationUpgradeManager upgradeManager, string configurationFileNamePrefix, string configurationFolderPath)
         {

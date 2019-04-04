@@ -53,11 +53,7 @@ namespace Stein
             var mainWindow = new MainWindow();
             var kernel = new StandardKernel(new AppModule(mainWindow));
 
-            var configurationNamePrefix = "config";
-            var configurationFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name);
-            var configurationService = kernel.Get<IConfigurationService>(
-                new ConstructorArgument("configurationFileNamePrefix", configurationNamePrefix),
-                new ConstructorArgument("configurationFolderPath", configurationFolderPath));
+            var configurationService = kernel.Get<IConfigurationService>();
             try
             {
                 await configurationService.LoadConfigurationAsync();
