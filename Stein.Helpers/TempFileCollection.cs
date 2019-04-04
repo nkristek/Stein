@@ -49,7 +49,7 @@ namespace Stein.Helpers
         }
 
         /// <inheritdoc />
-        protected override void DisposeManagedResources()
+        protected override void DisposeNativeResources()
         {
             foreach (var fileName in _tempFileNames)
             {
