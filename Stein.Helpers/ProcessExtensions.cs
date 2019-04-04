@@ -14,7 +14,7 @@ namespace Stein.Helpers
         /// <param name="process">The <see cref="Process"/> to wait on.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/>. If invoked, the task will return immediately as canceled.</param>
         /// <returns>A <see cref="Task"/> representing waiting for the <see cref="Process"/> to end.</returns>
-        public static async Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task WaitForExitAsync(this Process process, CancellationToken cancellationToken = default)
         {
             var tcs = new TaskCompletionSource<bool>();
 
