@@ -86,6 +86,8 @@
       <DependentUpon>InstallerBundleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\PeriodicBindingUpdateBehavior.cs" />
+    <Compile Include="Resources\PeriodicBindingUpdateMode.cs" />
+    <Compile Include="Resources\WeakTimer.cs" />
     <Compile Include="Ressources.cs" />
     <Compile Include="Services\WpfDialogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

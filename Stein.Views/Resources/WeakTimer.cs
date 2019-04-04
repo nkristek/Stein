@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Stein.Views.Resources
 {
@@ -12,7 +8,8 @@ namespace Stein.Views.Resources
     /// Wraps up a <see cref="T:System.Threading.Timer" /> with only a <see cref="T:System.WeakReference" /> to the callback so that the timer does not prevent GC from collecting the object that uses this timer.
     /// Your object must hold a reference to the callback passed into this timer.
     /// </summary>
-    internal class WeakTimer : IDisposable
+    internal class WeakTimer 
+        : IDisposable
     {
         private readonly Timer _timer;
 
