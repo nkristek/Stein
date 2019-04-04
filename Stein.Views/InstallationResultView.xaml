@@ -46,6 +46,7 @@
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Success}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
+                            Focusable="False"
                             ContentTemplate="{StaticResource SuccessIconVariant}"
                             Foreground="#2ecc71"
                             Width="{adonisUi:Space 2}"
@@ -56,6 +57,7 @@
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
+                            Focusable="False"
                             ContentTemplate="{StaticResource CancelIconVariant}"
                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.AlertBrush}}"
                             Width="{adonisUi:Space 2}"
@@ -66,6 +68,7 @@
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=DownloadFailed}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
+                            Focusable="False"
                             ContentTemplate="{StaticResource ErrorIconVariant}"
                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}"
                             Width="{adonisUi:Space 2}"
@@ -76,6 +79,7 @@
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=InstallationFailed}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
+                            Focusable="False"
                             ContentTemplate="{StaticResource ErrorIconVariant}"
                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}"
                             Width="{adonisUi:Space 2}"
@@ -86,6 +90,7 @@
                             Visibility="{Binding State, Converter={c:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Skipped}"
                             VerticalAlignment="Center"
                             VerticalContentAlignment="Center"
+                            Focusable="False"
                             ContentTemplate="{StaticResource SkipIconVariant}"
                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
                             Width="{adonisUi:Space 2}"
@@ -106,6 +111,7 @@
                   Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"
                   extensions:LayerExtension.Layer="2">
                 <ContentControl Margin="{adonisUi:Space 1}"
+                                Focusable="False"
                                 Content="{Binding Exception}"/>
             </Grid>
         </Grid>

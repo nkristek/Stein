@@ -7,8 +7,8 @@
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallerBundleViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
-        <TextBlock TextTrimming="CharacterEllipsis"
-                   Text="{Binding Name}"/>
-    </Grid>
+
+    <TextBlock TextTrimming="CharacterEllipsis"
+               Text="{Binding Name}"/>
+ 
 </UserControl>

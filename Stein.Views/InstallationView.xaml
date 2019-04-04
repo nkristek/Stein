@@ -16,6 +16,7 @@
                      HorizontalContentAlignment="Stretch"
                      VerticalAlignment="Stretch"
                      VerticalContentAlignment="Stretch"
+                     Focusable="False"
                      Margin="{adonisUi:Space 0}"
                      Padding="{adonisUi:Space 0}"
                      Value="{Binding Progress, Mode=OneWay}"

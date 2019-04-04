@@ -66,6 +66,7 @@
               Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
               extensions:LayerExtension.Layer="1">
             <ItemsControl Grid.IsSharedSizeScope="True"
+                          Focusable="False"
                           Margin="{adonisUi:Space 1,0.5}"
                           HorizontalContentAlignment="Stretch"
                           ItemsSource="{Binding Installers}"

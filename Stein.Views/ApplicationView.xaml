@@ -47,6 +47,7 @@
                         <DataTemplate>
                             <ContentControl VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
+                                            Focusable="False"
                                             DataContext="{Binding ProviderType}"
                                             Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
                                             Width="{adonisUi:Space 2}"
@@ -153,10 +154,11 @@
             </Grid>
 
             <adonisControls:SplitButton Grid.Column="3"
-                                  Content="{x:Static localization:Strings.Install}"
-                                  ToolTip="{x:Static localization:Strings.InstallDescription}"
-                                  Padding="{adonisUi:Space 2,0.5}"
-                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
+                                        Focusable="False"
+                                        Content="{x:Static localization:Strings.Install}"
+                                        ToolTip="{x:Static localization:Strings.InstallDescription}"
+                                        Padding="{adonisUi:Space 2,0.5}"
+                                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
                 <adonisControls:SplitButton.SplitMenu>
                     <ContextMenu>
                         <MenuItem Header="{x:Static localization:Strings.Install}"

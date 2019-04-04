@@ -16,5 +16,6 @@
                BasedOn="{StaticResource {x:Type Window}}"/>
     </Window.Style>
 
-    <ContentControl Content="{Binding}"/>
+    <ContentControl Content="{Binding}"
+                    Focusable="False"/>
 </Window>

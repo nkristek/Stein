@@ -31,6 +31,7 @@
         </Grid.RowDefinitions>
 
         <ContentControl Grid.Row="0"
+                        Focusable="False"
                         Content="{Binding Exception}"/>
 
         <Grid Grid.Row="2"

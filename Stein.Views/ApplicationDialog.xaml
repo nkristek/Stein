@@ -213,7 +213,8 @@
                     </DataTemplate>
                 </Grid.Resources>
 
-                <ContentControl Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"/>
+                <ContentControl Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
+                                Focusable="False"/>
             </Grid>
         </Grid>
 

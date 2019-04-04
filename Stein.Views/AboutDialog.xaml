@@ -83,6 +83,7 @@
                        Text="{x:Static localization:Strings.Dependencies}"/>
 
             <ItemsControl Grid.Row="2" 
+                          Focusable="False"
                           ItemsSource="{Binding Dependencies}"/>
         </Grid>
 
