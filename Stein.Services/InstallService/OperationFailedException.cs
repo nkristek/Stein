@@ -2,6 +2,7 @@
 
 namespace Stein.Services.InstallService
 {
+    [Serializable]
     public class OperationFailedException
         : Exception
     {
