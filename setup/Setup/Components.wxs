@@ -11,7 +11,7 @@
 
     </ComponentGroup>
 
-    <DirectoryRef Id="INSTALLFOLDER" FileSource="..\..\src\Stein\bin\$(var.Configuration)\">
+    <DirectoryRef Id="INSTALLFOLDER" FileSource="..\..\src\Stein\bin\$(var.Platform)\">
 
       <!-- Shortcut to main application -->
       <Component Id="MainAppShortcut" Guid="{4DEA3F8A-1466-41D1-A487-CFEA8219B403}">
