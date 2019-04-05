@@ -5,8 +5,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Stein.Helpers;
 using Stein.Services.InstallerFiles.Base;
+using Stein.Utility;
 
 namespace Stein.Services.InstallerFiles.GitHub
 {

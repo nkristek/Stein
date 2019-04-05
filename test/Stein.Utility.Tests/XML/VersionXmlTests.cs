@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using Stein.Helpers.XML;
+using Stein.Utility.XML;
 using Xunit;
 
-namespace Stein.Helpers.Tests.XML
+namespace Stein.Utility.Tests.XML
 {
     public class VersionXmlTests
     {

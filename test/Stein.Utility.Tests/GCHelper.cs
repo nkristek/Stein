@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stein.Helpers.Tests
+namespace Stein.Utility.Tests
 {
     internal static class GCHelper
     {

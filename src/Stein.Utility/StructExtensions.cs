@@ -1,4 +1,4 @@
-﻿namespace Stein.Helpers
+﻿namespace Stein.Utility
 {
     public static class StructExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stein.Helpers
+namespace Stein.Utility
 {
     /// <summary>
     /// A collection of temporary file names. When disposed, they will be deleted.

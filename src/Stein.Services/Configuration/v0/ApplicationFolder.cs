@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Stein.Helpers.XML;
+using Stein.Utility.XML;
 
 namespace Stein.Services.Configuration.v0
 {

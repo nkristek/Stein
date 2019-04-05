@@ -94,10 +94,6 @@
     <Compile Include="Services\ViewModelService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stein.Helpers\Stein.Helpers.csproj">
-      <Project>{8B1A8F56-1C5C-4669-B42C-57117A00D116}</Project>
-      <Name>Stein.Helpers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stein.Localizations\Stein.Localizations.csproj">
       <Project>{a84ba3a1-fd2d-4255-8a5c-73ab256c8edc}</Project>
       <Name>Stein.Localizations</Name>
@@ -109,6 +105,10 @@
     <ProjectReference Include="..\Stein.Services\Stein.Services.csproj">
       <Project>{ccb623e3-0cc7-4a5c-b956-a591cc4bd3f5}</Project>
       <Name>Stein.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj">
+      <Project>{a2bec857-b5e5-4863-9d15-5fa7ddf48328}</Project>
+      <Name>Stein.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

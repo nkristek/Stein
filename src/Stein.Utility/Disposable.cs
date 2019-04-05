@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stein.Helpers
+namespace Stein.Utility
 {
     /// <summary>
     /// <see cref="IDisposable"/> implementation which provides an easier way to implement the IDisposable interface

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Stein.Helpers.Tests
+namespace Stein.Utility.Tests
 {
     public class ProcessExtensionsTests
     {

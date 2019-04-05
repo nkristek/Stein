@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.ViewModels.Services;

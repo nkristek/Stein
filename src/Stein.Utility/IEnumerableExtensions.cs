@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Stein.Helpers
+namespace Stein.Utility
 {
     public static class IEnumerableExtensions
     {

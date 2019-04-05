@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Stein.Helpers.Tests
+namespace Stein.Utility.Tests
 {
     public class TempFileCollectionTests
     {

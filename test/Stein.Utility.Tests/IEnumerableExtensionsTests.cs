@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace Stein.Helpers.Tests
+namespace Stein.Utility.Tests
 {
     public class IEnumerableExtensionsTests
     {

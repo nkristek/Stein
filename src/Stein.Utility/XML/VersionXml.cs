@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Stein.Helpers.XML
+namespace Stein.Utility.XML
 {
     /// <summary>
     /// Encodes and decodes a <see cref="Version"/> in XML serialization.

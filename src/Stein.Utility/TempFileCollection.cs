@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Stein.Helpers
+namespace Stein.Utility
 {
     /// <inheritdoc cref="ITempFileCollection" />
     public class TempFileCollection

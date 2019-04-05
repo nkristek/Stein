@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace Stein.Helpers.XML
+namespace Stein.Utility.XML
 {
     /// <summary>
     /// Encodes and decodes a <see cref="DateTime"/> in XML serialization.
@@ -45,7 +45,7 @@ namespace Stein.Helpers.XML
 
         public static implicit operator DateTime(DateTimeXml dateTimeXml)
         {
-            return dateTimeXml?.Value ?? default(DateTime);
+            return dateTimeXml?.Value ?? default;
         }
         
         public override string ToString()

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Win32;
-using Stein.Helpers;
+using Stein.Utility;
 
 namespace Stein.Services.ProductService
 {

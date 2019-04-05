@@ -7,10 +7,10 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
-using Stein.Helpers;
 using Stein.Localizations;
 using Stein.Services.InstallService;
 using Stein.Services.InstallService.Arguments;
+using Stein.Utility;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Services

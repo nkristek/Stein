@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
-using Stein.Helpers.XML;
+using Stein.Utility.XML;
 using Xunit;
 
-namespace Stein.Helpers.Tests.XML
+namespace Stein.Utility.Tests.XML
 {
-    public class DateTimeXmlTests
+    public class CDataStringTests
     {
         [Serializable]
         public class TestClass
         {
             [XmlElement]
-            public DateTimeXml Date;
+            public CDataString String;
 
             private static readonly XmlSerializer XmlSerializer = new XmlSerializer(typeof(TestClass), typeof(TestClass).GetNestedTypes());
 
@@ -37,18 +37,17 @@ namespace Stein.Helpers.Tests.XML
         {
             var instance = new TestClass
             {
-                Date = new DateTime(2000, 1, 1, 1, 1, 1)
+                String = "test"
             };
-            var t = instance.ToXml();
-            Assert.Contains("630822852610000000", instance.ToXml());
+            Assert.Contains("<![CDATA[test]]>", instance.ToXml());
         }
 
         [Fact]
         public void CreateFromXml()
         {
-            var xmlData = "<TestClass xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><Date>630822852610000000</Date></TestClass>";
+            var xmlData = "<TestClass xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><String><![CDATA[test]]></String></TestClass>";
             var test = TestClass.CreateFromXml(xmlData);
-            Assert.Equal(new DateTime(2000, 1, 1, 1, 1, 1), test.Date.Value);
+            Assert.Equal("test", test.String);
         }
     }
 }

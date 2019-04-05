@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Stein.Helpers.XML
+namespace Stein.Utility.XML
 {
     /// <summary>
     /// Encodes and decodes a <see cref="string"/> as CDATA in XML serialization.
