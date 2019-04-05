@@ -6,7 +6,7 @@
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
              xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
-             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"

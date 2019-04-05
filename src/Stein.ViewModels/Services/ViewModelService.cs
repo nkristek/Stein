@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.Configuration.v2;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using NKristek.Smaragd.Commands;
-using Stein.Localizations;
+using Stein.Localization;
 
 namespace Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands
 {

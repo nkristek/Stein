@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Stein.Views"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:GitHubInstallerFileBundleProviderViewModel, IsDesignTimeCreatable=True}">

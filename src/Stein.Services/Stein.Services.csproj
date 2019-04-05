@@ -103,12 +103,8 @@
     <Compile Include="ProductService\IProduct.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Stein.Localizations\Stein.Localizations.csproj">
-      <Project>{a84ba3a1-fd2d-4255-8a5c-73ab256c8edc}</Project>
-      <Name>Stein.Localizations</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">
-      <Project>{46D38A7F-C1EE-4A83-B696-0D32BBDD069B}</Project>
+      <Project>{46d38a7f-c1ee-4a83-b696-0d32bbdd069b}</Project>
       <Name>Stein.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj">

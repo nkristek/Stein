@@ -7,7 +7,7 @@
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:converters1="clr-namespace:Stein.Views.Converters"
-             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallationViewModel, IsDesignTimeCreatable=True}">

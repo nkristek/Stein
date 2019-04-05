@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Stein.Localizations;
 using Stein.Utility;
 
 namespace Stein.Services.InstallService
@@ -55,13 +53,11 @@ namespace Stein.Services.InstallService
                 case OperationType.Install:
                 case OperationType.Reinstall:
                     if (String.IsNullOrEmpty(operation.Context))
-                        throw new ArgumentException(Strings.InstallerPathIsEmpty);
-                    if (!File.Exists(operation.Context))
-                        throw new FileNotFoundException(String.Format(Strings.InstallerNotFound, operation.Context), operation.Context);
+                        throw new ArgumentException("Context of operation is empty.");
                     break;
                 case OperationType.Uninstall:
                     if (String.IsNullOrEmpty(operation.Context))
-                        throw new ArgumentException(Strings.ProductCodeIsEmpty);
+                        throw new ArgumentException("Context of operation is empty.");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(operation.Type));

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.ViewModels.Types;
 
 namespace Stein.Views.Converters

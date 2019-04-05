@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.Presentation;
 
 namespace Stein.Views.Services

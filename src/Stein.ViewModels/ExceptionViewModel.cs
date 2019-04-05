@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localizations;
+using Stein.Localization;
 
 namespace Stein.ViewModels
 {

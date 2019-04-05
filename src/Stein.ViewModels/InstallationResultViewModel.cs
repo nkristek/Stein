@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels

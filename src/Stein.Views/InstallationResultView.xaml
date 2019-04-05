@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Stein.Views"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
-             xmlns:localization="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"

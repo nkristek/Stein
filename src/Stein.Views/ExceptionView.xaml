@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Stein.Views"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-             xmlns:localizations="clr-namespace:Stein.Localizations;assembly=Stein.Localizations"
+             xmlns:localizations="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:ExceptionViewModel, IsDesignTimeCreatable=True}">
     <Grid>

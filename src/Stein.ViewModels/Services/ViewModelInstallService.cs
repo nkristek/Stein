@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.Services.InstallService;
 using Stein.Services.InstallService.Arguments;
 using Stein.Utility;

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.Presentation;
 using Stein.ViewModels.Services;
 

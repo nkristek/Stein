@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using NKristek.Smaragd.Validation;
-using Stein.Localizations;
+using Stein.Localization;
 using Stein.Services.Configuration.v2;
 
 namespace Stein.ViewModels
