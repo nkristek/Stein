@@ -1,15 +1,22 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
 {
     public sealed class OpenLogFolderCommand
         : ViewModelCommand<ApplicationDialogModel>
     {
+        private readonly IUriService _uriService;
+
+        public OpenLogFolderCommand(IUriService uriService)
+        {
+            _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+        }
+
         /// <inheritdoc />
         [CanExecuteSource(nameof(ApplicationDialogModel.Name))]
         protected override bool CanExecute(ApplicationDialogModel viewModel, object parameter)
@@ -23,7 +30,7 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
             var directoryName = GetLogFolderPath(viewModel.Name);
             if (!Directory.Exists(directoryName))
                 Directory.CreateDirectory(directoryName);
-            Process.Start(directoryName);
+            _uriService.OpenUri(directoryName);
         }
 
         private static string GetLogFolderPath(string applicationName)

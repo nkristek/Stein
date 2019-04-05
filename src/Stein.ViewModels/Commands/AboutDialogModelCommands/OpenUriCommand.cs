@@ -1,13 +1,20 @@
 ﻿using System;
-using System.Diagnostics;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.AboutDialogModelCommands
 {
     public sealed class OpenUriCommand
         : ViewModelCommand<AboutDialogModel>
     {
+        private readonly IUriService _uriService;
+
+        public OpenUriCommand(IUriService uriService)
+        {
+            _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+        }
+
         /// <inheritdoc />
         [CanExecuteSource(nameof(AboutDialogModel.Uri))]
         protected override bool CanExecute(AboutDialogModel viewModel, object parameter)
@@ -18,7 +25,7 @@ namespace Stein.ViewModels.Commands.AboutDialogModelCommands
         /// <inheritdoc />
         protected override void Execute(AboutDialogModel viewModel, object parameter)
         {
-            Process.Start(new ProcessStartInfo(viewModel.Uri.AbsoluteUri));
+            _uriService.OpenUri(viewModel.Uri);
         }
     }
 }

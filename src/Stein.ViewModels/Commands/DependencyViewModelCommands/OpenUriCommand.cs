@@ -2,12 +2,20 @@
 using System.Diagnostics;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
+using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.DependencyViewModelCommands
 {
     public sealed class OpenUriCommand
         : ViewModelCommand<DependencyViewModel>
     {
+        private readonly IUriService _uriService;
+
+        public OpenUriCommand(IUriService uriService)
+        {
+            _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+        }
+
         /// <inheritdoc />
         [CanExecuteSource(nameof(DependencyViewModel.Uri))]
         protected override bool CanExecute(DependencyViewModel viewModel, object parameter)
@@ -18,7 +26,7 @@ namespace Stein.ViewModels.Commands.DependencyViewModelCommands
         /// <inheritdoc />
         protected override void Execute(DependencyViewModel viewModel, object parameter)
         {
-            Process.Start(new ProcessStartInfo(viewModel.Uri.AbsoluteUri));
+            _uriService.OpenUri(viewModel.Uri);
         }
     }
 }

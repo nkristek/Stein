@@ -26,6 +26,7 @@ namespace Stein
             Bind<IInstallerFileBundleProviderFactory>().To<InstallerFileBundleProviderFactory>().InSingletonScope();
 
             Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
+            Bind<IUriService>().To<UriService>().InSingletonScope();
 
             Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
             Bind<IConfigurationUpgradeManager>().To<ConfigurationUpgradeManager>().InSingletonScope();

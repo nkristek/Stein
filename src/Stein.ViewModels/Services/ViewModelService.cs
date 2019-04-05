@@ -45,7 +45,9 @@ namespace Stein.ViewModels.Services
 
         private readonly IInstallerFileBundleProviderFactory _installerFileBundleProviderFactory;
 
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory)
+        private readonly IUriService _uriService;
+
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
@@ -55,6 +57,7 @@ namespace Stein.ViewModels.Services
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _msiService = msiService ?? throw new ArgumentNullException(nameof(msiService));
             _installerFileBundleProviderFactory = installerFileBundleProviderFactory ?? throw new ArgumentNullException(nameof(installerFileBundleProviderFactory));
+            _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
         }
 
         /// <inheritdoc />
@@ -126,7 +129,7 @@ namespace Stein.ViewModels.Services
                 Parent = parent,
                 IsDirty = false
             };
-            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand
+            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService)
             {
                 Parent = dialogModel
             });
@@ -264,7 +267,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new OpenProviderLinkCommand
+            viewModel.AddCommand(new OpenProviderLinkCommand(_uriService)
             {
                 Parent = viewModel
             });
@@ -334,7 +337,7 @@ namespace Stein.ViewModels.Services
                 dialogModel.SelectedProvider = dialogModel.AvailableProviders.FirstOrDefault();
             }
             
-            dialogModel.AddCommand(new OpenLogFolderCommand
+            dialogModel.AddCommand(new OpenLogFolderCommand(_uriService)
             {
                 Parent = dialogModel
             });
@@ -429,14 +432,14 @@ namespace Stein.ViewModels.Services
                 IsDirty = false
             });
 
-            viewModel.AddCommand(new OpenUriCommand
+            viewModel.AddCommand(new OpenUriCommand(_uriService)
             {
                 Parent = viewModel
             });
 
             foreach (var dependency in viewModel.Dependencies)
             { 
-                dependency.AddCommand(new Commands.DependencyViewModelCommands.OpenUriCommand
+                dependency.AddCommand(new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService)
                 {
                     Parent = dependency
                 });
