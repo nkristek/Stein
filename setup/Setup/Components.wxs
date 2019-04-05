@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <Fragment>
+
+    <!-- Product components -->
+    <ComponentGroup Id="ProductComponents">
+
+      <!-- Shortcut -->
+      <ComponentRef Id="MainAppShortcut"/>
+
+    </ComponentGroup>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+
+      <!-- Shortcut to main application -->
+      <Component Id="MainAppShortcut" Guid="{4DEA3F8A-1466-41D1-A487-CFEA8219B403}">
+
+        <Shortcut Id="MainAppShortcut"
+                  Name="!(loc.ProductName_short)"
+                  Target="[INSTALLFOLDER]Stein.exe"
+                  Directory="ProgramMenuFolder_Application"
+                  WorkingDirectory="INSTALLFOLDER"
+                  Icon="app.ico"/>
+
+        <!-- Unique key for this component/shortcut -->
+        <RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductFolderName)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
+        
+        <!--Remove start menu items -->
+        <RemoveFolder Id="RemoveStartMenu" Directory="ProgramMenuFolder_Application" On="uninstall" />
+      </Component>
+
+    </DirectoryRef>
+
+  </Fragment>
+
+</Wix>

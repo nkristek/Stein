@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <!-- Change the ProductCode for every release -->
+  <?if $(var.Platform)=x64 ?>
+  <?define ProductCode = "{E45BD6BE-2BE1-49FD-A0F0-011CB79539C3}" ?>
+  <?else?>
+  <?define ProductCode = "{E8E66E73-1714-4A2F-AA4E-8B3F45282EF5}" ?>
+  <?endif?>
+
+  <!-- Don't change the UpgradeCode -->
+  <?define UpgradeCode = "{B622B1E3-F163-42FD-AE2F-226CFC1DEE3E}" ?>
+
+  <!-- Main product -->
+  <Product Id="$(var.ProductCode)" 
+           Name="!(loc.ProductName_$(var.Platform))" 
+           Language="!(loc.Language)" 
+           Version="$(var.BuildVersion)" 
+           Manufacturer="!(loc.Company)" 
+           UpgradeCode="$(var.UpgradeCode)">
+
+    <!-- Package details -->
+    <Package InstallerVersion="200" 
+             Compressed="yes" 
+             InstallScope="perMachine"
+             Platform="$(var.Platform)"
+             Manufacturer="!(loc.Company)"
+             Description="!(loc.Description)"
+             Keywords="!(loc.Keywords)"
+             Comments="!(loc.Comments)"
+             Languages="!(loc.Language)"/>
+
+    <!-- Downgrade error message -->
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+
+    <!-- Include .cab file into .msi file -->
+		<MediaTemplate EmbedCab="yes"/>
+
+    <!-- Define app icon -->
+    <Icon Id="app.ico" SourceFile="$(var.ProjectDir)\..\..\images\app.ico"/>
+
+    <!-- Set app icon for Add/Remove programs panel -->
+    <Property Id="ARPPRODUCTICON">app.ico</Property>
+
+    <!-- Set help url for Add/Remove programs panel -->
+    <Property Id="ARPURLINFOABOUT">!(loc.ProjectUrl)</Property>
+    <Property Id="ARPURLUPDATEINFO">!(loc.ReleaseUrl)</Property>
+
+    <!-- Create a basic UI for the installer -->
+    <UIRef Id="WixUI_Minimal"/>
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\assets\LICENSE.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\assets\background.bmp"/>
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\assets\banner.bmp"/>
+
+    <!-- Define components, shortcuts, files etc. -->
+		<Feature Id="ProductFeature" Title="!(loc.ProductName_short)" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="PublishedComponents" />
+		</Feature>
+	</Product>
+
+</Wix>
