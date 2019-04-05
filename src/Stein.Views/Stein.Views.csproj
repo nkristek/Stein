@@ -66,11 +66,17 @@
     <Compile Include="DependencyView.xaml.cs">
       <DependentUpon>DependencyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DiskInstallerFileBundleProviderView.xaml.cs">
+      <DependentUpon>DiskInstallerFileBundleProviderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExceptionDialog.xaml.cs">
       <DependentUpon>ExceptionDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExceptionView.xaml.cs">
       <DependentUpon>ExceptionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GitHubInstallerFileBundleProviderView.xaml.cs">
+      <DependentUpon>GitHubInstallerFileBundleProviderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstallationResultDialog.xaml.cs">
       <DependentUpon>InstallationResultDialog.xaml</DependentUpon>
@@ -134,11 +140,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DiskInstallerFileBundleProviderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExceptionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ExceptionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GitHubInstallerFileBundleProviderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

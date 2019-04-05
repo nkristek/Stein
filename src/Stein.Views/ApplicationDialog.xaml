@@ -154,68 +154,9 @@
                 </ComboBox>
             </Grid>
 
-            <Grid Grid.Row="2">
-                <Grid.Resources>
-                    <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" 
-                                                  SharedSizeGroup="LabelColumn"/>
-                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Bold"
-                                   Content="{x:Static localization:Strings.Path}"
-                                   Target="PathTextBox"/>
-
-                            <TextBox x:Name="PathTextBox" 
-                                     Grid.Column="2"
-                                     VerticalAlignment="Stretch"
-                                     VerticalContentAlignment="Center"
-                                     Text="{Binding Path, UpdateSourceTrigger=PropertyChanged}"/>
-
-                            <Button Grid.Column="4"
-                                    Content="{x:Static localization:Strings.Hellip}"
-                                    Padding="{adonisUi:Space 2,0.5}"
-                                    Command="{Binding Commands[Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands.SelectFolderCommand]}"/>
-                        </Grid>
-                    </DataTemplate>
-
-                    <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" 
-                                                  SharedSizeGroup="LabelColumn"/>
-                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   FontWeight="Bold"
-                                   Content="{x:Static localization:Strings.Repository}"/>
-
-                            <TextBox Grid.Column="2"
-                                     VerticalAlignment="Stretch"
-                                     VerticalContentAlignment="Center"
-                                     adonisExtensions:WatermarkExtension.IsWatermarkVisible="True"
-                                     adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.RepositoryWatermark}"
-                                     Text="{Binding Repository, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
-
-                        </Grid>
-                    </DataTemplate>
-                </Grid.Resources>
-
-                <ContentControl Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
-                                Focusable="False"/>
-            </Grid>
+            <ContentControl Grid.Row="2"
+                            Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
+                            Focusable="False"/>
         </Grid>
 
         <!-- Silent Install -->

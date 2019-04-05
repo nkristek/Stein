@@ -39,6 +39,14 @@
         <views:InstallationView/>
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
+        <views:DiskInstallerFileBundleProviderView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
+        <views:GitHubInstallerFileBundleProviderView/>
+    </DataTemplate>
+
     <!-- Dialogs -->
     <views:MainWindowDialog x:Key="{x:Type viewModels:MainWindowDialogModel}" x:Shared="False"/>
 
