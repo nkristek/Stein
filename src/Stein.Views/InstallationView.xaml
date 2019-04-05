@@ -80,8 +80,7 @@
                     Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                     ContentTemplate="{DynamicResource DeleteIconVariant}"
                     Command="{Binding Commands[Stein.ViewModels.Commands.InstallationViewModelCommands.CancelOperationCommand]}"
-                    ToolTip="{x:Static localization:Strings.Cancel}"
-                    ToolTipService.InitialShowDelay="0"/>
+                    ToolTip="{x:Static localization:Strings.Cancel}"/>
         </Grid>
     </Grid>
 </UserControl>
