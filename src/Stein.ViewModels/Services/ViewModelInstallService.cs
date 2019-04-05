@@ -215,13 +215,13 @@ namespace Stein.ViewModels.Services
             var installArguments = GetArguments(
                 enableSilentInstallation,
                 disableReboot,
-                enableInstallationLogging,
+                enableInstallationLogging && !String.IsNullOrEmpty(installLogFilePath),
                 installLogFilePath).ToArray();
             var uninstallLogFilePath = GetLogFilePathForInstaller(logFolderPath, installerViewModel.Name, "uninstall");
             var uninstallArguments = GetArguments(
                 enableSilentInstallation,
                 disableReboot,
-                enableInstallationLogging,
+                enableInstallationLogging && !String.IsNullOrEmpty(uninstallLogFilePath),
                 uninstallLogFilePath).ToArray();
             try
             {
@@ -249,12 +249,15 @@ namespace Stein.ViewModels.Services
                             try
                             {
                                 await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
+                                Log.Info($"Finished uninstalling.");
                             }
-                            catch
+                            catch (Exception exception)
                             {
                                 // suppress exception if installation status is unknown
                                 if (installerViewModel.IsInstalled == true)
                                     throw;
+
+                                Log.Warn("Uninstalling failed, but since it wasn't known, if the application was already installed, the operation will continue", exception);
                             }
                         }
 
@@ -418,6 +421,7 @@ namespace Stein.ViewModels.Services
             }
             catch (Exception exception)
             {
+                Log.Error("Download failed", exception);
                 return new FailedDownloadResult(exception);
             }
             finally
@@ -472,9 +476,10 @@ namespace Stein.ViewModels.Services
             var currentDate = DateTime.Now;
             var logFileName = $"{currentDate.Year}-{currentDate.Month}-{currentDate.Day}_{currentDate.Hour}-{currentDate.Minute}-{currentDate.Second}_{installerName}_{installMethod}.txt";
             var logFilePath = Path.Combine(logFolderName, logFileName);
-            if (File.Exists(logFilePath))
-                throw new Exception("File already exists");
-            return logFilePath;
+            if (!File.Exists(logFilePath))
+                return logFilePath;
+            Log.Warn("Error while building file path for the log file: File already exists");
+            return null;
         }
     }
 }
