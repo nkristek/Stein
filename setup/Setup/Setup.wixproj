@@ -60,18 +60,18 @@
   </Target>
   <Target Name="BeforeBuild">
     <!-- Get assembly version -->
-    <GetAssemblyIdentity AssemblyFiles="..\..\src\Stein\bin\$(Configuration)\Stein.exe">
+    <GetAssemblyIdentity AssemblyFiles="..\..\src\Stein\bin\$(Platform)\$(Configuration)\Stein.exe">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
     <PropertyGroup>
-      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\..\src\Stein\bin\$(Configuration)</DefineConstants>
+      <DefineConstants>BuildVersion=%(AssemblyVersion.Version);BasePath=..\..\src\Stein\bin\$(Platform)\$(Configuration)</DefineConstants>
     </PropertyGroup>
     <!-- Harvest bin output -->
-    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" Directory="..\..\src\Stein\bin\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
+    <HeatDirectory OutputFile="ComponentsGenerated.wxs" DirectoryRefId="INSTALLFOLDER" ComponentGroupName="PublishedComponents" SuppressCom="true" Directory="..\..\src\Stein\bin\$(Platform)\$(Configuration)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" AutoGenerateGuids="false" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" PreprocessorVariable="var.BasePath" />
   </Target>
   <Target Name="AfterBuild">
     <!-- Rename final msi -->
-    <GetAssemblyIdentity AssemblyFiles="..\..\src\Stein\bin\$(Configuration)\Stein.exe">
+    <GetAssemblyIdentity AssemblyFiles="..\..\src\Stein\bin\$(Platform)\$(Configuration)\Stein.exe">
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
     <Exec Command="move bin\$(Configuration)\$(OutputName).msi bin\$(Configuration)\Stein-v%(AssemblyVersion.Version)-$(Platform).msi"/>
