@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+  <String Id="ProductName_short">Stein</String>
+  <String Id="ProductName_x86">Stein - Silent Temp Installer (32 bit)</String>
+  <String Id="ProductName_x64">Stein - Silent Temp Installer (64 bit)</String>
+  <String Id="ProductFolderName">Stein - Silent Temp Installer</String>
+
+  <String Id="Company">Niclas Kristek</String>
+  <String Id="Description">This application makes it easier to install, uninstall or reinstall multiple MSI-installers.</String>
+  <String Id="Keywords">msi,dotnet,wpf,mvvm,csharp</String>
+  <String Id="Comments">This application needs administrator privileges to operate on installers without UI.</String>
+  <String Id="ProjectUrl">https://github.com/nkristek/Stein</String>
+  <String Id="ReleaseUrl">https://github.com/nkristek/Stein/releases/tag/v2.0-beta5</String>
+
+  <String Id="DowngradeErrorMessage">A newer version of [ProductName] is already installed.</String>
+
+  <String Id="Language">1033</String>
+
+</WixLocalization>
