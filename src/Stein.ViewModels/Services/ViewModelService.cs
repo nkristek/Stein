@@ -415,6 +415,12 @@ namespace Stein.ViewModels.Services
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
+                Name = "Newtonsoft.Json",
+                Uri = new Uri("https://www.newtonsoft.com/json"),
+                IsDirty = false
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
                 Name = "Ninject",
                 Uri = new Uri("https://github.com/ninject/Ninject"),
                 IsDirty = false
@@ -429,6 +435,12 @@ namespace Stein.ViewModels.Services
             {
                 Name = "Wix Toolset",
                 Uri = new Uri("http://wixtoolset.org/"),
+                IsDirty = false
+            });
+            viewModel.Dependencies.Add(new DependencyViewModel
+            {
+                Name = "System.Windows.Interactivity.WPF",
+                Uri = new Uri("https://www.microsoft.com/en-us/download/details.aspx?id=10801"),
                 IsDirty = false
             });
 

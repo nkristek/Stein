@@ -45,16 +45,6 @@ If you find a bug feel free to open an issue. Contributions are also appreciated
 **Please note**: 
 You have to have the [Wix Toolset](http://wixtoolset.org) installed in order to compile the [Stein.Services](../blob/master/Stein.Services) project. The version currently used to build this application is [3.11.1](http://wixtoolset.org/releases/v3.11.1/stable).
 
-## Dependencies
+## Other
 
-This application depends on the following libraries:
-- [Smaragd](https://github.com/nkristek/Smaragd)
-- [Wpf.Converters](https://github.com/nkristek/Wpf.Converters)
-- [AdonisUI](https://github.com/benruehl/adonis-ui)
-- [GongSolutions.WPF.DragDrop](https://github.com/punker76/gong-wpf-dragdrop)
-- [log4net](http://logging.apache.org/log4net/)
-- [ninject](https://github.com/ninject/Ninject)
-- [Windows-API-Code-Pack](https://github.com/aybe/Windows-API-Code-Pack-1.1)
-- [Wix Toolset](http://wixtoolset.org/)
-
-The icons used by this application are from [fontawesome](https://fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
+Most of the icons used by this application are from [fontawesome](https://fontawesome.com) ([licence](https://fontawesome.com/license)) and are modified to be used in a WPF environment.
