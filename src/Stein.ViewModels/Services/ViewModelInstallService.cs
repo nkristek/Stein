@@ -265,6 +265,7 @@ namespace Stein.ViewModels.Services
                         currentInstallationViewModel.CurrentOperation = InstallationOperation.Install;
                         installationResultViewModel.InstallationLogFilePaths.Add(installLogFilePath);
                         await installService.PerformAsync(new Operation(installerFilePath, OperationType.Install, installArguments));
+                        Log.Info($"Finished installing.");
                         installationResultViewModel.State = InstallationResultState.Success;
                         break;
                     case InstallerOperation.Uninstall:
@@ -286,6 +287,7 @@ namespace Stein.ViewModels.Services
                         currentInstallationViewModel.CurrentOperation = InstallationOperation.Uninstall;
                         installationResultViewModel.InstallationLogFilePaths.Add(uninstallLogFilePath);
                         await installService.PerformAsync(new Operation(installerViewModel.ProductCode, OperationType.Uninstall, uninstallArguments));
+                        Log.Info($"Finished uninstalling.");
                         installationResultViewModel.State = InstallationResultState.Success;
                         break;
                     default:
