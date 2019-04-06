@@ -71,7 +71,6 @@
     <Compile Include="Services\IUriService.cs" />
     <Compile Include="Services\UriService.cs" />
     <Compile Include="Services\ViewModelInstallService.cs" />
-    <Compile Include="Services\IViewModelService.cs" />
     <Compile Include="Types\CancelledDownloadResult.cs" />
     <Compile Include="Types\DownloadResultState.cs" />
     <Compile Include="Types\FailedDownloadResult.cs" />

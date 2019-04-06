@@ -10,7 +10,6 @@ using Stein.Services.Configuration;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
-using Stein.ViewModels.Services;
 
 namespace Stein
 {

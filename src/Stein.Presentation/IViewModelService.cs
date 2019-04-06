@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NKristek.Smaragd.ViewModels;
 
-namespace Stein.ViewModels.Services
+namespace Stein.Presentation
 {
     public interface IViewModelService
     {

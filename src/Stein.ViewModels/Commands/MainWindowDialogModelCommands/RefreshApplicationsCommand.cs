@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using Stein.ViewModels.Services;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {

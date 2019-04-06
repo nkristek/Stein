@@ -1,7 +1,6 @@
 ﻿using System;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
 {
