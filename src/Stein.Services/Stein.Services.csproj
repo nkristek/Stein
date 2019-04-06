@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">
-      <Project>{46d38a7f-c1ee-4a83-b696-0d32bbdd069b}</Project>
+      <Project>{aa44c042-bae3-415b-addc-fcccbb84db0c}</Project>
       <Name>Stein.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj">
