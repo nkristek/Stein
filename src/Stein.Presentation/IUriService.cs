@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stein.ViewModels.Services
+namespace Stein.Presentation
 {
     public interface IUriService
     {
