@@ -77,8 +77,7 @@ namespace Stein.Services.InstallerFiles.GitHub
         private static async Task<IEnumerable<GitHubRelease>> ParseResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             var content = await response.Content.ReadAsStringAsync();
-            cancellationToken.ThrowIfCancellationRequested();
-            return await Task.Run(() => JsonConvert.DeserializeObject<List<GitHubRelease>>(content));
+            return await Task.Run(() => JsonConvert.DeserializeObject<List<GitHubRelease>>(content), cancellationToken);
         }
 
         /// <inheritdoc />
