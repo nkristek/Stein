@@ -12,10 +12,10 @@ variables:
 strategy:
   maxParallel: 2
   matrix:
-    x86-Release:
+    x86:
       buildPlatform: 'x86'
       buildConfiguration: 'Release'
-    x64-Release:
+    x64:
       buildPlatform: 'x64'
       buildConfiguration: 'Release'
 
