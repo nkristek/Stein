@@ -14,6 +14,11 @@ namespace Stein.Services.ProductService
         IEnumerable<IProduct> GetInstalledProducts();
 
         /// <summary>
+        /// Refreshes the list of installed products.
+        /// </summary>
+        void RefreshInstalledProducts();
+
+        /// <summary>
         /// Determines if a product is installed by searching the <paramref name="productCode"/> in the installed products.
         /// </summary>
         /// <param name="productCode">The ProductCode of the product.</param>

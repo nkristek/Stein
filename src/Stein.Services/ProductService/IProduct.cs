@@ -1,9 +1,12 @@
-﻿namespace Stein.Services.ProductService
+﻿using System;
+
+namespace Stein.Services.ProductService
 {
     /// <summary>
     /// https://docs.microsoft.com/en-us/windows/desktop/msi/uninstall-registry-key
     /// </summary>
     public interface IProduct
+        : IDisposable
     {
         /// <summary>
         /// ProductCode property

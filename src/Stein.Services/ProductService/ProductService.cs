@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Win32;
 
@@ -12,10 +13,28 @@ namespace Stein.Services.ProductService
         /// <inheritdoc />
         public IEnumerable<IProduct> GetInstalledProducts()
         {
-            return ReadInstalledPrograms().ToList();
+            return ReadProducts().ToList();
+        }
+        
+        private readonly HashSet<string> _installedProductCodes = new HashSet<string>();
+
+        /// <inheritdoc />
+        public void RefreshInstalledProducts()
+        {
+            _installedProductCodes.Clear();
+            foreach (var product in ReadProducts())
+            {
+                using (product)
+                {
+                    var productCode = product.ProductCode;
+                    if (!String.IsNullOrEmpty(productCode)
+                        && !_installedProductCodes.Contains(productCode))
+                        _installedProductCodes.Add(productCode);
+                }
+            }
         }
 
-        private static IEnumerable<IProduct> ReadInstalledPrograms()
+        private static IEnumerable<IProduct> ReadProducts()
         {
             const string registryPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
@@ -48,8 +67,8 @@ namespace Stein.Services.ProductService
         {
             if (String.IsNullOrEmpty(productCode))
                 throw new ArgumentNullException(nameof(productCode));
-            
-            return ReadInstalledPrograms().Any(program => !String.IsNullOrEmpty(program.ProductCode) && program.ProductCode.Contains(productCode));
+
+            return _installedProductCodes.Contains(productCode);
         }
     }
 }

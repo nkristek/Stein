@@ -555,6 +555,15 @@ namespace Stein.ViewModels.Services
             foreach (var applicationViewModel in viewModel.Applications)
                 applicationViewModel.IsUpdating = true;
 
+            try
+            {
+                await Task.Run(() => _productService.RefreshInstalledProducts());
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Getting installed products failed", exception);
+            }
+
             var updateTasks = viewModel.Applications.Select(async application => await UpdateApplicationViewModelAsync(application));
             await Task.WhenAll(updateTasks);
 
@@ -584,16 +593,6 @@ namespace Stein.ViewModels.Services
             viewModel.KeepNewestInstallationLogs = application.KeepNewestInstallationLogs;
             viewModel.FilterDuplicateInstallers = application.FilterDuplicateInstallers;
             viewModel.ProviderType = application.Configuration?.ProviderType;
-
-            IList<IProduct> installedProducts = new List<IProduct>();
-            try
-            {
-                installedProducts = await Task.Run(() => _productService.GetInstalledProducts().ToList());
-            }
-            catch (Exception exception)
-            {
-                Log.Error("Getting installed products failed", exception);
-            }
             
             viewModel.InstallerBundles.Clear();
             try
@@ -630,7 +629,7 @@ namespace Stein.ViewModels.Services
                                 installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
                                 installerViewModel.Version = installerFile.Version;
                                 installerViewModel.ProductCode = installerFile.ProductCode;
-                                installerViewModel.IsInstalled = installedProducts.Any(p => !String.IsNullOrEmpty(p.ProductCode) && p.ProductCode.Contains(installerFile.ProductCode));
+                                installerViewModel.IsInstalled = _productService.IsProductInstalled(installerFile.ProductCode);
                             });
                             installerViewModel.IsDirty = false;
 

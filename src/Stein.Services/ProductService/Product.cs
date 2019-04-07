@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Win32;
 using Stein.Utility;
 
@@ -31,7 +32,19 @@ namespace Stein.Services.ProductService
         private string _productCode;
 
         /// <inheritdoc />
-        public string ProductCode => _productCode ?? (_productCode = RegistryKey.Name);
+        public string ProductCode
+        {
+            get
+            {
+                if (_productCode != null)
+                    return _productCode;
+
+                var productCodePath = RegistryKey.Name;
+                _productCode = Path.GetFileName(productCodePath);
+
+                return _productCode;
+            }
+        }
 
         private string _displayName;
         
