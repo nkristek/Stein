@@ -20,15 +20,15 @@ strategy:
       buildConfiguration: 'Release'
 
 steps:
+- task: DotNetCoreInstaller@0
+  inputs:
+    version: '2.1.300'
+
 - task: NuGetToolInstaller@0
 
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
-- task: DotNetCoreInstaller@0
-  inputs:
-    version: '2.1.300'
 
 - task: VSBuild@1
   inputs:
