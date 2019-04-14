@@ -69,8 +69,10 @@ namespace Stein
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             var exception = e.Exception;
-            HandleException(exception);
+            if (exception == null)
+                return;
 
+            HandleException(exception);
             e.Handled = true;
         }
         
@@ -85,8 +87,10 @@ namespace Stein
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
             var exception = e.Exception;
-            HandleException(exception);
+            if (exception == null)
+                return;
 
+            HandleException(exception);
             if (!e.Observed)
                 e.SetObserved();
         }
@@ -94,11 +98,17 @@ namespace Stein
         private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             var exception = e.Exception;
+            if (exception == null)
+                return;
+
             HandleException(exception);
         }
 
         private void HandleException(Exception exception)
         {
+            if (exception == null)
+                return;
+
             try
             {
                 Log.Error(exception);
