@@ -347,4 +347,13 @@ ignoriert diese Einstellung.</value>
   <data name="InstallDescription" xml:space="preserve">
     <value>Die Installieren-Aktion deinstalliert die Anwendung, sollte diese bereits installiert sein, und führt dann die Installation aus.</value>
   </data>
+  <data name="CurrentVersion" xml:space="preserve">
+    <value>Aktuelle Version:</value>
+  </data>
+  <data name="NewVersion" xml:space="preserve">
+    <value>Neue Version:</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Ein Update ist verfügbar.</value>
+  </data>
 </root>

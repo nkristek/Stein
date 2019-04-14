@@ -1,0 +1,89 @@
+﻿<Window x:Class="Stein.Views.UpdateDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
+             xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:UpdateDialogModel, IsDesignTimeCreatable=True}"
+             MinWidth="300"
+             MinHeight="200"
+             SizeToContent="WidthAndHeight"
+             WindowStartupLocation="CenterOwner"
+             Title="{Binding Title}">
+
+    <Window.Style>
+        <Style TargetType="Window"
+               BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
+
+    <Grid Margin="{adonisUi:Space 2,1}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" 
+                   FontSize="16"
+                   Content="{x:Static localization:Strings.UpdateAvailable}"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       FontSize="16"
+                       Text="{x:Static localization:Strings.CurrentVersion}"/>
+
+            <TextBlock Grid.Column="2" 
+                       FontSize="16"
+                       Text="{Binding CurrentVersion}"/>
+        </Grid>
+
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" 
+                       FontSize="16"
+                       Text="{x:Static localization:Strings.NewVersion}"/>
+
+            <TextBlock Grid.Column="2" 
+                       FontSize="16">
+                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.OpenUpdateUriCommand]}">
+                    <TextBlock Text="{Binding UpdateVersion}"/>
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="7"
+              Grid.IsSharedSizeScope="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1" 
+                    Content="{x:Static localization:Strings.Ok}"
+                    Padding="{adonisUi:Space 3,0.5}"
+                    IsDefault="True"
+                    Click="OnDialogOkButtonClick"
+                    IsEnabled="{Binding IsValid}"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
+using Ninject.Parameters;
 using Stein.Presentation;
 using Stein.Services.Configuration;
+using Stein.Services.UpdateService;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
@@ -64,6 +67,22 @@ namespace Stein
             var viewModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
             viewModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
             _dialogService.Show(viewModel);
+
+            // check for update
+            var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
+            var repository = "nkristek/Stein";
+            var updateService = kernel.Get<IUpdateService>(
+                new ConstructorArgument("currentVersion", assemblyVersion), 
+                new ConstructorArgument("repository", repository));
+            var updateResult = await updateService.IsUpdateAvailable();
+            if (updateResult.IsUpdateAvailable)
+            {
+                var dialogModel = _viewModelService.CreateViewModel<UpdateDialogModel>(viewModel);
+                dialogModel.CurrentVersion = updateResult.CurrentVersion;
+                dialogModel.UpdateVersion = updateResult.NewestVersion;
+                dialogModel.UpdateUri = updateResult.NewestVersionUri;
+                _dialogService.ShowDialog(dialogModel);
+            }
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

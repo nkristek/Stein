@@ -20,6 +20,7 @@ using Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands
 using Stein.ViewModels.Commands.ExceptionViewModelCommands;
 using Stein.ViewModels.Commands.InstallationViewModelCommands;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
+using Stein.ViewModels.Commands.UpdateDialogModelCommands;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Services
@@ -83,12 +84,28 @@ namespace Stein.ViewModels.Services
                 viewModel = CreateInstallationResultDialogModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(InstallationViewModel))
                 viewModel = CreateInstallationViewModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(UpdateDialogModel))
+                viewModel = CreateUpdateDialogModel(parent) as TViewModel;
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
             if (viewModel != null)
                 viewModel.IsDirty = false;
             return viewModel;
+        }
+
+        private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent)
+        {
+            var dialogModel = new UpdateDialogModel
+            {
+                Parent = parent,
+                IsDirty = false
+            };
+            dialogModel.AddCommand(new OpenUpdateUriCommand(_uriService)
+            {
+                Parent = dialogModel
+            });
+            return dialogModel;
         }
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)

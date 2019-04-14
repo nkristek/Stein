@@ -6,6 +6,7 @@ using Stein.Services.InstallerFiles.Base;
 using Stein.Services.InstallService;
 using Stein.Services.MsiService;
 using Stein.Services.ProductService;
+using Stein.Services.UpdateService;
 using Stein.ViewModels.Services;
 using Stein.Views.Services;
 
@@ -20,18 +21,19 @@ namespace Stein
             Bind<IThemeService>().To<WpfThemeService>().InSingletonScope();
             Bind<IProgressBarService>().To<WpfTaskbarService>().InSingletonScope();
 
+            Bind<IUpdateService>().To<UpdateService>().InSingletonScope();
             Bind<IInstallService>().To<InstallService>().InSingletonScope();
             Bind<IMsiService>().To<MsiService>().InSingletonScope();
             Bind<IProductService>().To<ProductService>().InSingletonScope();
             Bind<IInstallerFileBundleProviderFactory>().To<InstallerFileBundleProviderFactory>().InSingletonScope();
-
-            Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
-            Bind<IUriService>().To<UriService>().InSingletonScope();
-
+            
             Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
             Bind<IConfigurationUpgradeManager>().To<ConfigurationUpgradeManager>().InSingletonScope();
             Bind<IConfigurationUpgraderFactory>().To<ConfigurationUpgraderFactory>().InSingletonScope();
             Bind<IConfigurationFactory>().To<ConfigurationFactory>().InSingletonScope();
+
+            Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
+            Bind<IUriService>().To<UriService>().InSingletonScope();
         }
     }
 }

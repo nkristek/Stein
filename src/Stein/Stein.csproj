@@ -152,6 +152,10 @@
       <Project>{ccb623e3-0cc7-4a5c-b956-a591cc4bd3f5}</Project>
       <Name>Stein.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj">
+      <Project>{A2BEC857-B5E5-4863-9D15-5FA7DDF48328}</Project>
+      <Name>Stein.Utility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Stein.ViewModels\Stein.ViewModels.csproj">
       <Project>{10538F60-6022-4815-82EA-36921D746583}</Project>
       <Name>Stein.ViewModels</Name>

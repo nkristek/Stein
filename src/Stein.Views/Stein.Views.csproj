@@ -98,6 +98,9 @@
       <DependentUpon>MainWindowDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\WpfThemeService.cs" />
+    <Compile Include="UpdateDialog.xaml.cs">
+      <DependentUpon>UpdateDialog.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Localization\Stein.Localization.csproj">
@@ -157,6 +160,10 @@
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UpdateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views.xaml">
       <Generator>MSBuild:Compile</Generator>

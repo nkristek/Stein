@@ -101,6 +101,9 @@
     <Compile Include="MsiService\MsiService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProductService\IProduct.cs" />
+    <Compile Include="UpdateService\IUpdateService.cs" />
+    <Compile Include="UpdateService\UpdateResult.cs" />
+    <Compile Include="UpdateService\UpdateService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">

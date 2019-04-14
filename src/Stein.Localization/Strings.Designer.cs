@@ -115,6 +115,15 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current version:.
+        /// </summary>
+        public static string CurrentVersion {
+            get {
+                return ResourceManager.GetString("CurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
         public static string Custom {
@@ -390,6 +399,15 @@ namespace Stein.Localization {
         public static string NaN {
             get {
                 return ResourceManager.GetString("NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version:.
+        /// </summary>
+        public static string NewVersion {
+            get {
+                return ResourceManager.GetString("NewVersion", resourceCulture);
             }
         }
         
@@ -678,6 +696,15 @@ namespace Stein.Localization {
         public static string Uninstalling {
             get {
                 return ResourceManager.GetString("Uninstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is an update available..
+        /// </summary>
+        public static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
             }
         }
         
