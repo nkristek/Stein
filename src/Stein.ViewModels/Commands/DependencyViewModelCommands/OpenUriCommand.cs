@@ -2,7 +2,6 @@
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.DependencyViewModelCommands
 {
@@ -20,7 +19,7 @@ namespace Stein.ViewModels.Commands.DependencyViewModelCommands
         [CanExecuteSource(nameof(DependencyViewModel.Uri))]
         protected override bool CanExecute(DependencyViewModel viewModel, object parameter)
         {
-            return viewModel.Uri != null && !String.IsNullOrEmpty(viewModel.Uri.AbsoluteUri);
+            return viewModel.Uri != null;
         }
 
         /// <inheritdoc />
