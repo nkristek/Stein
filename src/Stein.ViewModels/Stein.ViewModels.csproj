@@ -116,7 +116,7 @@
       <Version>2.0.8</Version>
     </PackageReference>
     <PackageReference Include="NKristek.Smaragd">
-      <Version>4.2.1</Version>
+      <Version>4.2.2</Version>
     </PackageReference>
     <PackageReference Include="WindowsAPICodePack-Shell">
       <Version>1.1.1</Version>
