@@ -54,6 +54,12 @@ namespace Stein.Services.UpdateService
                 {
                     updateResult.NewestVersion = version;
                     updateResult.NewestVersionUri = String.IsNullOrEmpty(release.HtmlUrl) ? null : new Uri(release.HtmlUrl);
+                    updateResult.UpdateAssets = release.Assets.Select(a => new UpdateAsset
+                    {
+                        DownloadUri = new Uri(a.BrowserDownloadUrl),
+                        FileName = a.Name,
+                        ReleaseTag = release.TagName
+                    });
                 }
             }
 

@@ -354,7 +354,13 @@
   <data name="NewVersion" xml:space="preserve">
     <value>New version:</value>
   </data>
-  <data name="UpdateAvailable" xml:space="preserve">
+  <data name="UpdateAvailableDescription" xml:space="preserve">
     <value>There is an update available.</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="XOfX" xml:space="preserve">
+    <value>{0} of {1}</value>
   </data>
 </root>

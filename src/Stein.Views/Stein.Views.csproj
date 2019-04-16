@@ -45,6 +45,7 @@
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\DateTimeToRelativeStringConverter.cs" />
+    <Compile Include="Converters\DownloadProgressToStringConverter.cs" />
     <Compile Include="Converters\InstallationOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\InstallerOperationToLocalizedStringConverter.cs" />
     <Compile Include="Converters\IntToNthValueConverter.cs" />

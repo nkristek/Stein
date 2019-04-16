@@ -700,11 +700,20 @@ namespace Stein.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is an update available..
+        ///   Looks up a localized string similar to Update available.
         /// </summary>
         public static string UpdateAvailable {
             get {
                 return ResourceManager.GetString("UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is an update available..
+        /// </summary>
+        public static string UpdateAvailableDescription {
+            get {
+                return ResourceManager.GetString("UpdateAvailableDescription", resourceCulture);
             }
         }
         
@@ -759,6 +768,15 @@ namespace Stein.Localization {
         public static string XMinutesAgo {
             get {
                 return ResourceManager.GetString("XMinutesAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string XOfX {
+            get {
+                return ResourceManager.GetString("XOfX", resourceCulture);
             }
         }
         

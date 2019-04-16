@@ -353,7 +353,13 @@ ignoriert diese Einstellung.</value>
   <data name="NewVersion" xml:space="preserve">
     <value>Neue Version:</value>
   </data>
-  <data name="UpdateAvailable" xml:space="preserve">
+  <data name="UpdateAvailableDescription" xml:space="preserve">
     <value>Ein Update ist verfügbar.</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update verfügbar</value>
+  </data>
+  <data name="XOfX" xml:space="preserve">
+    <value>{0} von {1}</value>
   </data>
 </root>

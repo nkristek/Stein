@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -28,6 +29,24 @@ namespace Stein.ViewModels
         {
             get => _updateUri;
             set => SetProperty(ref _updateUri, value, out _);
+        }
+
+        public ObservableCollection<UpdateAssetViewModel> UpdateAssets { get; } = new ObservableCollection<UpdateAssetViewModel>();
+
+        private bool _isUpdateDownloading;
+
+        public bool IsUpdateDownloading
+        {
+            get => _isUpdateDownloading;
+            set => SetProperty(ref _isUpdateDownloading, value, out _);
+        }
+
+        private bool _isUpdateCancelled;
+
+        public bool IsUpdateCancelled
+        {
+            get => _isUpdateCancelled;
+            set => SetProperty(ref _isUpdateCancelled, value, out _);
         }
     }
 }

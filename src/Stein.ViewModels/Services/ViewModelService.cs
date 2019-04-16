@@ -86,6 +86,8 @@ namespace Stein.ViewModels.Services
                 viewModel = CreateInstallationViewModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(UpdateDialogModel))
                 viewModel = CreateUpdateDialogModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(UpdateAssetViewModel))
+                viewModel = CreateUpdateAssetViewModel(parent) as TViewModel;
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
@@ -99,13 +101,31 @@ namespace Stein.ViewModels.Services
             var dialogModel = new UpdateDialogModel
             {
                 Parent = parent,
+                Title = Strings.UpdateAvailable,
                 IsDirty = false
             };
             dialogModel.AddCommand(new OpenUpdateUriCommand(_uriService)
             {
                 Parent = dialogModel
             });
+            dialogModel.AddCommand(new InstallUpdateCommand(_installService)
+            {
+                Parent = dialogModel
+            });
+            dialogModel.AddCommand(new CancelUpdateCommand
+            {
+                Parent = dialogModel
+            });
             return dialogModel;
+        }
+
+        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent)
+        {
+            return new UpdateAssetViewModel
+            {
+                Parent = parent,
+                IsDirty = false
+            };
         }
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)

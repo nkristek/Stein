@@ -36,6 +36,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +61,8 @@
     <Compile Include="Commands\MainWindowDialogModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowDialogModelCommands\ShowInfoDialogCommand.cs" />
     <Compile Include="Commands\MainWindowDialogModelCommands\ShowRecentInstallationResultCommand.cs" />
+    <Compile Include="Commands\UpdateDialogModelCommands\CancelUpdateCommand.cs" />
+    <Compile Include="Commands\UpdateDialogModelCommands\InstallUpdateCommand.cs" />
     <Compile Include="Commands\UpdateDialogModelCommands\OpenUpdateUriCommand.cs" />
     <Compile Include="DependencyViewModel.cs" />
     <Compile Include="DiskInstallerFileBundleProviderViewModel.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Types\SucceededDownloadResult.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Services\ViewModelService.cs" />
+    <Compile Include="UpdateAssetViewModel.cs" />
     <Compile Include="UpdateDialogModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -72,7 +72,7 @@ namespace Stein
             var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
             var repository = "nkristek/Stein";
             var updateService = kernel.Get<IUpdateService>(
-                new ConstructorArgument("currentVersion", assemblyVersion), 
+                new ConstructorArgument("currentVersion", assemblyVersion),
                 new ConstructorArgument("repository", repository));
             var updateResult = await updateService.IsUpdateAvailable();
             if (updateResult.IsUpdateAvailable)
@@ -81,6 +81,18 @@ namespace Stein
                 dialogModel.CurrentVersion = updateResult.CurrentVersion;
                 dialogModel.UpdateVersion = updateResult.NewestVersion;
                 dialogModel.UpdateUri = updateResult.NewestVersionUri;
+
+                foreach (var updateAsset in updateResult.UpdateAssets)
+                {
+                    var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(dialogModel);
+                    updateAssetViewModel.DownloadUri = updateAsset.DownloadUri;
+                    updateAssetViewModel.FileName = updateAsset.FileName;
+                    updateAssetViewModel.ReleaseTag = updateAsset.ReleaseTag;
+                    updateAssetViewModel.IsReadOnly = true;
+                    updateAssetViewModel.IsDirty = false;
+                    dialogModel.UpdateAssets.Add(updateAssetViewModel);
+                }
+
                 _dialogService.ShowDialog(dialogModel);
             }
         }
