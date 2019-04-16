@@ -39,40 +39,26 @@
                         Padding="{adonisUi:Space 0.5}"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                         Content="{Binding}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.OpenProviderLinkCommand]}"
                         ToolTip="{Binding ProviderLink}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <ContentControl VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            Focusable="False"
-                                            DataContext="{Binding ProviderType}"
-                                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
-                                            Width="{adonisUi:Space 2}"
-                                            Height="{adonisUi:Space 2}">
-                                <ContentControl.Style>
-                                    <Style TargetType="{x:Type ContentControl}"
-                                           BasedOn="{StaticResource {x:Type ContentControl}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding}" 
-                                                         Value="Disk">
-                                                <Setter Property="ContentTemplate" 
-                                                        Value="{StaticResource HddIconVariant}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding}" 
-                                                         Value="GitHub">
-                                                <Setter Property="ContentTemplate" 
-                                                        Value="{StaticResource GitHubIconVariant}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
-                            </ContentControl>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
-
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}"
+                               BasedOn="{StaticResource {x:Static adonisUi:Styles.ToolbarButton}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProviderType}" 
+                                     Value="Disk">
+                                    <Setter Property="ContentTemplate" 
+                                            Value="{StaticResource HddIconVariant}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ProviderType}" 
+                                             Value="GitHub">
+                                    <Setter Property="ContentTemplate" 
+                                            Value="{StaticResource GitHubIconVariant}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
 
                 <TextBlock Grid.Column="2"
@@ -97,6 +83,8 @@
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"
                         Padding="{adonisUi:Space 0.5}"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
                         ContentTemplate="{DynamicResource EditIconVariant}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.EditApplicationCommand]}"/>
 
@@ -105,6 +93,8 @@
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"
                         Padding="{adonisUi:Space 0.5}"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.DeleteApplicationCommand]}"/>
             </Grid>
