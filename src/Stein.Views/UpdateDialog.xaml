@@ -66,8 +66,6 @@
                     <ColumnDefinition Width="Auto" SharedSizeGroup="LabelGroup"/>
                     <ColumnDefinition Width="{adonisUi:Space 1}" />
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}" />
-                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" 
@@ -80,11 +78,6 @@
                         <TextBlock Text="{Binding UpdateVersion}"/>
                     </Hyperlink>
                 </TextBlock>
-
-                <Button Grid.Column="4" 
-                        Padding="{adonisUi:Space 3,0.5}"
-                        Content="{x:Static localization:Strings.Install}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"/>
             </Grid>
         </Grid>
 
@@ -106,6 +99,8 @@
               extensions:LayerExtension.IncreaseLayer="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}" />
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
@@ -129,6 +124,12 @@
             </Grid>
 
             <Button Grid.Column="1" 
+                    Padding="{adonisUi:Space 3,0.5}"
+                    Content="{x:Static localization:Strings.Install}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
+
+            <Button Grid.Column="3" 
                     Width="{adonisUi:Space 3}"
                     Height="{adonisUi:Space 3}"
                     Padding="{adonisUi:Space 0.5}"
@@ -138,7 +139,7 @@
                     Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
                     Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToVisibilityConverter}}"/>
 
-            <Button Grid.Column="1" 
+            <Button Grid.Column="3" 
                     Padding="{adonisUi:Space 3,0.5}"
                     Content="{x:Static localization:Strings.Ok}"
                     IsDefault="True"
