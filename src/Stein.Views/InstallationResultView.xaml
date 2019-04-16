@@ -48,7 +48,7 @@
                             VerticalContentAlignment="Center"
                             Focusable="False"
                             ContentTemplate="{StaticResource SuccessIconVariant}"
-                            Foreground="#2ecc71"
+                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.SuccessBrush}}"
                             Width="{adonisUi:Space 2}"
                             Height="{adonisUi:Space 2}"
                             ToolTip="{x:Static localization:Strings.InstallationSuccess}"/>
