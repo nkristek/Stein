@@ -8,7 +8,7 @@
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:UpdateDialogModel, IsDesignTimeCreatable=True}"
              MinWidth="300"
@@ -93,61 +93,68 @@
                      Padding="{adonisUi:Space 0}"
                      DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
                      Value="{Binding DownloadProgress, Mode=OneWay}"
-                     Maximum="1"/>
+                     Maximum="1"
+                     adonisExtensions:ProgressBarExtension.Content="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+            <adonisExtensions:ProgressBarExtension.ContentTemplate>
+                <DataTemplate>
+                    <Grid Margin="{adonisUi:Space 1}"
+                          Grid.IsSharedSizeScope="True"
+                          adonisExtensions:LayerExtension.IncreaseLayer="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="{adonisUi:Space 1}" />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="2"
-              Margin="{adonisUi:Space 1}"
-              Grid.IsSharedSizeScope="True"
-              extensions:LayerExtension.IncreaseLayer="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}" />
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0"
+                              DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                              Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0"
-                  DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
-                  Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{steinconverters:DownloadProgressToStringConverter}">
+                                        <Binding Path="BytesDownloaded"/>
+                                        <Binding Path="BytesTotal"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
 
-                <TextBlock Grid.Column="0"
-                           VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{steinconverters:DownloadProgressToStringConverter}">
-                            <Binding Path="BytesDownloaded"/>
-                            <Binding Path="BytesTotal"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </Grid>
+                        <Button Grid.Column="1" 
+                                Padding="{adonisUi:Space 3,0.5}"
+                                Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
+                                Content="{x:Static localization:Strings.Install}"
+                                Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                                Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
 
-            <Button Grid.Column="1" 
-                    Padding="{adonisUi:Space 3,0.5}"
-                    Content="{x:Static localization:Strings.Install}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
-                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
+                        <Button Grid.Column="3" 
+                                Width="{adonisUi:Space 3}"
+                                Height="{adonisUi:Space 3}"
+                                Padding="{adonisUi:Space 0.5}"
+                                Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
+                                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                                ContentTemplate="{DynamicResource DeleteIconVariant}"
+                                Content="{x:Static localization:Strings.Cancel}"
+                                Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
+                                Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToVisibilityConverter}}"/>
 
-            <Button Grid.Column="3" 
-                    Width="{adonisUi:Space 3}"
-                    Height="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
-                    Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                    ContentTemplate="{DynamicResource DeleteIconVariant}"
-                    Content="{x:Static localization:Strings.Cancel}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
-                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToVisibilityConverter}}"/>
-
-            <Button Grid.Column="3" 
-                    Padding="{adonisUi:Space 3,0.5}"
-                    Content="{x:Static localization:Strings.Ok}"
-                    IsDefault="True"
-                    Click="OnDialogOkButtonClick"
-                    IsEnabled="{Binding IsValid}"
-                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
-        </Grid>
+                        <Button Grid.Column="3" 
+                                Padding="{adonisUi:Space 3,0.5}"
+                                Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
+                                Content="{x:Static localization:Strings.Ok}"
+                                IsDefault="True"
+                                Click="OnDialogOkButtonClick"
+                                IsEnabled="{Binding IsValid}"
+                                Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
+                    </Grid>
+                </DataTemplate>
+            </adonisExtensions:ProgressBarExtension.ContentTemplate>
+        </ProgressBar>
     </Grid>
 </Window>

@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Stein.Views"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:converters="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:converters1="clr-namespace:Stein.Views.Converters"
              xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallationViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -20,67 +20,73 @@
                      Margin="{adonisUi:Space 0}"
                      Padding="{adonisUi:Space 0}"
                      Value="{Binding Progress, Mode=OneWay}"
-                     Maximum="1"/>
+                     Maximum="1"
+                     adonisExtensions:ProgressBarExtension.Content="{Binding}">
+            <adonisExtensions:ProgressBarExtension.ContentTemplate>
+                <DataTemplate>
+                    <Grid Margin="{adonisUi:Space 1.5,0}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-        <Grid Margin="{adonisUi:Space 1.5,0}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   Text="{Binding Name}"/>
 
-            <TextBlock Grid.Column="0"
-                       VerticalAlignment="Center"
-                       FontWeight="Bold"
-                       Text="{Binding Name}"/>
+                        <Grid Grid.Column="2"
+                              Visibility="{Binding IsInstalling, Converter={converters:BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="2"
-                  Visibility="{Binding IsInstalling, Converter={converters:BoolToVisibilityConverter}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} / {1}">
+                                        <Binding Path="CurrentInstallerIndex" />
+                                        <Binding Path="TotalInstallerFileCount" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Grid>
 
-                <TextBlock Grid.Column="0"
-                           VerticalAlignment="Center">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} / {1}">
-                            <Binding Path="CurrentInstallerIndex" />
-                            <Binding Path="TotalInstallerFileCount" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </Grid>
+                        <TextBlock Grid.Column="3"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding CurrentOperation, Converter={converters1:InstallationOperationToLocalizedStringConverter}}"/>
 
-            <TextBlock Grid.Column="3"
-                       VerticalAlignment="Center"
-                       Text="{Binding CurrentOperation, Converter={converters1:InstallationOperationToLocalizedStringConverter}}"/>
+                        <Grid Grid.Column="6"
+                              Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="6"
-                  Visibility="{Binding State, Converter={converters:ObjectToStringEqualsParameterToVisibilityConverter}, ConverterParameter=Cancelled}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       Text="{x:Static localization:Strings.Cancelling}"/>
+                        </Grid>
 
-                <TextBlock Grid.Column="0"
-                           VerticalAlignment="Center"
-                           Text="{x:Static localization:Strings.Cancelling}"/>
-            </Grid>
-
-            <Button Grid.Column="7"
-                    Width="{adonisUi:Space 3}"
-                    Height="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
-                    Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
-                    ContentTemplate="{DynamicResource DeleteIconVariant}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.InstallationViewModelCommands.CancelOperationCommand]}"
-                    ToolTip="{x:Static localization:Strings.Cancel}"/>
-        </Grid>
+                        <Button Grid.Column="7"
+                                Width="{adonisUi:Space 3}"
+                                Height="{adonisUi:Space 3}"
+                                Padding="{adonisUi:Space 0.5}"
+                                Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
+                                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                                ContentTemplate="{DynamicResource DeleteIconVariant}"
+                                Command="{Binding Commands[Stein.ViewModels.Commands.InstallationViewModelCommands.CancelOperationCommand]}"
+                                ToolTip="{x:Static localization:Strings.Cancel}"/>
+                    </Grid>
+                </DataTemplate>
+            </adonisExtensions:ProgressBarExtension.ContentTemplate>
+        </ProgressBar>
     </Grid>
 </UserControl>
