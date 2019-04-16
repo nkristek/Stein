@@ -8,6 +8,7 @@
              xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:UpdateDialogModel, IsDesignTimeCreatable=True}"
              MinWidth="300"
@@ -101,7 +102,8 @@
 
         <Grid Grid.Row="2"
               Margin="{adonisUi:Space 1}"
-              Grid.IsSharedSizeScope="True">
+              Grid.IsSharedSizeScope="True"
+              extensions:LayerExtension.IncreaseLayer="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
