@@ -8,18 +8,22 @@ using Stein.Services.InstallService;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
+using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {
     public sealed class InstallApplicationCommand
         : AsyncViewModelCommand<ApplicationViewModel>
     {
+        private readonly IDialogService _dialogService;
+
         private readonly IViewModelService _viewModelService;
 
         private readonly IInstallService _installService;
 
-        public InstallApplicationCommand(IViewModelService viewModelService, IInstallService installService)
+        public InstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
         {
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
         }
@@ -67,10 +71,17 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowDialogModel.CurrentInstallation.Dispose();
                 mainWindowDialogModel.CurrentInstallation = null;
             }
-            
+
             var refreshCommand = mainWindowDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>();
+            Task refreshTask = null;
             if (refreshCommand != null)
-                await refreshCommand.ExecuteAsync(null);
+                refreshTask = refreshCommand.ExecuteAsync(null);
+
+            if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success || r.State != InstallationResultState.Skipped))
+                _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult);
+
+            if (refreshTask != null)
+                await refreshTask;
         }
     }
 }
