@@ -40,9 +40,13 @@ namespace Stein.Services.InstallerFiles.GitHub
 
             try
             {
+                var httpClient = new HttpClient
+                {
+                    DefaultRequestHeaders = {{"User-Agent", "nkristek/Stein"}}
+                };
                 using (var file = File.Create(filePath))
-                using (var client = new HttpClient())
-                    await client.DownloadAsync(DownloadUrl, file, progress, cancellationToken);
+                using (httpClient)
+                    await httpClient.DownloadAsync(DownloadUrl, file, progress, cancellationToken);
                 await ReadMsiMetadata(filePath, msiService);
             }
             catch

@@ -20,6 +20,7 @@ using Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands
 using Stein.ViewModels.Commands.ExceptionViewModelCommands;
 using Stein.ViewModels.Commands.InstallationViewModelCommands;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
+using Stein.ViewModels.Commands.UpdateDialogModelCommands;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels.Services
@@ -83,12 +84,48 @@ namespace Stein.ViewModels.Services
                 viewModel = CreateInstallationResultDialogModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(InstallationViewModel))
                 viewModel = CreateInstallationViewModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(UpdateDialogModel))
+                viewModel = CreateUpdateDialogModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(UpdateAssetViewModel))
+                viewModel = CreateUpdateAssetViewModel(parent) as TViewModel;
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
             if (viewModel != null)
                 viewModel.IsDirty = false;
             return viewModel;
+        }
+
+        private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent)
+        {
+            var dialogModel = new UpdateDialogModel
+            {
+                Parent = parent,
+                Title = Strings.UpdateAvailable,
+                IsDirty = false
+            };
+            dialogModel.AddCommand(new OpenUpdateUriCommand(_uriService)
+            {
+                Parent = dialogModel
+            });
+            dialogModel.AddCommand(new InstallUpdateCommand(_installService)
+            {
+                Parent = dialogModel
+            });
+            dialogModel.AddCommand(new CancelUpdateCommand
+            {
+                Parent = dialogModel
+            });
+            return dialogModel;
+        }
+
+        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent)
+        {
+            return new UpdateAssetViewModel
+            {
+                Parent = parent,
+                IsDirty = false
+            };
         }
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)
@@ -212,6 +249,10 @@ namespace Stein.ViewModels.Services
                 Parent = viewModel
             });
             viewModel.AddCommand(new ShowRecentInstallationResultCommand(_dialogService)
+            {
+                Parent = viewModel
+            });
+            viewModel.AddCommand(new ShowUpdateDialogCommand(_dialogService)
             {
                 Parent = viewModel
             });

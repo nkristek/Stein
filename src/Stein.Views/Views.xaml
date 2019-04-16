@@ -60,4 +60,6 @@
 
     <views:ExceptionDialog x:Key="{x:Type viewModels:ExceptionDialogModel}" x:Shared="False"/>
 
+    <views:UpdateDialog x:Key="{x:Type viewModels:UpdateDialogModel}" x:Shared="False"/>
+
 </ResourceDictionary>

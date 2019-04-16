@@ -115,6 +115,15 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current version:.
+        /// </summary>
+        public static string CurrentVersion {
+            get {
+                return ResourceManager.GetString("CurrentVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
         public static string Custom {
@@ -390,6 +399,15 @@ namespace Stein.Localization {
         public static string NaN {
             get {
                 return ResourceManager.GetString("NaN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version:.
+        /// </summary>
+        public static string NewVersion {
+            get {
+                return ResourceManager.GetString("NewVersion", resourceCulture);
             }
         }
         
@@ -682,6 +700,24 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is an update available..
+        /// </summary>
+        public static string UpdateAvailableDescription {
+            get {
+                return ResourceManager.GetString("UpdateAvailableDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The view for ViewModel type {0} is of wrong type {1}. Requested type was {2}..
         /// </summary>
         public static string ViewHasWrongTypeX {
@@ -732,6 +768,15 @@ namespace Stein.Localization {
         public static string XMinutesAgo {
             get {
                 return ResourceManager.GetString("XMinutesAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string XOfX {
+            get {
+                return ResourceManager.GetString("XOfX", resourceCulture);
             }
         }
         

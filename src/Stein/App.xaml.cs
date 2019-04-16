@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using log4net;
 using Ninject;
+using Ninject.Parameters;
+using Ninject.Syntax;
 using Stein.Presentation;
 using Stein.Services.Configuration;
+using Stein.Services.UpdateService;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
@@ -61,9 +65,41 @@ namespace Stein
             var themeService = kernel.Get<IThemeService>();
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
             
-            var viewModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
-            viewModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
-            _dialogService.Show(viewModel);
+            var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
+            mainDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
+            _dialogService.Show(mainDialogModel);
+
+            await CheckForUpdate(kernel, mainDialogModel);
+        }
+
+        private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)
+        {
+            var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
+            const string repository = "nkristek/Stein";
+            var updateService = kernel.Get<IUpdateService>(
+                new ConstructorArgument("currentVersion", assemblyVersion),
+                new ConstructorArgument("repository", repository));
+            var updateResult = await updateService.IsUpdateAvailable();
+            if (updateResult.IsUpdateAvailable)
+            {
+                var updateDialogModel = _viewModelService.CreateViewModel<UpdateDialogModel>(mainDialogModel);
+                updateDialogModel.CurrentVersion = updateResult.CurrentVersion;
+                updateDialogModel.UpdateVersion = updateResult.NewestVersion;
+                updateDialogModel.UpdateUri = updateResult.NewestVersionUri;
+
+                foreach (var updateAsset in updateResult.UpdateAssets)
+                {
+                    var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(updateDialogModel);
+                    updateAssetViewModel.DownloadUri = updateAsset.DownloadUri;
+                    updateAssetViewModel.FileName = updateAsset.FileName;
+                    updateAssetViewModel.ReleaseTag = updateAsset.ReleaseTag;
+                    updateAssetViewModel.IsReadOnly = true;
+                    updateAssetViewModel.IsDirty = false;
+                    updateDialogModel.UpdateAssets.Add(updateAssetViewModel);
+                }
+
+                mainDialogModel.AvailableUpdate = updateDialogModel;
+            }
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

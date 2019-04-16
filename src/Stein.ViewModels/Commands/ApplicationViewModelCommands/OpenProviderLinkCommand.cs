@@ -2,7 +2,6 @@
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.ViewModels.Services;
 
 namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 {

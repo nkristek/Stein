@@ -1,0 +1,153 @@
+﻿<Window x:Class="Stein.Views.UpdateDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
+             xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
+             xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:UpdateDialogModel, IsDesignTimeCreatable=True}"
+             MinWidth="300"
+             MinHeight="200"
+             SizeToContent="WidthAndHeight"
+             WindowStartupLocation="CenterOwner"
+             Title="{Binding Title}">
+
+    <Window.Style>
+        <Style TargetType="Window"
+               BasedOn="{StaticResource {x:Type Window}}"/>
+    </Window.Style>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="{adonisUi:Space 1}" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Margin="8"
+              IsSharedSizeScope="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" 
+                   FontSize="14"
+                   Content="{x:Static localization:Strings.UpdateAvailableDescription}"/>
+
+            <Grid Grid.Row="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelGroup"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}" />
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" 
+                       FontSize="14"
+                       HorizontalAlignment="Right"
+                       Content="{x:Static localization:Strings.CurrentVersion}"/>
+
+                <TextBlock Grid.Column="2" 
+                           FontSize="14"
+                           Text="{Binding CurrentVersion}"/>
+            </Grid>
+
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelGroup"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}" />
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" 
+                       FontSize="14"
+                       HorizontalAlignment="Right"
+                       Content="{x:Static localization:Strings.NewVersion}"/>
+
+                <TextBlock Grid.Column="2" 
+                           FontSize="14">
+                    <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.OpenUpdateUriCommand]}">
+                        <TextBlock Text="{Binding UpdateVersion}"/>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Grid>
+
+        <ProgressBar Grid.Row="2"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     VerticalContentAlignment="Stretch"
+                     Focusable="False"
+                     Margin="{adonisUi:Space 0}"
+                     Padding="{adonisUi:Space 0}"
+                     DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                     Value="{Binding DownloadProgress, Mode=OneWay}"
+                     Maximum="1"/>
+
+        <Grid Grid.Row="2"
+              Margin="{adonisUi:Space 1}"
+              Grid.IsSharedSizeScope="True"
+              extensions:LayerExtension.IncreaseLayer="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"
+                  DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                  Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{steinconverters:DownloadProgressToStringConverter}">
+                            <Binding Path="BytesDownloaded"/>
+                            <Binding Path="BytesTotal"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+
+            <Button Grid.Column="1" 
+                    Padding="{adonisUi:Space 3,0.5}"
+                    Content="{x:Static localization:Strings.Install}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
+
+            <Button Grid.Column="3" 
+                    Width="{adonisUi:Space 3}"
+                    Height="{adonisUi:Space 3}"
+                    Padding="{adonisUi:Space 0.5}"
+                    Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                    ContentTemplate="{DynamicResource DeleteIconVariant}"
+                    Content="{x:Static localization:Strings.Cancel}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
+                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToVisibilityConverter}}"/>
+
+            <Button Grid.Column="3" 
+                    Padding="{adonisUi:Space 3,0.5}"
+                    Content="{x:Static localization:Strings.Ok}"
+                    IsDefault="True"
+                    Click="OnDialogOkButtonClick"
+                    IsEnabled="{Binding IsValid}"
+                    Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
+        </Grid>
+    </Grid>
+</Window>

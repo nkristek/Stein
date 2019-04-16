@@ -348,4 +348,19 @@
   <data name="InstallDescription" xml:space="preserve">
     <value>The install operation will uninstall the application first, if it is already installed, and then proceed with the installation.</value>
   </data>
+  <data name="CurrentVersion" xml:space="preserve">
+    <value>Current version:</value>
+  </data>
+  <data name="NewVersion" xml:space="preserve">
+    <value>New version:</value>
+  </data>
+  <data name="UpdateAvailableDescription" xml:space="preserve">
+    <value>There is an update available.</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Update available</value>
+  </data>
+  <data name="XOfX" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
 </root>
