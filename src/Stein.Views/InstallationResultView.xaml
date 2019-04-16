@@ -3,18 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Stein.Views"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-             xmlns:steinconverters="clr-namespace:Stein.Views.Converters"
-             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:InstallationResultViewModel, IsDesignTimeCreatable=True}">
     <Grid Margin="{adonisUi:Space 0,0.5}"
           Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
-          extensions:LayerExtension.Layer="1">
+          adonisExtensions:LayerExtension.Layer="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="Auto"/>
@@ -109,7 +107,7 @@
             <Grid Grid.Row="1"
                   Margin="{adonisUi:Space 1,0}"
                   Background="{DynamicResource {x:Static adonisUi:Brushes.Layer2BackgroundBrush}}"
-                  extensions:LayerExtension.Layer="2">
+                  adonisExtensions:LayerExtension.Layer="2">
                 <ContentControl Margin="{adonisUi:Space 1}"
                                 Focusable="False"
                                 Content="{Binding Exception}"/>

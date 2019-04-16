@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Stein.Views"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
              xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
-             xmlns:extensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:GitHubInstallerFileBundleProviderViewModel, IsDesignTimeCreatable=True}">
     <Grid>
@@ -27,8 +26,8 @@
         <TextBox Grid.Column="2"
                  VerticalAlignment="Stretch"
                  VerticalContentAlignment="Center"
-                 extensions:WatermarkExtension.IsWatermarkVisible="True"
-                 extensions:WatermarkExtension.Watermark="{x:Static localization:Strings.RepositoryWatermark}"
+                 adonisExtensions:WatermarkExtension.IsWatermarkVisible="True"
+                 adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.RepositoryWatermark}"
                  Text="{Binding Repository, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
 
     </Grid>
