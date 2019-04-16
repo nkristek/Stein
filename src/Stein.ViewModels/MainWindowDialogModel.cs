@@ -64,5 +64,13 @@ namespace Stein.ViewModels
             get => _application;
             set => SetProperty(ref _application, value, out _);
         }
+
+        private UpdateDialogModel _availableUpdate;
+
+        public UpdateDialogModel AvailableUpdate
+        {
+            get => _availableUpdate;
+            set => SetProperty(ref _availableUpdate, value, out _);
+        }
     }
 }

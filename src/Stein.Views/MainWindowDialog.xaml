@@ -52,6 +52,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Add Folder button -->
@@ -64,8 +66,19 @@
                         Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.AddApplicationCommand]}"
                         ToolTip="{x:Static localization:Strings.Add}"/>
 
-                <!-- Refresh button -->
+                <!-- Update dialog button -->
                 <Button Grid.Column="3"
+                        Height="{adonisUi:Space 4}"
+                        Width="{adonisUi:Space 4}"
+                        Padding="{adonisUi:Space 1}"
+                        ContentTemplate="{StaticResource UpdateIconVariant}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
+                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ShowUpdateDialogCommand]}"
+                        ToolTip="{x:Static localization:Strings.UpdateAvailable}"
+                        Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}"/>
+
+                <!-- Refresh button -->
+                <Button Grid.Column="5"
                         Height="{adonisUi:Space 4}"
                         Width="{adonisUi:Space 4}"
                         Padding="{adonisUi:Space 1}"
@@ -124,7 +137,7 @@
                 </Button>
 
                 <!-- Theme switch button -->
-                <Button Grid.Column="5"
+                <Button Grid.Column="7"
                         Height="{adonisUi:Space 4}"
                         Width="{adonisUi:Space 4}"
                         Padding="{adonisUi:Space 1}"
@@ -142,7 +155,7 @@
                 </Button>
 
                 <!-- Info dialog button -->
-                <Button Grid.Column="7"
+                <Button Grid.Column="9"
                         Height="{adonisUi:Space 4}"
                         Width="{adonisUi:Space 4}"
                         Padding="{adonisUi:Space 1}"

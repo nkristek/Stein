@@ -7,6 +7,7 @@ using System.Windows.Markup;
 using log4net;
 using Ninject;
 using Ninject.Parameters;
+using Ninject.Syntax;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.UpdateService;
@@ -64,36 +65,40 @@ namespace Stein
             var themeService = kernel.Get<IThemeService>();
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
             
-            var viewModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
-            viewModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
-            _dialogService.Show(viewModel);
+            var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
+            mainDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
+            _dialogService.Show(mainDialogModel);
 
-            // check for update
+            await CheckForUpdate(kernel, mainDialogModel);
+        }
+
+        private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)
+        {
             var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
-            var repository = "nkristek/Stein";
+            const string repository = "nkristek/Stein";
             var updateService = kernel.Get<IUpdateService>(
                 new ConstructorArgument("currentVersion", assemblyVersion),
                 new ConstructorArgument("repository", repository));
             var updateResult = await updateService.IsUpdateAvailable();
             if (updateResult.IsUpdateAvailable)
             {
-                var dialogModel = _viewModelService.CreateViewModel<UpdateDialogModel>(viewModel);
-                dialogModel.CurrentVersion = updateResult.CurrentVersion;
-                dialogModel.UpdateVersion = updateResult.NewestVersion;
-                dialogModel.UpdateUri = updateResult.NewestVersionUri;
+                var updateDialogModel = _viewModelService.CreateViewModel<UpdateDialogModel>(mainDialogModel);
+                updateDialogModel.CurrentVersion = updateResult.CurrentVersion;
+                updateDialogModel.UpdateVersion = updateResult.NewestVersion;
+                updateDialogModel.UpdateUri = updateResult.NewestVersionUri;
 
                 foreach (var updateAsset in updateResult.UpdateAssets)
                 {
-                    var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(dialogModel);
+                    var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(updateDialogModel);
                     updateAssetViewModel.DownloadUri = updateAsset.DownloadUri;
                     updateAssetViewModel.FileName = updateAsset.FileName;
                     updateAssetViewModel.ReleaseTag = updateAsset.ReleaseTag;
                     updateAssetViewModel.IsReadOnly = true;
                     updateAssetViewModel.IsDirty = false;
-                    dialogModel.UpdateAssets.Add(updateAssetViewModel);
+                    updateDialogModel.UpdateAssets.Add(updateAssetViewModel);
                 }
 
-                _dialogService.ShowDialog(dialogModel);
+                mainDialogModel.AvailableUpdate = updateDialogModel;
             }
         }
 

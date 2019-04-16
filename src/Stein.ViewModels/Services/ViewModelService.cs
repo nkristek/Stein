@@ -252,6 +252,10 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
+            viewModel.AddCommand(new ShowUpdateDialogCommand(_dialogService)
+            {
+                Parent = viewModel
+            });
 
             foreach (var application in CreateApplicationViewModels(viewModel))
                 viewModel.Applications.Add(application);

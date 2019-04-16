@@ -61,6 +61,7 @@
     <Compile Include="Commands\MainWindowDialogModelCommands\RefreshApplicationsCommand.cs" />
     <Compile Include="Commands\MainWindowDialogModelCommands\ShowInfoDialogCommand.cs" />
     <Compile Include="Commands\MainWindowDialogModelCommands\ShowRecentInstallationResultCommand.cs" />
+    <Compile Include="Commands\MainWindowDialogModelCommands\ShowUpdateDialogCommand.cs" />
     <Compile Include="Commands\UpdateDialogModelCommands\CancelUpdateCommand.cs" />
     <Compile Include="Commands\UpdateDialogModelCommands\InstallUpdateCommand.cs" />
     <Compile Include="Commands\UpdateDialogModelCommands\OpenUpdateUriCommand.cs" />
