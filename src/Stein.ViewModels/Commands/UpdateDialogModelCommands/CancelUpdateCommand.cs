@@ -17,8 +17,8 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         /// <inheritdoc />
         protected override void Execute(UpdateDialogModel viewModel, object parameter)
         {
-            var installCommand = viewModel.GetCommand<UpdateDialogModel, InstallUpdateCommand>();
-            installCommand?.Cancel();
+            if (viewModel.TryGetCommand<UpdateDialogModel, InstallUpdateCommand>(out var installCommand))
+                installCommand.Cancel();
         }
     }
 }

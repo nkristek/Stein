@@ -66,10 +66,17 @@ namespace Stein
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
             
             var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
-            mainDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>()?.ExecuteAsync(null);
+
+            Task refreshTask = null;
+            if (mainDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
+                refreshTask = refreshCommand.ExecuteAsync(null);
+
             _dialogService.Show(mainDialogModel);
 
             await CheckForUpdate(kernel, mainDialogModel);
+
+            if (refreshTask != null)
+                await refreshTask;
         }
 
         private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)

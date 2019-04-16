@@ -76,10 +76,9 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowDialogModel.CurrentInstallation.Dispose();
                 mainWindowDialogModel.CurrentInstallation = null;
             }
-
-            var refreshCommand = mainWindowDialogModel.GetCommand<MainWindowDialogModel, RefreshApplicationsCommand>();
+            
             Task refreshTask = null;
-            if (refreshCommand != null)
+            if (mainWindowDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
                 refreshTask = refreshCommand.ExecuteAsync(null);
 
             if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success || r.State != InstallationResultState.Skipped))
