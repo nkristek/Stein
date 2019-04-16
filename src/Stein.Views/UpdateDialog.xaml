@@ -41,7 +41,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" 
-                   FontSize="16"
+                   FontSize="14"
                    Content="{x:Static localization:Strings.UpdateAvailableDescription}"/>
 
             <Grid Grid.Row="2" >
@@ -51,13 +51,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" 
-                           FontSize="16"
-                           HorizontalAlignment="Right"
-                           Text="{x:Static localization:Strings.CurrentVersion}"/>
+                <Label Grid.Column="0" 
+                       FontSize="14"
+                       HorizontalAlignment="Right"
+                       Content="{x:Static localization:Strings.CurrentVersion}"/>
 
                 <TextBlock Grid.Column="2" 
-                           FontSize="16"
+                           FontSize="14"
                            Text="{Binding CurrentVersion}"/>
             </Grid>
 
@@ -69,13 +69,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" 
-                           FontSize="16"
-                           HorizontalAlignment="Right"
-                           Text="{x:Static localization:Strings.NewVersion}"/>
+                <Label Grid.Column="0" 
+                       FontSize="14"
+                       HorizontalAlignment="Right"
+                       Content="{x:Static localization:Strings.NewVersion}"/>
 
                 <TextBlock Grid.Column="2" 
-                           FontSize="16">
+                           FontSize="14">
                     <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.OpenUpdateUriCommand]}">
                         <TextBlock Text="{Binding UpdateVersion}"/>
                     </Hyperlink>
