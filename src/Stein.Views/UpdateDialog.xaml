@@ -53,6 +53,7 @@
 
                 <TextBlock Grid.Column="0" 
                            FontSize="16"
+                           HorizontalAlignment="Right"
                            Text="{x:Static localization:Strings.CurrentVersion}"/>
 
                 <TextBlock Grid.Column="2" 
@@ -70,6 +71,7 @@
 
                 <TextBlock Grid.Column="0" 
                            FontSize="16"
+                           HorizontalAlignment="Right"
                            Text="{x:Static localization:Strings.NewVersion}"/>
 
                 <TextBlock Grid.Column="2" 
