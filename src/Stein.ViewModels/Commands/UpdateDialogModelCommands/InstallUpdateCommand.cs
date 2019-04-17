@@ -138,7 +138,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel)
         {
             var downloadFolderPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                Path.GetTempPath(),
                 Assembly.GetEntryAssembly().GetName().Name,
                 "Downloads",
                 updateAssetViewModel.ReleaseTag);
