@@ -52,6 +52,7 @@
     <Compile Include="DependencyView.xaml.cs">
       <DependentUpon>DependencyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialog.cs" />
     <Compile Include="DiskInstallerFileBundleProviderView.xaml.cs">
       <DependentUpon>DiskInstallerFileBundleProviderView.xaml</DependentUpon>
     </Compile>
