@@ -138,7 +138,7 @@
                                 Height="{adonisUi:Space 3}"
                                 Padding="{adonisUi:Space 0.5}"
                                 Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
-                                Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                                Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
                                 ContentTemplate="{DynamicResource DeleteIconVariant}"
                                 Content="{x:Static localization:Strings.Cancel}"
                                 Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
