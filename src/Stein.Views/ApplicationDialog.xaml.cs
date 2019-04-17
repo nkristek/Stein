@@ -6,7 +6,7 @@ namespace Stein.Views
     /// <summary>
     /// Interaction logic for ApplicationDialog.xaml
     /// </summary>
-    public partial class ApplicationDialog : Window
+    public partial class ApplicationDialog : Dialog
     {
         public ApplicationDialog()
         {

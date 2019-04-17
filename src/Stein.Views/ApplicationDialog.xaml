@@ -1,52 +1,67 @@
-﻿<Window x:Class="Stein.Views.ApplicationDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
-        xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
-        xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
-        xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
-        MinWidth="500"
-        MinHeight="300"
-        SizeToContent="WidthAndHeight"
-        WindowStartupLocation="CenterOwner"
-        Title="{Binding Title}">
+﻿<views:Dialog x:Class="Stein.Views.ApplicationDialog"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+              xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
+              xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+              xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+              xmlns:views="clr-namespace:Stein.Views"
+              mc:Ignorable="d"
+              d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
+              MinWidth="500"
+              MinHeight="300">
 
-    <Window.Style>
-        <Style TargetType="Window"
-               BasedOn="{StaticResource {x:Type Window}}"/>
-    </Window.Style>
-
-    <Grid>
+    <Grid Margin="{adonisUi:Space 1,2}"
+          IsSharedSizeScope="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="{adonisUi:Space 1}"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="{adonisUi:Space 1}"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Dialog Content -->
-        <Grid Grid.Row="0" 
-              Margin="{adonisUi:Space 1,2}"
-              IsSharedSizeScope="True">
+        <!-- Name -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" 
+                                  SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+                   Content="{x:Static localization:Strings.Name}"
+                   Target="NameTextBox"/>
+
+            <TextBox x:Name="NameTextBox" 
+                     Grid.Column="2"
+                     VerticalAlignment="Stretch"
+                     VerticalContentAlignment="Center"
+                     adonisExtensions:ValidationExtension.ErrorMessagePlacement="Bottom"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+        </Grid>
+
+        <!-- Provider Configuration -->
+        <Grid Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
                 <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
             </Grid.RowDefinitions>
 
-            <!-- Name -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" 
@@ -59,208 +74,175 @@
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        FontWeight="Bold"
-                       Content="{x:Static localization:Strings.Name}"
-                       Target="NameTextBox"/>
+                       Content="{x:Static localization:Strings.Type}"/>
 
-                <TextBox x:Name="NameTextBox" 
-                         Grid.Column="2"
-                         VerticalAlignment="Stretch"
-                         VerticalContentAlignment="Center"
-                         adonisExtensions:ValidationExtension.ErrorMessagePlacement="Bottom"
-                         Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"/>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding AvailableProviders}"
+                          SelectedItem="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
+                          IsEnabled="{Binding AvailableProviders, Converter={c:ICollectionNullOrEmptyToInverseBoolConverter}}"
+                          HorizontalAlignment="Stretch"
+                          ScrollViewer.CanContentScroll="True"
+                          VirtualizingStackPanel.IsVirtualizing="True"
+                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          VirtualizingStackPanel.ScrollUnit="Pixel">
+
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+
+                    <ComboBox.Resources>
+                        <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentControl Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Focusable="False"
+                                                ContentTemplate="{StaticResource HddIconVariant}"
+                                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                                Width="{adonisUi:Space 2}"
+                                                Height="{adonisUi:Space 2}"/>
+
+                                <TextBlock Grid.Column="2"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="{x:Static localization:Strings.Disk}"/>
+                            </Grid>
+                        </DataTemplate>
+
+                        <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ContentControl Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Focusable="False"
+                                                ContentTemplate="{StaticResource GitHubIconVariant}"
+                                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                                Width="{adonisUi:Space 2}"
+                                                Height="{adonisUi:Space 2}"/>
+
+                                <TextBlock Grid.Column="2"
+                                           VerticalAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           Text="GitHub"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ComboBox.Resources>
+                </ComboBox>
             </Grid>
 
-            <!-- Provider Configuration -->
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
-                    <RowDefinition Height="{adonisUi:Space 1}"/>
-                    <RowDefinition Height="Auto" SharedSizeGroup="InputRow"/>
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" 
-                                          SharedSizeGroup="LabelColumn"/>
-                        <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"
-                           Content="{x:Static localization:Strings.Type}"/>
-
-                    <ComboBox Grid.Column="2"
-                              ItemsSource="{Binding AvailableProviders}"
-                              SelectedItem="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
-                              IsEnabled="{Binding AvailableProviders, Converter={c:ICollectionNullOrEmptyToInverseBoolConverter}}"
-                              HorizontalAlignment="Stretch"
-                              ScrollViewer.CanContentScroll="True"
-                              VirtualizingStackPanel.IsVirtualizing="True"
-                              VirtualizingStackPanel.VirtualizationMode="Recycling"
-                              VirtualizingStackPanel.ScrollUnit="Pixel">
-
-                        <ComboBox.ItemsPanel>
-                            <ItemsPanelTemplate >
-                                <VirtualizingStackPanel/>
-                            </ItemsPanelTemplate>
-                        </ComboBox.ItemsPanel>
-
-                        <ComboBox.Resources>
-                            <DataTemplate DataType="{x:Type viewModels:DiskInstallerFileBundleProviderViewModel}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <ContentControl Grid.Column="0"
-                                                    VerticalAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Focusable="False"
-                                                    ContentTemplate="{StaticResource HddIconVariant}"
-                                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
-                                                    Width="{adonisUi:Space 2}"
-                                                    Height="{adonisUi:Space 2}"/>
-
-                                    <TextBlock Grid.Column="2"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="{x:Static localization:Strings.Disk}"/>
-                                </Grid>
-                            </DataTemplate>
-
-                            <DataTemplate DataType="{x:Type viewModels:GitHubInstallerFileBundleProviderViewModel}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <ContentControl Grid.Column="0"
-                                                    VerticalAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Focusable="False"
-                                                    ContentTemplate="{StaticResource GitHubIconVariant}"
-                                                    Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
-                                                    Width="{adonisUi:Space 2}"
-                                                    Height="{adonisUi:Space 2}"/>
-
-                                    <TextBlock Grid.Column="2"
-                                               VerticalAlignment="Center"
-                                               TextTrimming="CharacterEllipsis"
-                                               Text="GitHub"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ComboBox.Resources>
-                    </ComboBox>
-                </Grid>
-
-                <ContentControl Grid.Row="2"
-                                Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
-                                Focusable="False"/>
-            </Grid>
-
-            <!-- Silent Install -->
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <CheckBox Grid.Column="2"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding EnableSilentInstallation}"
-                          Content="{x:Static localization:Strings.SilentInstall}"/>
-            </Grid>
-
-            <!-- Disable reboot -->
-            <Grid Grid.Row="6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <CheckBox Grid.Column="2"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding DisableReboot}"
-                          Content="{x:Static localization:Strings.DisableReboot}"/>
-            </Grid>
-
-            <!-- Enable Installation Logging -->
-            <Grid Grid.Row="8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <CheckBox Grid.Column="2"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding EnableInstallationLogging}"
-                          Content="{x:Static localization:Strings.InstallLog}"/>
-
-                <Button Grid.Column="4"
-                        Content="{x:Static localization:Strings.OpenFolder}"
-                        Padding="{adonisUi:Space 2,0.5}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationDialogModelCommands.OpenLogFolderCommand]}"/>
-
-                <CheckBox Grid.Column="6"
-                          VerticalAlignment="Center"
-                          IsEnabled="{Binding EnableInstallationLogging}"
-                          IsChecked="{Binding AutomaticallyDeleteInstallationLogs}">
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center"
-                                   Text="{x:Static localization:Strings.KeepNewest}"
-                                   Margin="{adonisUi:Space 0,0,1,0}"/>
-
-                        <TextBox VerticalContentAlignment="Center"
-                                 MinWidth="{adonisUi:Space 5}"
-                                 HorizontalContentAlignment="Right"
-                                 Text="{Binding KeepNewestInstallationLogsString, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                 IsEnabled="{Binding AutomaticallyDeleteInstallationLogs}"/>
-
-                    </StackPanel>
-                </CheckBox>
-            </Grid>
-
-            <!-- Filter duplicate installers -->
-            <Grid Grid.Row="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <CheckBox Grid.Column="2"
-                          VerticalAlignment="Center"
-                          IsChecked="{Binding FilterDuplicateInstallers}"
-                          Content="{x:Static localization:Strings.FilterDuplicateInstallers}"
-                          ToolTip="{x:Static localization:Strings.FilterDuplicateInstallersDetails}"/>
-            </Grid>
+            <ContentControl Grid.Row="2"
+                            Content="{Binding SelectedProvider, ValidatesOnNotifyDataErrors=False}"
+                            Focusable="False"/>
         </Grid>
 
-        <!-- Dialog Buttons -->
-        <Grid Grid.Row="2"
-              Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
-              adonisExtensions:LayerExtension.Layer="1">
+        <!-- Silent Install -->
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding EnableSilentInstallation}"
+                      Content="{x:Static localization:Strings.SilentInstall}"/>
+        </Grid>
+
+        <!-- Disable reboot -->
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding DisableReboot}"
+                      Content="{x:Static localization:Strings.DisableReboot}"/>
+        </Grid>
+
+        <!-- Enable Installation Logging -->
+        <Grid Grid.Row="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding EnableInstallationLogging}"
+                      Content="{x:Static localization:Strings.InstallLog}"/>
+
+            <Button Grid.Column="4"
+                    Content="{x:Static localization:Strings.OpenFolder}"
+                    Padding="{adonisUi:Space 2,0.5}"
+                    Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationDialogModelCommands.OpenLogFolderCommand]}"/>
+
+            <CheckBox Grid.Column="6"
+                      VerticalAlignment="Center"
+                      IsEnabled="{Binding EnableInstallationLogging}"
+                      IsChecked="{Binding AutomaticallyDeleteInstallationLogs}">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                               Text="{x:Static localization:Strings.KeepNewest}"
+                               Margin="{adonisUi:Space 0,0,1,0}"/>
+
+                    <TextBox VerticalContentAlignment="Center"
+                             MinWidth="{adonisUi:Space 5}"
+                             HorizontalContentAlignment="Right"
+                             Text="{Binding KeepNewestInstallationLogsString, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                             IsEnabled="{Binding AutomaticallyDeleteInstallationLogs}"/>
+
+                </StackPanel>
+            </CheckBox>
+        </Grid>
+
+        <!-- Filter duplicate installers -->
+        <Grid Grid.Row="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="LabelColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="2"
+                      VerticalAlignment="Center"
+                      IsChecked="{Binding FilterDuplicateInstallers}"
+                      Content="{x:Static localization:Strings.FilterDuplicateInstallers}"
+                      ToolTip="{x:Static localization:Strings.FilterDuplicateInstallersDetails}"/>
+        </Grid>
+    </Grid>
+
+    <views:Dialog.DialogButtons>
+        <Grid IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
@@ -295,5 +277,5 @@
                     Padding="{adonisUi:Space 2,0.5}"
                     IsCancel="True"/>
         </Grid>
-    </Grid>
-</Window>
+    </views:Dialog.DialogButtons>
+</views:Dialog>
