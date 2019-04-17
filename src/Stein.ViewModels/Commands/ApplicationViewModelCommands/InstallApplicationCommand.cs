@@ -21,11 +21,14 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private readonly IInstallService _installService;
 
-        public InstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService)
+        private readonly string _downloadFolderPath;
+
+        public InstallApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, string downloadFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
+            _downloadFolderPath = !String.IsNullOrEmpty(downloadFolderPath) ? downloadFolderPath : throw new ArgumentNullException(nameof(downloadFolderPath));
         }
 
         /// <inheritdoc />
@@ -64,7 +67,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                     viewModel.EnableInstallationLogging, 
                     viewModel.AutomaticallyDeleteInstallationLogs, 
                     viewModel.KeepNewestInstallationLogs,
-                    viewModel.FilterDuplicateInstallers);
+                    viewModel.FilterDuplicateInstallers,
+                    _downloadFolderPath);
             }
             finally
             {

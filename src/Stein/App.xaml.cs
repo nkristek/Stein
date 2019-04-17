@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,8 @@ namespace Stein
     public partial class App : Application
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static string AppTmpFolderPath = Path.Combine(Path.GetTempPath(), Assembly.GetEntryAssembly().GetName().Name);
 
         private IViewModelService _viewModelService;
 
@@ -49,7 +52,7 @@ namespace Stein
 
             var kernel = new StandardKernel(new AppModule());
             _dialogService = kernel.Get<IDialogService>();
-            _viewModelService = kernel.Get<IViewModelService>();
+            _viewModelService = kernel.Get<IViewModelService>(new ConstructorArgument("tmpFolderPath", AppTmpFolderPath));
 
             var configurationService = kernel.Get<IConfigurationService>();
             try
@@ -106,6 +109,26 @@ namespace Stein
                 }
 
                 mainDialogModel.AvailableUpdate = updateDialogModel;
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            DeleteTmpFolder();
+        }
+
+        private static void DeleteTmpFolder()
+        {
+            try
+            {
+                Directory.Delete(AppTmpFolderPath, true);
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Deleting tmp folder failed", exception);
             }
         }
 

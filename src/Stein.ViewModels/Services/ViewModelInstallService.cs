@@ -20,7 +20,8 @@ namespace Stein.ViewModels.Services
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
-        public static async Task<InstallationResultDialogModel> Install(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot, bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
+        public static async Task<InstallationResultDialogModel> Install(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot, 
+            bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers, string downloadFolderPath)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
@@ -30,6 +31,8 @@ namespace Stein.ViewModels.Services
                 throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
+            if (String.IsNullOrEmpty(downloadFolderPath))
+                throw new ArgumentNullException(nameof(downloadFolderPath));
 
             foreach (var installer in installerViewModels)
                 installer.SelectedOperation = InstallerOperation.Install;
@@ -44,11 +47,12 @@ namespace Stein.ViewModels.Services
                 enableInstallationLogging, 
                 automaticallyDeleteInstallationLogs, 
                 keepNewestInstallationLogs,
-                filterDuplicateInstallers);
+                filterDuplicateInstallers,
+                downloadFolderPath);
         }
         
         public static async Task<InstallationResultDialogModel> Uninstall(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
-            bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
+            bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers, string downloadFolderPath)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
@@ -58,6 +62,8 @@ namespace Stein.ViewModels.Services
                 throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
+            if (String.IsNullOrEmpty(downloadFolderPath))
+                throw new ArgumentNullException(nameof(downloadFolderPath));
 
             foreach (var installer in installerViewModels)
                 installer.SelectedOperation = InstallerOperation.Uninstall;
@@ -72,11 +78,12 @@ namespace Stein.ViewModels.Services
                 enableInstallationLogging,
                 automaticallyDeleteInstallationLogs,
                 keepNewestInstallationLogs,
-                filterDuplicateInstallers);
+                filterDuplicateInstallers,
+                downloadFolderPath);
         }
         
         public static async Task<InstallationResultDialogModel> Custom(IViewModelService viewModelService, IInstallService installService, InstallationViewModel currentInstallationViewModel, IReadOnlyList<InstallerViewModel> installerViewModels, bool enableSilentInstallation, bool disableReboot,
-            bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers)
+            bool enableInstallationLogging, bool automaticallyDeleteInstallationLogs, int keepNewestInstallationLogs, bool filterDuplicateInstallers, string downloadFolderPath)
         {
             if (viewModelService == null)
                 throw new ArgumentNullException(nameof(viewModelService));
@@ -86,6 +93,8 @@ namespace Stein.ViewModels.Services
                 throw new ArgumentNullException(nameof(currentInstallationViewModel));
             if (installerViewModels == null)
                 throw new ArgumentNullException(nameof(installerViewModels));
+            if (String.IsNullOrEmpty(downloadFolderPath))
+                throw new ArgumentNullException(nameof(downloadFolderPath));
 
             var cancellationToken = currentInstallationViewModel.CancellationTokenSource.Token;
             var installationResultDialogModel = viewModelService.CreateViewModel<InstallationResultDialogModel>(currentInstallationViewModel);
@@ -93,7 +102,10 @@ namespace Stein.ViewModels.Services
             var logFolderPath = enableInstallationLogging ? GetOrCreateLogFileFolderPath(currentInstallationViewModel.Name) : null;
             installationResultDialogModel.LogFolderPath = logFolderPath;
 
-            using (var tempFileCollection = CreateTempFileCollection())
+            var sessionDownloadPath = Path.Combine(downloadFolderPath, currentInstallationViewModel.Name);
+            if (!Directory.Exists(sessionDownloadPath))
+                Directory.CreateDirectory(sessionDownloadPath);
+            using (var tempFileCollection = new TempFileCollection(sessionDownloadPath))
             {
                 Log.Info($"Starting download of {installerViewModels.Count} files.");
                 var downloadResults = await Download(installerViewModels, currentInstallationViewModel, tempFileCollection, 3, cancellationToken);
@@ -354,19 +366,6 @@ namespace Stein.ViewModels.Services
             var installationResultViewModel = viewModelService.CreateViewModel<InstallationResultViewModel>(installerViewModel);
             installationResultViewModel.State = InstallationResultState.Skipped;
             return installationResultViewModel;
-        }
-
-        private static ITempFileCollection CreateTempFileCollection()
-        {
-            return new TempFileCollection(GetDownloadPath());
-        }
-        
-        private static string GetDownloadPath()
-        {
-            var downloadFolderPath = Path.Combine(Path.GetTempPath(), Assembly.GetEntryAssembly().GetName().Name, "Downloads");
-            if (!Directory.Exists(downloadFolderPath))
-                Directory.CreateDirectory(downloadFolderPath);
-            return downloadFolderPath;
         }
 
         private static async Task<IList<KeyValuePair<InstallerViewModel, IDownloadResult>>> Download(IReadOnlyCollection<InstallerViewModel> installerViewModels, InstallationViewModel currentInstallation, ITempFileCollection tempFileCollection, int parallelDownloads = 3, CancellationToken cancellationToken = default)

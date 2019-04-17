@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
@@ -17,9 +16,12 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
     {
         private readonly IInstallService _installService;
 
-        public InstallUpdateCommand(IInstallService installService)
+        private readonly string _downloadFolderPath;
+
+        public InstallUpdateCommand(IInstallService installService, string downloadFolderPath)
         {
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
+            _downloadFolderPath = downloadFolderPath ?? throw new ArgumentNullException(nameof(downloadFolderPath));
         }
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
@@ -137,11 +139,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
 
         private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel)
         {
-            var downloadFolderPath = Path.Combine(
-                Path.GetTempPath(),
-                Assembly.GetEntryAssembly().GetName().Name,
-                "Downloads",
-                updateAssetViewModel.ReleaseTag);
+            var downloadFolderPath = Path.Combine(_downloadFolderPath, updateAssetViewModel.ReleaseTag);
             if (!Directory.Exists(downloadFolderPath))
                 Directory.CreateDirectory(downloadFolderPath);
             return Path.Combine(downloadFolderPath, updateAssetViewModel.FileName);

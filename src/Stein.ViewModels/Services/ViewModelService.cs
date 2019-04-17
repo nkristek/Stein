@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -48,7 +49,11 @@ namespace Stein.ViewModels.Services
 
         private readonly IUriService _uriService;
 
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService)
+        private readonly string _tmpFolderPath;
+
+        private readonly string _downloadFolderPath;
+
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, string tmpFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
@@ -59,6 +64,8 @@ namespace Stein.ViewModels.Services
             _msiService = msiService ?? throw new ArgumentNullException(nameof(msiService));
             _installerFileBundleProviderFactory = installerFileBundleProviderFactory ?? throw new ArgumentNullException(nameof(installerFileBundleProviderFactory));
             _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+            _tmpFolderPath = !String.IsNullOrEmpty(tmpFolderPath) ? tmpFolderPath : throw new ArgumentNullException(nameof(tmpFolderPath));
+            _downloadFolderPath = GetDownloadFolderPath(tmpFolderPath);
         }
 
         /// <inheritdoc />
@@ -96,6 +103,14 @@ namespace Stein.ViewModels.Services
             return viewModel;
         }
 
+        private static string GetDownloadFolderPath(string parentFolderPath)
+        {
+            var downloadFolderPath = Path.Combine(parentFolderPath, "Downloads");
+            if (!Directory.Exists(downloadFolderPath))
+                Directory.CreateDirectory(downloadFolderPath);
+            return downloadFolderPath;
+        }
+
         private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent)
         {
             var dialogModel = new UpdateDialogModel
@@ -108,7 +123,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = dialogModel
             });
-            dialogModel.AddCommand(new InstallUpdateCommand(_installService)
+            dialogModel.AddCommand(new InstallUpdateCommand(_installService, _downloadFolderPath)
             {
                 Parent = dialogModel
             });
@@ -296,15 +311,15 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService)
+            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService)
+            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService)
+            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
             {
                 Parent = viewModel
             });
