@@ -12,10 +12,10 @@ namespace Stein.Views
         {
             InitializeComponent();
 
-            KeyDown += ApplicationDialog_KeyDown;
+            KeyDown += Dialog_KeyDown;
         }
 
-        private void ApplicationDialog_KeyDown(object sender, KeyEventArgs e)
+        private void Dialog_KeyDown(object sender, KeyEventArgs e)
         {
             if (!OkButton.IsEnabled || e.Key != Key.Enter)
                 return;

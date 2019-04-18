@@ -12,7 +12,10 @@
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
               MinWidth="500"
-              MinHeight="300">
+              MinHeight="300"
+              SizeToContent="WidthAndHeight"
+              WindowStartupLocation="CenterOwner"
+              Title="{Binding Title}">
 
     <Grid Margin="{adonisUi:Space 1,2}"
           IsSharedSizeScope="True">
@@ -254,7 +257,7 @@
             <Button x:Name="OkButton" 
                     Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
-                    Margin="0,8"
+                    Margin="{adonisUi:Space 0,1}"
                     Padding="{adonisUi:Space 2,0.5}"
                     Click="OnDialogOkButtonClick">
                 <Button.IsDefault>
@@ -272,8 +275,8 @@
             </Button>
 
             <Button Grid.Column="3" 
-                    Margin="0,8"
                     Content="{x:Static localization:Strings.Cancel}"
+                    Margin="{adonisUi:Space 0,1}"
                     Padding="{adonisUi:Space 2,0.5}"
                     IsCancel="True"/>
         </Grid>
