@@ -55,14 +55,15 @@ namespace Stein
             _viewModelService = kernel.Get<IViewModelService>(new ConstructorArgument("tmpFolderPath", AppTmpFolderPath));
 
             var configurationService = kernel.Get<IConfigurationService>();
+            var isFirstLaunch = false;
             try
             {
                 await configurationService.LoadConfigurationAsync();
             }
             catch (Exception exception)
             {
-                // TODO GitHub issue #27: show welcome view
                 Log.Error("Loading configuration failed, will create a new one", exception);
+                isFirstLaunch = true;
             }
 
             var themeService = kernel.Get<IThemeService>();
@@ -80,6 +81,12 @@ namespace Stein
 
             if (refreshTask != null)
                 await refreshTask;
+
+            if (isFirstLaunch)
+            {
+                var welcomeDialog = _viewModelService.CreateViewModel<WelcomeDialogModel>(mainDialogModel);
+                _dialogService.ShowDialog(welcomeDialog);
+            }
         }
 
         private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)

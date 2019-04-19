@@ -745,6 +745,37 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to Stein!.
+        /// </summary>
+        public static string WelcomeCaption {
+            get {
+                return ResourceManager.GetString("WelcomeCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To get started, please add a source for installer files by clicking on the + button.
+        ///The file system source creates an installer file bundle for each subfolder of the configured folder.
+        ///The GitHub source creates an installer file bundle for each release of the repository.
+        ///Please note, that only .msi based installers are supported, other file types such as .exe will be ignored.
+        ///When you click on the Install button, the installer files of the current bundle will be downloaded to a temporary folder. Depend [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string WelcomeMessage {
+            get {
+                return ResourceManager.GetString("WelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} hours ago.
         /// </summary>
         public static string XHoursAgo {

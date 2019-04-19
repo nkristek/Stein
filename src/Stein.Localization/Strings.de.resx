@@ -362,4 +362,20 @@ ignoriert diese Einstellung.</value>
   <data name="XOfX" xml:space="preserve">
     <value>{0} von {1}</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Willkommen</value>
+  </data>
+  <data name="WelcomeCaption" xml:space="preserve">
+    <value>Willkommen zu Stein!</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Um zu starten fügen Sie bitte eine Quelle für Installerdateien hinzu indem Sie auf den + Knopf klicken.
+Die Dateisystem-Quelle erstellt Installerdateibündel für jeden Unterordner vom ausgewählten Ordner.
+Die GitHub-Quelle erstellt Installerdateibündel für jedes Release vom Repository.
+Bitte beachten Sie, dass lediglich .msi basierte Installer unterstützt werden, andere Dateitypen wie .exe werden ignoriert.
+Wenn Sie auf den Installieren-Knopf klicken werden die Installerdateien vom aktuellen Bündel in ein temporäres Verzeichnis geladen. Je nachdem ob der ProductCode von einem Installer bereits installiert ist wird er vor der Installation deinstalliert.
+Es gibt mehrere Möglichkeiten um eine Installation anzupassen. Indem man eine benutzerdefinierte Installation ausführt kann man zusätzliche Kommdandozeilenargumente pro Installer festlegen.
+Wenn Sie Hilfe benötigen, einen Feature-Wunsch haben oder einen Fehler bemerken, zögern Sie bitte nicht, ein Issue auf GitHub anzulegen. Sie können sich auch gerne an der Entwicklung beteiligen, indem Sie beispielsweise einen Pull Request stellen.
+Ich hoffe dieses Tool macht ihren täglichen Arbeitsablauf etwas angenehmer.</value>
+  </data>
 </root>

@@ -64,4 +64,6 @@
 
     <views:UpdateDialog x:Key="{x:Type viewModels:UpdateDialogModel}" x:Shared="False"/>
 
+    <views:WelcomeDialog x:Key="{x:Type viewModels:WelcomeDialogModel}" x:Shared="False"/>
+
 </ResourceDictionary>
