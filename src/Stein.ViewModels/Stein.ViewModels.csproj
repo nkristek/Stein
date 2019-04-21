@@ -97,6 +97,7 @@
     <Compile Include="Services\ViewModelService.cs" />
     <Compile Include="UpdateAssetViewModel.cs" />
     <Compile Include="UpdateDialogModel.cs" />
+    <Compile Include="WelcomeDialogModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stein.Localization\Stein.Localization.csproj">

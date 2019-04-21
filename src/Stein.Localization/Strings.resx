@@ -363,4 +363,20 @@
   <data name="XOfX" xml:space="preserve">
     <value>{0} of {1}</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="WelcomeCaption" xml:space="preserve">
+    <value>Welcome to Stein!</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>To get started, please add a source for installer files by clicking on the + button.
+The file system source creates an installer file bundle for each subfolder of the configured folder.
+The GitHub source creates an installer file bundle for each release of the repository.
+Please note, that only .msi based installers are supported, other file types such as .exe will be ignored.
+When you click on the Install button, the installer files of the current bundle will be downloaded to a temporary folder. Depending on if the ProductCode of an installer is already installed, it will be uninstalled prior to the installation.
+There are multiple ways to customize the install. By doing a custom install, additional command line arguments can be set on a per installer basis.
+If you need help, have a feature request or notice a bug, please don't hesitate to open an issue on GitHub. You can also contribute to the development by for example issuing a pull request.
+I hope this tool makes your daily workflow a bit easier.</value>
+  </data>
 </root>

@@ -68,6 +68,14 @@ namespace Stein.ViewModels.Services
             _downloadFolderPath = GetDownloadFolderPath(tmpFolderPath);
         }
 
+        private static string GetDownloadFolderPath(string parentFolderPath)
+        {
+            var downloadFolderPath = Path.Combine(parentFolderPath, "Downloads");
+            if (!Directory.Exists(downloadFolderPath))
+                Directory.CreateDirectory(downloadFolderPath);
+            return downloadFolderPath;
+        }
+
         /// <inheritdoc />
         public TViewModel CreateViewModel<TViewModel>(IViewModel parent = null, object entity = null) where TViewModel : class, IViewModel
         {
@@ -95,20 +103,14 @@ namespace Stein.ViewModels.Services
                 viewModel = CreateUpdateDialogModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(UpdateAssetViewModel))
                 viewModel = CreateUpdateAssetViewModel(parent) as TViewModel;
+            else if (typeof(TViewModel) == typeof(WelcomeDialogModel))
+                viewModel = CreateWelcomeDialogModel(parent) as TViewModel;
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
             if (viewModel != null)
                 viewModel.IsDirty = false;
             return viewModel;
-        }
-
-        private static string GetDownloadFolderPath(string parentFolderPath)
-        {
-            var downloadFolderPath = Path.Combine(parentFolderPath, "Downloads");
-            if (!Directory.Exists(downloadFolderPath))
-                Directory.CreateDirectory(downloadFolderPath);
-            return downloadFolderPath;
         }
 
         private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent)
@@ -132,6 +134,15 @@ namespace Stein.ViewModels.Services
                 Parent = dialogModel
             });
             return dialogModel;
+        }
+
+        private WelcomeDialogModel CreateWelcomeDialogModel(IViewModel parent)
+        {
+            return new WelcomeDialogModel
+            {
+                Parent = parent,
+                IsDirty = false
+            };
         }
 
         private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent)
