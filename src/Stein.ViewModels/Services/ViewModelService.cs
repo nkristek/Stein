@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using log4net;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localization;
+using Stein.Utility;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.Configuration.v2;
@@ -609,15 +610,14 @@ namespace Stein.ViewModels.Services
         private async Task UpdateMainWindowDialogModelAsync(MainWindowDialogModel viewModel)
         {
             viewModel.IsUpdating = true;
-
-            // TODO: modifying/replacing the ObservableCollection freezes WPF for a short time
-
-            //var applications = new ObservableCollection<ApplicationViewModel>(CreateApplicationViewModels(viewModel));
-            //viewModel.Applications = applications;
-
-            //viewModel.Applications.Clear();
-            //foreach (var applicationViewModel in CreateApplicationViewModels(viewModel))
-            //    viewModel.Applications.Add(applicationViewModel);
+            
+            // modifying/replacing the ObservableCollection freezes the UI for a short time, do it only when its absolutely necessary
+            if (!viewModel.Applications.SequenceEqual(_configurationService.Configuration.Applications, (oldItem, newItem) => oldItem.EntityId == newItem.Id))
+            {
+                viewModel.Applications.Clear();
+                foreach (var applicationViewModel in CreateApplicationViewModels(viewModel))
+                    viewModel.Applications.Add(applicationViewModel);
+            }
 
             foreach (var applicationViewModel in viewModel.Applications)
                 applicationViewModel.IsUpdating = true;
