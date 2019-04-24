@@ -42,19 +42,17 @@ namespace Stein.Services.UpdateService
                 NewestVersion = _currentVersion
             };
 
-            foreach (var release in releases)
+            foreach (var release in releases.Where(r => !r.IsDraft && !r.IsPreRelease && !String.IsNullOrEmpty(r.TagName)))
             {
-                var tagName = release.TagName;
-                if (String.IsNullOrEmpty(tagName))
-                    continue;
-
-                var lowerCaseTagName = tagName.ToLower();
+                var lowerCaseTagName = release.TagName.ToLower();
                 var versionString = lowerCaseTagName.StartsWith("v") ? lowerCaseTagName.Substring(1) : lowerCaseTagName;
                 if (Version.TryParse(versionString, out var version) && updateResult.NewestVersion <= version)
                 {
                     updateResult.NewestVersion = version;
                     updateResult.NewestVersionUri = String.IsNullOrEmpty(release.HtmlUrl) ? null : new Uri(release.HtmlUrl);
-                    updateResult.UpdateAssets = release.Assets.Select(a => new UpdateAsset
+                    updateResult.UpdateAssets = release.Assets
+                        .Where(a => !String.IsNullOrEmpty(a.BrowserDownloadUrl) && !String.IsNullOrEmpty(a.Name))
+                        .Select(a => new UpdateAsset
                     {
                         DownloadUri = new Uri(a.BrowserDownloadUrl),
                         FileName = a.Name,
