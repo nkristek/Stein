@@ -79,5 +79,45 @@ namespace Stein.Utility
 
             return primaryItems;
         }
+        
+        /// <summary>
+        /// Determines whether two sequences are equal by comparing their elements using a lambda function.
+        /// </summary>
+        /// <param name="first">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> to compare to <paramref name="second" />.</param>
+        /// <param name="second">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> to compare to the first sequence.</param>
+        /// <param name="comparer">A <see cref="Func{T, T, TResult}" /> to compare the elements.</param>
+        /// <typeparam name="TFirst">The type of the elements of the first sequence.</typeparam>
+        /// <typeparam name="TSecond">The type of the elements of the second sequence.</typeparam>
+        /// <returns>
+        /// <see langword="true" /> if the two source sequences are of equal length and their corresponding elements compare equal according to <paramref name="comparer" />; otherwise, <see langword="false" />.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// <paramref name="first" />, <paramref name="second" /> or <paramref name="comparer" /> is <see langword="null" />.
+        /// </exception>
+        public static bool SequenceEqual<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, bool> comparer)
+        {
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
+
+            using (var firstEnumerator = first.GetEnumerator())
+            using (var secondEnumerator = second.GetEnumerator())
+            {
+                var firstHasNext = firstEnumerator.MoveNext();
+                var secondHasNext = secondEnumerator.MoveNext();
+                while (firstHasNext && secondHasNext)
+                {
+                    if (!comparer.Invoke(firstEnumerator.Current, secondEnumerator.Current))
+                        return false;
+                    firstHasNext = firstEnumerator.MoveNext();
+                    secondHasNext = secondEnumerator.MoveNext();
+                }
+                return !firstHasNext && !secondHasNext;
+            }
+
+        }
     }
 }

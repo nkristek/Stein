@@ -45,5 +45,29 @@ namespace Stein.Utility.Tests
             mergedSequence = firstSequence.MergeSequence(secondSequence);
             Assert.True(mergedSequence.SequenceEqual(new List<string> { "1", "2", "4", "3" }));
         }
+
+        [Fact]
+        public void SequenceEqual()
+        {
+            IEnumerable<string> firstSequence = new List<string> { "1" };
+            IEnumerable<string> secondSequence = new List<string> { "1" };
+            Assert.True(firstSequence.SequenceEqual(secondSequence, (f, s) => f == s));
+
+            firstSequence = new List<string> { "1" };
+            secondSequence = new List<string> { "2" };
+            Assert.False(firstSequence.SequenceEqual(secondSequence, (f, s) => f == s));
+
+            firstSequence = Enumerable.Empty<string>();
+            secondSequence = Enumerable.Empty<string>();
+            Assert.True(firstSequence.SequenceEqual(secondSequence, (f, s) => f == s));
+
+            firstSequence = new List<string> { "1" };
+            secondSequence = new List<string> { "1", "2" };
+            Assert.False(firstSequence.SequenceEqual(secondSequence, (f, s) => f == s));
+
+            firstSequence = new List<string> { "1", "2" };
+            secondSequence = new List<string> { "1" };
+            Assert.False(firstSequence.SequenceEqual(secondSequence, (f, s) => f == s));
+        }
     }
 }
