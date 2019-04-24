@@ -77,16 +77,25 @@ namespace Stein
 
             _dialogService.Show(mainDialogModel);
 
-            await CheckForUpdate(kernel, mainDialogModel);
-
-            if (refreshTask != null)
-                await refreshTask;
+            var updateTask = CheckForUpdate(kernel, mainDialogModel);
 
             if (isFirstLaunch)
             {
                 var welcomeDialog = _viewModelService.CreateViewModel<WelcomeDialogModel>(mainDialogModel);
                 _dialogService.ShowDialog(welcomeDialog);
             }
+            
+            try
+            {
+                await updateTask;
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Checking for update failed.", exception);
+            }
+
+            if (refreshTask != null)
+                await refreshTask;
         }
 
         private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)
