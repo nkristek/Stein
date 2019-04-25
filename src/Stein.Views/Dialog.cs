@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Stein.Views
 {
@@ -16,5 +17,13 @@ namespace Stein.Views
         }
 
         public static readonly DependencyProperty DialogButtonsProperty = DependencyProperty.Register(nameof(DialogButtons), typeof(object), typeof(Dialog), new PropertyMetadata(null));
+
+        public Brush DialogButtonsBackground
+        {
+            get => GetValue(DialogButtonsBackgroundProperty) as Brush;
+            set => SetValue(DialogButtonsBackgroundProperty, value);
+        }
+
+        public static readonly DependencyProperty DialogButtonsBackgroundProperty = DependencyProperty.Register(nameof(DialogButtons), typeof(Brush), typeof(Dialog), new PropertyMetadata(null));
     }
 }
