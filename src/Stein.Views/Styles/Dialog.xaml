@@ -5,28 +5,34 @@
                     xmlns:views="clr-namespace:Stein.Views"
                     xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters">
 
-    <!--<Style TargetType="{x:Type views:Dialog}" BasedOn="{StaticResource {x:Type Window}}">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/AdonisUI.ClassicTheme;component/DefaultStyles/Window.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="{x:Type views:Dialog}" BasedOn="{StaticResource {x:Type Window}}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type views:Dialog}">
-                    <Grid Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <AdornerDecorator>
+                        <Grid Background="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <ContentPresenter Grid.Row="0"
-                                          Content="{TemplateBinding Content}"/>
+                            <ContentPresenter Grid.Row="0"
+                                              Content="{TemplateBinding Content}"/>
 
-                        <Grid Grid.Row="1"
-                              Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
-                              Visibility="{TemplateBinding DialogButtons, Converter={c:ValueNullToInverseVisibilityConverter}}"
-                              adonisExtensions:LayerExtension.Layer="1">
-                            <ContentPresenter Content="{TemplateBinding DialogButtons}" />
+                            <Grid Grid.Row="1"
+                                  Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+                                  Visibility="{TemplateBinding DialogButtons, Converter={c:ValueNullToInverseVisibilityConverter}}"
+                                  adonisExtensions:LayerExtension.Layer="1">
+                                <ContentPresenter Content="{TemplateBinding DialogButtons}" />
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </AdornerDecorator>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
 </ResourceDictionary>

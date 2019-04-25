@@ -7,8 +7,6 @@
 
         <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/Icons.xaml"/>
 
-        <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Styles/Dialog.xaml"/>
-
     </ResourceDictionary.MergedDictionaries>
 
     <!-- Views -->
