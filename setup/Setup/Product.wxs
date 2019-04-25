@@ -3,9 +3,9 @@
 
   <!-- Change the ProductCode for every release -->
   <?if $(var.Platform)=x64 ?>
-  <?define ProductCode = "{221F9761-825C-44A0-B26D-4A41D3E0F9A3}" ?>
+  <?define ProductCode = "{92E4CEA1-CF5D-486C-8843-231BA8E33558}" ?>
   <?else?>
-  <?define ProductCode = "{61212596-640C-419F-9A64-46E9C7A455F3}" ?>
+  <?define ProductCode = "{94120C15-335A-4354-9C29-454BC9FA2673}" ?>
   <?endif?>
 
   <!-- Don't change the UpgradeCode -->
