@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Services.InstallService;
+using Stein.Services.IOService;
 using Stein.Utility;
 
 namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
@@ -16,11 +16,14 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
     {
         private readonly IInstallService _installService;
 
+        private readonly IIOService _ioService;
+
         private readonly string _downloadFolderPath;
 
-        public InstallUpdateCommand(IInstallService installService, string downloadFolderPath)
+        public InstallUpdateCommand(IInstallService installService, IIOService ioService, string downloadFolderPath)
         {
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
+            _ioService = ioService ?? throw new ArgumentNullException(nameof(ioService));
             _downloadFolderPath = downloadFolderPath ?? throw new ArgumentNullException(nameof(downloadFolderPath));
         }
 
@@ -116,7 +119,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                     return;
 
                 installerFilePath = CreateInstallerFilePath(updateAssetViewModel);
-                if (!File.Exists(installerFilePath))
+                if (!_ioService.FileExists(installerFilePath))
                     await DownloadInstallerFile(updateAssetViewModel.DownloadUri, installerFilePath);
                 StartInstall(installerFilePath);
                 Environment.Exit(0);
@@ -124,7 +127,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             catch (OperationCanceledException)
             {
                 if (installerFilePath != null)
-                    File.Delete(installerFilePath);
+                    _ioService.DeleteFile(installerFilePath);
             }
             finally
             {
@@ -139,10 +142,10 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
 
         private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel)
         {
-            var downloadFolderPath = Path.Combine(_downloadFolderPath, updateAssetViewModel.ReleaseTag);
-            if (!Directory.Exists(downloadFolderPath))
-                Directory.CreateDirectory(downloadFolderPath);
-            return Path.Combine(downloadFolderPath, updateAssetViewModel.FileName);
+            var downloadFolderPath = _ioService.PathCombine(_downloadFolderPath, updateAssetViewModel.ReleaseTag);
+            if (!_ioService.DirectoryExists(downloadFolderPath))
+                _ioService.CreateDirectory(downloadFolderPath);
+            return _ioService.PathCombine(downloadFolderPath, updateAssetViewModel.FileName);
         }
 
         private async Task DownloadInstallerFile(Uri downloadUri, string destinationFilePath)
@@ -156,9 +159,8 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             {
                 DefaultRequestHeaders = { { "User-Agent", "nkristek/Stein" } }
             };
-            using (var file = File.Create(destinationFilePath))
             using (httpClient)
-                await httpClient.DownloadAsync(downloadUri, file, progressReporter, CancellationTokenSource.Token);
+                await httpClient.DownloadAsync(downloadUri, destinationFilePath, progressReporter, CancellationTokenSource.Token);
         }
 
         private void StartInstall(string installerFilePath)

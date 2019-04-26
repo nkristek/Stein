@@ -13,6 +13,7 @@ using Stein.Services.Configuration;
 using Stein.Services.Configuration.v2;
 using Stein.Services.InstallerFiles.Base;
 using Stein.Services.InstallService;
+using Stein.Services.IOService;
 using Stein.Services.MsiService;
 using Stein.Services.ProductService;
 using Stein.ViewModels.Commands.AboutDialogModelCommands;
@@ -52,12 +53,15 @@ namespace Stein.ViewModels.Services
 
         private readonly IClipboardService _clipboardService;
 
+        private readonly IIOService _ioService;
+
         private readonly string _tmpFolderPath;
 
         private readonly string _downloadFolderPath;
 
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, string tmpFolderPath)
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, IClipboardService clipboardService, string tmpFolderPath)
+        private readonly string _logFolderPath;
+
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, IClipboardService clipboardService, IIOService ioService, string tmpFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
@@ -69,13 +73,23 @@ namespace Stein.ViewModels.Services
             _installerFileBundleProviderFactory = installerFileBundleProviderFactory ?? throw new ArgumentNullException(nameof(installerFileBundleProviderFactory));
             _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
             _clipboardService = clipboardService ?? throw new ArgumentNullException(nameof(clipboardService));
+            _ioService = ioService ?? throw new ArgumentNullException(nameof(ioService));
             _tmpFolderPath = !String.IsNullOrEmpty(tmpFolderPath) ? tmpFolderPath : throw new ArgumentNullException(nameof(tmpFolderPath));
             _downloadFolderPath = GetDownloadFolderPath(tmpFolderPath);
+            _logFolderPath = GetLogFolderPath(tmpFolderPath);
         }
 
         private static string GetDownloadFolderPath(string parentFolderPath)
         {
             var downloadFolderPath = Path.Combine(parentFolderPath, "Downloads");
+            if (!Directory.Exists(downloadFolderPath))
+                Directory.CreateDirectory(downloadFolderPath);
+            return downloadFolderPath;
+        }
+
+        private static string GetLogFolderPath(string parentFolderPath)
+        {
+            var downloadFolderPath = Path.Combine(parentFolderPath, "Logs");
             if (!Directory.Exists(downloadFolderPath))
                 Directory.CreateDirectory(downloadFolderPath);
             return downloadFolderPath;
@@ -130,7 +144,7 @@ namespace Stein.ViewModels.Services
             {
                 Parent = dialogModel
             });
-            dialogModel.AddCommand(new InstallUpdateCommand(_installService, _downloadFolderPath)
+            dialogModel.AddCommand(new InstallUpdateCommand(_installService, _ioService, _downloadFolderPath)
             {
                 Parent = dialogModel
             });
@@ -197,7 +211,7 @@ namespace Stein.ViewModels.Services
                 Parent = parent,
                 IsDirty = false
             };
-            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService)
+            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService, _ioService)
             {
                 Parent = dialogModel
             });
@@ -409,7 +423,7 @@ namespace Stein.ViewModels.Services
                 dialogModel.SelectedProvider = dialogModel.AvailableProviders.FirstOrDefault();
             }
             
-            dialogModel.AddCommand(new OpenLogFolderCommand(_uriService)
+            dialogModel.AddCommand(new OpenLogFolderCommand(_uriService, _ioService, _logFolderPath)
             {
                 Parent = dialogModel
             });

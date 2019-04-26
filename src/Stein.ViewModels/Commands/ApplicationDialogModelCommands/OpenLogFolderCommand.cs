@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
+using Stein.Services.IOService;
 
 namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
 {
@@ -12,9 +11,15 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
     {
         private readonly IUriService _uriService;
 
-        public OpenLogFolderCommand(IUriService uriService)
+        private readonly IIOService _ioService;
+
+        private readonly string _logFolderPath;
+
+        public OpenLogFolderCommand(IUriService uriService, IIOService ioService, string logFolderPath)
         {
             _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+            _ioService = ioService ?? throw new ArgumentNullException(nameof(ioService));
+            _logFolderPath = !String.IsNullOrEmpty(logFolderPath) ? logFolderPath : throw new ArgumentNullException(nameof(logFolderPath));
         }
 
         /// <inheritdoc />
@@ -28,14 +33,16 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         protected override void Execute(ApplicationDialogModel viewModel, object parameter)
         {
             var directoryName = GetLogFolderPath(viewModel.Name);
-            if (!Directory.Exists(directoryName))
-                Directory.CreateDirectory(directoryName);
+            if (!_ioService.DirectoryExists(directoryName))
+                _ioService.CreateDirectory(directoryName);
             _uriService.OpenUri(directoryName);
         }
 
-        private static string GetLogFolderPath(string applicationName)
+        private string GetLogFolderPath(string applicationName)
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Assembly.GetEntryAssembly().GetName().Name, "Logs", applicationName);
+            return _ioService.PathCombine(
+                _logFolderPath, 
+                applicationName);
         }
     }
 }

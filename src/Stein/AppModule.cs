@@ -4,6 +4,7 @@ using Stein.Services.Configuration;
 using Stein.Services.Configuration.Upgrades;
 using Stein.Services.InstallerFiles.Base;
 using Stein.Services.InstallService;
+using Stein.Services.IOService;
 using Stein.Services.MsiService;
 using Stein.Services.ProductService;
 using Stein.Services.UpdateService;
@@ -35,6 +36,7 @@ namespace Stein
             Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
             Bind<IUriService>().To<UriService>().InSingletonScope();
             Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
+            Bind<IIOService>().To<IOService>().InSingletonScope();
         }
     }
 }
