@@ -17,81 +17,84 @@
               SizeToContent="Manual"
               WindowStartupLocation="CenterOwner">
    
-    <Grid Margin="{adonisUi:Space 2,1}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="{adonisUi:Space 1}" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="{adonisUi:Space 1}" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="{adonisUi:Space 1}" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="{adonisUi:Space 1}" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <!-- Name, Version and GitHub link -->
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="{adonisUi:Space 1}" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       FontSize="28"
-                       VerticalAlignment="Bottom"
-                       Text="{Binding Name}"/>
-
-            <TextBlock Grid.Column="2"
-                       VerticalAlignment="Bottom"
-                       FontSize="28"
-                       FontWeight="Light"
-                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
-                       Text="{Binding Version}"/>
-
-            <TextBlock Grid.Column="4"
-                       VerticalAlignment="Center"
-                       FontSize="16">
-                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.AboutDialogModelCommands.OpenUriCommand]}">GitHub</Hyperlink>
-            </TextBlock>
-        </Grid>
-
-        <!-- Description -->
-        <TextBlock Grid.Row="2"
-                   Text="{Binding Description}"
-                   TextWrapping="Wrap"/>
-
-        <!-- Dependencies -->
-        <Grid Grid.Row="4"
-              Visibility="{Binding Dependencies, Converter={c:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
+    <ScrollViewer>
+        <Grid Margin="{adonisUi:Space 2,1}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="{adonisUi:Space 1}"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="{adonisUi:Space 1}" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
-                       FontSize="20"
-                       Text="{x:Static localization:Strings.Dependencies}"/>
+            <!-- Name, Version and GitHub link -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="{adonisUi:Space 1}" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <ItemsControl Grid.Row="2" 
-                          Focusable="False"
-                          ItemsSource="{Binding Dependencies}"/>
+                <TextBlock Grid.Column="0"
+                           FontSize="28"
+                           VerticalAlignment="Bottom"
+                           Text="{Binding Name}"/>
+
+                <TextBlock Grid.Column="2"
+                           VerticalAlignment="Bottom"
+                           FontSize="28"
+                           FontWeight="Light"
+                           Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
+                           Text="{Binding Version}"/>
+
+                <TextBlock Grid.Column="4"
+                           VerticalAlignment="Center"
+                           FontSize="16">
+                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.AboutDialogModelCommands.OpenUriCommand]}">GitHub</Hyperlink>
+                </TextBlock>
+            </Grid>
+
+            <!-- Description -->
+            <TextBlock Grid.Row="2"
+                       Text="{Binding Description}"
+                       TextWrapping="Wrap"/>
+
+            <!-- Dependencies -->
+            <Grid Grid.Row="4"
+                  Visibility="{Binding Dependencies, Converter={c:ICollectionNullOrEmptyToInverseVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{adonisUi:Space 1}"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           FontSize="20"
+                           Text="{x:Static localization:Strings.Dependencies}"/>
+
+                <ItemsControl Grid.Row="2" 
+                              Focusable="False"
+                              ItemsSource="{Binding Dependencies}"/>
+            </Grid>
+
+            <!-- Additional notes -->
+            <TextBlock Grid.Row="8"
+                       Text="{Binding AdditionalNotes}"/>
+
+            <!-- Copyright -->
+            <TextBlock Grid.Row="10"
+                       Text="{Binding Copyright}"/>
         </Grid>
-
-        <!-- Additional notes -->
-        <TextBlock Grid.Row="8"
-                   Text="{Binding AdditionalNotes}"/>
-
-        <!-- Copyright -->
-        <TextBlock Grid.Row="10"
-                   Text="{Binding Copyright}"/>
-    </Grid>
+    </ScrollViewer>
+    
 
     <views:Dialog.DialogButtons>
         <Grid Grid.IsSharedSizeScope="True">
