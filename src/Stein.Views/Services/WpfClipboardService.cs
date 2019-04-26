@@ -12,5 +12,11 @@ namespace Stein.Views.Services
         {
             Clipboard.SetText(text, TextDataFormat.UnicodeText);
         }
+
+        /// <inheritdoc />
+        public string GetText()
+        {
+            return Clipboard.GetText(TextDataFormat.UnicodeText);
+        }
     }
 }
