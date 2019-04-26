@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using Stein.Presentation;
 
-namespace Stein.ViewModels.Services
+namespace Stein.Views.Services
 {
-    public class UriService
+    public class WpfUriService
         : IUriService
     {
         /// <inheritdoc />

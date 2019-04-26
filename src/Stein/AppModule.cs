@@ -34,7 +34,7 @@ namespace Stein
             Bind<IConfigurationFactory>().To<ConfigurationFactory>().InSingletonScope();
 
             Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
-            Bind<IUriService>().To<UriService>().InSingletonScope();
+            Bind<IUriService>().To<WpfUriService>().InSingletonScope();
             Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
             Bind<IIOService>().To<IOService>().InSingletonScope();
         }
