@@ -13,25 +13,35 @@ namespace Stein.Utility
         /// </summary>
         /// <param name="client">The <see cref="HttpClient"/> used to download the file.</param>
         /// <param name="requestUri">The URI of the file to download.</param>
-        /// <param name="destination">The destination to download to.</param>
+        /// <param name="destinationFilePath">The file path to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
-        public static Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        public static Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<double> progress = null, CancellationToken cancellationToken = default)
         {
-            if (client == null)
-                throw new ArgumentNullException(nameof(client));
+            if (String.IsNullOrEmpty(destinationFilePath))
+                throw new ArgumentNullException(nameof(destinationFilePath));
 
-            if (String.IsNullOrEmpty(requestUri))
-                throw new ArgumentNullException(nameof(requestUri));
+            using (var file = File.Create(destinationFilePath))
+                return client.DownloadAsync(requestUri, file, progress, cancellationToken);
+        }
 
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
+        /// <summary>
+        /// Download a file asynchronously providing progress tracking and cancellation.
+        /// </summary>
+        /// <param name="client">The <see cref="HttpClient"/> used to download the file.</param>
+        /// <param name="requestUri">The URI of the file to download.</param>
+        /// <param name="destinationFilePath">The file path to download to.</param>
+        /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="cancellationToken">A cancellation token to stop the download.</param>
+        /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
+        public static Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<DownloadProgress> progress = null, CancellationToken cancellationToken = default)
+        {
+            if (String.IsNullOrEmpty(destinationFilePath))
+                throw new ArgumentNullException(nameof(destinationFilePath));
 
-            IProgress<DownloadProgress> progressReporter = null;
-            if (progress != null)
-                progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double) p.BytesDownloaded / p.BytesTotal) : 0L));
-            return client.DownloadAsync(requestUri, destination, progressReporter, cancellationToken);
+            using (var file = File.Create(destinationFilePath))
+                return client.DownloadAsync(requestUri, file, progress, cancellationToken);
         }
 
         /// <summary>
@@ -43,20 +53,11 @@ namespace Stein.Utility
         /// <param name="progress">An optional progress tracker.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
-        public static Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        public static Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<double> progress = null, CancellationToken cancellationToken = default)
         {
-            if (client == null)
-                throw new ArgumentNullException(nameof(client));
-
-            if (requestUri == null)
-                throw new ArgumentNullException(nameof(requestUri));
-
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
-
             IProgress<DownloadProgress> progressReporter = null;
             if (progress != null)
-                progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double)p.BytesDownloaded / p.BytesTotal) : 0L));
+                progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double) p.BytesDownloaded / p.BytesTotal) : 0L));
             return client.DownloadAsync(requestUri, destination, progressReporter, cancellationToken);
         }
 
@@ -73,12 +74,9 @@ namespace Stein.Utility
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
-            
+
             if (String.IsNullOrEmpty(requestUri))
                 throw new ArgumentNullException(nameof(requestUri));
-
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
             
             using (var response = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
@@ -88,6 +86,59 @@ namespace Stein.Utility
             }
         }
 
+        /// <summary>
+        /// Download a file asynchronously providing progress tracking and cancellation.
+        /// </summary>
+        /// <param name="client">The <see cref="HttpClient"/> used to download the file.</param>
+        /// <param name="requestUri">The URI of the file to download.</param>
+        /// <param name="destinationFilePath">The file path to download to.</param>
+        /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="cancellationToken">A cancellation token to stop the download.</param>
+        /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
+        public static Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        {
+            if (String.IsNullOrEmpty(destinationFilePath))
+                throw new ArgumentNullException(nameof(destinationFilePath));
+
+            using (var file = File.Create(destinationFilePath))
+                return client.DownloadAsync(requestUri, file, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Download a file asynchronously providing progress tracking and cancellation.
+        /// </summary>
+        /// <param name="client">The <see cref="HttpClient"/> used to download the file.</param>
+        /// <param name="requestUri">The URI of the file to download.</param>
+        /// <param name="destinationFilePath">The file path to download to.</param>
+        /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="cancellationToken">A cancellation token to stop the download.</param>
+        /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
+        public static Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<DownloadProgress> progress = null, CancellationToken cancellationToken = default)
+        {
+            if (String.IsNullOrEmpty(destinationFilePath))
+                throw new ArgumentNullException(nameof(destinationFilePath));
+
+            using (var file = File.Create(destinationFilePath))
+                return client.DownloadAsync(requestUri, file, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Download a file asynchronously providing progress tracking and cancellation.
+        /// </summary>
+        /// <param name="client">The <see cref="HttpClient"/> used to download the file.</param>
+        /// <param name="requestUri">The URI of the file to download.</param>
+        /// <param name="destination">The destination to download to.</param>
+        /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="cancellationToken">A cancellation token to stop the download.</param>
+        /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
+        public static Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<double> progress = null, CancellationToken cancellationToken = default)
+        {
+            IProgress<DownloadProgress> progressReporter = null;
+            if (progress != null)
+                progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double)p.BytesDownloaded / p.BytesTotal) : 0L));
+            return client.DownloadAsync(requestUri, destination, progressReporter, cancellationToken);
+        }
+        
         /// <summary>
         /// Download a file asynchronously providing progress tracking and cancellation.
         /// </summary>
@@ -104,9 +155,6 @@ namespace Stein.Utility
 
             if (requestUri == null)
                 throw new ArgumentNullException(nameof(requestUri));
-
-            if (destination == null)
-                throw new ArgumentNullException(nameof(destination));
             
             using (var response = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
