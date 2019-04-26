@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NKristek.Smaragd.Validation;
-using Stein.Localization;
 using Stein.Common.Configuration.v2;
+using Stein.Localization;
 using Stein.ViewModels.Types;
 
 namespace Stein.ViewModels

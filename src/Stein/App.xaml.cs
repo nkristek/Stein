@@ -12,8 +12,6 @@ using Ninject.Syntax;
 using Stein.Common.Configuration;
 using Stein.Common.UpdateService;
 using Stein.Presentation;
-using Stein.Services.Configuration;
-using Stein.Services.UpdateService;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;

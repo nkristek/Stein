@@ -1,8 +1,8 @@
 ﻿using System;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using Stein.Presentation;
 using Stein.Common.IOService;
+using Stein.Presentation;
 
 namespace Stein.ViewModels.Commands.InstallationResultDialogModelCommands
 {

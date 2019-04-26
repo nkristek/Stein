@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
-using Stein.Localization;
-using Stein.Presentation;
 using Stein.Common.InstallService;
 using Stein.Common.InstallService.Arguments;
+using Stein.Localization;
+using Stein.Presentation;
 using Stein.Utility;
 using Stein.ViewModels.Types;
 
