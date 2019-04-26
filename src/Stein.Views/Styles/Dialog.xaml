@@ -10,6 +10,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type views:Dialog}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="Title" Value="{Binding Title}"/>
         <Setter Property="Background" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer0BackgroundBrush}}"/>
         <Setter Property="DialogButtonsBackground" Value="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"/>
         <Setter Property="Template">
