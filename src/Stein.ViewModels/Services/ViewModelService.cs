@@ -50,11 +50,14 @@ namespace Stein.ViewModels.Services
 
         private readonly IUriService _uriService;
 
+        private readonly IClipboardService _clipboardService;
+
         private readonly string _tmpFolderPath;
 
         private readonly string _downloadFolderPath;
 
         public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, string tmpFolderPath)
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, IClipboardService clipboardService, string tmpFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
@@ -65,6 +68,7 @@ namespace Stein.ViewModels.Services
             _msiService = msiService ?? throw new ArgumentNullException(nameof(msiService));
             _installerFileBundleProviderFactory = installerFileBundleProviderFactory ?? throw new ArgumentNullException(nameof(installerFileBundleProviderFactory));
             _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
+            _clipboardService = clipboardService ?? throw new ArgumentNullException(nameof(clipboardService));
             _tmpFolderPath = !String.IsNullOrEmpty(tmpFolderPath) ? tmpFolderPath : throw new ArgumentNullException(nameof(tmpFolderPath));
             _downloadFolderPath = GetDownloadFolderPath(tmpFolderPath);
         }
@@ -223,7 +227,7 @@ namespace Stein.ViewModels.Services
                 exceptionViewModel.InnerExceptions.Add(CreateExceptionViewModel(exceptionViewModel, exception.InnerException));
             }
 
-            exceptionViewModel.AddCommand(new CopyExceptionDetailsToClipboardCommand
+            exceptionViewModel.AddCommand(new CopyExceptionDetailsToClipboardCommand(_clipboardService)
             {
                 Parent = exceptionViewModel
             });

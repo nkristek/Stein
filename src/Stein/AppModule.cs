@@ -34,6 +34,7 @@ namespace Stein
 
             Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
             Bind<IUriService>().To<UriService>().InSingletonScope();
+            Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
         }
     }
 }
