@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NKristek.Smaragd" Version="4.2.3" />
+    <PackageReference Include="NKristek.Smaragd" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
