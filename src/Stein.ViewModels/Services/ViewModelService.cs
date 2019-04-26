@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -79,19 +78,19 @@ namespace Stein.ViewModels.Services
             _logFolderPath = GetLogFolderPath(tmpFolderPath);
         }
 
-        private static string GetDownloadFolderPath(string parentFolderPath)
+        private string GetDownloadFolderPath(string parentFolderPath)
         {
-            var downloadFolderPath = Path.Combine(parentFolderPath, "Downloads");
-            if (!Directory.Exists(downloadFolderPath))
-                Directory.CreateDirectory(downloadFolderPath);
+            var downloadFolderPath = _ioService.PathCombine(parentFolderPath, "Downloads");
+            if (!_ioService.DirectoryExists(downloadFolderPath))
+                _ioService.CreateDirectory(downloadFolderPath);
             return downloadFolderPath;
         }
 
-        private static string GetLogFolderPath(string parentFolderPath)
+        private string GetLogFolderPath(string parentFolderPath)
         {
-            var downloadFolderPath = Path.Combine(parentFolderPath, "Logs");
-            if (!Directory.Exists(downloadFolderPath))
-                Directory.CreateDirectory(downloadFolderPath);
+            var downloadFolderPath = _ioService.PathCombine(parentFolderPath, "Logs");
+            if (!_ioService.DirectoryExists(downloadFolderPath))
+                _ioService.CreateDirectory(downloadFolderPath);
             return downloadFolderPath;
         }
 
