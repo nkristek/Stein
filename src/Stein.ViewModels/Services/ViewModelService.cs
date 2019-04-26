@@ -421,7 +421,7 @@ namespace Stein.ViewModels.Services
                 Parent = parent,
                 IsDirty = false
             };
-            diskProvider.AddCommand(new SelectFolderCommand
+            diskProvider.AddCommand(new SelectFolderCommand(_dialogService)
             {
                 Parent = diskProvider
             });

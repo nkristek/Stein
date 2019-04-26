@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localization;
 using Stein.Presentation;
@@ -95,6 +96,29 @@ namespace Stein.Views.Services
             }
 
             return null;
+        }
+
+        /// <inheritdoc />
+        public bool? ShowSelectFolderDialog(out string folderPath, string title = null)
+        {
+            folderPath = null;
+            using (var dialog = new CommonOpenFileDialog())
+            {
+                dialog.Title = Strings.SelectFolder;
+                dialog.IsFolderPicker = true;
+                dialog.Multiselect = false;
+
+                var result = dialog.ShowDialog();
+                switch (result)
+                {
+                    case CommonFileDialogResult.None: return null;
+                    case CommonFileDialogResult.Cancel: return false;
+                    case CommonFileDialogResult.Ok:
+                        folderPath = dialog.FileName;
+                        return true;
+                    default: return null;
+                }
+            }
         }
     }
 }

@@ -25,6 +25,7 @@
     <PackageReference Include="NKristek.Smaragd" Version="4.3.0" />
     <PackageReference Include="NKristek.Wpf.Converters" Version="1.6.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
