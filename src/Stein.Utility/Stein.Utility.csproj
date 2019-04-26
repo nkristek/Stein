@@ -7,9 +7,4 @@
     <AssemblyVersion>2.1.1.0</AssemblyVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <OutputPath>bin\Debug\</OutputPath>
-  </PropertyGroup>
-
 </Project>
