@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Stein.Common.InstallService;
 using Stein.Utility;
 
 namespace Stein.Services.InstallService

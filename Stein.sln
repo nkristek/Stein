@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein", "src\Stein\Stein.csproj", "{35BA25F8-9895-4DB1-BEBE-55605DCE80FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Services", "src\Stein.Services\Stein.Services.csproj", "{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.Services", "src\Stein.Services\Stein.Services.csproj", "{CCB623E3-0CC7-4A5C-B956-A591CC4BD3F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.ViewModels", "src\Stein.ViewModels\Stein.ViewModels.csproj", "{10538F60-6022-4815-82EA-36921D746583}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.ViewModels", "src\Stein.ViewModels\Stein.ViewModels.csproj", "{10538F60-6022-4815-82EA-36921D746583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Views", "src\Stein.Views\Stein.Views.csproj", "{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.Views", "src\Stein.Views\Stein.Views.csproj", "{01AAC7AE-9BF5-4B7E-9CCE-0BAC08848930}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F2192554-A3C1-4B80-B3B3-6332F6DF2F87}"
 EndProject
@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.Utility.Tests", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.Localization", "src\Stein.Localization\Stein.Localization.csproj", "{FB76A8FE-34B4-49F6-8006-A7EEFAACF473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Presentation", "src\Stein.Presentation\Stein.Presentation.csproj", "{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stein.Presentation", "src\Stein.Presentation\Stein.Presentation.csproj", "{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stein.Common", "src\Stein.Common\Stein.Common.csproj", "{FE195E37-544F-4182-8338-B5B9DCE95C0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,18 @@ Global
 		{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C}.Release|x64.Build.0 = Release|Any CPU
 		{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C}.Release|x86.ActiveCfg = Release|Any CPU
 		{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C}.Release|x86.Build.0 = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|x64.Build.0 = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +167,7 @@ Global
 		{D6866E90-D2C2-4292-B420-3ABB82D9C836} = {E35D1037-6921-4A4D-8E1D-A9A726C5ABDD}
 		{FB76A8FE-34B4-49F6-8006-A7EEFAACF473} = {F2192554-A3C1-4B80-B3B3-6332F6DF2F87}
 		{AA44C042-BAE3-415B-ADDC-FCCCBB84DB0C} = {F2192554-A3C1-4B80-B3B3-6332F6DF2F87}
+		{FE195E37-544F-4182-8338-B5B9DCE95C0C} = {F2192554-A3C1-4B80-B3B3-6332F6DF2F87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B001980D-6FB8-4630-946D-CB53B7C69338}

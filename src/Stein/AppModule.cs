@@ -1,4 +1,11 @@
 ﻿using Ninject.Modules;
+using Stein.Common.Configuration;
+using Stein.Common.InstallerFiles;
+using Stein.Common.InstallService;
+using Stein.Common.IOService;
+using Stein.Common.MsiService;
+using Stein.Common.ProductService;
+using Stein.Common.UpdateService;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.Configuration.Upgrades;
@@ -18,25 +25,27 @@ namespace Stein
     {
         public override void Load()
         {
+            // Views
             Bind<IDialogService>().To<WpfDialogService>().InSingletonScope();
             Bind<IThemeService>().To<WpfThemeService>().InSingletonScope();
             Bind<IProgressBarService>().To<WpfTaskbarService>().InSingletonScope();
+            Bind<IUriService>().To<WpfUriService>().InSingletonScope();
+            Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
 
+            // Services
+            Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
+            Bind<IConfigurationUpgradeManager>().To<ConfigurationUpgradeManager>().InSingletonScope();
+            Bind<IConfigurationUpgraderFactory>().To<ConfigurationUpgraderFactory>().InSingletonScope();
+            Bind<IConfigurationFactory>().To<ConfigurationFactory>().InSingletonScope();
             Bind<IUpdateService>().To<UpdateService>().InSingletonScope();
             Bind<IInstallService>().To<InstallService>().InSingletonScope();
             Bind<IMsiService>().To<MsiService>().InSingletonScope();
             Bind<IProductService>().To<ProductService>().InSingletonScope();
             Bind<IInstallerFileBundleProviderFactory>().To<InstallerFileBundleProviderFactory>().InSingletonScope();
-            
-            Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();
-            Bind<IConfigurationUpgradeManager>().To<ConfigurationUpgradeManager>().InSingletonScope();
-            Bind<IConfigurationUpgraderFactory>().To<ConfigurationUpgraderFactory>().InSingletonScope();
-            Bind<IConfigurationFactory>().To<ConfigurationFactory>().InSingletonScope();
-
-            Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
-            Bind<IUriService>().To<WpfUriService>().InSingletonScope();
-            Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
             Bind<IIOService>().To<IOService>().InSingletonScope();
+
+            // ViewModels
+            Bind<IViewModelService>().To<ViewModelService>().InSingletonScope();
         }
     }
 }

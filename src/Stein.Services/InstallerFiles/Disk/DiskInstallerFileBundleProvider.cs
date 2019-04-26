@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Stein.Services.InstallerFiles.Base;
+using Stein.Common.InstallerFiles;
 
 namespace Stein.Services.InstallerFiles.Disk
 {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Stein.Common.Configuration;
 
 namespace Stein.Services.Configuration
 {
@@ -13,7 +14,7 @@ namespace Stein.Services.Configuration
         : IConfigurationService
     {
         /// <inheritdoc />
-        public v2.Configuration Configuration { get; private set; } = new v2.Configuration();
+        public Common.Configuration.v2.Configuration Configuration { get; private set; } = new Common.Configuration.v2.Configuration();
 
         private readonly IConfigurationFactory _configurationFactory;
 
@@ -52,14 +53,14 @@ namespace Stein.Services.Configuration
             Configuration = await CreateFromFileAndUpgradeAsync();
         }
         
-        private async Task<v2.Configuration> CreateFromFileAndUpgradeAsync()
+        private async Task<Common.Configuration.v2.Configuration> CreateFromFileAndUpgradeAsync()
         {
             var fileNames = GetExistingConfigFileNames(_configurationFolderPath, _configurationFileNamePrefix).ToList();
             var fileNameWithMatchingConfigurationType = CreateLatestConfigurationType(fileNames);
             var configuration = DeserializeConfiguration(fileNameWithMatchingConfigurationType.Item1, fileNameWithMatchingConfigurationType.Item2);
             if (_upgradeManager.UpgradeToLatestFileVersion(configuration, out var upgradedConfiguration))
                 await ToFileAsync(upgradedConfiguration);
-            return upgradedConfiguration as v2.Configuration ?? throw new Exception("The upgrade didn't upgrade the configuration to the latest version.");
+            return upgradedConfiguration as Common.Configuration.v2.Configuration ?? throw new Exception("The upgrade didn't upgrade the configuration to the latest version.");
         }
 
         private static IEnumerable<string> GetExistingConfigFileNames(string folderPath, string configFileNamePrefix)
@@ -90,7 +91,7 @@ namespace Stein.Services.Configuration
                 if (!File.Exists(oldConfigFileName))
                     throw new Exception("No configuration file found.");
 
-                return new Tuple<string, Type>(oldConfigFileName, typeof(v0.Configuration));
+                return new Tuple<string, Type>(oldConfigFileName, typeof(Common.Configuration.v0.Configuration));
             }
 
             var configuration = _configurationFactory.Create(fileNameWithHighestVersion.Item2);

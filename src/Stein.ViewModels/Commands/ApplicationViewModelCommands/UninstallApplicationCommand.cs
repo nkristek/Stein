@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
-using Stein.Services.InstallService;
+using Stein.Common.InstallService;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;

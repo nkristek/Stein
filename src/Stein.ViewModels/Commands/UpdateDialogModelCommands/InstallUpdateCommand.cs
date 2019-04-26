@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using Stein.Services.InstallService;
-using Stein.Services.IOService;
+using Stein.Common.InstallService;
+using Stein.Common.IOService;
 using Stein.Utility;
 
 namespace Stein.ViewModels.Commands.UpdateDialogModelCommands

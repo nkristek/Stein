@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Stein.Common\Stein.Common.csproj" />
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj" />
     <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj" />
   </ItemGroup>

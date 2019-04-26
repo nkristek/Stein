@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stein.Common.Configuration;
 
 namespace Stein.Services.Configuration.Upgrades
 {
@@ -14,18 +15,19 @@ namespace Stein.Services.Configuration.Upgrades
         public long TargetFileVersion => 1;
 
         /// <inheritdoc />
+        /// <exception cref="InvalidFileVersionException">When the file version of the given <paramref name="configuration"/> is not supported by this <see cref="IConfigurationUpgrader"/>.</exception>
         public IConfiguration Upgrade(IConfiguration configuration)
         {
             if (configuration.FileVersion != SourceFileVersion)
                 throw new InvalidFileVersionException(SourceFileVersion, configuration.FileVersion);
 
-            if (!(configuration is v0.Configuration sourceConfiguration))
+            if (!(configuration is Common.Configuration.v0.Configuration sourceConfiguration))
                 throw new Exception("The given configuration ");
 
-            return new v1.Configuration
+            return new Common.Configuration.v1.Configuration
             {
                 SelectedTheme = sourceConfiguration.SelectedTheme,
-                Applications = sourceConfiguration.ApplicationFolders.Select(af => new v1.Application
+                Applications = sourceConfiguration.ApplicationFolders.Select(af => new Common.Configuration.v1.Application
                 {
                     Id = af.Id,
                     Name = af.Name,
@@ -34,7 +36,7 @@ namespace Stein.Services.Configuration.Upgrades
                     EnableInstallationLogging = af.EnableInstallationLogging,
                     AutomaticallyDeleteInstallationLogs = af.AutomaticallyDeleteInstallationLogs,
                     KeepNewestInstallationLogs = af.KeepNewestInstallationLogs,
-                    Configuration = new v1.InstallerFileBundleProviderConfiguration("Disk", new Dictionary<string, string> { { "Path", af.Path } })
+                    Configuration = new Common.Configuration.v1.InstallerFileBundleProviderConfiguration("Disk", new Dictionary<string, string> { { "Path", af.Path } })
                 }).ToList()
             };
         }

@@ -9,6 +9,8 @@ using log4net;
 using Ninject;
 using Ninject.Parameters;
 using Ninject.Syntax;
+using Stein.Common.Configuration;
+using Stein.Common.UpdateService;
 using Stein.Presentation;
 using Stein.Services.Configuration;
 using Stein.Services.UpdateService;
@@ -118,7 +120,7 @@ namespace Stein
                     var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(updateDialogModel);
                     updateAssetViewModel.DownloadUri = updateAsset.DownloadUri;
                     updateAssetViewModel.FileName = updateAsset.FileName;
-                    updateAssetViewModel.ReleaseTag = updateAsset.ReleaseTag;
+                    updateAssetViewModel.ReleaseTag = updateResult.ReleaseTag;
                     updateAssetViewModel.IsReadOnly = true;
                     updateAssetViewModel.IsDirty = false;
                     updateDialogModel.UpdateAssets.Add(updateAssetViewModel);

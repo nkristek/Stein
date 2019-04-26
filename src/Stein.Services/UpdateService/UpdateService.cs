@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Stein.Common.UpdateService;
 using Stein.Services.InstallerFiles.GitHub;
 using Stein.Utility;
 
@@ -30,7 +31,7 @@ namespace Stein.Services.UpdateService
         };
 
         /// <inheritdoc />
-        public async Task<UpdateResult> IsUpdateAvailable(CancellationToken cancellationToken = default)
+        public async Task<IUpdateResult> IsUpdateAvailable(CancellationToken cancellationToken = default)
         {
             var response = await _httpClient.GetAsync(_repository + "/releases", cancellationToken);
             response.EnsureSuccessStatusCode();
@@ -50,13 +51,13 @@ namespace Stein.Services.UpdateService
                 {
                     updateResult.NewestVersion = version;
                     updateResult.NewestVersionUri = String.IsNullOrEmpty(release.HtmlUrl) ? null : new Uri(release.HtmlUrl);
+                    updateResult.ReleaseTag = release.TagName;
                     updateResult.UpdateAssets = release.Assets
                         .Where(a => !String.IsNullOrEmpty(a.BrowserDownloadUrl) && !String.IsNullOrEmpty(a.Name))
                         .Select(a => new UpdateAsset
                     {
                         DownloadUri = new Uri(a.BrowserDownloadUrl),
-                        FileName = a.Name,
-                        ReleaseTag = release.TagName
+                        FileName = a.Name
                     });
                 }
             }

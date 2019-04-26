@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stein.Services.InstallerFiles.Base;
+using Stein.Common.InstallerFiles;
 
 namespace Stein.Services.InstallerFiles.Disk
 {

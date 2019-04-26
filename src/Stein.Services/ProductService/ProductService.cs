@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Win32;
+using Stein.Common.ProductService;
 
 namespace Stein.Services.ProductService
 {

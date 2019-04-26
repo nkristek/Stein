@@ -3,14 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
 using Stein.Localization;
 using Stein.Presentation;
-using Stein.Services.InstallService;
-using Stein.Services.InstallService.Arguments;
+using Stein.Common.InstallService;
+using Stein.Common.InstallService.Arguments;
 using Stein.Utility;
 using Stein.ViewModels.Types;
 

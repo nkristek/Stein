@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Stein.Services.Configuration.Upgrades;
+using Stein.Common.Configuration;
 
 namespace Stein.Services.Configuration
 {

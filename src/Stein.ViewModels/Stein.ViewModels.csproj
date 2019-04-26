@@ -14,8 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Stein.Localization\Stein.Localization.csproj" />
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj" />
-    <ProjectReference Include="..\Stein.Services\Stein.Services.csproj" />
     <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj" />
+    <ProjectReference Include="..\Stein.Common\Stein.Common.csproj" />
   </ItemGroup>
   
   <ItemGroup>

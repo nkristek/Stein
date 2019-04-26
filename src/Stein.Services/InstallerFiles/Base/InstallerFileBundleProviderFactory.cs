@@ -1,4 +1,5 @@
 ﻿using System;
+using Stein.Common.InstallerFiles;
 using Stein.Services.InstallerFiles.Disk;
 using Stein.Services.InstallerFiles.GitHub;
 

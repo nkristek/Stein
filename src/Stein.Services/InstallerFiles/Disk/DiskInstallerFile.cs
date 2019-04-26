@@ -2,8 +2,8 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Stein.Common.MsiService;
 using Stein.Services.InstallerFiles.Base;
-using Stein.Services.MsiService;
 using Stein.Utility;
 
 namespace Stein.Services.InstallerFiles.Disk

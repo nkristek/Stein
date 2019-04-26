@@ -1,4 +1,5 @@
 ﻿using System;
+using Stein.Common.Configuration;
 
 namespace Stein.Services.Configuration.Upgrades
 {
