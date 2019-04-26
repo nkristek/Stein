@@ -50,6 +50,14 @@ namespace Stein.Presentation
         bool? ShowErrorDialog(string message, string title = null);
 
         /// <summary>
+        /// Shows a dialog to select a file.
+        /// </summary>
+        /// <param name="filePath">Selected file path if the result is <c>true</c>, else <c>null</c>.</param>
+        /// <param name="title">Optional title of the dialog.</param>
+        /// <returns><c>true</c> if the user successfully selected a file, <c>false</c> if cancelled and <c>null</c> if closed.</returns>
+        bool? ShowSelectFileDialog(out string filePath, string title = null);
+
+        /// <summary>
         /// Shows a dialog to select a folder.
         /// </summary>
         /// <param name="folderPath">Selected folder path if the result is <c>true</c>, else <c>null</c>.</param>

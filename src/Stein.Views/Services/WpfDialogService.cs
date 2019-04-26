@@ -84,6 +84,29 @@ namespace Stein.Views.Services
             return GetMessageBoxResult(result);
         }
 
+        /// <inheritdoc />
+        public bool? ShowSelectFileDialog(out string filePath, string title = null)
+        {
+            filePath = null;
+            using (var dialog = new CommonOpenFileDialog())
+            {
+                if (title != null)
+                    dialog.Title = title;
+                dialog.Multiselect = false;
+
+                var result = dialog.ShowDialog();
+                switch (result)
+                {
+                    case CommonFileDialogResult.None: return null;
+                    case CommonFileDialogResult.Cancel: return false;
+                    case CommonFileDialogResult.Ok:
+                        filePath = dialog.FileName;
+                        return true;
+                    default: return null;
+                }
+            }
+        }
+
         private static bool? GetMessageBoxResult(MessageBoxResult messageBoxResult)
         {
             switch (messageBoxResult)
@@ -104,7 +127,8 @@ namespace Stein.Views.Services
             folderPath = null;
             using (var dialog = new CommonOpenFileDialog())
             {
-                dialog.Title = Strings.SelectFolder;
+                if (title != null)
+                    dialog.Title = title;
                 dialog.IsFolderPicker = true;
                 dialog.Multiselect = false;
 
