@@ -12,9 +12,10 @@
               d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}"
               MinWidth="500"
               MinHeight="300"
-              SizeToContent="WidthAndHeight"
-              WindowStartupLocation="CenterOwner"
-              Title="{Binding Title}">
+              Width="500"
+              Height="300"
+              SizeToContent="Manual"
+              WindowStartupLocation="CenterOwner">
    
     <Grid Margin="{adonisUi:Space 2,1}">
         <Grid.RowDefinitions>

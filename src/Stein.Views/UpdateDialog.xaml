@@ -14,9 +14,10 @@
               d:DataContext="{d:DesignInstance viewModels:UpdateDialogModel, IsDesignTimeCreatable=True}"
               MinWidth="300"
               MinHeight="230"
-              SizeToContent="WidthAndHeight"
-              WindowStartupLocation="CenterOwner"
-              Title="{Binding Title}">
+              Width="300"
+              Height="230"
+              SizeToContent="Manual"
+              WindowStartupLocation="CenterOwner">
 
     <Grid>
         <Grid.RowDefinitions>

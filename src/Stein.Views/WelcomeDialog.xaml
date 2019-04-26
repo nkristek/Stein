@@ -14,8 +14,8 @@
               Width="500"
               Height="300"
               SizeToContent="Manual"
-              WindowStartupLocation="CenterOwner"
-              Title="{Binding Title}">
+              WindowStartupLocation="CenterOwner">
+
     <Grid Margin="{adonisUi:Space 2,1}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
