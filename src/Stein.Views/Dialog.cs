@@ -24,6 +24,6 @@ namespace Stein.Views
             set => SetValue(DialogButtonsBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty DialogButtonsBackgroundProperty = DependencyProperty.Register(nameof(DialogButtons), typeof(Brush), typeof(Dialog), new PropertyMetadata(null));
+        public static readonly DependencyProperty DialogButtonsBackgroundProperty = DependencyProperty.Register(nameof(DialogButtonsBackground), typeof(Brush), typeof(Dialog), new PropertyMetadata(null));
     }
 }
