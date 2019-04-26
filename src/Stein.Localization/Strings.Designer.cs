@@ -601,7 +601,8 @@ namespace Stein.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified repository path is not valid (expected format &quot;user/repository&quot;)..
+        ///   Looks up a localized string similar to The specified repository path is not valid. 
+        ///The expected format is &quot;user/repository&quot;..
         /// </summary>
         public static string RepositoryPathInvalid {
             get {

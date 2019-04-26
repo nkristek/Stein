@@ -274,7 +274,8 @@
     <value>Repository</value>
   </data>
   <data name="RepositoryPathInvalid" xml:space="preserve">
-    <value>The specified repository path is not valid (expected format "user/repository").</value>
+    <value>The specified repository path is not valid. 
+The expected format is "user/repository".</value>
   </data>
   <data name="RepositoryEmpty" xml:space="preserve">
     <value>The specified repository name is empty.</value>
