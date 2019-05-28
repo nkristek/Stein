@@ -20,12 +20,12 @@ Support for dark mode
 
 ### No UI during install
 
-It will start installers with the "/QN" option which means it will be installed in the background with default options.
+It will start the installation with the "/QN" option which means it will be installed in the background with default options.
 When this option is set, the [Disable reboot after installation](#disable-reboot-after-installation) option should be strongly considered especially when operating with multiple installers at once.
 
 ### Disable reboot after installation
 
-It will start installers with the "/norestart" option which means the installer should not automatically reboot the system after installation. 
+It will start the installation with the "/norestart" option which means the installer should not automatically reboot the system after installation. 
 
 ### Filter duplicate installers
 
@@ -33,7 +33,7 @@ If enabled, only one installer per application will be installed. This is useful
 
 ### Install log
 
-It will start installers with the "/L*V LOGPATH" option which means the installer should log all operations.
+It will start the installation with the "/L*V LOGPATH" option which means the installer should log all operations.
 You can optionally set a limit on how many log files should be kept. After an operation, the oldest log files will be deleted.
 
 ### Additional arguments
