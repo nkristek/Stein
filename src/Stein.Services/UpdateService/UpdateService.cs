@@ -11,6 +11,7 @@ using Stein.Utility;
 
 namespace Stein.Services.UpdateService
 {
+    /// <inheritdoc cref="IUpdateService" />
     public class UpdateService
         : Disposable, IUpdateService
     {
@@ -18,6 +19,7 @@ namespace Stein.Services.UpdateService
 
         private readonly string _repository;
 
+        /// <inheritdoc />
         public UpdateService(Version currentVersion, string repository)
         {
             _currentVersion = currentVersion ?? throw new ArgumentNullException(nameof(currentVersion));
