@@ -1,31 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Reflection;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localization;
 
 namespace Stein.ViewModels
 {
     public sealed class AboutDialogModel
         : DialogModel
     {
-        public AboutDialogModel()
-        {
-            var assembly = Assembly.GetEntryAssembly();
-            var assemblyName = assembly.GetName();
-            var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
-            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
-            var publisher = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
-            Title = Strings.About;
-            Name = assemblyName.Name;
-            Description = description?.Description;
-            Version = assemblyName.Version;
-            Copyright = copyright?.Copyright;
-            AdditionalNotes = "";
-            Uri = new Uri("https://github.com/nkristek/Stein");
-            Publisher = publisher?.Company;
-        }
-        
         public ObservableCollection<DependencyViewModel> Dependencies { get; } = new ObservableCollection<DependencyViewModel>();
 
         private string _name;

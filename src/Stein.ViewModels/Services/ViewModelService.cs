@@ -469,9 +469,23 @@ namespace Stein.ViewModels.Services
 
         private AboutDialogModel CreateAboutDialogModel(IViewModel parent = null)
         {
+            var assembly = Assembly.GetEntryAssembly();
+            var assemblyName = assembly.GetName();
+            var description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
+            var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
+            var publisher = assembly.GetCustomAttribute<AssemblyCompanyAttribute>();
+            
             var viewModel = new AboutDialogModel
             {
-                Parent = parent
+                Parent = parent,
+                Title = Strings.About,
+                Name = assemblyName.Name,
+                Description = description?.Description,
+                Version = assemblyName.Version,
+                Copyright = copyright?.Copyright,
+                AdditionalNotes = "",
+                Uri = new Uri("https://github.com/nkristek/Stein"),
+                Publisher = publisher?.Company,
             };
 
             viewModel.Dependencies.Add(new DependencyViewModel
