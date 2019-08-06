@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -11,6 +11,7 @@ using Ninject.Parameters;
 using Ninject.Syntax;
 using Stein.Common.Configuration;
 using Stein.Common.UpdateService;
+using Stein.Localization;
 using Stein.Presentation;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
@@ -70,14 +71,19 @@ namespace Stein
             themeService.SetTheme(configurationService.Configuration.SelectedTheme);
             
             var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
+            _dialogService.Show(mainDialogModel);
 
             Task refreshTask = null;
             if (mainDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
                 refreshTask = refreshCommand.ExecuteAsync(null);
 
-            _dialogService.Show(mainDialogModel);
-
-            var updateTask = CheckForUpdate(kernel, mainDialogModel);
+            var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
+            const string repository = "nkristek/Stein";
+            var updateService = kernel.Get<IUpdateService>(
+                new ConstructorArgument("currentVersion", assemblyVersion),
+                new ConstructorArgument("repository", repository));
+            var notificationService = kernel.Get<INotificationService>();
+            var updateTask = CheckForUpdate(updateService, notificationService, mainDialogModel);
 
             if (isFirstLaunch)
             {
@@ -98,13 +104,8 @@ namespace Stein
                 await refreshTask;
         }
 
-        private async Task CheckForUpdate(IResolutionRoot kernel, MainWindowDialogModel mainDialogModel)
+        private async Task CheckForUpdate(IUpdateService updateService, INotificationService notificationService, MainWindowDialogModel mainDialogModel)
         {
-            var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
-            const string repository = "nkristek/Stein";
-            var updateService = kernel.Get<IUpdateService>(
-                new ConstructorArgument("currentVersion", assemblyVersion),
-                new ConstructorArgument("repository", repository));
             var updateResult = await updateService.IsUpdateAvailable();
             if (updateResult.IsUpdateAvailable)
             {
@@ -125,6 +126,12 @@ namespace Stein
                 }
 
                 mainDialogModel.AvailableUpdate = updateDialogModel;
+
+                notificationService.ShowInfo(Strings.UpdateAvailableDescription, () =>
+                {
+                    if (mainDialogModel.TryGetCommand<MainWindowDialogModel, ShowUpdateDialogCommand>(out var showUpdateDialogCommand))
+                        showUpdateDialogCommand.Execute(null);
+                });
             }
         }
 

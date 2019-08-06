@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -147,6 +147,10 @@
     <ProjectReference Include="..\Stein.Common\Stein.Common.csproj">
       <Project>{FE195E37-544F-4182-8338-B5B9DCE95C0C}</Project>
       <Name>Stein.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Stein.Localization\Stein.Localization.csproj">
+      <Project>{FB76A8FE-34B4-49F6-8006-A7EEFAACF473}</Project>
+      <Name>Stein.Localization</Name>
     </ProjectReference>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj">
       <Project>{aa44c042-bae3-415b-addc-fcccbb84db0c}</Project>

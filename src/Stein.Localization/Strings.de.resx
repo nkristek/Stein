@@ -316,10 +316,10 @@ ignoriert diese Einstellung.</value>
     <value>Die Installation ist fehlgeschlagen.</value>
   </data>
   <data name="InstallationSkipped" xml:space="preserve">
-    <value>Der Installer wurde übersprungen.</value>
+    <value>Die Installation wurde übersprungen.</value>
   </data>
   <data name="InstallationSuccess" xml:space="preserve">
-    <value>Der Installer wurde erfolgreich ausgeführt.</value>
+    <value>Die Installation war erfolgreich.</value>
   </data>
   <data name="InstallerPathIsEmpty" xml:space="preserve">
     <value>Der Dateipfad vom Installer ist leer. Die Operation kann nicht durchgeführt werden.</value>
@@ -378,5 +378,23 @@ Wenn Sie auf den Installieren-Knopf klicken werden die Installerdateien vom aktu
 Es gibt mehrere Möglichkeiten um eine Installation anzupassen. Indem man eine benutzerdefinierte Installation ausführt kann man zusätzliche Kommdandozeilenargumente pro Installer festlegen.
 Wenn Sie Hilfe benötigen, einen Feature-Wunsch haben oder einen Fehler bemerken, zögern Sie bitte nicht, ein Issue auf GitHub anzulegen. Sie können sich auch gerne an der Entwicklung beteiligen, indem Sie beispielsweise einen Pull Request stellen.
 Ich hoffe dieses Tool macht ihren täglichen Arbeitsablauf etwas angenehmer.</value>
+  </data>
+  <data name="OperationSuccessfull" xml:space="preserve">
+    <value>Die Operation war erfolgreich.</value>
+  </data>
+  <data name="DeletingOldLogFileFailed" xml:space="preserve">
+    <value>Das Löschen einer alten Log-Datei ist fehlgeschlagen.</value>
+  </data>
+  <data name="DownloadingInstallerFailed" xml:space="preserve">
+    <value>Download einer Installerdatei ist fehlgeschlagen.</value>
+  </data>
+  <data name="InstallationOfXFailed" xml:space="preserve">
+    <value>Die Installation von {0} ist fehlgeschlagen</value>
+  </data>
+  <data name="OperationOfXFailed" xml:space="preserve">
+    <value>Die Operation von {0} ist fehlgeschlagen</value>
+  </data>
+  <data name="UninstallationOfXFailed" xml:space="preserve">
+    <value>Die Deinstallation von {0} ist fehlgeschlagen</value>
   </data>
 </root>

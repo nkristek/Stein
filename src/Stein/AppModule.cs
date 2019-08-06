@@ -31,6 +31,7 @@ namespace Stein
             Bind<IProgressBarService>().To<WpfTaskbarService>().InSingletonScope();
             Bind<IUriService>().To<WpfUriService>().InSingletonScope();
             Bind<IClipboardService>().To<WpfClipboardService>().InSingletonScope();
+            Bind<INotificationService>().To<WpfNotificationService>().InSingletonScope();
 
             // Services
             Bind<IConfigurationService>().To<ConfigurationService>().InSingletonScope();

@@ -19,7 +19,7 @@ namespace Stein.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -142,6 +142,15 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting an old log file failed..
+        /// </summary>
+        public static string DeletingOldLogFileFailed {
+            get {
+                return ResourceManager.GetString("DeletingOldLogFileFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dependencies.
         /// </summary>
         public static string Dependencies {
@@ -183,6 +192,15 @@ namespace Stein.Localization {
         public static string Disk {
             get {
                 return ResourceManager.GetString("Disk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download of an installer file failed.
+        /// </summary>
+        public static string DownloadingInstallerFailed {
+            get {
+                return ResourceManager.GetString("DownloadingInstallerFailed", resourceCulture);
             }
         }
         
@@ -286,6 +304,15 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The installation of {0} failed.
+        /// </summary>
+        public static string InstallationOfXFailed {
+            get {
+                return ResourceManager.GetString("InstallationOfXFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installation results.
         /// </summary>
         public static string InstallationResults {
@@ -304,7 +331,7 @@ namespace Stein.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The installer was successfully executed..
+        ///   Looks up a localized string similar to The installation was successfull..
         /// </summary>
         public static string InstallationSuccess {
             get {
@@ -502,6 +529,24 @@ namespace Stein.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation of {0] failed.
+        /// </summary>
+        public static string OperationOfXFailed {
+            get {
+                return ResourceManager.GetString("OperationOfXFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The operation was successfull..
+        /// </summary>
+        public static string OperationSuccessfull {
+            get {
+                return ResourceManager.GetString("OperationSuccessfull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
         public static string Path {
@@ -688,6 +733,15 @@ namespace Stein.Localization {
         public static string Uninstall {
             get {
                 return ResourceManager.GetString("Uninstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The uninstallation of {0} failed.
+        /// </summary>
+        public static string UninstallationOfXFailed {
+            get {
+                return ResourceManager.GetString("UninstallationOfXFailed", resourceCulture);
             }
         }
         

@@ -320,7 +320,7 @@ The expected format is "user/repository".</value>
     <value>The installation was skipped.</value>
   </data>
   <data name="InstallationSuccess" xml:space="preserve">
-    <value>The installer was successfully executed.</value>
+    <value>The installation was successfull.</value>
   </data>
   <data name="InstallerPathIsEmpty" xml:space="preserve">
     <value>The file path of the installer is empty. The operation could not be executed.</value>
@@ -379,5 +379,23 @@ When you click on the Install button, the installer files of the current bundle 
 There are multiple ways to customize the install. By doing a custom install, additional command line arguments can be set on a per installer basis.
 If you need help, have a feature request or notice a bug, please don't hesitate to open an issue on GitHub. You can also contribute to the development by for example issuing a pull request.
 I hope this tool makes your daily workflow a bit easier.</value>
+  </data>
+  <data name="OperationSuccessfull" xml:space="preserve">
+    <value>The operation was successfull.</value>
+  </data>
+  <data name="DeletingOldLogFileFailed" xml:space="preserve">
+    <value>Deleting an old log file failed.</value>
+  </data>
+  <data name="DownloadingInstallerFailed" xml:space="preserve">
+    <value>Download of an installer file failed</value>
+  </data>
+  <data name="InstallationOfXFailed" xml:space="preserve">
+    <value>The installation of {0} failed</value>
+  </data>
+  <data name="OperationOfXFailed" xml:space="preserve">
+    <value>The operation of {0] failed</value>
+  </data>
+  <data name="UninstallationOfXFailed" xml:space="preserve">
+    <value>The uninstallation of {0} failed</value>
   </data>
 </root>

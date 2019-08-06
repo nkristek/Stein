@@ -6,6 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/Stein.Views;component/Resources/Icons.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

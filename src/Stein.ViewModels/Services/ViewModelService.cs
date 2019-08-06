@@ -36,6 +36,8 @@ namespace Stein.ViewModels.Services
 
         private readonly IThemeService _themeService;
 
+        private readonly INotificationService _notificationService;
+
         private readonly IProgressBarService _progressBarService;
 
         private readonly IConfigurationService _configurationService;
@@ -60,10 +62,11 @@ namespace Stein.ViewModels.Services
 
         private readonly string _logFolderPath;
 
-        public ViewModelService(IDialogService dialogService, IThemeService themeService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, IClipboardService clipboardService, IIOService ioService, string tmpFolderPath)
+        public ViewModelService(IDialogService dialogService, IThemeService themeService, INotificationService notificationService, IProgressBarService progressBarService, IConfigurationService configurationService, IInstallService installService, IProductService productService, IMsiService msiService, IInstallerFileBundleProviderFactory installerFileBundleProviderFactory, IUriService uriService, IClipboardService clipboardService, IIOService ioService, string tmpFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _themeService = themeService ?? throw new ArgumentNullException(nameof(themeService));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
             _progressBarService = progressBarService ?? throw new ArgumentNullException(nameof(progressBarService));
             _configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
@@ -340,15 +343,15 @@ namespace Stein.ViewModels.Services
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
+            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
+            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
             {
                 Parent = viewModel
             });
-            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService, _downloadFolderPath)
+            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
             {
                 Parent = viewModel
             });

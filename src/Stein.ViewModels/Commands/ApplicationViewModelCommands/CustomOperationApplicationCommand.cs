@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Common.InstallService;
+using Stein.Localization;
 using Stein.Presentation;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
 using Stein.ViewModels.Extensions;
@@ -21,13 +22,19 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
 
         private readonly IInstallService _installService;
 
+        private readonly INotificationService _notificationService;
+
+        private readonly IUriService _uriService;
+
         private readonly string _downloadFolderPath;
 
-        public CustomOperationApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, string downloadFolderPath)
+        public CustomOperationApplicationCommand(IDialogService dialogService, IViewModelService viewModelService, IInstallService installService, INotificationService notificationService, IUriService uriService, string downloadFolderPath)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _viewModelService = viewModelService ?? throw new ArgumentNullException(nameof(viewModelService));
             _installService = installService ?? throw new ArgumentNullException(nameof(installService));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
             _downloadFolderPath = !String.IsNullOrEmpty(downloadFolderPath) ? downloadFolderPath : throw new ArgumentNullException(nameof(downloadFolderPath));
         }
 
@@ -65,6 +72,8 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowDialogModel.RecentInstallationResult = await ViewModelInstallService.Custom(
                     _viewModelService,
                     _installService,
+                    _notificationService,
+                    _uriService,
                     mainWindowDialogModel.CurrentInstallation,
                     installers,
                     viewModel.EnableSilentInstallation,
@@ -85,8 +94,10 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
             if (mainWindowDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
                 refreshTask = refreshCommand.ExecuteAsync(null);
 
-            if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success || r.State != InstallationResultState.Skipped))
+            if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success && r.State != InstallationResultState.Skipped))
                 _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult);
+            else
+                _notificationService.ShowSuccess(Strings.OperationSuccessfull, () => _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult));
 
             if (refreshTask != null)
                 await refreshTask;
