@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,15 +8,97 @@ namespace Stein.Utility
     public static class IEnumerableExtensions
     {
         /// <summary>
-        /// Executes an <see cref="Action{T}"/> on each element of the <see cref="IEnumerable{T}"/>
+        /// Iterates the <paramref name="source"/> and executes the given <paramref name="action"/> on every item.
         /// </summary>
-        /// <typeparam name="T">Type of the elements of the <see cref="IEnumerable{T}"/></typeparam>
-        /// <param name="enumeration">The <see cref="IEnumerable{T}"/> on which the <see cref="Action{T}"/> should get executed</param>
-        /// <param name="action">The <see cref="Action{T}"/> which gets executed on each element of the <see cref="IEnumerable{T}"/></param>
-        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
+        /// <typeparam name="T">Type of an item of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The enumeration to iterate.</param>
+        /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
+        /// <seealso cref="Apply{T}(IEnumerable{T}, Action{T})"/>
+        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            foreach (var item in enumeration)
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            foreach (T item in source)
                 action(item);
+        }
+
+        /// <summary>
+        /// Iterates the <paramref name="source"/> and executes the given <paramref name="action"/> on every item.
+        /// </summary>
+        /// <param name="source">The enumeration to iterate.</param>
+        /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
+        /// <seealso cref="Apply(IEnumerable, Action{object})"/>
+        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        public static void ForEach(this IEnumerable source, Action<object> action)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            foreach (var item in source)
+                action(item);
+        }
+
+        /// <summary>
+        /// <para>
+        /// Performs a given <see cref="Action{T}"/> on every item of <paramref name="source"/>. 
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// The execution is lazy to enable chaining of multiple statements. 
+        /// Multiple iteration of the returned enumeration could result in multiple executions of <paramref name="action"/> on each item.
+        /// </remarks>
+        /// <typeparam name="T">Type of an item of <paramref name="source"/>.</typeparam>
+        /// <param name="source">The enumeration to iterate.</param>
+        /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
+        /// <returns><paramref name="source"/> after the <paramref name="action"/> has been performed on every item.</returns>
+        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="ForEach{T}(IEnumerable{T}, Action{T})"/>
+        public static IEnumerable<T> Apply<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            foreach (var item in source)
+            {
+                action(item);
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// <para>
+        /// Performs a given <see cref="Action{T}"/> on every item of <paramref name="source"/>. 
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        /// The execution is lazy to enable chaining of multiple statements. 
+        /// Multiple iteration of the returned enumeration could result in multiple executions of <paramref name="action"/> on each item.
+        /// </remarks>
+        /// <param name="source">The enumeration to iterate.</param>
+        /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
+        /// <returns><paramref name="source"/> after the <paramref name="action"/> has been performed on every item.</returns>
+        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="ForEach(IEnumerable, Action{object})"/>
+        public static IEnumerable Apply(this IEnumerable source, Action<object> action)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
+            foreach (var item in source)
+            {
+                action(item);
+                yield return item;
+            }
         }
 
         /// <summary>
@@ -117,7 +200,160 @@ namespace Stein.Utility
                 }
                 return !firstHasNext && !secondHasNext;
             }
+        }
 
+        public static bool SequenceEqual(this IEnumerable first, IEnumerable second, Func<object, object, bool> comparer)
+        {
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+            if (comparer == null)
+                throw new ArgumentNullException(nameof(comparer));
+
+            var firstEnumerator = first.GetEnumerator();
+            var secondEnumerator = second.GetEnumerator();
+            try
+            {
+                var firstHasNext = firstEnumerator.MoveNext();
+                var secondHasNext = secondEnumerator.MoveNext();
+                while (firstHasNext && secondHasNext)
+                {
+                    if (!comparer.Invoke(firstEnumerator.Current, secondEnumerator.Current))
+                        return false;
+                    firstHasNext = firstEnumerator.MoveNext();
+                    secondHasNext = secondEnumerator.MoveNext();
+                }
+                return !firstHasNext && !secondHasNext;
+            }
+            finally
+            {
+                if (firstEnumerator is IDisposable firstDisposable)
+                    firstDisposable.Dispose();
+                if (secondEnumerator is IDisposable secondDisposable)
+                    secondDisposable.Dispose();
+            }
+        }
+
+        public static bool SequenceEqual<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer = null)
+        {
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+
+            using (var firstEnumerator = first.GetEnumerator())
+            using (var secondEnumerator = second.GetEnumerator())
+            {
+                var firstHasNext = firstEnumerator.MoveNext();
+                var secondHasNext = secondEnumerator.MoveNext();
+                while (firstHasNext && secondHasNext)
+                {
+                    if (!(comparer ?? EqualityComparer<T>.Default).Equals(firstEnumerator.Current, secondEnumerator.Current))
+                        return false;
+                    firstHasNext = firstEnumerator.MoveNext();
+                    secondHasNext = secondEnumerator.MoveNext();
+                }
+                return !firstHasNext && !secondHasNext;
+            }
+        }
+
+        public static bool SequenceEqual(this IEnumerable first, IEnumerable second, IEqualityComparer comparer = null)
+        {
+            if (first == null)
+                throw new ArgumentNullException(nameof(first));
+            if (second == null)
+                throw new ArgumentNullException(nameof(second));
+
+            var firstEnumerator = first.GetEnumerator();
+            var secondEnumerator = second.GetEnumerator();
+            try
+            {
+                var firstHasNext = firstEnumerator.MoveNext();
+                var secondHasNext = secondEnumerator.MoveNext();
+                while (firstHasNext && secondHasNext)
+                {
+                    if (!(comparer ?? EqualityComparer<object>.Default).Equals(firstEnumerator.Current, secondEnumerator.Current))
+                        return false;
+                    firstHasNext = firstEnumerator.MoveNext();
+                    secondHasNext = secondEnumerator.MoveNext();
+                }
+                return !firstHasNext && !secondHasNext;
+            }
+            finally
+            {
+                if (firstEnumerator is IDisposable firstDisposable)
+                    firstDisposable.Dispose();
+                if (secondEnumerator is IDisposable secondDisposable)
+                    secondDisposable.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Iterates a given <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The enumeration to iterate.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        public static void Iterate(this IEnumerable source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            foreach (var item in source);
+        }
+
+        public static IEnumerable<T> Loop<T>(this IEnumerable<T> source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (!source.Any())
+                yield break;
+
+            while (true)
+                foreach (var item in source)
+                    yield return item;
+        }
+
+        public static IEnumerable Loop(this IEnumerable source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (!source.Any())
+                yield break;
+
+            while (true)
+                foreach (var item in source)
+                    yield return item;
+        }
+
+        public static bool Any(this IEnumerable source)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var enumerator = source.GetEnumerator();
+            try
+            {
+                return enumerator.MoveNext();
+            }
+            finally
+            {
+                if (enumerator is IDisposable disposable)
+                    disposable.Dispose();
+            }
+        }
+
+        public static IEnumerable<TResult> Select<TResult>(this IEnumerable source, Func<object, TResult> selector)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+
+            foreach (var item in source)
+                yield return selector(item);
         }
     }
 }
