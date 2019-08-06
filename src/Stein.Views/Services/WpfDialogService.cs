@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using NKristek.Smaragd.ViewModels;
-using Stein.Localization;
 using Stein.Presentation;
 
 namespace Stein.Views.Services
@@ -17,18 +17,20 @@ namespace Stein.Views.Services
         /// <inheritdoc />
         public void Show(IDialogModel dialogModel)
         {
-            var dialog = CreateView<Window>(dialogModel);
-            if (!_windowStack.Any())
-                _windowStack.Push(dialog);
+            var dialog = CreateDialogWindow(dialogModel);
+            _windowStack.Push(dialog);
             dialog.Show();
         }
 
         /// <inheritdoc />
         public bool? ShowDialog(IDialogModel dialogModel)
         {
-            var dialog = CreateView<Window>(dialogModel);
+            var dialog = CreateDialogWindow(dialogModel);
             if (_windowStack.Any())
+            {
                 dialog.Owner = _windowStack.Peek();
+                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
             _windowStack.Push(dialog);
 
             try
@@ -40,20 +42,19 @@ namespace Stein.Views.Services
                 _windowStack.Pop();
             }
         }
-        
-        private TView CreateView<TView>(IViewModel contextViewModel) where TView : FrameworkElement
-        {
-            if (contextViewModel == null)
-                throw new ArgumentNullException(nameof(contextViewModel));
 
-            var resourceKey = contextViewModel.GetType();
-            var view = Application.Current?.TryFindResource(resourceKey) ?? Application.Current?.MainWindow?.TryFindResource(resourceKey);
-            if (view == null)
-                throw new NotSupportedException(Strings.NoDialogExistsForDialogModel);
-            if (!(view is TView viewAsTargetType))
-                throw new Exception(String.Format(Strings.ViewHasWrongTypeX, resourceKey.Name, view.GetType().Name, typeof(TView).Name));
-            viewAsTargetType.DataContext = contextViewModel;
-            return viewAsTargetType;
+        private Window CreateDialogWindow(IDialogModel dialogModel)
+        {
+            var window = new DialogWindow
+            {
+                DataContext = dialogModel
+            };
+            window.SetBinding(Window.TitleProperty, new Binding(nameof(dialogModel.Title))
+            {
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            });
+            return window;
         }
 
         /// <inheritdoc />

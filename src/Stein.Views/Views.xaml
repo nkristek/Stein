@@ -49,20 +49,37 @@
     </DataTemplate>
 
     <!-- Dialogs -->
-    <views:MainWindowDialog x:Key="{x:Type viewModels:MainWindowDialogModel}" x:Shared="False"/>
-
-    <views:ApplicationDialog x:Key="{x:Type viewModels:ApplicationDialogModel}" x:Shared="False"/>
     
-    <views:InstallerBundleDialog x:Key="{x:Type viewModels:InstallerBundleDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:MainWindowDialogModel}">
+        <views:MainWindowDialog/>
+    </DataTemplate>
 
-    <views:AboutDialog x:Key="{x:Type viewModels:AboutDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:ApplicationDialogModel}">
+        <views:ApplicationDialog/>
+    </DataTemplate>
 
-    <views:InstallationResultDialog x:Key="{x:Type viewModels:InstallationResultDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:InstallerBundleDialogModel}">
+        <views:InstallerBundleDialog/>
+    </DataTemplate>
 
-    <views:ExceptionDialog x:Key="{x:Type viewModels:ExceptionDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:AboutDialogModel}">
+        <views:AboutDialog/>
+    </DataTemplate>
 
-    <views:UpdateDialog x:Key="{x:Type viewModels:UpdateDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:InstallationResultDialogModel}">
+        <views:InstallationResultDialog/>
+    </DataTemplate>
 
-    <views:WelcomeDialog x:Key="{x:Type viewModels:WelcomeDialogModel}" x:Shared="False"/>
+    <DataTemplate DataType="{x:Type viewModels:ExceptionDialogModel}">
+        <views:ExceptionDialog/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:UpdateDialogModel}">
+        <views:UpdateDialog/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewModels:WelcomeDialogModel}">
+        <views:WelcomeDialog/>
+    </DataTemplate>
 
 </ResourceDictionary>

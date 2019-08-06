@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Stein.Views
 {
-    public abstract class Dialog : Window
+    public abstract class Dialog : UserControl
     {
         static Dialog()
         {

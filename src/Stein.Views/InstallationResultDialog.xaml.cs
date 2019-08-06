@@ -21,12 +21,12 @@ namespace Stein.Views
                 return;
 
             e.Handled = true;
-            DialogResult = true;
+            Window.GetWindow(this).DialogResult = true;
         }
 
         private void OnDialogOkButtonClick(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            Window.GetWindow(this).DialogResult = true;
         }
     }
 }

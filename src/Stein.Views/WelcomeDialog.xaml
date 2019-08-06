@@ -8,13 +8,7 @@
               xmlns:views="clr-namespace:Stein.Views"
               xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
               mc:Ignorable="d" 
-              d:DataContext="{d:DesignInstance viewModels:WelcomeDialogModel, IsDesignTimeCreatable=True}"
-              MinWidth="500"
-              MinHeight="300"
-              Width="500"
-              Height="300"
-              SizeToContent="Manual"
-              WindowStartupLocation="CenterOwner">
+              d:DataContext="{d:DesignInstance viewModels:WelcomeDialogModel, IsDesignTimeCreatable=True}">
 
     <Grid Margin="{adonisUi:Space 2,1}">
         <Grid.RowDefinitions>

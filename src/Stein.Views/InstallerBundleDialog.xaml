@@ -10,13 +10,7 @@
               xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
               xmlns:views="clr-namespace:Stein.Views"
               mc:Ignorable="d"
-              d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}"
-              MinWidth="450"
-              MinHeight="200"
-              Width="700"
-              Height="400"
-              SizeToContent="Manual"
-              WindowStartupLocation="CenterOwner">
+              d:DataContext="{d:DesignInstance viewModels:InstallerBundleDialogModel, IsDesignTimeCreatable=True}">
 
     <Grid Margin="{adonisUi:Space 1,2}">
         <Grid.RowDefinitions>

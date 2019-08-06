@@ -1,11 +1,11 @@
-﻿using System.Windows;
+﻿using System.Windows.Controls;
 
 namespace Stein.Views
 {
     /// <summary>
     /// Interaction logic for MainWindowDialog.xaml
     /// </summary>
-    public partial class MainWindowDialog : Window
+    public partial class MainWindowDialog : UserControl
     {
         public MainWindowDialog()
         {

@@ -5,7 +5,7 @@ namespace Stein.Views
     /// <summary>
     /// Interaction logic for ExceptionDialog.xaml
     /// </summary>
-    public partial class ExceptionDialog : Window
+    public partial class ExceptionDialog : Dialog
     {
         public ExceptionDialog()
         {
@@ -14,7 +14,7 @@ namespace Stein.Views
 
         private void OnDialogOkButtonClick(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
+            Window.GetWindow(this).DialogResult = true;
         }
     }
 }

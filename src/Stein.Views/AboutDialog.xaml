@@ -9,13 +9,7 @@
               xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
               xmlns:views="clr-namespace:Stein.Views"
               mc:Ignorable="d"
-              d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}"
-              MinWidth="500"
-              MinHeight="300"
-              Width="500"
-              Height="300"
-              SizeToContent="Manual"
-              WindowStartupLocation="CenterOwner">
+              d:DataContext="{d:DesignInstance viewModels:AboutDialogModel, IsDesignTimeCreatable=True}">
    
     <ScrollViewer>
         <Grid Margin="{adonisUi:Space 2,1}">

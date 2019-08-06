@@ -10,11 +10,7 @@
               xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
               xmlns:views="clr-namespace:Stein.Views"
               mc:Ignorable="d"
-              d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
-              MinWidth="500"
-              MinHeight="320"
-              SizeToContent="WidthAndHeight"
-              WindowStartupLocation="CenterOwner">
+              d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}">
 
     <Grid Margin="{adonisUi:Space 1,2}"
           IsSharedSizeScope="True">
