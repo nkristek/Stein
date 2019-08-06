@@ -142,17 +142,19 @@
                         Height="{adonisUi:Space 4}"
                         Width="{adonisUi:Space 4}"
                         Padding="{adonisUi:Space 1}"
-                        Content="{Binding}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ChangeThemeCommand]}"
                         ToolTip="{x:Static localization:Strings.SwitchTheme}">
-                    <Button.ContentTemplate>
-                        <MultiBinding Converter="{steinconverters:IntToNthValueConverter}">
-                            <Binding Path="CurrentTheme"/>
-                            <Binding Source="{StaticResource DarkThemeIconVariant}"/>
-                            <Binding Source="{StaticResource LightThemeIconVariant}"/>
-                        </MultiBinding>
-                    </Button.ContentTemplate>
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}"
+                               BasedOn="{StaticResource {x:Static adonisUi:Styles.AccentButton}}">
+                            <Setter Property="ContentTemplate" Value="{StaticResource DarkThemeIconVariant}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentTheme}" Value="Dark">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource LightThemeIconVariant}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                 </Button>
 
                 <!-- Info dialog button -->
