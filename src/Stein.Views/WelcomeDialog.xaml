@@ -8,7 +8,8 @@
               xmlns:views="clr-namespace:Stein.Views"
               xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
               mc:Ignorable="d" 
-              d:DataContext="{d:DesignInstance viewModels:WelcomeDialogModel, IsDesignTimeCreatable=True}">
+              d:DataContext="{d:DesignInstance viewModels:WelcomeDialogModel, IsDesignTimeCreatable=True}"
+              Width="600">
 
     <Grid Margin="{adonisUi:Space 2,1}">
         <Grid.RowDefinitions>
