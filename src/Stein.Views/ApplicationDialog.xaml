@@ -12,10 +12,8 @@
               mc:Ignorable="d"
               d:DataContext="{d:DesignInstance viewModels:ApplicationDialogModel, IsDesignTimeCreatable=True}"
               MinWidth="500"
-              MinHeight="300"
-              Width="500"
-              Height="300"
-              SizeToContent="Manual"
+              MinHeight="320"
+              SizeToContent="WidthAndHeight"
               WindowStartupLocation="CenterOwner">
 
     <Grid Margin="{adonisUi:Space 1,2}"
