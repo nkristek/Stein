@@ -38,6 +38,8 @@ namespace Stein
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
         
         protected override async void OnStartup(StartupEventArgs e)
