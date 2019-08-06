@@ -83,6 +83,7 @@ namespace Stein
                 new ConstructorArgument("currentVersion", assemblyVersion),
                 new ConstructorArgument("repository", repository));
             var notificationService = kernel.Get<INotificationService>();
+            MainWindow.Closing += (sender, args) => notificationService.Dispose();
             var updateTask = CheckForUpdate(updateService, notificationService, mainDialogModel);
 
             if (isFirstLaunch)
