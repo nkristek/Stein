@@ -12,6 +12,7 @@ using Stein.Common.InstallService;
 using Stein.Common.IOService;
 using Stein.Common.MsiService;
 using Stein.Common.ProductService;
+using Stein.Common.UpdateService;
 using Stein.Localization;
 using Stein.Presentation;
 using Stein.Utility;
@@ -121,9 +122,9 @@ namespace Stein.ViewModels.Services
             else if (typeof(TViewModel) == typeof(InstallationViewModel))
                 viewModel = CreateInstallationViewModel(parent) as TViewModel;
             else if (typeof(TViewModel) == typeof(UpdateDialogModel))
-                viewModel = CreateUpdateDialogModel(parent) as TViewModel;
+                viewModel = CreateUpdateDialogModel(parent, entity as IUpdateResult) as TViewModel;
             else if (typeof(TViewModel) == typeof(UpdateAssetViewModel))
-                viewModel = CreateUpdateAssetViewModel(parent) as TViewModel;
+                viewModel = CreateUpdateAssetViewModel(parent, entity as IUpdateAsset) as TViewModel;
             else if (typeof(TViewModel) == typeof(WelcomeDialogModel))
                 viewModel = CreateWelcomeDialogModel(parent) as TViewModel;
             else
@@ -134,14 +135,23 @@ namespace Stein.ViewModels.Services
             return viewModel;
         }
 
-        private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent)
+        private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent, IUpdateResult updateResult)
         {
+            if (updateResult == null)
+                throw new ArgumentNullException(nameof(updateResult));
+
             var dialogModel = new UpdateDialogModel
             {
                 Parent = parent,
                 Title = Strings.UpdateAvailable,
+                CurrentVersion = updateResult.CurrentVersion,
+                UpdateVersion = updateResult.NewestVersion,
+                UpdateUri = updateResult.NewestVersionUri,
+                ReleaseTag = updateResult.ReleaseTag,
                 IsDirty = false
             };
+            foreach (var updateAsset in updateResult.UpdateAssets)
+                dialogModel.UpdateAssets.Add(CreateUpdateAssetViewModel(dialogModel, updateAsset));
             dialogModel.AddCommand(new OpenUpdateUriCommand(_uriService)
             {
                 Parent = dialogModel
@@ -157,18 +167,24 @@ namespace Stein.ViewModels.Services
             return dialogModel;
         }
 
-        private WelcomeDialogModel CreateWelcomeDialogModel(IViewModel parent)
+        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent, IUpdateAsset updateAsset)
         {
-            return new WelcomeDialogModel
+            if (updateAsset == null)
+                throw new ArgumentNullException(nameof(updateAsset));
+
+            return new UpdateAssetViewModel
             {
                 Parent = parent,
-                IsDirty = false
+                DownloadUri = updateAsset.DownloadUri,
+                FileName = updateAsset.FileName,
+                IsReadOnly = true,
+                IsDirty = false,
             };
         }
 
-        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent)
+        private WelcomeDialogModel CreateWelcomeDialogModel(IViewModel parent)
         {
-            return new UpdateAssetViewModel
+            return new WelcomeDialogModel
             {
                 Parent = parent,
                 IsDirty = false

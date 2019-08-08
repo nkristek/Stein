@@ -31,6 +31,14 @@ namespace Stein.ViewModels
             set => SetProperty(ref _updateUri, value, out _);
         }
 
+        private string _releaseTag;
+
+        public string ReleaseTag
+        {
+            get => _releaseTag;
+            set => SetProperty(ref _releaseTag, value, out _);
+        }
+
         public ObservableCollection<UpdateAssetViewModel> UpdateAssets { get; } = new ObservableCollection<UpdateAssetViewModel>();
 
         private bool _isUpdateDownloading;

@@ -118,7 +118,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                 if (updateAssetViewModel == null)
                     return;
 
-                installerFilePath = CreateInstallerFilePath(updateAssetViewModel);
+                installerFilePath = CreateInstallerFilePath(updateAssetViewModel, viewModel.ReleaseTag);
                 if (!_ioService.FileExists(installerFilePath))
                     await DownloadInstallerFile(updateAssetViewModel.DownloadUri, installerFilePath);
                 StartInstall(installerFilePath);
@@ -140,9 +140,9 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             }
         }
 
-        private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel)
+        private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel, string releaseName)
         {
-            var downloadFolderPath = _ioService.PathCombine(_downloadFolderPath, updateAssetViewModel.ReleaseTag);
+            var downloadFolderPath = _ioService.PathCombine(_downloadFolderPath, releaseName);
             if (!_ioService.DirectoryExists(downloadFolderPath))
                 _ioService.CreateDirectory(downloadFolderPath);
             return _ioService.PathCombine(downloadFolderPath, updateAssetViewModel.FileName);

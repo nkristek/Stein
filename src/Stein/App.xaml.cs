@@ -108,32 +108,18 @@ namespace Stein
         private async Task CheckForUpdate(IUpdateService updateService, INotificationService notificationService, MainWindowDialogModel mainDialogModel)
         {
             var updateResult = await updateService.IsUpdateAvailable();
-            if (updateResult.IsUpdateAvailable)
+            if (!updateResult.IsUpdateAvailable)
             {
-                var updateDialogModel = _viewModelService.CreateViewModel<UpdateDialogModel>(mainDialogModel);
-                updateDialogModel.CurrentVersion = updateResult.CurrentVersion;
-                updateDialogModel.UpdateVersion = updateResult.NewestVersion;
-                updateDialogModel.UpdateUri = updateResult.NewestVersionUri;
-
-                foreach (var updateAsset in updateResult.UpdateAssets)
-                {
-                    var updateAssetViewModel = _viewModelService.CreateViewModel<UpdateAssetViewModel>(updateDialogModel);
-                    updateAssetViewModel.DownloadUri = updateAsset.DownloadUri;
-                    updateAssetViewModel.FileName = updateAsset.FileName;
-                    updateAssetViewModel.ReleaseTag = updateResult.ReleaseTag;
-                    updateAssetViewModel.IsReadOnly = true;
-                    updateAssetViewModel.IsDirty = false;
-                    updateDialogModel.UpdateAssets.Add(updateAssetViewModel);
-                }
-
-                mainDialogModel.AvailableUpdate = updateDialogModel;
-
-                notificationService.ShowInfo(Strings.UpdateAvailableDescription, () =>
-                {
-                    if (mainDialogModel.TryGetCommand<MainWindowDialogModel, ShowUpdateDialogCommand>(out var showUpdateDialogCommand))
-                        showUpdateDialogCommand.Execute(null);
-                });
+                mainDialogModel.AvailableUpdate = null;
+                return;
             }
+
+            mainDialogModel.AvailableUpdate = _viewModelService.CreateViewModel<UpdateDialogModel>(mainDialogModel, updateResult);
+            notificationService.ShowInfo(Strings.UpdateAvailableDescription, () =>
+            {
+                if (mainDialogModel.TryGetCommand<MainWindowDialogModel, ShowUpdateDialogCommand>(out var showUpdateDialogCommand))
+                    showUpdateDialogCommand.Execute(null);
+            });
         }
 
         /// <inheritdoc />
