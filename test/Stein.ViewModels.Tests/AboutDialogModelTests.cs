@@ -1,6 +1,7 @@
 ﻿using NKristek.Smaragd.Commands;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Stein.ViewModels.Tests
@@ -28,8 +29,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Name = testData;
             Assert.Equal(testData, dialogModel.Name);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -46,8 +47,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Description = testData;
             Assert.Equal(testData, dialogModel.Description);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -64,8 +65,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Version = testData;
             Assert.Equal(testData, dialogModel.Version);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -82,8 +83,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Copyright = testData;
             Assert.Equal(testData, dialogModel.Copyright);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -100,8 +101,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.AdditionalNotes = testData;
             Assert.Equal(testData, dialogModel.AdditionalNotes);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -118,8 +119,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Uri = testData;
             Assert.Equal(testData, dialogModel.Uri);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         [Fact]
@@ -136,8 +137,8 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Publisher = testData;
             Assert.Equal(testData, dialogModel.Publisher);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
 
         private class TestCommand
@@ -155,16 +156,16 @@ namespace Stein.ViewModels.Tests
             var testData = new TestCommand();
             var dialogModel = new AboutDialogModel();
             var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.OpenUriCommand), nameof(dialogModel.IsDirty) };
+            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.OpenUriCommand) };
             var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.OpenUriCommand), nameof(dialogModel.IsDirty) };
+            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.OpenUriCommand) };
             dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
             dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
 
             dialogModel.OpenUriCommand = testData;
             Assert.Equal(testData, dialogModel.OpenUriCommand);
-            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
-            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
+            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
         }
     }
 }
