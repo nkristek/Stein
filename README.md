@@ -42,7 +42,7 @@ When performing a custom operation you can define additional arguments for each 
 
 ## Contribution
 
-If you find a bug feel free to open an issue. Contributions are also appreciated.
+If you find a bug feel free to open an issue. Contributions are also appreciated. Special thanks to [benruehl](https://github.com/benruehl/) for all of his UI related work and to [heckenr](https://github.com/heckenr) for his suggestion to name this application Stein (**S**ilent **Te**mp **In**staller).
 
 **Please note**: 
 You have to have the [Wix Toolset](http://wixtoolset.org) installed in order to compile the [Stein.Services](../blob/master/Stein.Services) project. The version currently used to build this application is [3.11.1](http://wixtoolset.org/releases/v3.11.1/stable).
