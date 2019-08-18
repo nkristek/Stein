@@ -15,7 +15,7 @@ namespace Stein.ViewModels
             get => _name;
             set
             {
-                if (SetProperty(ref _name, value, out _))
+                if (SetProperty(ref _name, value))
                     Title = value;
             }
         }

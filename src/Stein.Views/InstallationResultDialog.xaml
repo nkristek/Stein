@@ -36,7 +36,7 @@
                     Height="{adonisUi:Space 3}"
                     Width="{adonisUi:Space 3}"
                     Padding="{adonisUi:Space 0.5}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand]}"
+                    Command="{Binding OpenLogFolderCommand}"
                     ContentTemplate="{StaticResource LogFileIconVariant}"
                     Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
                     ToolTip="{x:Static localization:Strings.OpenLogFolder}"/>

@@ -1,5 +1,5 @@
 ﻿using System;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 
@@ -16,7 +16,16 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(ApplicationViewModel.ProviderLink), nameof(ApplicationViewModel.IsUpdating))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(ApplicationViewModel.ProviderLink))
+                || e.PropertyName.Equals(nameof(ApplicationViewModel.IsUpdating)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
             return !String.IsNullOrEmpty(viewModel.ProviderLink) && !viewModel.IsUpdating;

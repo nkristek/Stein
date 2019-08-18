@@ -9,7 +9,7 @@
     <Grid>
         <TextBlock VerticalAlignment="Center"
                    FontSize="16">
-            <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.DependencyViewModelCommands.OpenUriCommand]}">
+            <Hyperlink Command="{Binding OpenUriCommand}">
                 <TextBlock Text="{Binding Name}"/>
             </Hyperlink>
         </TextBlock>

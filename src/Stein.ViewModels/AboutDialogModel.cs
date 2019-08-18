@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 
 namespace Stein.ViewModels
@@ -14,7 +16,7 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value, out _);
+            set => SetProperty(ref _name, value);
         }
 
         private string _description;
@@ -22,7 +24,7 @@ namespace Stein.ViewModels
         public string Description
         {
             get => _description;
-            set => SetProperty(ref _description, value, out _);
+            set => SetProperty(ref _description, value);
         }
 
         private Version _version;
@@ -30,7 +32,7 @@ namespace Stein.ViewModels
         public Version Version
         {
             get => _version;
-            set => SetProperty(ref _version, value, out _);
+            set => SetProperty(ref _version, value);
         }
 
         private string _copyright;
@@ -38,7 +40,7 @@ namespace Stein.ViewModels
         public string Copyright
         {
             get => _copyright;
-            set => SetProperty(ref _copyright, value, out _);
+            set => SetProperty(ref _copyright, value);
         }
 
         private string _additionalNotes;
@@ -46,7 +48,7 @@ namespace Stein.ViewModels
         public string AdditionalNotes
         {
             get => _additionalNotes;
-            set => SetProperty(ref _additionalNotes, value, out _);
+            set => SetProperty(ref _additionalNotes, value);
         }
 
         private Uri _uri;
@@ -54,7 +56,7 @@ namespace Stein.ViewModels
         public Uri Uri
         {
             get => _uri;
-            set => SetProperty(ref _uri, value, out _);
+            set => SetProperty(ref _uri, value);
         }
 
         private string _publisher;
@@ -62,7 +64,26 @@ namespace Stein.ViewModels
         public string Publisher
         {
             get => _publisher;
-            set => SetProperty(ref _publisher, value, out _);
+            set => SetProperty(ref _publisher, value);
+        }
+
+        private IViewModelCommand<AboutDialogModel> _openUriCommand;
+
+        [IsDirtyIgnored]
+        [IsReadOnlyIgnored]
+        public IViewModelCommand<AboutDialogModel> OpenUriCommand
+        {
+            get => _openUriCommand;
+            set
+            {
+                if (SetProperty(ref _openUriCommand, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.Context = null;
+                    if (value != null)
+                        value.Context = this;
+                }
+            }
         }
     }
 }

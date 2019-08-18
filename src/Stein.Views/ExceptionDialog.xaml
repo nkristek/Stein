@@ -20,7 +20,8 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="1" 
+            <Button x:Name="OkButton" 
+                    Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
                     Padding="{adonisUi:Space 3,0.5}"
                     IsDefault="True"

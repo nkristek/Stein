@@ -1,5 +1,5 @@
 ﻿using System;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Common.IOService;
 using Stein.Presentation;
@@ -20,7 +20,15 @@ namespace Stein.ViewModels.Commands.InstallationResultDialogModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(InstallationResultDialogModel.LogFolderPath))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(InstallationResultDialogModel.LogFolderPath)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(InstallationResultDialogModel viewModel, object parameter)
         {
             return !String.IsNullOrEmpty(viewModel.LogFolderPath) && _ioService.DirectoryExists(viewModel.LogFolderPath);

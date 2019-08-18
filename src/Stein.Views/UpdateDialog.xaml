@@ -66,7 +66,7 @@
 
                 <TextBlock Grid.Column="2" 
                            FontSize="14">
-                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.OpenUpdateUriCommand]}">
+                <Hyperlink Command="{Binding OpenUpdateUriCommand}">
                     <TextBlock Text="{Binding UpdateVersion}"/>
                 </Hyperlink>
             </TextBlock>
@@ -81,7 +81,7 @@
                      Focusable="False"
                      Margin="{adonisUi:Space 0}"
                      Padding="{adonisUi:Space 0}"
-                     DataContext="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                     DataContext="{Binding InstallUpdateCommand}"
                      Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}"
                      Value="{Binding DownloadProgress, Mode=OneWay}"
                      Maximum="1">
@@ -114,7 +114,7 @@
                     Content="{x:Static localization:Strings.Install}"
                     Margin="{adonisUi:Space 0,1}"
                     Padding="{adonisUi:Space 2,0.5}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.InstallUpdateCommand]}"
+                    Command="{Binding InstallUpdateCommand}"
                     Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToInverseVisibilityConverter}}"/>
 
             <Button Grid.Column="1" 
@@ -122,7 +122,7 @@
                     Content="{x:Static localization:Strings.Cancel}"
                     Margin="{adonisUi:Space 0,1}"
                     Padding="{adonisUi:Space 2,0.5}"
-                    Command="{Binding Commands[Stein.ViewModels.Commands.UpdateDialogModelCommands.CancelUpdateCommand]}"
+                    Command="{Binding CancelUpdateCommand}"
                     Visibility="{Binding IsUpdateDownloading, Converter={c:BoolToVisibilityConverter}}"/>
 
             <Button x:Name="OkButton" 

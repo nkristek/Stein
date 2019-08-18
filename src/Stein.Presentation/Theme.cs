@@ -4,6 +4,8 @@
     {
         Light,
 
-        Dark
+        Dark,
+
+        HotDog
     }
 }

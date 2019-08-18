@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NKristek.Smaragd.Commands;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -135,6 +136,33 @@ namespace Stein.ViewModels.Tests
 
             dialogModel.Publisher = testData;
             Assert.Equal(testData, dialogModel.Publisher);
+            Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
+            Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
+        }
+
+        private class TestCommand
+            : ViewModelCommand<AboutDialogModel>
+        {
+            protected override void Execute(AboutDialogModel viewModel, object parameter)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [Fact]
+        public void OpenUriCommand_set_get()
+        {
+            var testData = new TestCommand();
+            var dialogModel = new AboutDialogModel();
+            var invokedPropertyChangingEvents = new List<string>();
+            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.OpenUriCommand), nameof(dialogModel.IsDirty) };
+            var invokedPropertyChangedEvents = new List<string>();
+            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.OpenUriCommand), nameof(dialogModel.IsDirty) };
+            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
+            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
+
+            dialogModel.OpenUriCommand = testData;
+            Assert.Equal(testData, dialogModel.OpenUriCommand);
             Assert.Equal(expectedPropertyChangingEvents, invokedPropertyChangingEvents);
             Assert.Equal(expectedPropertyChangedEvents, invokedPropertyChangedEvents);
         }

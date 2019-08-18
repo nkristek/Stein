@@ -10,12 +10,6 @@ namespace Stein.ViewModels
     public sealed class GitHubInstallerFileBundleProviderViewModel
         : InstallerFileBundleProviderViewModel
     {
-        public GitHubInstallerFileBundleProviderViewModel()
-        {
-            AddValidation(() => Repository, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.RepositoryEmpty));
-            AddValidation(() => Repository, new GitHubRepositoryPathValidation(Strings.RepositoryPathInvalid));
-        }
-
         /// <inheritdoc />
         public override string ProviderType => "GitHub";
 
@@ -44,7 +38,18 @@ namespace Stein.ViewModels
         public string Repository
         {
             get => _repository;
-            set => SetProperty(ref _repository, value, out _);
+            set
+            {
+                if (SetProperty(ref _repository, value))
+                {
+                    var validationErrors = new List<string>();
+                    if (String.IsNullOrEmpty(value))
+                        validationErrors.Add(Strings.RepositoryEmpty);
+                    else if (!new GitHubRepositoryPathValidation().Validate(value))
+                        validationErrors.Add(Strings.RepositoryPathInvalid);
+                    SetErrors(validationErrors);
+                }
+            }
         }
     }
 }

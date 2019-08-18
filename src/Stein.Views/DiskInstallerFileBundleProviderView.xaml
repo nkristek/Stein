@@ -34,6 +34,6 @@
         <Button Grid.Column="4"
                 Content="{x:Static localization:Strings.Hellip}"
                 Padding="{adonisUi:Space 2,0.5}"
-                Command="{Binding Commands[Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelCommands.SelectFolderCommand]}"/>
+                Command="{Binding SelectFolderCommand}"/>
     </Grid>
 </UserControl>

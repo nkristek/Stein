@@ -4,6 +4,7 @@ using Stein.Presentation;
 
 namespace Stein.Views.Services
 {
+    /// <inheritdoc />
     public class WpfUriService
         : IUriService
     {

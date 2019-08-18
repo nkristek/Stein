@@ -15,7 +15,6 @@ using Stein.Localization;
 using Stein.Presentation;
 using Stein.ViewModels;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
-using Stein.ViewModels.Extensions;
 
 namespace Stein
 {
@@ -73,9 +72,7 @@ namespace Stein
             var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
             _dialogService.Show(mainDialogModel);
 
-            Task refreshTask = null;
-            if (mainDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
-                refreshTask = refreshCommand.ExecuteAsync(null);
+            mainDialogModel.RefreshApplicationsCommand.Execute(null);
 
             var assemblyVersion = Assembly.GetEntryAssembly().GetName().Version;
             const string repository = "nkristek/Stein";
@@ -100,9 +97,6 @@ namespace Stein
             {
                 Log.Error("Checking for update failed.", exception);
             }
-
-            if (refreshTask != null)
-                await refreshTask;
         }
 
         private async Task CheckForUpdate(IUpdateService updateService, INotificationService notificationService, MainWindowDialogModel mainDialogModel)
@@ -117,8 +111,7 @@ namespace Stein
             mainDialogModel.AvailableUpdate = _viewModelService.CreateViewModel<UpdateDialogModel>(mainDialogModel, updateResult);
             notificationService.ShowInfo(Strings.UpdateAvailableDescription, () =>
             {
-                if (mainDialogModel.TryGetCommand<MainWindowDialogModel, ShowUpdateDialogCommand>(out var showUpdateDialogCommand))
-                    showUpdateDialogCommand.Execute(null);
+                mainDialogModel.ShowUpdateDialogCommand.Execute(null);
             });
         }
 

@@ -81,8 +81,8 @@
                                 Padding="{adonisUi:Space 0.5}"
                                 Foreground="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=Control}}"
                                 Style="{DynamicResource {x:Static adonisUi:Styles.AccentToolbarButton}}"
-                                ContentTemplate="{DynamicResource DeleteIconVariant}"
-                                Command="{Binding Commands[Stein.ViewModels.Commands.InstallationViewModelCommands.CancelOperationCommand]}"
+                                ContentTemplate="{DynamicResource CancelIconVariant}"
+                                Command="{Binding CancelOperationCommand}"
                                 ToolTip="{x:Static localization:Strings.Cancel}"/>
                     </Grid>
                 </DataTemplate>

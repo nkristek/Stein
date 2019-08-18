@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 
@@ -17,7 +17,16 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(MainWindowDialogModel.CurrentInstallation), nameof(MainWindowDialogModel.IsUpdating))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(MainWindowDialogModel.CurrentInstallation))
+                || e.PropertyName.Equals(nameof(MainWindowDialogModel.IsUpdating)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(MainWindowDialogModel viewModel, object parameter)
         {
             return viewModel.CurrentInstallation == null && !viewModel.IsUpdating;

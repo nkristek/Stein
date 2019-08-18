@@ -1,5 +1,5 @@
 ﻿using System;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Common.IOService;
 using Stein.Presentation;
@@ -23,7 +23,15 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(ApplicationDialogModel.Name))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null 
+                || String.IsNullOrEmpty(e.PropertyName) 
+                || e.PropertyName.Equals(nameof(ApplicationDialogModel.Name)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(ApplicationDialogModel viewModel, object parameter)
         {
             return !String.IsNullOrEmpty(viewModel.Name);

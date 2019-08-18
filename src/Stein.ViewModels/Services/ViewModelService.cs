@@ -148,22 +148,13 @@ namespace Stein.ViewModels.Services
                 UpdateVersion = updateResult.NewestVersion,
                 UpdateUri = updateResult.NewestVersionUri,
                 ReleaseTag = updateResult.ReleaseTag,
+                OpenUpdateUriCommand = new OpenUpdateUriCommand(_uriService),
+                InstallUpdateCommand = new InstallUpdateCommand(_installService, _ioService, _downloadFolderPath),
+                CancelUpdateCommand = new CancelUpdateCommand(),
                 IsDirty = false
             };
             foreach (var updateAsset in updateResult.UpdateAssets)
                 dialogModel.UpdateAssets.Add(CreateUpdateAssetViewModel(dialogModel, updateAsset));
-            dialogModel.AddCommand(new OpenUpdateUriCommand(_uriService)
-            {
-                Parent = dialogModel
-            });
-            dialogModel.AddCommand(new InstallUpdateCommand(_installService, _ioService, _downloadFolderPath)
-            {
-                Parent = dialogModel
-            });
-            dialogModel.AddCommand(new CancelUpdateCommand
-            {
-                Parent = dialogModel
-            });
             return dialogModel;
         }
 
@@ -193,16 +184,12 @@ namespace Stein.ViewModels.Services
 
         private InstallationViewModel CreateInstallationViewModel(IViewModel parent)
         {
-            var viewModel = new InstallationViewModel(_progressBarService)
+            return new InstallationViewModel(_progressBarService)
             {
                 Parent = parent,
+                CancelOperationCommand = new CancelOperationCommand(),
                 IsDirty = false
             };
-            viewModel.AddCommand(new CancelOperationCommand
-            {
-                Parent = viewModel
-            });
-            return viewModel;
         }
 
         private InstallationResultViewModel CreateInstallationResultViewModel(IViewModel parent)
@@ -223,17 +210,13 @@ namespace Stein.ViewModels.Services
             if (!(parent is InstallationViewModel installationViewModel))
                 throw new ArgumentException($"Argument has to be of type {nameof(InstallationViewModel)}", nameof(parent));
 
-            var dialogModel = new InstallationResultDialogModel
+            return new InstallationResultDialogModel
             {
                 Name = installationViewModel.Name,
                 Parent = parent,
+                OpenLogFolderCommand = new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService, _ioService),
                 IsDirty = false
             };
-            dialogModel.AddCommand(new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService, _ioService)
-            {
-                Parent = dialogModel
-            });
-            return dialogModel;
         }
 
         private ExceptionViewModel CreateExceptionViewModel(IViewModel parent, Exception exception)
@@ -246,7 +229,8 @@ namespace Stein.ViewModels.Services
                 Parent = parent,
                 Message = exception.Message,
                 TypeName = exception.GetType().Name,
-                StackTrace = exception.StackTrace
+                StackTrace = exception.StackTrace,
+                CopyExceptionDetailsToClipboardCommand = new CopyExceptionDetailsToClipboardCommand(_clipboardService)
             };
 
             if (exception is AggregateException aggregateException)
@@ -258,11 +242,6 @@ namespace Stein.ViewModels.Services
             {
                 exceptionViewModel.InnerExceptions.Add(CreateExceptionViewModel(exceptionViewModel, exception.InnerException));
             }
-
-            exceptionViewModel.AddCommand(new CopyExceptionDetailsToClipboardCommand(_clipboardService)
-            {
-                Parent = exceptionViewModel
-            });
 
             exceptionViewModel.IsReadOnly = true;
             exceptionViewModel.IsDirty = false;
@@ -292,33 +271,14 @@ namespace Stein.ViewModels.Services
             var viewModel = new MainWindowDialogModel(_themeService)
             {
                 Parent = parent,
-                Title = Assembly.GetEntryAssembly().GetName().Name
-        };
-
-            viewModel.AddCommand(new RefreshApplicationsCommand(this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new AddApplicationCommand(_dialogService, this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new ShowInfoDialogCommand(_dialogService, this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new ChangeThemeCommand(this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new ShowRecentInstallationResultCommand(_dialogService)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new ShowUpdateDialogCommand(_dialogService)
-            {
-                Parent = viewModel
-            });
+                Title = Assembly.GetEntryAssembly().GetName().Name,
+                RefreshApplicationsCommand = new RefreshApplicationsCommand(this),
+                AddApplicationCommand = new AddApplicationCommand(_dialogService, this),
+                ShowInfoDialogCommand = new ShowInfoDialogCommand(_dialogService, this),
+                ChangeThemeCommand = new ChangeThemeCommand(this),
+                ShowRecentInstallationResultCommand = new ShowRecentInstallationResultCommand(_dialogService),
+                ShowUpdateDialogCommand = new ShowUpdateDialogCommand(_dialogService)
+            };
 
             foreach (var application in CreateApplicationViewModels(viewModel))
                 viewModel.Applications.Add(application);
@@ -338,7 +298,7 @@ namespace Stein.ViewModels.Services
             if (application == null)
                 throw new ArgumentNullException(nameof(application));
 
-            var viewModel = new ApplicationViewModel
+            return new ApplicationViewModel
             {
                 Parent = parent,
                 EntityId = application.Id,
@@ -349,35 +309,15 @@ namespace Stein.ViewModels.Services
                 AutomaticallyDeleteInstallationLogs = application.AutomaticallyDeleteInstallationLogs,
                 KeepNewestInstallationLogs = application.KeepNewestInstallationLogs,
                 FilterDuplicateInstallers = application.FilterDuplicateInstallers,
-                ProviderType = application.Configuration?.ProviderType
+                ProviderType = application.Configuration?.ProviderType,
+                EditApplicationCommand = new EditApplicationCommand(_dialogService, this),
+                DeleteApplicationCommand = new DeleteApplicationCommand(this),
+                InstallApplicationCommand = new InstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath),
+                UninstallApplicationCommand = new UninstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath),
+                CustomOperationApplicationCommand = new CustomOperationApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath),
+                OpenProviderLinkCommand = new OpenProviderLinkCommand(_uriService),
+                IsDirty = false
             };
-            viewModel.AddCommand(new EditApplicationCommand(_dialogService, this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new DeleteApplicationCommand(this)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new InstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new UninstallApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new CustomOperationApplicationCommand(_dialogService, this, _installService, _notificationService, _uriService, _downloadFolderPath)
-            {
-                Parent = viewModel
-            });
-            viewModel.AddCommand(new OpenProviderLinkCommand(_uriService)
-            {
-                Parent = viewModel
-            });
-
-            viewModel.IsDirty = false;
-            return viewModel;
         }
 
         private Guid GetNewApplicationId()
@@ -440,29 +380,20 @@ namespace Stein.ViewModels.Services
                     dialogModel.AvailableProviders.Add(provider);
                 dialogModel.SelectedProvider = dialogModel.AvailableProviders.FirstOrDefault();
             }
-            
-            dialogModel.AddCommand(new OpenLogFolderCommand(_uriService, _ioService, _logFolderPath)
-            {
-                Parent = dialogModel
-            });
 
+            dialogModel.OpenLogFolderCommand = new OpenLogFolderCommand(_uriService, _ioService, _logFolderPath);
             dialogModel.IsDirty = false;
             return dialogModel;
         }
         
         private IEnumerable<InstallerFileBundleProviderViewModel> CreateAvailableProviderViewModels(IViewModel parent = null)
         {
-            var diskProvider = new DiskInstallerFileBundleProviderViewModel
+            yield return new DiskInstallerFileBundleProviderViewModel
             {
                 Parent = parent,
+                SelectFolderCommand = new SelectFolderCommand(_dialogService),
                 IsDirty = false
             };
-            diskProvider.AddCommand(new SelectFolderCommand(_dialogService)
-            {
-                Parent = diskProvider
-            });
-            yield return diskProvider;
-
             yield return new GitHubInstallerFileBundleProviderViewModel
             {
                 Parent = parent,
@@ -505,76 +436,72 @@ namespace Stein.ViewModels.Services
                 AdditionalNotes = "",
                 Uri = new Uri("https://github.com/nkristek/Stein"),
                 Publisher = publisher?.Company,
+                OpenUriCommand = new OpenUriCommand(_uriService)
             };
 
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Smaragd",
                 Uri = new Uri("https://github.com/nkristek/Smaragd"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Wpf.Converters",
                 Uri = new Uri("https://github.com/nkristek/Wpf.Converters"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "AdonisUI",
                 Uri = new Uri("https://github.com/benruehl/adonis-ui"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "log4net",
                 Uri = new Uri("http://logging.apache.org/log4net/"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Newtonsoft.Json",
                 Uri = new Uri("https://www.newtonsoft.com/json"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Ninject",
                 Uri = new Uri("https://github.com/ninject/Ninject"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Windows-API-Code-Pack",
                 Uri = new Uri("https://github.com/aybe/Windows-API-Code-Pack-1.1"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "Wix Toolset",
                 Uri = new Uri("http://wixtoolset.org/"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
             viewModel.Dependencies.Add(new DependencyViewModel
             {
                 Name = "System.Windows.Interactivity.WPF",
                 Uri = new Uri("https://www.microsoft.com/en-us/download/details.aspx?id=10801"),
+                OpenUriCommand = new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService),
                 IsDirty = false
             });
-
-            viewModel.AddCommand(new OpenUriCommand(_uriService)
-            {
-                Parent = viewModel
-            });
-
-            foreach (var dependency in viewModel.Dependencies)
-            { 
-                dependency.AddCommand(new Commands.DependencyViewModelCommands.OpenUriCommand(_uriService)
-                {
-                    Parent = dependency
-                });
-                dependency.IsDirty = false;
-            }
 
             viewModel.IsReadOnly = true;
             viewModel.IsDirty = false;
@@ -647,20 +574,27 @@ namespace Stein.ViewModels.Services
         /// <inheritdoc />
         public async Task UpdateViewModelAsync<TViewModel>(TViewModel viewModel, object entity = null) where TViewModel : class, IViewModel
         {
-            if (typeof(TViewModel) == typeof(ApplicationViewModel))
-                await UpdateApplicationViewModelAsync(viewModel as ApplicationViewModel);
-            else if (typeof(TViewModel) == typeof(MainWindowDialogModel))
-                await UpdateMainWindowDialogModelAsync(viewModel as MainWindowDialogModel);
-            else
-                throw new NotSupportedException(Strings.ViewModelNotSupported);
+            viewModel.IsUpdating = true;
+
+            try
+            {
+                if (typeof(TViewModel) == typeof(ApplicationViewModel))
+                    await UpdateApplicationViewModelAsync(viewModel as ApplicationViewModel);
+                else if (typeof(TViewModel) == typeof(MainWindowDialogModel))
+                    await UpdateMainWindowDialogModelAsync(viewModel as MainWindowDialogModel);
+                else
+                    throw new NotSupportedException(Strings.ViewModelNotSupported);
+            }
+            finally
+            {
+                viewModel.IsUpdating = false;
+            }
 
             viewModel.IsDirty = false;
         }
 
         private async Task UpdateMainWindowDialogModelAsync(MainWindowDialogModel viewModel)
         {
-            viewModel.IsUpdating = true;
-            
             // modifying/replacing the ObservableCollection freezes the UI for a short time, do it only when its absolutely necessary
             if (!viewModel.Applications.SequenceEqual(_configurationService.Configuration.Applications, (oldItem, newItem) => oldItem.EntityId == newItem.Id))
             {
@@ -668,9 +602,6 @@ namespace Stein.ViewModels.Services
                 foreach (var applicationViewModel in CreateApplicationViewModels(viewModel))
                     viewModel.Applications.Add(applicationViewModel);
             }
-
-            foreach (var applicationViewModel in viewModel.Applications)
-                applicationViewModel.IsUpdating = true;
 
             try
             {
@@ -681,25 +612,20 @@ namespace Stein.ViewModels.Services
                 Log.Error("Getting installed products failed", exception);
             }
 
-            var updateTasks = viewModel.Applications.Select(async application => await UpdateApplicationViewModelAsync(application));
-            await Task.WhenAll(updateTasks);
-
-            viewModel.IsUpdating = false;
-            viewModel.IsDirty = false;
+            await Task.WhenAll(viewModel.Applications.Select(async application => await UpdateViewModelAsync(application)));
         }
 
         private async Task UpdateApplicationViewModelAsync(ApplicationViewModel viewModel, Application application = null)
         {
             if (application == null)
             {
-                if (viewModel.EntityId == default)
+                if (viewModel.EntityId.IsDefault())
                     throw new Exception(Strings.EntityNotFound);
 
                 application = _configurationService.Configuration.Applications.FirstOrDefault(af => af.Id == viewModel.EntityId);
+                if (application == null)
+                    throw new Exception(Strings.EntityNotFound);
             }
-
-            if (application == null)
-                throw new Exception(Strings.EntityNotFound);
 
             viewModel.EntityId = application.Id;
             viewModel.Name = application.Name;
@@ -764,9 +690,6 @@ namespace Stein.ViewModels.Services
             }
             
             viewModel.SelectedInstallerBundle = viewModel.InstallerBundles.LastOrDefault();
-
-            viewModel.IsUpdating = false;
-            viewModel.IsDirty = false;
         }
         
         /// <inheritdoc />

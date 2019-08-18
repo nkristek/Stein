@@ -7,159 +7,19 @@
         xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
         xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
         xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-        xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainWindowDialogModel, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="{adonisUi:Space 6}"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" MinHeight="{adonisUi:Space 4}"/>
         </Grid.RowDefinitions>
 
-        <!-- Application bar -->
-        <Grid Grid.Row="0">
-            <Border Background="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}">
-                <Border.Effect>
-                    <DropShadowEffect Direction="270"
-                                      BlurRadius="32"
-                                      ShadowDepth="8"
-                                      Opacity="0.25"/>
-                </Border.Effect>
-            </Border>
-
-            <Grid Grid.IsSharedSizeScope="True"
-                  Margin="{adonisUi:Space 0.5}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Add Folder button -->
-                <Button Grid.Column="0"
-                        Height="{adonisUi:Space 4}"
-                        Width="{adonisUi:Space 4}"
-                        Padding="{adonisUi:Space 1}"
-                        ContentTemplate="{StaticResource AddIconVariant}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.AddApplicationCommand]}"
-                        ToolTip="{x:Static localization:Strings.Add}"/>
-
-                <!-- Update dialog button -->
-                <Button Grid.Column="3"
-                        Height="{adonisUi:Space 4}"
-                        Width="{adonisUi:Space 4}"
-                        Padding="{adonisUi:Space 1}"
-                        ContentTemplate="{StaticResource UpdateIconVariant}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ShowUpdateDialogCommand]}"
-                        ToolTip="{x:Static localization:Strings.UpdateAvailable}"
-                        Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}"/>
-
-                <!-- Refresh button -->
-                <Button Grid.Column="5"
-                        Height="{adonisUi:Space 4}"
-                        Width="{adonisUi:Space 4}"
-                        Padding="{adonisUi:Space 1}"
-                        Content="{Binding}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.RefreshApplicationsCommand]}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        ToolTip="{x:Static localization:Strings.Refresh}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <ContentControl Width="{adonisUi:Space 2}"
-                                            Height="{adonisUi:Space 2}"
-                                            SnapsToDevicePixels="True"
-                                            UseLayoutRounding="True"
-                                            Focusable="False"
-                                            RenderTransformOrigin="0.5,0.5"
-                                            ContentTemplate="{StaticResource RefreshIconVariant}">
-                                <ContentControl.Style>
-                                    <Style TargetType="{x:Type ContentControl}" 
-                                           BasedOn="{StaticResource {x:Type ContentControl}}">
-                                        <Setter Property="RenderTransform">
-                                            <Setter.Value>
-                                                <RotateTransform Angle="0"/>
-                                            </Setter.Value>
-                                        </Setter>
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsUpdating}" 
-                                                         Value="True">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
-                                                                     From="0"
-                                                                     To="360"
-                                                                     Duration="0:0:2"
-                                                                     RepeatBehavior="Forever"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(RotateTransform.Angle)"
-                                                                     To="0"
-                                                                     Duration="0:0:0" />
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ContentControl.Style>
-                            </ContentControl>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
-                </Button>
-
-                <!-- Theme switch button -->
-                <Button Grid.Column="7"
-                        Height="{adonisUi:Space 4}"
-                        Width="{adonisUi:Space 4}"
-                        Padding="{adonisUi:Space 1}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ChangeThemeCommand]}"
-                        ToolTip="{x:Static localization:Strings.SwitchTheme}">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}"
-                               BasedOn="{StaticResource {x:Static adonisUi:Styles.AccentButton}}">
-                            <Setter Property="ContentTemplate" Value="{StaticResource DarkThemeIconVariant}" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentTheme}" Value="Dark">
-                                    <Setter Property="ContentTemplate" Value="{StaticResource LightThemeIconVariant}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-
-                <!-- Info dialog button -->
-                <Button Grid.Column="9"
-                        Height="{adonisUi:Space 4}"
-                        Width="{adonisUi:Space 4}"
-                        Padding="{adonisUi:Space 1}"
-                        ContentTemplate="{StaticResource InfoIconVariant}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ShowInfoDialogCommand]}"
-                        ToolTip="{x:Static localization:Strings.About}"/>
-            </Grid>
-        </Grid>
-
         <!-- Application content -->
-        <ItemsControl Grid.Row="1" 
+        <ItemsControl Grid.Row="0" 
                       Focusable="False"
-                      Margin="{adonisUi:Space 1}"
+                      Margin="{adonisUi:Space 0.5,1}"
                       ItemsSource="{Binding Applications}"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
@@ -183,44 +43,26 @@
         </ItemsControl>
 
         <!-- Current installation -->
-        <Grid Grid.Row="2">
-            <Grid Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToVisibilityConverter}}"
-                  adonisExtensions:LayerExtension.Layer="2"
-                  Background="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <ContentControl Grid.Row="1"
+                        Content="{Binding CurrentInstallation}"
+                        Focusable="False"
+                        Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}"/>
 
-                <TextBlock Grid.Column="0" 
-                           Text="{x:Static localization:Strings.Ready}"
-                           Margin="{adonisUi:Space 1.5,0}"
-                           VerticalAlignment="Center"
-                           FontSize="14"
-                           DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.RefreshApplicationsCommand]}"
-                           Visibility="{Binding IsWorking, Converter={c:BoolToInverseVisibilityConverter}}"/>
-
-                <TextBlock Grid.Column="0" 
-                           Text="{x:Static localization:Strings.Loading}"
-                           Margin="{adonisUi:Space 1.5,0}"
-                           VerticalAlignment="Center"
-                           FontSize="14"
-                           DataContext="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.RefreshApplicationsCommand]}"
-                           Visibility="{Binding IsWorking, Converter={c:BoolToVisibilityConverter}}"/>
-
-                <Button Grid.Column="2"
-                        Content="{x:Static localization:Strings.Result}"
-                        Padding="{adonisUi:Space 3,1}"
-                        Visibility="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.MainWindowDialogModelCommands.ShowRecentInstallationResultCommand]}"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"/>
-            </Grid>
-
-            <Grid Visibility="{Binding CurrentInstallation, Converter={c:ValueNullToInverseVisibilityConverter}}">
-                <ContentControl Content="{Binding CurrentInstallation}"
-                                Focusable="False"/>
-            </Grid>
-        </Grid>
+        <!-- Show report button -->
+        <Button Grid.Row="1"
+                Content="{x:Static localization:Strings.Result}"
+                Padding="{adonisUi:Space 2,1}"
+                Command="{Binding ShowRecentInstallationResultCommand}"
+                Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
+                HorizontalAlignment="Right">
+            <Button.Visibility>
+                <MultiBinding Converter="{c:AllBoolToVisibilityConverter}">
+                    <Binding Path="CurrentInstallation"
+                             Converter="{c:ValueNullToBoolConverter}"/>
+                    <Binding Path="IsEnabled"
+                             RelativeSource="{RelativeSource Self}"/>
+                </MultiBinding>
+            </Button.Visibility>
+        </Button>
     </Grid>
 </UserControl>

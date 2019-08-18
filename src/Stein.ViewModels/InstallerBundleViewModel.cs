@@ -12,7 +12,7 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value, out _);
+            set => SetProperty(ref _name, value);
         }
 
         private DateTime _created;
@@ -20,7 +20,7 @@ namespace Stein.ViewModels
         public DateTime Created
         {
             get => _created;
-            set => SetProperty(ref _created, value, out _);
+            set => SetProperty(ref _created, value);
         }
         
         public ObservableCollection<InstallerViewModel> Installers { get; } = new ObservableCollection<InstallerViewModel>();

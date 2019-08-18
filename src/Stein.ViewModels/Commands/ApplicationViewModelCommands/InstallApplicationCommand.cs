@@ -1,13 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
 using Stein.Common.InstallService;
 using Stein.Localization;
 using Stein.Presentation;
 using Stein.ViewModels.Commands.MainWindowDialogModelCommands;
-using Stein.ViewModels.Extensions;
 using Stein.ViewModels.Services;
 using Stein.ViewModels.Types;
 
@@ -39,7 +38,16 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(ApplicationViewModel.Parent), nameof(ApplicationViewModel.SelectedInstallerBundle), nameof(ApplicationViewModel.IsUpdating))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(ApplicationViewModel.SelectedInstallerBundle))
+                || e.PropertyName.Equals(nameof(ApplicationViewModel.IsUpdating)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
         {
             if (!(viewModel.Parent is MainWindowDialogModel mainWindowDialogModel) || mainWindowDialogModel.CurrentInstallation != null)
@@ -85,17 +93,12 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowDialogModel.CurrentInstallation = null;
             }
 
-            Task refreshTask = null;
-            if (mainWindowDialogModel.TryGetCommand<MainWindowDialogModel, RefreshApplicationsCommand>(out var refreshCommand))
-                refreshTask = refreshCommand.ExecuteAsync(null);
+            mainWindowDialogModel.RefreshApplicationsCommand.Execute(null);
 
             if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success && r.State != InstallationResultState.Skipped))
                 _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult);
             else
                 _notificationService.ShowSuccess(Strings.OperationSuccessfull, () => _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult));
-
-            if (refreshTask != null)
-                await refreshTask;
         }
     }
 }

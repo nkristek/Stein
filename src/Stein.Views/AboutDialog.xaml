@@ -52,7 +52,7 @@
                 <TextBlock Grid.Column="4"
                            VerticalAlignment="Center"
                            FontSize="16">
-                <Hyperlink Command="{Binding Commands[Stein.ViewModels.Commands.AboutDialogModelCommands.OpenUriCommand]}">GitHub</Hyperlink>
+                <Hyperlink Command="{Binding OpenUriCommand}">GitHub</Hyperlink>
                 </TextBlock>
             </Grid>
 

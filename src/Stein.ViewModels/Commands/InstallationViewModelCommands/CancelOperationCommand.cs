@@ -1,4 +1,5 @@
-﻿using NKristek.Smaragd.Attributes;
+﻿using System;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.ViewModels.Types;
 
@@ -8,7 +9,15 @@ namespace Stein.ViewModels.Commands.InstallationViewModelCommands
         : ViewModelCommand<InstallationViewModel>
     {
         /// <inheritdoc />
-        [CanExecuteSource(nameof(InstallationViewModel.State))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(InstallationViewModel.State)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(InstallationViewModel viewModel, object parameter)
         {
             return viewModel.State != InstallationState.Cancelled 

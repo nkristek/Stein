@@ -1,6 +1,6 @@
-﻿using NKristek.Smaragd.Attributes;
+﻿using System;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
-using Stein.ViewModels.Extensions;
 
 namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
 {
@@ -8,7 +8,16 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         : ViewModelCommand<UpdateDialogModel>
     {
         /// <inheritdoc />
-        [CanExecuteSource(nameof(UpdateDialogModel.IsUpdateDownloading), nameof(UpdateDialogModel.IsUpdateCancelled))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(UpdateDialogModel.IsUpdateDownloading))
+                || e.PropertyName.Equals(nameof(UpdateDialogModel.IsUpdateCancelled)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
         {
             return viewModel.IsUpdateDownloading && !viewModel.IsUpdateCancelled;
@@ -17,8 +26,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         /// <inheritdoc />
         protected override void Execute(UpdateDialogModel viewModel, object parameter)
         {
-            if (viewModel.TryGetCommand<UpdateDialogModel, InstallUpdateCommand>(out var installCommand))
-                installCommand.Cancel();
+            (viewModel.InstallUpdateCommand as InstallUpdateCommand)?.Cancel();
         }
     }
 }

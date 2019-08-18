@@ -5,11 +5,13 @@ using Stein.Presentation;
 
 namespace Stein.Views.Services
 {
+    /// <inheritdoc />
     public class WpfThemeService
         : IThemeService
     {
         private Theme _currentTheme;
 
+        /// <inheritdoc />
         public Theme CurrentTheme
         {
             get => _currentTheme;
@@ -25,25 +27,28 @@ namespace Stein.Views.Services
             }
         }
 
+        /// <inheritdoc />
         public void SetTheme(Theme theme)
         {
             if (theme == CurrentTheme)
                 return;
 
-            switch (theme)
-            {
-                case Theme.Light:
-                    ResourceLocator.SetColorScheme(Application.Current.Resources, ResourceLocator.LightColorScheme);
-                    break;
-                case Theme.Dark:
-                    ResourceLocator.SetColorScheme(Application.Current.Resources, ResourceLocator.DarkColorScheme);
-                    break;
-                default: throw new NotSupportedException("This theme is not supported");
-            }
-            
+            ResourceLocator.SetColorScheme(Application.Current.Resources, GetColorSchemeUri(theme), GetColorSchemeUri(CurrentTheme));
             CurrentTheme = theme;
         }
 
+        private static Uri GetColorSchemeUri(Theme theme)
+        {
+            switch (theme)
+            {
+                case Theme.Light: return ResourceLocator.LightColorScheme;
+                case Theme.Dark: return ResourceLocator.DarkColorScheme;
+                case Theme.HotDog: return new Uri("pack://application:,,,/Stein.Views;component/Resources/HotDog.xaml", UriKind.Absolute);
+                default: throw new NotSupportedException("This theme is not supported");
+            }
+        }
+
+        /// <inheritdoc />
         public event ThemeChangedEventHandler ThemeChanged;
 
         /// <summary>

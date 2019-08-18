@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.Validation;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localization;
@@ -10,21 +13,12 @@ namespace Stein.ViewModels
     public sealed class ApplicationDialogModel
         : DialogModel
     {
-        public ApplicationDialogModel()
-        {
-            AddValidation(() => Name, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.NameEmpty));
-            AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out _), Strings.NaN));
-            AddValidation(() => KeepNewestInstallationLogsString, new PredicateValidation<string>(value => int.TryParse(value, out var parsedValue) && parsedValue >= 1, Strings.NumberShouldBeGreaterThanZero));
-            AddValidation(() => SelectedProvider, new PredicateValidation<InstallerFileBundleProviderViewModel>(value => value != null, Strings.NoProvider));
-            AddValidation(() => SelectedProvider, new PredicateValidation<InstallerFileBundleProviderViewModel>(value => value != null && value.IsValid, Strings.DialogInputNotValid));
-        }
-        
         private Guid _entityId;
         
         public Guid EntityId
         {
             get => _entityId;
-            set => SetProperty(ref _entityId, value, out _);
+            set => SetProperty(ref _entityId, value);
         }
 
         private string _name;
@@ -32,15 +26,24 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value, out _);
+            set
+            {
+                if (SetProperty(ref _name, value))
+                {
+                    var validationErrors = new List<string>();
+                    if (String.IsNullOrEmpty(value))
+                        validationErrors.Add(Strings.NameEmpty);
+                    SetErrors(validationErrors);
+                }
+            }
         }
-        
+
         private bool _enableSilentInstallation;
         
         public bool EnableSilentInstallation
         {
             get => _enableSilentInstallation;
-            set => SetProperty(ref _enableSilentInstallation, value, out _);
+            set => SetProperty(ref _enableSilentInstallation, value);
         }
 
         private bool _disableReboot;
@@ -48,7 +51,7 @@ namespace Stein.ViewModels
         public bool DisableReboot
         {
             get => _disableReboot;
-            set => SetProperty(ref _disableReboot, value, out _);
+            set => SetProperty(ref _disableReboot, value);
         }
 
         private bool _enableInstallationLogging;
@@ -56,7 +59,7 @@ namespace Stein.ViewModels
         public bool EnableInstallationLogging
         {
             get => _enableInstallationLogging;
-            set => SetProperty(ref _enableInstallationLogging, value, out _);
+            set => SetProperty(ref _enableInstallationLogging, value);
         }
 
         private bool _automaticallyDeleteInstallationLogs;
@@ -64,7 +67,7 @@ namespace Stein.ViewModels
         public bool AutomaticallyDeleteInstallationLogs
         {
             get => _automaticallyDeleteInstallationLogs;
-            set => SetProperty(ref _automaticallyDeleteInstallationLogs, value, out _);
+            set => SetProperty(ref _automaticallyDeleteInstallationLogs, value);
         }
 
         private string _keepNewestInstallationLogsString;
@@ -72,7 +75,18 @@ namespace Stein.ViewModels
         public string KeepNewestInstallationLogsString
         {
             get => _keepNewestInstallationLogsString;
-            set => SetProperty(ref _keepNewestInstallationLogsString, value, out _);
+            set
+            {
+                if (SetProperty(ref _keepNewestInstallationLogsString, value))
+                {
+                    var validationErrors = new List<string>();
+                    if (!int.TryParse(value, out var parsedValue))
+                        validationErrors.Add(Strings.NaN);
+                    else if (parsedValue < 1)
+                        validationErrors.Add(Strings.NumberShouldBeGreaterThanZero);
+                    SetErrors(validationErrors);
+                }
+            }
         }
         
         public int KeepNewestInstallationLogs
@@ -86,7 +100,7 @@ namespace Stein.ViewModels
         public bool FilterDuplicateInstallers
         {
             get => _filterDuplicateInstallers;
-            set => SetProperty(ref _filterDuplicateInstallers, value, out _);
+            set => SetProperty(ref _filterDuplicateInstallers, value);
         }
 
         public ObservableCollection<InstallerFileBundleProviderViewModel> AvailableProviders { get; } = new ObservableCollection<InstallerFileBundleProviderViewModel>();
@@ -101,16 +115,53 @@ namespace Stein.ViewModels
                 if (SetProperty(ref _selectedProvider, value, out var oldValue))
                 {
                     if (oldValue != null)
+                    {
+                        oldValue.PropertyChanging -= SelectedProviderOnPropertyChanging;
                         oldValue.PropertyChanged -= SelectedProviderOnPropertyChanged;
+                    }
                     if (value != null)
+                    {
+                        value.PropertyChanging += SelectedProviderOnPropertyChanging;
                         value.PropertyChanged += SelectedProviderOnPropertyChanged;
+                    }
+
+                    var validationErrors = new List<string>();
+                    if (value == null)
+                        validationErrors.Add(Strings.NoProvider);
+                    else if (!value.IsValid)
+                        validationErrors.Add(Strings.DialogInputNotValid);
+                    SetErrors(validationErrors);
                 }
             }
         }
 
+        private void SelectedProviderOnPropertyChanging(object sender, PropertyChangingEventArgs e)
+        {
+            NotifyPropertyChanging(nameof(SelectedProvider));
+        }
+
         private void SelectedProviderOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            RaisePropertyChanged(nameof(SelectedProvider));
+            NotifyPropertyChanged(nameof(SelectedProvider));
+        }
+
+        private IViewModelCommand<ApplicationDialogModel> _openLogFolderCommand;
+
+        [IsDirtyIgnored]
+        [IsReadOnlyIgnored]
+        public IViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand
+        {
+            get => _openLogFolderCommand;
+            set
+            {
+                if (SetProperty(ref _openLogFolderCommand, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.Context = null;
+                    if (value != null)
+                        value.Context = this;
+                }
+            }
         }
     }
 }

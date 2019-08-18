@@ -13,7 +13,7 @@ namespace Stein.ViewModels
         public string InstallerName
         {
             get => _installerName;
-            set => SetProperty(ref _installerName, value, out _);
+            set => SetProperty(ref _installerName, value);
         }
         
         private InstallationResultState _state;
@@ -23,7 +23,7 @@ namespace Stein.ViewModels
             get => _state;
             set
             {
-                if (!SetProperty(ref _state, value, out _))
+                if (!SetProperty(ref _state, value))
                     return;
 
                 SetLocalizedReason();
@@ -35,7 +35,7 @@ namespace Stein.ViewModels
         public bool IsExceptionVisible
         {
             get => _isExceptionVisible;
-            set => SetProperty(ref _isExceptionVisible, value, out _);
+            set => SetProperty(ref _isExceptionVisible, value);
         }
 
         private ExceptionViewModel _exception;
@@ -45,7 +45,7 @@ namespace Stein.ViewModels
             get => _exception;
             set
             {
-                if (!SetProperty(ref _exception, value, out _))
+                if (!SetProperty(ref _exception, value))
                     return;
 
                 SetLocalizedReason();

@@ -14,7 +14,7 @@ namespace Stein.ViewModels
         public ExceptionViewModel Exception
         {
             get => _exception;
-            set => SetProperty(ref _exception, value, out _);
+            set => SetProperty(ref _exception, value);
         }
     }
 }

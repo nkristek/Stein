@@ -5,9 +5,11 @@ using Stein.Presentation;
 
 namespace Stein.Views.Services
 {
+    /// <inheritdoc />
     public class WpfTaskbarService
         : IProgressBarService
     {
+        /// <inheritdoc />
         public void SetState(ProgressBarState state)
         {
             var window = Application.Current?.MainWindow;
@@ -35,7 +37,8 @@ namespace Stein.Views.Services
                     throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
-        
+
+        /// <inheritdoc />
         public void SetProgress(double progress)
         {
             var window = Application.Current?.MainWindow;

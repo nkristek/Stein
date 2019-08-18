@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Common.InstallService;
 using Stein.Common.IOService;
@@ -38,7 +38,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                     return;
                 _cancellationTokenSource?.Dispose();
                 _cancellationTokenSource = value;
-                RaiseCanExecuteChanged();
+                NotifyCanExecuteChanged();
             }
         }
 
@@ -50,10 +50,10 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                 return;
 
             CancellationTokenSource.Cancel();
-            RaisePropertyChanged(nameof(IsCancelled));
-            RaiseCanExecuteChanged();
-            if (Parent != null)
-                Parent.IsUpdateCancelled = true;
+            NotifyPropertyChanged(nameof(IsCancelled));
+            NotifyCanExecuteChanged();
+            if (Context != null)
+                Context.IsUpdateCancelled = true;
         }
         
         private double _downloadProgress;
@@ -61,7 +61,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         public double DownloadProgress
         {
             get => _downloadProgress;
-            set => SetProperty(ref _downloadProgress, value, out _);
+            set => SetProperty(ref _downloadProgress, value);
         }
 
         private void UpdateProgress()
@@ -79,7 +79,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             get => _bytesDownloaded;
             set
             {
-                if (SetProperty(ref _bytesDownloaded, value, out _))
+                if (SetProperty(ref _bytesDownloaded, value))
                     UpdateProgress();
             }
         }
@@ -91,13 +91,21 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             get => _bytesTotal;
             set
             {
-                if (SetProperty(ref _bytesTotal, value, out _))
+                if (SetProperty(ref _bytesTotal, value))
                     UpdateProgress();
             }
         }
-        
+
         /// <inheritdoc />
-        [CanExecuteSource(nameof(UpdateDialogModel.UpdateAssets))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(UpdateDialogModel.UpdateAssets)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
         {
             return !IsCancelled && viewModel.UpdateAssets.Any(ua => ua.FileName != null && ua.FileName.Contains(GetCurrentPlatform()) && ua.FileName.EndsWith(".msi"));
@@ -136,7 +144,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                 BytesDownloaded = 0;
                 viewModel.IsUpdateDownloading = false;
                 viewModel.IsUpdateCancelled = false;
-                RaiseCanExecuteChanged();
+                NotifyCanExecuteChanged();
             }
         }
 

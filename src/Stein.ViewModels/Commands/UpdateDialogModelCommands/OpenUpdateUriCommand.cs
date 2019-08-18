@@ -1,5 +1,5 @@
 ﻿using System;
-using NKristek.Smaragd.Attributes;
+using System.ComponentModel;
 using NKristek.Smaragd.Commands;
 using Stein.Presentation;
 
@@ -16,7 +16,15 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        [CanExecuteSource(nameof(UpdateDialogModel.UpdateUri))]
+        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null
+                || String.IsNullOrEmpty(e.PropertyName)
+                || e.PropertyName.Equals(nameof(UpdateDialogModel.UpdateUri)))
+                NotifyCanExecuteChanged();
+        }
+
+        /// <inheritdoc />
         protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
         {
             return viewModel.UpdateUri != null;

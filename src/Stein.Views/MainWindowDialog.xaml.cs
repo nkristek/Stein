@@ -2,9 +2,6 @@
 
 namespace Stein.Views
 {
-    /// <summary>
-    /// Interaction logic for MainWindowDialog.xaml
-    /// </summary>
     public partial class MainWindowDialog : UserControl
     {
         public MainWindowDialog()

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localization;
 
@@ -16,7 +17,7 @@ namespace Stein.ViewModels
         public string LocalizedReason
         {
             get => _localizedReason;
-            set => SetProperty(ref _localizedReason, value, out _);
+            set => SetProperty(ref _localizedReason, value);
         }
 
         private string _typeName;
@@ -24,7 +25,7 @@ namespace Stein.ViewModels
         public string TypeName
         {
             get => _typeName;
-            set => SetProperty(ref _typeName, value, out _);
+            set => SetProperty(ref _typeName, value);
         }
 
         private string _message;
@@ -32,7 +33,7 @@ namespace Stein.ViewModels
         public string Message
         {
             get => _message;
-            set => SetProperty(ref _message, value, out _);
+            set => SetProperty(ref _message, value);
         }
 
         private string _stackTrace;
@@ -40,7 +41,7 @@ namespace Stein.ViewModels
         public string StackTrace
         {
             get => _stackTrace;
-            set => SetProperty(ref _stackTrace, value, out _);
+            set => SetProperty(ref _stackTrace, value);
         }
 
         [PropertySource(nameof(TypeName), nameof(Message), nameof(StackTrace), nameof(InnerExceptions))]
@@ -68,5 +69,24 @@ namespace Stein.ViewModels
         }
         
         public ObservableCollection<ExceptionViewModel> InnerExceptions { get; } = new ObservableCollection<ExceptionViewModel>();
+
+        private IViewModelCommand<ExceptionViewModel> _copyExceptionDetailsToClipboardCommand;
+
+        [IsDirtyIgnored]
+        [IsReadOnlyIgnored]
+        public IViewModelCommand<ExceptionViewModel> CopyExceptionDetailsToClipboardCommand
+        {
+            get => _copyExceptionDetailsToClipboardCommand;
+            set
+            {
+                if (SetProperty(ref _copyExceptionDetailsToClipboardCommand, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.Context = null;
+                    if (value != null)
+                        value.Context = this;
+                }
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
              xmlns:adonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
              xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
              xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
@@ -18,7 +19,9 @@
               SnapsToDevicePixels="True"
               IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}"
               HorizontalAlignment="Stretch"
-              VerticalAlignment="Stretch">
+              VerticalAlignment="Stretch"
+              adonisExtensions:GroupBoxExtension.HeaderBackground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
+              adonisExtensions:CornerRadiusExtension.CornerRadius="4">
         <GroupBox.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -30,6 +33,7 @@
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
@@ -40,11 +44,11 @@
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         Content="{Binding}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.OpenProviderLinkCommand]}"
+                        Command="{Binding OpenProviderLinkCommand}"
                         ToolTip="{Binding ProviderLink}">
                     <Button.Style>
                         <Style TargetType="{x:Type Button}"
-                               BasedOn="{StaticResource {x:Static adonisUi:Styles.ToolbarButton}}">
+                               BasedOn="{StaticResource {x:Static adonisUi:Styles.AccentButton}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ProviderType}" 
                                      Value="Disk">
@@ -63,6 +67,7 @@
 
                 <TextBlock Grid.Column="2"
                            Margin="{adonisUi:Space 0.5,0}"
+                           Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                            FontWeight="Bold"
                            FontSize="14"
                            VerticalAlignment="Center"
@@ -73,30 +78,30 @@
                                 VerticalContentAlignment="Center"
                                 Focusable="False"
                                 ContentTemplate="{DynamicResource {x:Static adonisUi:Templates.LoadingCircle}}"
-                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.ForegroundBrush}}"
+                                Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                                 Width="{adonisUi:Space 2}"
                                 Height="{adonisUi:Space 2}"
                                 Visibility="{Binding IsUpdating, Converter={c:BoolToVisibilityConverter}}"/>
 
                 <Button Grid.Column="7"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"
                         Padding="{adonisUi:Space 0.5}"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         ContentTemplate="{DynamicResource EditIconVariant}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.EditApplicationCommand]}"/>
+                        Command="{Binding EditApplicationCommand}"/>
 
-                <Button Grid.Column="8"
-                        Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                <Button Grid.Column="9"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
                         Width="{adonisUi:Space 3}"
                         Height="{adonisUi:Space 3}"
                         Padding="{adonisUi:Space 0.5}"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         ContentTemplate="{DynamicResource DeleteIconVariant}"
-                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.DeleteApplicationCommand]}"/>
+                        Command="{Binding DeleteApplicationCommand}"/>
             </Grid>
         </GroupBox.Header>
 
@@ -148,15 +153,15 @@
                                         Content="{x:Static localization:Strings.Install}"
                                         ToolTip="{x:Static localization:Strings.InstallDescription}"
                                         Padding="{adonisUi:Space 2,0.5}"
-                                        Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}">
+                                        Command="{Binding InstallApplicationCommand}">
                 <adonisControls:SplitButton.SplitMenu>
                     <ContextMenu>
                         <MenuItem Header="{x:Static localization:Strings.Install}"
-                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.InstallApplicationCommand]}"/>
+                                  Command="{Binding InstallApplicationCommand}"/>
                         <MenuItem Header="{x:Static localization:Strings.Uninstall}"
-                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.UninstallApplicationCommand]}"/>
+                                  Command="{Binding UninstallApplicationCommand}"/>
                         <MenuItem Header="{x:Static localization:Strings.Custom}" 
-                                  Command="{Binding Commands[Stein.ViewModels.Commands.ApplicationViewModelCommands.CustomOperationApplicationCommand]}"/>
+                                  Command="{Binding CustomOperationApplicationCommand}"/>
                     </ContextMenu>
                 </adonisControls:SplitButton.SplitMenu>
             </adonisControls:SplitButton>

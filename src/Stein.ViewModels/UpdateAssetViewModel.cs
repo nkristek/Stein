@@ -11,7 +11,7 @@ namespace Stein.ViewModels
         public string FileName
         {
             get => _fileName;
-            set => SetProperty(ref _fileName, value, out _);
+            set => SetProperty(ref _fileName, value);
         }
 
         private Uri _downloadUri;
@@ -19,7 +19,7 @@ namespace Stein.ViewModels
         public Uri DownloadUri
         {
             get => _downloadUri;
-            set => SetProperty(ref _downloadUri, value, out _);
+            set => SetProperty(ref _downloadUri, value);
         }
     }
 }

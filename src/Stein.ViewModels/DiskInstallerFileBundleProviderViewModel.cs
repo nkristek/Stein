@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using NKristek.Smaragd.Attributes;
+using NKristek.Smaragd.Commands;
 using NKristek.Smaragd.Validation;
 using Stein.Common.Configuration.v2;
 using Stein.Localization;
@@ -10,12 +12,6 @@ namespace Stein.ViewModels
     public sealed class DiskInstallerFileBundleProviderViewModel
         : InstallerFileBundleProviderViewModel
     {
-        public DiskInstallerFileBundleProviderViewModel()
-        {
-            AddValidation(() => Path, new PredicateValidation<string>(value => !String.IsNullOrEmpty(value), Strings.PathEmpty));
-            AddValidation(() => Path, new PredicateValidation<string>(Directory.Exists, Strings.PathDoesNotExist));
-        }
-
         /// <inheritdoc />
         public override string ProviderType => "Disk";
         
@@ -44,7 +40,37 @@ namespace Stein.ViewModels
         public string Path
         {
             get => _path;
-            set => SetProperty(ref _path, value, out _);
+            set
+            {
+                if (SetProperty(ref _path, value))
+                {
+                    var validationErrors = new List<string>();
+                    if (String.IsNullOrEmpty(value))
+                        validationErrors.Add(Strings.PathEmpty);
+                    else if (!Directory.Exists(value))
+                        validationErrors.Add(Strings.PathDoesNotExist);
+                    SetErrors(validationErrors);
+                }
+            }
+        }
+
+        private IViewModelCommand<DiskInstallerFileBundleProviderViewModel> _selectFolderCommand;
+
+        [IsDirtyIgnored]
+        [IsReadOnlyIgnored]
+        public IViewModelCommand<DiskInstallerFileBundleProviderViewModel> SelectFolderCommand
+        {
+            get => _selectFolderCommand;
+            set
+            {
+                if (SetProperty(ref _selectFolderCommand, value, out var oldValue))
+                {
+                    if (oldValue != null)
+                        oldValue.Context = null;
+                    if (value != null)
+                        value.Context = this;
+                }
+            }
         }
     }
 }
