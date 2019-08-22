@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using log4net;
+using Microsoft.Win32;
 using Ninject;
 using Ninject.Parameters;
 using Ninject.Syntax;
@@ -38,7 +39,7 @@ namespace Stein
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
-        
+
         protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -63,11 +64,11 @@ namespace Stein
             catch (Exception exception)
             {
                 Log.Error("Loading configuration failed, will create a new one", exception);
+                configurationService.Configuration.SelectedTheme = GetSystemColorScheme();
                 isFirstLaunch = true;
             }
 
-            var themeService = kernel.Get<IThemeService>();
-            themeService.SetTheme(configurationService.Configuration.SelectedTheme);
+            kernel.Get<IThemeService>().SetTheme(configurationService.Configuration.SelectedTheme);
             
             var mainDialogModel = _viewModelService.CreateViewModel<MainWindowDialogModel>();
             _dialogService.Show(mainDialogModel);
@@ -97,6 +98,18 @@ namespace Stein
             {
                 Log.Error("Checking for update failed.", exception);
             }
+        }
+
+        public static Theme GetSystemColorScheme()
+        {
+            try
+            {
+                var appsUseLightTheme = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", "AppsUseLightTheme", "1");
+                if (appsUseLightTheme != null && appsUseLightTheme.ToString() == "0")
+                    return Theme.Dark;
+            }
+            catch { }
+            return Theme.Light;
         }
 
         private async Task CheckForUpdate(IUpdateService updateService, INotificationService notificationService, MainWindowDialogModel mainDialogModel)
