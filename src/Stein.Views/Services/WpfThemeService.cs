@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using AdonisUI;
 using Stein.Presentation;
@@ -23,7 +23,7 @@ namespace Stein.Views.Services
                 var oldValue = _currentTheme;
                 _currentTheme = value;
                 
-                RaiseThemeChanged(oldValue, value);
+                NotifyThemeChanged(oldValue, value);
             }
         }
 
@@ -52,9 +52,9 @@ namespace Stein.Views.Services
         public event ThemeChangedEventHandler ThemeChanged;
 
         /// <summary>
-        /// Raises an event on the <see cref="ThemeChangedEventHandler"/>
+        /// Raises an event on the <see cref="ThemeChangedEventHandler"/> to indicate that the <see cref="CurrentTheme"/> changed.
         /// </summary>
-        protected void RaiseThemeChanged(Theme oldTheme, Theme newTheme)
+        protected virtual void NotifyThemeChanged(Theme oldTheme, Theme newTheme)
         {
             ThemeChanged?.Invoke(this, new ThemeChangedEventArgs(oldTheme, newTheme));
         }
