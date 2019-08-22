@@ -10,11 +10,9 @@ It was built for an environment with regular builds of an application.
 
 **Please note:** This application needs administrator privileges to operate on installers without UI.
 
-![screenshot_light](images/Screenshot.PNG)
-
-Support for dark mode
-
-![screenshot_dark](images/Screenshot_dark.PNG)
+Light theme | Dark theme
+:----------:|:----------:
+![](images/Screenshot.PNG) | ![](images/Screenshot_dark.PNG)
 
 ## Available options
 
