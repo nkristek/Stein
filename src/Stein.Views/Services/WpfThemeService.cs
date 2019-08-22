@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using AdonisUI;
 using Stein.Presentation;
@@ -33,11 +33,11 @@ namespace Stein.Views.Services
             if (theme == CurrentTheme)
                 return;
 
-            ResourceLocator.SetColorScheme(Application.Current.Resources, GetColorSchemeUri(theme), GetColorSchemeUri(CurrentTheme));
+            ResourceLocator.SetColorScheme(Application.Current.Resources, GetColorScheme(theme), GetColorScheme(CurrentTheme));
             CurrentTheme = theme;
         }
 
-        private static Uri GetColorSchemeUri(Theme theme)
+        private static Uri GetColorScheme(Theme theme)
         {
             switch (theme)
             {
