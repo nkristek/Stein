@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using NKristek.Smaragd.Validation;
 using NKristek.Smaragd.ViewModels;
 using Stein.Localization;
 
@@ -13,6 +12,34 @@ namespace Stein.ViewModels
     public sealed class ApplicationDialogModel
         : DialogModel
     {
+        public ApplicationDialogModel()
+        {
+            Validate();
+            PropertyChanged += ApplicationDialogModel_PropertyChanged;
+        }
+
+        private void Validate()
+        {
+            ValidateName();
+            ValidateKeepNewestInstallationLogsString();
+            ValidateSelectedProvider();
+        }
+
+        private void ApplicationDialogModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e == null || String.IsNullOrEmpty(e.PropertyName))
+                Validate();
+
+            if (e.PropertyName == nameof(Name))
+                ValidateName();
+
+            if (e.PropertyName == nameof(KeepNewestInstallationLogsString) || e.PropertyName == nameof(AutomaticallyDeleteInstallationLogs))
+                ValidateKeepNewestInstallationLogsString();
+
+            if (e.PropertyName == nameof(SelectedProvider))
+                ValidateSelectedProvider();
+        }
+
         private Guid _entityId;
         
         public Guid EntityId
@@ -26,16 +53,15 @@ namespace Stein.ViewModels
         public string Name
         {
             get => _name;
-            set
-            {
-                if (SetProperty(ref _name, value))
-                {
-                    var validationErrors = new List<string>();
-                    if (String.IsNullOrEmpty(value))
-                        validationErrors.Add(Strings.NameEmpty);
-                    SetErrors(validationErrors);
-                }
-            }
+            set => SetProperty(ref _name, value);
+        }
+
+        private void ValidateName()
+        {
+            var validationErrors = new List<string>();
+            if (String.IsNullOrEmpty(Name))
+                validationErrors.Add(Strings.NameEmpty);
+            SetErrors(validationErrors, nameof(Name));
         }
 
         private bool _enableSilentInstallation;
@@ -75,20 +101,26 @@ namespace Stein.ViewModels
         public string KeepNewestInstallationLogsString
         {
             get => _keepNewestInstallationLogsString;
-            set
-            {
-                if (SetProperty(ref _keepNewestInstallationLogsString, value))
-                {
-                    var validationErrors = new List<string>();
-                    if (!int.TryParse(value, out var parsedValue))
-                        validationErrors.Add(Strings.NaN);
-                    else if (parsedValue < 1)
-                        validationErrors.Add(Strings.NumberShouldBeGreaterThanZero);
-                    SetErrors(validationErrors);
-                }
-            }
+            set => SetProperty(ref _keepNewestInstallationLogsString, value);
         }
-        
+
+        private void ValidateKeepNewestInstallationLogsString()
+        {
+            if (!AutomaticallyDeleteInstallationLogs)
+            {
+                SetErrors(null, nameof(KeepNewestInstallationLogsString));
+                return;
+            }
+
+            var validationErrors = new List<string>();
+            if (!int.TryParse(KeepNewestInstallationLogsString, out var parsedValue))
+                validationErrors.Add(Strings.NaN);
+            else if (parsedValue < 1)
+                validationErrors.Add(Strings.NumberShouldBeGreaterThanZero);
+            SetErrors(validationErrors, nameof(KeepNewestInstallationLogsString));
+        }
+
+        [PropertySource(nameof(KeepNewestInstallationLogsString))]
         public int KeepNewestInstallationLogs
         {
             get => int.TryParse(KeepNewestInstallationLogsString, out var value) ? value : 0;
@@ -124,15 +156,18 @@ namespace Stein.ViewModels
                         value.PropertyChanging += SelectedProviderOnPropertyChanging;
                         value.PropertyChanged += SelectedProviderOnPropertyChanged;
                     }
-
-                    var validationErrors = new List<string>();
-                    if (value == null)
-                        validationErrors.Add(Strings.NoProvider);
-                    else if (!value.IsValid)
-                        validationErrors.Add(Strings.DialogInputNotValid);
-                    SetErrors(validationErrors);
                 }
             }
+        }
+
+        private void ValidateSelectedProvider()
+        {
+            var validationErrors = new List<string>();
+            if (SelectedProvider == null)
+                validationErrors.Add(Strings.NoProvider);
+            else if (!SelectedProvider.IsValid)
+                validationErrors.Add(Strings.DialogInputNotValid);
+            SetErrors(validationErrors, nameof(SelectedProvider));
         }
 
         private void SelectedProviderOnPropertyChanging(object sender, PropertyChangingEventArgs e)

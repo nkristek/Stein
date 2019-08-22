@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using NKristek.Smaragd.Attributes;
 using NKristek.Smaragd.Commands;
-using NKristek.Smaragd.Validation;
 using Stein.Common.Configuration.v2;
 using Stein.Localization;
 
@@ -12,6 +11,26 @@ namespace Stein.ViewModels
     public sealed class DiskInstallerFileBundleProviderViewModel
         : InstallerFileBundleProviderViewModel
     {
+        public DiskInstallerFileBundleProviderViewModel()
+        {
+            Validate();
+            PropertyChanged += DiskInstallerFileBundleProviderViewModel_PropertyChanged;
+        }
+
+        private void Validate()
+        {
+            ValidatePath();
+        }
+
+        private void DiskInstallerFileBundleProviderViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e == null || String.IsNullOrEmpty(e.PropertyName))
+                Validate();
+
+            if (e.PropertyName == nameof(Path))
+                ValidatePath();
+        }
+
         /// <inheritdoc />
         public override string ProviderType => "Disk";
         
@@ -43,15 +62,18 @@ namespace Stein.ViewModels
             set
             {
                 if (SetProperty(ref _path, value))
-                {
-                    var validationErrors = new List<string>();
-                    if (String.IsNullOrEmpty(value))
-                        validationErrors.Add(Strings.PathEmpty);
-                    else if (!Directory.Exists(value))
-                        validationErrors.Add(Strings.PathDoesNotExist);
-                    SetErrors(validationErrors);
-                }
+                    ValidatePath();
             }
+        }
+
+        private void ValidatePath()
+        {
+            var validationErrors = new List<string>();
+            if (String.IsNullOrEmpty(Path))
+                validationErrors.Add(Strings.PathEmpty);
+            else if (!Directory.Exists(Path))
+                validationErrors.Add(Strings.PathDoesNotExist);
+            SetErrors(validationErrors, nameof(Path));
         }
 
         private IViewModelCommand<DiskInstallerFileBundleProviderViewModel> _selectFolderCommand;

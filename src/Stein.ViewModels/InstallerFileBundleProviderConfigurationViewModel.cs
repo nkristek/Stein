@@ -4,7 +4,7 @@ using Stein.Common.Configuration.v2;
 namespace Stein.ViewModels
 {
     public abstract class InstallerFileBundleProviderViewModel
-        : ValidatingViewModel
+        : ViewModel
     {
         /// <summary>
         /// Type of the provider.

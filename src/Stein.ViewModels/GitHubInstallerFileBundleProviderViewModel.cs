@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NKristek.Smaragd.Validation;
 using Stein.Common.Configuration.v2;
 using Stein.Localization;
 using Stein.ViewModels.Types;
@@ -10,6 +9,25 @@ namespace Stein.ViewModels
     public sealed class GitHubInstallerFileBundleProviderViewModel
         : InstallerFileBundleProviderViewModel
     {
+        public GitHubInstallerFileBundleProviderViewModel()
+        {
+            Validate();
+            PropertyChanged += GitHubInstallerFileBundleProviderViewModel_PropertyChanged;
+        }
+        private void Validate()
+        {
+            ValidateRepository();
+        }
+
+        private void GitHubInstallerFileBundleProviderViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e == null || String.IsNullOrEmpty(e.PropertyName))
+                Validate();
+
+            if (e.PropertyName == nameof(Repository))
+                ValidateRepository();
+        }
+
         /// <inheritdoc />
         public override string ProviderType => "GitHub";
 
@@ -41,15 +59,18 @@ namespace Stein.ViewModels
             set
             {
                 if (SetProperty(ref _repository, value))
-                {
-                    var validationErrors = new List<string>();
-                    if (String.IsNullOrEmpty(value))
-                        validationErrors.Add(Strings.RepositoryEmpty);
-                    else if (!new GitHubRepositoryPathValidation().Validate(value))
-                        validationErrors.Add(Strings.RepositoryPathInvalid);
-                    SetErrors(validationErrors);
-                }
+                    ValidateRepository();
             }
+        }
+
+        private void ValidateRepository()
+        {
+            var validationErrors = new List<string>();
+            if (String.IsNullOrEmpty(Repository))
+                validationErrors.Add(Strings.RepositoryEmpty);
+            else if (!new GitHubRepositoryPathValidation().Validate(Repository))
+                validationErrors.Add(Strings.RepositoryPathInvalid);
+            SetErrors(validationErrors, nameof(Repository));
         }
     }
 }
