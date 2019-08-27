@@ -1,7 +1,6 @@
 # Stein - Silent Temp Installer
 
-[![Build Status](https://dev.azure.com/nkristek/Stein/_apis/build/status/nkristek.Stein?branchName=master)](https://dev.azure.com/nkristek/Stein/_build/latest?definitionId=1&branchName=master)
-[![Code coverage](https://img.shields.io/azure-devops/coverage/nkristek/Stein/1.svg)](https://dev.azure.com/nkristek/Stein/_build/latest?definitionId=1&branchName=master)
+[![CI Status](https://github.com/nkristek/Stein/workflows/CI/badge.svg)](https://github.com/nkristek/Stein/actions)
 ![.NET Framework version: >= 4.7.2](https://img.shields.io/badge/.NET%20Framework-%3E%3D%204.7.2-green.svg)
 [![GitHub license](https://img.shields.io/github/license/nkristek/Stein.svg)](https://github.com/nkristek/Stein/blob/master/LICENSE)
 
