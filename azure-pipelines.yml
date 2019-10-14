@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 pool:
-  vmImage: 'VS2017-Win2016'
+  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
@@ -20,10 +20,10 @@ strategy:
       buildConfiguration: 'Release'
 
 steps:
-- task: DotNetCoreInstaller@0
+- task: UseDotNet@2
   displayName: 'Install .NET Core 3.0'
   inputs:
-    version: '3.0.100'
+    version: 3.0.x
 
 - task: NuGetToolInstaller@1
   displayName: 'Install NuGet'
