@@ -6,6 +6,6 @@
 
         void SetTheme(Theme theme);
 
-        event ThemeChangedEventHandler ThemeChanged;
+        event ThemeChangedEventHandler? ThemeChanged;
     }
 }
