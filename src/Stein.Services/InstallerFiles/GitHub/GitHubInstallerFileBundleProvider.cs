@@ -81,9 +81,10 @@ namespace Stein.Services.InstallerFiles.GitHub
         }
 
         /// <inheritdoc />
-        protected override void DisposeManagedResources()
+        protected override void Dispose(bool managed = true)
         {
-            _httpClient.Dispose();
+            if (managed)
+                _httpClient.Dispose();
         }
     }
 }

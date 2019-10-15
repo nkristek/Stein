@@ -40,9 +40,10 @@ namespace Stein.Services.MsiService
         }
 
         /// <inheritdoc />
-        protected override void DisposeManagedResources()
+        protected override void Dispose(bool managed = true)
         {
-            _database.Dispose();
+            if (managed)
+                _database.Dispose();
         }
     }
 }

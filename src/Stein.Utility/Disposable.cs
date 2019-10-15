@@ -1,45 +1,53 @@
 ﻿using System;
+using System.Threading;
 
 namespace Stein.Utility
 {
+    /// <inheritdoc />
     /// <summary>
-    /// <see cref="IDisposable"/> implementation which provides an easier way to implement the IDisposable interface
+    /// A class which provides an easier way to implement the <see cref="IDisposable"/> interface.
     /// </summary>
     public abstract class Disposable
         : IDisposable
     {
-        /// <summary>
-        /// Override to dispose managed resources.
-        /// A managed resource is another managed type, which implements <see cref="IDisposable"/>.
-        /// </summary>
-        protected virtual void DisposeManagedResources() { }
+        private const int Undisposed = 0, Disposed = 1;
+
+        private volatile int _disposeState;
 
         /// <summary>
-        /// Override to dispose native resources.
-        /// Native resources are anything outside the managed world such as native Windows handles etc.
+        /// If this disposable instance is already disposed.
         /// </summary>
-        protected virtual void DisposeNativeResources() { }
+        protected bool IsDisposed => _disposeState != Undisposed;
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        
+        /// <inheritdoc />
         ~Disposable()
         {
             Dispose(false);
         }
 
-        /// <summary>
-        /// Disposes native resources and optionally managed resources
-        /// </summary>
-        /// <param name="managed">True to dispose managed resources</param>
-        private void Dispose(bool managed)
+        /// <inheritdoc />
+        public void Dispose()
         {
-            DisposeNativeResources();
-            if (managed)
-                DisposeManagedResources();
+            if (Interlocked.Exchange(ref _disposeState, Disposed) != Undisposed)
+                return;
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes resources.
+        /// </summary>
+        /// <param name="managed">If managed resources should be disposed. A managed resource is another managed type, which implements <see cref="IDisposable"/>.</param>
+        protected abstract void Dispose(bool managed = true);
+
+        /// <summary>
+        /// Throw an <see cref="ObjectDisposedException"/> if this disposable instance is already disposed.
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(GetType()?.Name ?? nameof(IDisposable));
         }
     }
 }

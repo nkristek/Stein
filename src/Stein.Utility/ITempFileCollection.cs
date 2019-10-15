@@ -19,6 +19,6 @@ namespace Stein.Utility
         /// </summary>
         /// <param name="fileExtension">Optional file extension of the temporary file name to create.</param>
         /// <returns>A unique file name in the folder.</returns>
-        string CreateUniqueFileName(string fileExtension = null);
+        string CreateUniqueFileName(string? fileExtension = null);
     }
 }

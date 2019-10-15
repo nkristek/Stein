@@ -15,5 +15,9 @@
   <ItemGroup>
     <PackageReference Include="NKristek.Smaragd" Version="5.2.0" />
     <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Nullable" Version="1.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

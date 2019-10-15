@@ -12,11 +12,14 @@ namespace Stein.Utility
         /// </summary>
         /// <param name="source">Source <see cref="Stream"/>.</param>
         /// <param name="destination">Destination <see cref="Stream"/>.</param>
-        /// <param name="bufferSize">Size of the buffer to use.</param>
-        /// <param name="progress">Optional progress reporter.</param>
+        /// <param name="progress">Progress reporter.</param>
         /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to cancel the operation.</param>
+        /// <param name="bufferSize">Size of the buffer to use.</param>
         /// <returns>Asynchronous <see cref="Task"/> which copies the data.</returns>
-        public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize = 81920, IProgress<long> progress = null, CancellationToken cancellationToken = default)
+        /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="destination"/> or <paramref name="progress"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="source"/> can't read or <paramref name="destination"/> can't write.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
+        public static async Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, CancellationToken cancellationToken = default, int bufferSize = 81920)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -26,13 +29,14 @@ namespace Stein.Utility
                 throw new ArgumentNullException(nameof(destination));
             if (!destination.CanWrite)
                 throw new ArgumentException("Has to be writable", nameof(destination));
+            if (progress == null)
+                throw new ArgumentNullException(nameof(progress));
             if (bufferSize < 0)
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
             var buffer = new byte[bufferSize];
-            long totalBytesRead = 0;
+            var totalBytesRead = 0L;
             int bytesRead;
-            cancellationToken.ThrowIfCancellationRequested();
             while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
             {
                 cancellationToken.ThrowIfCancellationRequested();

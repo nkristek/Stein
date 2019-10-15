@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 
 namespace Stein.Utility
@@ -7,43 +6,51 @@ namespace Stein.Utility
     public static class StringExtensions
     {
         /// <summary>
-        /// Tests if the given <see cref="string"/> contains characters which are invalid for paths
+        /// Determines if the <paramref name="value"/> contains at least one character contained in <paramref name="chars"/>.
         /// </summary>
-        /// <param name="path">A path</param>
-        /// <returns>True if the given string contains characters which are invalid for paths</returns>
-        public static bool ContainsInvalidPathChars(this string path)
+        /// <param name="value">The <see cref="string"/> to check if it contains any character contained in <paramref name="chars"/>.</param>
+        /// <param name="chars">The characters to check for.</param>
+        /// <returns>If the <paramref name="value"/> contains at least one character contained in <paramref name="chars"/>.</returns>
+        public static bool Contains(this string? value, params char[] chars)
         {
-            return String.Concat(path.Split(Path.GetInvalidPathChars())).Count() != path.Count();
+            if (String.IsNullOrEmpty(value))
+                return false;
+            if (chars == null)
+                return false;
+            return value!.Split(chars).Count() > 1;
         }
 
         /// <summary>
-        /// Replaces all characters in the given <see cref="string"/> which are invalid for paths
+        /// Removes all occurences of characters contained in <paramref name="chars"/>.
         /// </summary>
-        /// <param name="path">A path</param>
-        /// <param name="replacement">Replacement character</param>
-        public static string ReplaceInvalidPathChars(this string path, char replacement)
+        /// <param name="value">The string of which the characters should be removed.</param>
+        /// <param name="chars">The characters that should be removed.</param>
+        /// <returns><paramref name="value"/> without any character contained in <paramref name="chars"/>.</returns>
+        [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("value")]
+        public static string? Remove(this string? value, params char[] chars)
         {
-            return Path.GetInvalidPathChars().Aggregate(path, (current, invalidChar) => current.Replace(invalidChar, replacement));
+            if (String.IsNullOrEmpty(value))
+                return value;
+            if (chars == null)
+                return value;
+            return String.Concat(value!.Split(chars));
         }
 
         /// <summary>
-        /// Tests if the given <see cref="string"/> contains characters which are invalid for file names
+        /// Removes all occurences of characters contained in <paramref name="charsToReplace"/> with the given <paramref name="replacement"/>.
         /// </summary>
-        /// <param name="filename">A file name</param>
-        /// <returns>True if the given string contains characters which are invalid for file names</returns>
-        public static bool ContainsInvalidFileNameChars(this string filename)
+        /// <param name="value">The string of which the characters should be replaced.</param>
+        /// <param name="replacement">A <see langword="string"/> which will be used as a replacement for each occurence of a character contained in <paramref name="charsToReplace"/>.</param>
+        /// <param name="charsToReplace">The characters which should be replaced.</param>
+        /// <returns><paramref name="value"/> where all characters contained in <paramref name="charsToReplace"/> are replaced by the given <paramref name="replacement"/>.</returns>
+        [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("value")]
+        public static string? Replace(this string? value, string? replacement, params char[] charsToReplace)
         {
-            return String.Concat(filename.Split(Path.GetInvalidFileNameChars())).Count() != filename.Count();
-        }
-
-        /// <summary>
-        /// Replaces all characters in the given <see cref="string"/> which are invalid for file names
-        /// </summary>
-        /// <param name="filename">A file name</param>
-        /// <param name="replacement">Replacement character</param>
-        public static string ReplaceInvalidFileNameChars(this string filename, char replacement)
-        {
-            return Path.GetInvalidFileNameChars().Aggregate(filename, (current, invalidChar) => current.Replace(invalidChar, replacement));
+            if (String.IsNullOrEmpty(value))
+                return value;
+            if (charsToReplace == null)
+                return value;
+            return String.Join(replacement, value!.Split(charsToReplace));
         }
     }
 }

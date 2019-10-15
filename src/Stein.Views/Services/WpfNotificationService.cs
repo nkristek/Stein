@@ -48,9 +48,10 @@ namespace Stein.Views.Services
         }
 
         /// <inheritdoc />
-        protected override void DisposeManagedResources()
+        protected override void Dispose(bool managed = true)
         {
-            _notifier?.Dispose();
+            if (managed)
+                _notifier?.Dispose();
         }
 
         /// <inheritdoc />

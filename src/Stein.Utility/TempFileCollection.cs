@@ -32,7 +32,7 @@ namespace Stein.Utility
         }
 
         /// <inheritdoc />
-        public string CreateUniqueFileName(string fileExtension = null)
+        public string CreateUniqueFileName(string? fileExtension = null)
         {
             string fileName;
             do
@@ -47,7 +47,7 @@ namespace Stein.Utility
         }
 
         /// <inheritdoc />
-        protected override void DisposeNativeResources()
+        protected override void Dispose(bool managed = true)
         {
             foreach (var fileName in _tempFileNames)
             {
