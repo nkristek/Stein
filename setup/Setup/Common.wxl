@@ -11,7 +11,7 @@
   <String Id="Keywords">msi,dotnet,wpf,mvvm,csharp</String>
   <String Id="Comments">This application needs administrator privileges to operate on installers without UI.</String>
   <String Id="ProjectUrl">https://github.com/nkristek/Stein</String>
-  <String Id="ReleaseUrl">https://github.com/nkristek/Stein/releases/tag/v2.1.1</String>
+  <String Id="ReleaseUrl">https://github.com/nkristek/Stein/releases/tag/v2.2</String>
 
   <String Id="DowngradeErrorMessage">A newer version of [ProductName] is already installed.</String>
 
