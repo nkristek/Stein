@@ -8,7 +8,7 @@
              xmlns:localizations="clr-namespace:Stein.Localization;assembly=Stein.Localization"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:ExceptionViewModel, IsDesignTimeCreatable=True}">
-    <Grid>
+    <Grid Margin="{adonisUi:Space 1}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="{adonisUi:Space 1}"/>

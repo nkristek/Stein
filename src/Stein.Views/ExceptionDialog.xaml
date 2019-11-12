@@ -18,12 +18,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                <ColumnDefinition Width="{adonisUi:Space 1}"/>
             </Grid.ColumnDefinitions>
 
             <Button x:Name="OkButton" 
                     Grid.Column="1" 
                     Content="{x:Static localization:Strings.Ok}"
-                    Padding="{adonisUi:Space 3,0.5}"
+                    Margin="{adonisUi:Space 0,1}"
+                    Padding="{adonisUi:Space 2,0.5}"
                     IsDefault="True"
                     Click="OnDialogOkButtonClick"
                     IsEnabled="{Binding IsValid}"/>
