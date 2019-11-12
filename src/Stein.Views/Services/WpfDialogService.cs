@@ -86,25 +86,21 @@ namespace Stein.Views.Services
         }
 
         /// <inheritdoc />
-        public bool? ShowSelectFileDialog(out string filePath, string title = null)
+        public bool? ShowSelectFileDialog([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string filePath, string title = null)
         {
             filePath = null;
-            using (var dialog = new CommonOpenFileDialog())
-            {
-                if (title != null)
-                    dialog.Title = title;
-                dialog.Multiselect = false;
+            using var dialog = new CommonOpenFileDialog();
+            if (title != null)
+                dialog.Title = title;
+            dialog.Multiselect = false;
 
-                var result = dialog.ShowDialog();
-                switch (result)
-                {
-                    case CommonFileDialogResult.None: return null;
-                    case CommonFileDialogResult.Cancel: return false;
-                    case CommonFileDialogResult.Ok:
-                        filePath = dialog.FileName;
-                        return true;
-                    default: return null;
-                }
+            switch (dialog.ShowDialog())
+            {
+                case CommonFileDialogResult.Ok:
+                    filePath = dialog.FileName;
+                    return true;
+                case CommonFileDialogResult.Cancel: return false;
+                default: return null;
             }
         }
 
@@ -115,34 +111,27 @@ namespace Stein.Views.Services
                 case MessageBoxResult.OK:
                 case MessageBoxResult.Yes: return true;
                 case MessageBoxResult.No: return false;
-                case MessageBoxResult.None:
-                case MessageBoxResult.Cancel: return null;
+                default: return null;
             }
-
-            return null;
         }
 
         /// <inheritdoc />
-        public bool? ShowSelectFolderDialog(out string folderPath, string title = null)
+        public bool? ShowSelectFolderDialog([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out string folderPath, string title = null)
         {
             folderPath = null;
-            using (var dialog = new CommonOpenFileDialog())
-            {
-                if (title != null)
-                    dialog.Title = title;
-                dialog.IsFolderPicker = true;
-                dialog.Multiselect = false;
+            using var dialog = new CommonOpenFileDialog();
+            if (title != null)
+                dialog.Title = title;
+            dialog.IsFolderPicker = true;
+            dialog.Multiselect = false;
 
-                var result = dialog.ShowDialog();
-                switch (result)
-                {
-                    case CommonFileDialogResult.None: return null;
-                    case CommonFileDialogResult.Cancel: return false;
-                    case CommonFileDialogResult.Ok:
-                        folderPath = dialog.FileName;
-                        return true;
-                    default: return null;
-                }
+            switch (dialog.ShowDialog())
+            {
+                case CommonFileDialogResult.Ok:
+                    folderPath = dialog.FileName;
+                    return true;
+                case CommonFileDialogResult.Cancel: return false;
+                default: return null;
             }
         }
     }
