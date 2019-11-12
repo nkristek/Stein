@@ -1,31 +1,59 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Build settings -->
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Version>2.1.1</Version>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>8.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--<Nullable>enable</Nullable>-->
+    <Features>strict</Features>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
+  <!-- Application metadata -->
+  <PropertyGroup>
+    <Version>2.2</Version>
+    <Company>nkristek</Company>
+    <Authors>nkristek</Authors>
+    <RootNamespace>Stein.Views</RootNamespace>
+    <AssemblyName>Stein.Views</AssemblyName>
+    <Copyright>Copyright © 2019 Niclas Kristek</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nkristek/Stein</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nkristek/Stein.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+
+  <!-- Code Signing -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Stein.Views.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  
+  <!-- System dependencies -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.0'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
 
+  <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\Stein.Localization\Stein.Localization.csproj" />
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj" />
     <ProjectReference Include="..\Stein.ViewModels\Stein.ViewModels.csproj" />
   </ItemGroup>
   
+  <!-- NuGet dependencies -->
   <ItemGroup>
-    <PackageReference Include="AdonisUI" Version="1.12.0" />
-    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.12.0" />
-    <PackageReference Include="NKristek.Smaragd" Version="5.2.0" />
-    <PackageReference Include="NKristek.Wpf.Converters" Version="1.6.0" />
-    <PackageReference Include="Nullable" Version="1.1.0">
+    <PackageReference Include="AdonisUI" Version="1.12.1" />
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.12.1" />
+    <PackageReference Include="NKristek.Smaragd" Version="5.2.2" />
+    <PackageReference Include="NKristek.Wpf.Converters" Version="2.0.1" />
+    <PackageReference Include="Nullable" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -35,106 +63,11 @@
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Page Include="AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DependencyView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DialogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\HotDog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Dialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="DiskInstallerFileBundleProviderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ExceptionDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ExceptionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GitHubInstallerFileBundleProviderView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InstallationResultDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InstallationResultView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InstallationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="InstallerBundleView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\ToolTip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UpdateDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ApplicationDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ApplicationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="InstallerBundleDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="InstallerView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainWindowDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WelcomeDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Resources\HotDog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
+  <!-- Disable warnings -->
+  <PropertyGroup>
+    <!-- NuGet dependencies might be incompatible -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <!-- NuGet dependencies might not have a strong name -->
+    <NoWarn>$(NoWarn);CS8002</NoWarn>
+  </PropertyGroup>
 </Project>

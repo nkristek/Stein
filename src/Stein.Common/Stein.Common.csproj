@@ -1,21 +1,47 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Build settings -->
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Version>2.1.1</Version>
+    <LangVersion>8.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!--<Nullable>enable</Nullable>-->
+    <Features>strict</Features>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+  <!-- Application metadata -->
+  <PropertyGroup>
+    <Version>2.2</Version>
+    <Company>nkristek</Company>
+    <Authors>nkristek</Authors>
+    <RootNamespace>Stein.Common</RootNamespace>
+    <AssemblyName>Stein.Common</AssemblyName>
+    <Copyright>Copyright © 2019 Niclas Kristek</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nkristek/Stein</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nkristek/Stein.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+  
+  <!-- Code Signing -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Stein.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Nullable" Version="1.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
+  <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\Stein.Presentation\Stein.Presentation.csproj" />
     <ProjectReference Include="..\Stein.Utility\Stein.Utility.csproj" />
   </ItemGroup>
-
+  
+  <!-- NuGet dependencies -->
+  <ItemGroup>
+    <PackageReference Include="Nullable" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>
