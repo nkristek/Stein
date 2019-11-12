@@ -17,23 +17,23 @@ namespace Stein.Utility.XML
     [Serializable]
     public class CDataString : IXmlSerializable, IComparable<CDataString>
     {
-        private string _value;
+        private string? _value;
 
-        public CDataString() : this(string.Empty)
+        public CDataString()
         {
         }
 
-        public CDataString(string value)
+        public CDataString(string? value)
         {
             _value = value;
         }
 
-        public static implicit operator CDataString(string value)
+        public static implicit operator CDataString(string? value)
         {
             return new CDataString(value);
         }
         
-        public static implicit operator string(CDataString cdata)
+        public static implicit operator string?(CDataString? cdata)
         {
             return cdata?._value;
         }
@@ -43,24 +43,25 @@ namespace Stein.Utility.XML
             return String.Compare(ToString(), other?.ToString(), StringComparison.Ordinal);
         }
 
-        public override string ToString()
+        public override string? ToString()
         {
             return _value;
         }
 
-        public System.Xml.Schema.XmlSchema GetSchema()
+        public System.Xml.Schema.XmlSchema? GetSchema()
         {
             return null;
         }
 
-        public void ReadXml(System.Xml.XmlReader reader)
+        public void ReadXml(System.Xml.XmlReader? reader)
         {
-            _value = reader.ReadElementString();
+            _value = reader?.ReadElementString();
         }
 
-        public void WriteXml(System.Xml.XmlWriter writer)
+        public void WriteXml(System.Xml.XmlWriter? writer)
         {
-            writer.WriteCData(_value);
+            if (_value != null)
+                writer?.WriteCData(_value);
         }
     }
 }

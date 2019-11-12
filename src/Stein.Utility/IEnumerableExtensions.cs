@@ -14,7 +14,7 @@ namespace Stein.Utility
         /// <param name="source">The enumeration to iterate.</param>
         /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
         /// <seealso cref="Apply{T}(IEnumerable{T}, Action{T})"/>
-        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
             if (source == null)
@@ -32,7 +32,7 @@ namespace Stein.Utility
         /// <param name="source">The enumeration to iterate.</param>
         /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
         /// <seealso cref="Apply(IEnumerable, Action{object})"/>
-        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         public static void ForEach(this IEnumerable source, Action<object> action)
         {
             if (source == null)
@@ -57,7 +57,7 @@ namespace Stein.Utility
         /// <param name="source">The enumeration to iterate.</param>
         /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
         /// <returns><paramref name="source"/> after the <paramref name="action"/> has been performed on every item.</returns>
-        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         /// <seealso cref="ForEach{T}(IEnumerable{T}, Action{T})"/>
         public static IEnumerable<T> Apply<T>(this IEnumerable<T> source, Action<T> action)
         {
@@ -85,7 +85,7 @@ namespace Stein.Utility
         /// <param name="source">The enumeration to iterate.</param>
         /// <param name="action">The <see cref="Action{T}"/> to perform on every item of <paramref name="source"/>.</param>
         /// <returns><paramref name="source"/> after the <paramref name="action"/> has been performed on every item.</returns>
-        /// <exception cref="ArgumentNullException">Either <paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="action"/> is <see langword="null"/>.</exception>
         /// <seealso cref="ForEach(IEnumerable, Action{object})"/>
         public static IEnumerable Apply(this IEnumerable source, Action<object> action)
         {
@@ -109,74 +109,29 @@ namespace Stein.Utility
         /// <param name="source">The source enumeration.</param>
         /// <param name="keySelector">A selector to the key of an element that should be used to compare two elements.</param>
         /// <returns>An enumeration of elements that are distinct based on the given <paramref name="keySelector"/>.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (keySelector == null)
+                throw new ArgumentNullException(nameof(keySelector));
+
             return source.GroupBy(keySelector).Select(ig => ig.First());
         }
 
         /// <summary>
-        /// This method merges two sequences.
-        /// It works like <see cref="IEnumerable{T}.Union(IEnumerable{T}).Distinct()"/>, but also tries to preserve the order of the secondary sequence.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="primarySequence">Primary sequence which will be prioritzed when conflicts occur</param>
-        /// <param name="secondarySequence">Secondary sequence</param>
-        /// <param name="equalsPropertyAccessor">This function should return a property which is used to differentiate between the <see cref="T"/> instances.</param>
-        /// <returns></returns>
-        public static IEnumerable<T> MergeSequence<T>(this IEnumerable<T> primarySequence, IEnumerable<T> secondarySequence, Func<T, object> equalsPropertyAccessor = null)
-        {
-            if (primarySequence == null)
-                throw new ArgumentNullException(nameof(primarySequence));
-            if (secondarySequence == null)
-                throw new ArgumentNullException(nameof(secondarySequence));
-            if (equalsPropertyAccessor == null)
-                equalsPropertyAccessor = arg => arg;
-
-            var primaryItems = primarySequence.ToList();
-            var notContainedItems = new List<T>();
-
-            foreach (var secondaryItem in secondarySequence)
-            {
-                var secondaryItemProperty = equalsPropertyAccessor(secondaryItem);
-                var indexOfPrimaryItem = primaryItems.FindIndex(item =>
-                {
-                    var itemProperty = equalsPropertyAccessor(item);
-                    if (itemProperty != null)
-                        return itemProperty.Equals(secondaryItemProperty);
-                    return secondaryItemProperty == null;
-                });
-
-                var secondaryItemExistsInPrimaryItems = indexOfPrimaryItem >= 0;
-                if (secondaryItemExistsInPrimaryItems)
-                {
-                    // insert notContainedItems before this item
-                    primaryItems.InsertRange(indexOfPrimaryItem, notContainedItems);
-                    notContainedItems.Clear();
-                }
-                else
-                {
-                    notContainedItems.Add(secondaryItem);
-                }
-            }
-            primaryItems.AddRange(notContainedItems);
-
-            return primaryItems;
-        }
-        
-        /// <summary>
         /// Determines whether two sequences are equal by comparing their elements using a lambda function.
         /// </summary>
-        /// <param name="first">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> to compare to <paramref name="second" />.</param>
-        /// <param name="second">An <see cref="T:System.Collections.Generic.IEnumerable`1" /> to compare to the first sequence.</param>
+        /// <param name="first">An enumeration to compare to <paramref name="second" />.</param>
+        /// <param name="second">An enumeration to compare to the first sequence.</param>
         /// <param name="comparer">A <see cref="Func{T, T, TResult}" /> to compare the elements.</param>
         /// <typeparam name="TFirst">The type of the elements of the first sequence.</typeparam>
         /// <typeparam name="TSecond">The type of the elements of the second sequence.</typeparam>
         /// <returns>
         /// <see langword="true" /> if the two source sequences are of equal length and their corresponding elements compare equal according to <paramref name="comparer" />; otherwise, <see langword="false" />.
         /// </returns>
-        /// <exception cref="T:System.ArgumentNullException">
-        /// <paramref name="first" />, <paramref name="second" /> or <paramref name="comparer" /> is <see langword="null" />.
-        /// </exception>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="first" />, <paramref name="second" /> or <paramref name="comparer" /> is <see langword="null" />.</exception>
         public static bool SequenceEqual<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, bool> comparer)
         {
             if (first == null)
@@ -186,22 +141,30 @@ namespace Stein.Utility
             if (comparer == null)
                 throw new ArgumentNullException(nameof(comparer));
 
-            using (var firstEnumerator = first.GetEnumerator())
-            using (var secondEnumerator = second.GetEnumerator())
+            using var firstEnumerator = first.GetEnumerator();
+            using var secondEnumerator = second.GetEnumerator();
+            var firstHasNext = firstEnumerator.MoveNext();
+            var secondHasNext = secondEnumerator.MoveNext();
+            while (firstHasNext && secondHasNext)
             {
-                var firstHasNext = firstEnumerator.MoveNext();
-                var secondHasNext = secondEnumerator.MoveNext();
-                while (firstHasNext && secondHasNext)
-                {
-                    if (!comparer.Invoke(firstEnumerator.Current, secondEnumerator.Current))
-                        return false;
-                    firstHasNext = firstEnumerator.MoveNext();
-                    secondHasNext = secondEnumerator.MoveNext();
-                }
-                return !firstHasNext && !secondHasNext;
+                if (!comparer.Invoke(firstEnumerator.Current, secondEnumerator.Current))
+                    return false;
+                firstHasNext = firstEnumerator.MoveNext();
+                secondHasNext = secondEnumerator.MoveNext();
             }
+            return !firstHasNext && !secondHasNext;
         }
 
+        /// <summary>
+        /// Determines whether two sequences are equal by comparing their elements using a lambda function.
+        /// </summary>
+        /// <param name="first">An enumeration to compare to <paramref name="second" />.</param>
+        /// <param name="second">An enumeration to compare to the first sequence.</param>
+        /// <param name="comparer">A <see cref="Func{T, T, TResult}" /> to compare the elements.</param>
+        /// <returns>
+        /// <see langword="true" /> if the two source sequences are of equal length and their corresponding elements compare equal according to <paramref name="comparer" />; otherwise, <see langword="false" />.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="first" />, <paramref name="second" /> or <paramref name="comparer" /> is <see langword="null" />.</exception>
         public static bool SequenceEqual(this IEnumerable first, IEnumerable second, Func<object, object, bool> comparer)
         {
             if (first == null)
@@ -235,30 +198,45 @@ namespace Stein.Utility
             }
         }
 
-        public static bool SequenceEqual<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T> comparer = null)
+        /// <summary>
+        /// Determines whether two sequences are equal by comparing their elements using a comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the elements in both sequences.</typeparam>
+        /// <param name="first">An enumeration to compare to <paramref name="second" />.</param>
+        /// <param name="second">An enumeration to compare to the first sequence.</param>
+        /// <param name="comparer">An optional <see cref="IEqualityComparer{T}" /> to compare the elements.</param>
+        /// <returns>If both sequences are equal.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
+        public static bool SequenceEqual<T>(this IEnumerable<T> first, IEnumerable<T> second, IEqualityComparer<T>? comparer = null)
         {
             if (first == null)
                 throw new ArgumentNullException(nameof(first));
             if (second == null)
                 throw new ArgumentNullException(nameof(second));
 
-            using (var firstEnumerator = first.GetEnumerator())
-            using (var secondEnumerator = second.GetEnumerator())
+            using var firstEnumerator = first.GetEnumerator();
+            using var secondEnumerator = second.GetEnumerator();
+            var firstHasNext = firstEnumerator.MoveNext();
+            var secondHasNext = secondEnumerator.MoveNext();
+            while (firstHasNext && secondHasNext)
             {
-                var firstHasNext = firstEnumerator.MoveNext();
-                var secondHasNext = secondEnumerator.MoveNext();
-                while (firstHasNext && secondHasNext)
-                {
-                    if (!(comparer ?? EqualityComparer<T>.Default).Equals(firstEnumerator.Current, secondEnumerator.Current))
-                        return false;
-                    firstHasNext = firstEnumerator.MoveNext();
-                    secondHasNext = secondEnumerator.MoveNext();
-                }
-                return !firstHasNext && !secondHasNext;
+                if (!(comparer ?? EqualityComparer<T>.Default).Equals(firstEnumerator.Current, secondEnumerator.Current))
+                    return false;
+                firstHasNext = firstEnumerator.MoveNext();
+                secondHasNext = secondEnumerator.MoveNext();
             }
+            return !firstHasNext && !secondHasNext;
         }
 
-        public static bool SequenceEqual(this IEnumerable first, IEnumerable second, IEqualityComparer comparer = null)
+        /// <summary>
+        /// Determines whether two sequences are equal by comparing their elements using a comparer.
+        /// </summary>
+        /// <param name="first">An enumeration to compare to <paramref name="second" />.</param>
+        /// <param name="second">An enumeration to compare to the first sequence.</param>
+        /// <param name="comparer">An optional <see cref="IEqualityComparer" /> to compare the elements.</param>
+        /// <returns>If both sequences are equal.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
+        public static bool SequenceEqual(this IEnumerable first, IEnumerable second, IEqualityComparer? comparer = null)
         {
             if (first == null)
                 throw new ArgumentNullException(nameof(first));
@@ -302,6 +280,13 @@ namespace Stein.Utility
             foreach (var item in source);
         }
 
+        /// <summary>
+        /// Continually loop over the given enumeration. If the given enumeration is empty, an empty enumeration is returned.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the enumeration.</typeparam>
+        /// <param name="source">The enumeration to loop over.</param>
+        /// <returns>An enumeration containing the items from the given enumeration. After iterating the last item the next item will be the first item in the given enumeration.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static IEnumerable<T> Loop<T>(this IEnumerable<T> source)
         {
             if (source == null)
@@ -315,6 +300,12 @@ namespace Stein.Utility
                     yield return item;
         }
 
+        /// <summary>
+        /// Continually loop over the given enumeration. If the given enumeration is empty, an empty enumeration is returned.
+        /// </summary>
+        /// <param name="source">The enumeration to loop over.</param>
+        /// <returns>An enumeration containing the items from the given enumeration. After iterating the last item the next item will be the first item in the given enumeration.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public static IEnumerable Loop(this IEnumerable source)
         {
             if (source == null)
@@ -328,6 +319,13 @@ namespace Stein.Utility
                     yield return item;
         }
 
+        /// <summary>
+        /// Determines if the given enumeration contains any items.
+        /// </summary>
+        /// <param name="source">The enumeration to check if it contains any items.</param>
+        /// <returns>If the given enumeration contains any items.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
+        /// <seealso cref="Enumerable.Any{TSource}(IEnumerable{TSource})"/>
         public static bool Any(this IEnumerable source)
         {
             if (source == null)
@@ -343,17 +341,6 @@ namespace Stein.Utility
                 if (enumerator is IDisposable disposable)
                     disposable.Dispose();
             }
-        }
-
-        public static IEnumerable<TResult> Select<TResult>(this IEnumerable source, Func<object, TResult> selector)
-        {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
-
-            foreach (var item in source)
-                yield return selector(item);
         }
     }
 }

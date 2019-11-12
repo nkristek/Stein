@@ -1,13 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <!-- Build settings -->
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <Version>2.1.1</Version>
+    <LangVersion>8.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <Features>strict</Features>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NKristek.Smaragd" Version="5.2.0" />
-  </ItemGroup>
+  <!-- Application metadata -->
+  <PropertyGroup>
+    <Version>2.2</Version>
+    <Company>nkristek</Company>
+    <Authors>nkristek</Authors>
+    <RootNamespace>Stein.Presentation</RootNamespace>
+    <AssemblyName>Stein.Presentation</AssemblyName>
+    <Copyright>Copyright © 2019 Niclas Kristek</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/nkristek/Stein</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nkristek/Stein.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
+  </PropertyGroup>
+  
+  <!-- Code Signing -->
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Stein.Presentation.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
 
+  <!-- NuGet dependencies -->
+  <ItemGroup>
+    <PackageReference Include="NKristek.Smaragd" Version="5.2.2" />
+    <PackageReference Include="Nullable" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

@@ -13,6 +13,6 @@ namespace Stein.ViewModels.Types
         /// <param name="progress">An optional progress tracker.</param>
         /// <param name="cancellationToken">A cancellation token to stop the asynchronous operation.</param>
         /// <returns>The <see cref="Task"/> of saving the file asynchronously.</returns>
-        Task SaveFileAsync(string filePath, IProgress<double> progress = null, CancellationToken cancellationToken = default);
+        Task SaveFileAsync(string filePath, IProgress<double>? progress = null, CancellationToken cancellationToken = default);
     }
 }

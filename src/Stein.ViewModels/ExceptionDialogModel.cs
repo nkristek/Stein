@@ -7,11 +7,11 @@ namespace Stein.ViewModels
         : DialogModel
     {
         /// <inheritdoc />
-        public override string Title => $"{Strings.Error}: {Exception?.TypeName}";
+        public override string Title => Exception is ExceptionViewModel exception ? $"{Strings.Error}: {exception.TypeName}" : Strings.Error;
 
-        private ExceptionViewModel _exception;
+        private ExceptionViewModel? _exception;
         
-        public ExceptionViewModel Exception
+        public ExceptionViewModel? Exception
         {
             get => _exception;
             set => SetProperty(ref _exception, value);

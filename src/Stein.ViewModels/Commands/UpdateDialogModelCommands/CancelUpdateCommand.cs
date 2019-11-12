@@ -8,7 +8,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         : ViewModelCommand<UpdateDialogModel>
     {
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -18,15 +18,15 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
+        protected override bool CanExecute(UpdateDialogModel? viewModel, object? parameter)
         {
-            return viewModel.IsUpdateDownloading && !viewModel.IsUpdateCancelled;
+            return viewModel != null && viewModel.IsUpdateDownloading && !viewModel.IsUpdateCancelled;
         }
 
         /// <inheritdoc />
-        protected override void Execute(UpdateDialogModel viewModel, object parameter)
+        protected override void Execute(UpdateDialogModel? viewModel, object? parameter)
         {
-            (viewModel.InstallUpdateCommand as InstallUpdateCommand)?.Cancel();
+            (viewModel?.InstallUpdateCommand as InstallUpdateCommand)?.Cancel();
         }
     }
 }

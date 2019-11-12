@@ -20,7 +20,7 @@ namespace Stein.ViewModels.Commands.InstallationResultDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -29,15 +29,16 @@ namespace Stein.ViewModels.Commands.InstallationResultDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(InstallationResultDialogModel viewModel, object parameter)
+        protected override bool CanExecute(InstallationResultDialogModel? viewModel, object? parameter)
         {
-            return !String.IsNullOrEmpty(viewModel.LogFolderPath) && _ioService.DirectoryExists(viewModel.LogFolderPath);
+            return viewModel != null && !String.IsNullOrEmpty(viewModel.LogFolderPath) && _ioService.DirectoryExists(viewModel.LogFolderPath);
         }
 
         /// <inheritdoc />
-        protected override void Execute(InstallationResultDialogModel viewModel, object parameter)
+        protected override void Execute(InstallationResultDialogModel? viewModel, object? parameter)
         {
-            _uriService.OpenUri(viewModel.LogFolderPath);
+            if (viewModel?.LogFolderPath is string path)
+                _uriService.OpenUri(path);
         }
     }
 }

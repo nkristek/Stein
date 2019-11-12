@@ -8,9 +8,9 @@ namespace Stein.ViewModels
     public sealed class InstallationResultViewModel
         : ViewModel
     {
-        private string _installerName;
+        private string? _installerName;
         
-        public string InstallerName
+        public string? InstallerName
         {
             get => _installerName;
             set => SetProperty(ref _installerName, value);
@@ -38,9 +38,9 @@ namespace Stein.ViewModels
             set => SetProperty(ref _isExceptionVisible, value);
         }
 
-        private ExceptionViewModel _exception;
+        private ExceptionViewModel? _exception;
         
-        public ExceptionViewModel Exception
+        public ExceptionViewModel? Exception
         {
             get => _exception;
             set

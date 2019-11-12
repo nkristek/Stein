@@ -9,12 +9,12 @@
         /// Set text to the clipboard.
         /// </summary>
         /// <param name="text">Text to set to the clipboard.</param>
-        void SetText(string text);
+        void SetText(string? text);
 
         /// <summary>
         /// Get text from the clipboard.
         /// </summary>
         /// <returns>Text from the clipboard.</returns>
-        string GetText();
+        string? GetText();
     }
 }

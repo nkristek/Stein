@@ -9,7 +9,7 @@ namespace Stein.ViewModels.Commands.InstallationViewModelCommands
         : ViewModelCommand<InstallationViewModel>
     {
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -18,16 +18,18 @@ namespace Stein.ViewModels.Commands.InstallationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(InstallationViewModel viewModel, object parameter)
+        protected override bool CanExecute(InstallationViewModel? viewModel, object? parameter)
         {
-            return viewModel.State != InstallationState.Cancelled 
+            return viewModel != null
+                && viewModel.State != InstallationState.Cancelled 
                 && viewModel.State != InstallationState.Finished;
         }
 
         /// <inheritdoc />
-        protected override void Execute(InstallationViewModel viewModel, object parameter)
+        protected override void Execute(InstallationViewModel? viewModel, object? parameter)
         {
-            viewModel.State = InstallationState.Cancelled;
+            if (viewModel != null)
+                viewModel.State = InstallationState.Cancelled;
         }
     }
 }

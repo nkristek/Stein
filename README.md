@@ -1,5 +1,7 @@
 # Stein - Silent Temp Installer
 
+[![CI Status](https://github.com/nkristek/Stein/workflows/CI/badge.svg)](https://github.com/nkristek/Stein/actions)
+
 This application makes it easier to install, uninstall or reinstall multiple MSI-installers. 
 It was built for an environment with regular builds of an application.
 

@@ -25,9 +25,10 @@ namespace Stein.Services.ProductService
         }
 
         /// <inheritdoc />
-        protected override void DisposeManagedResources()
+        protected override void Dispose(bool managed = true)
         {
-            RegistryKey.Dispose();
+            if (managed)
+                RegistryKey.Dispose();
         }
 
         private string _productCode;

@@ -1,7 +1,5 @@
 ﻿using NKristek.Smaragd.Commands;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Stein.ViewModels.Tests
@@ -16,129 +14,52 @@ namespace Stein.ViewModels.Tests
         }
 
         [Fact]
-        public void Name_set_get()
+        public void Name_property()
         {
-            var testData = "Test";
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Name), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Name), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Name = testData;
-            Assert.Equal(testData, dialogModel.Name);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Name, "test");
         }
 
         [Fact]
-        public void Description_set_get()
+        public void Description_property()
         {
-            const string testData = "Test";
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Description), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Description), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Description = testData;
-            Assert.Equal(testData, dialogModel.Description);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Description, "test");
         }
 
         [Fact]
-        public void Version_set_get()
+        public void Version_property()
         {
-            var testData = new Version(1,2,3,4);
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Version), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Version), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Version = testData;
-            Assert.Equal(testData, dialogModel.Version);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Version, new Version(1, 2, 3, 4));
         }
 
         [Fact]
-        public void Copyright_set_get()
+        public void Copyright_property()
         {
-            var testData = "Test";
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Copyright), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Copyright), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Copyright = testData;
-            Assert.Equal(testData, dialogModel.Copyright);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Copyright, "test");
         }
 
         [Fact]
-        public void AdditionalNotes_set_get()
+        public void AdditionalNotes_property()
         {
-            var testData = "Test";
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.AdditionalNotes), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.AdditionalNotes), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.AdditionalNotes = testData;
-            Assert.Equal(testData, dialogModel.AdditionalNotes);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.AdditionalNotes, "test");
         }
 
         [Fact]
-        public void Uri_set_get()
+        public void Uri_property()
         {
-            var testData = new Uri("http://www.example.com");
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Uri), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Uri), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Uri = testData;
-            Assert.Equal(testData, dialogModel.Uri);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Uri, new Uri("http://www.example.com"));
         }
 
         [Fact]
-        public void Publisher_set_get()
+        public void Publisher_property()
         {
-            var testData = "Test";
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.Publisher), nameof(dialogModel.IsDirty) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.Publisher), nameof(dialogModel.IsDirty) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.Publisher = testData;
-            Assert.Equal(testData, dialogModel.Publisher);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.Publisher, "test");
         }
 
         private class TestCommand
@@ -151,21 +72,10 @@ namespace Stein.ViewModels.Tests
         }
 
         [Fact]
-        public void OpenUriCommand_set_get()
+        public void OpenUriCommand_property()
         {
-            var testData = new TestCommand();
             var dialogModel = new AboutDialogModel();
-            var invokedPropertyChangingEvents = new List<string>();
-            var expectedPropertyChangingEvents = new List<string> { nameof(dialogModel.OpenUriCommand) };
-            var invokedPropertyChangedEvents = new List<string>();
-            var expectedPropertyChangedEvents = new List<string> { nameof(dialogModel.OpenUriCommand) };
-            dialogModel.PropertyChanging += (sender, args) => invokedPropertyChangingEvents.Add(args.PropertyName);
-            dialogModel.PropertyChanged += (sender, args) => invokedPropertyChangedEvents.Add(args.PropertyName);
-
-            dialogModel.OpenUriCommand = testData;
-            Assert.Equal(testData, dialogModel.OpenUriCommand);
-            Assert.Equal(expectedPropertyChangingEvents.OrderBy(e => e), invokedPropertyChangingEvents.OrderBy(e => e));
-            Assert.Equal(expectedPropertyChangedEvents.OrderBy(e => e), invokedPropertyChangedEvents.OrderBy(e => e));
+            dialogModel.TestProperty(() => dialogModel.OpenUriCommand, new TestCommand(), PropertyTestSettings.IsDirtyIgnored | PropertyTestSettings.IsReadOnlyIgnored);
         }
     }
 }

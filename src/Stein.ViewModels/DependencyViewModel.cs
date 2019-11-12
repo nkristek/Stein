@@ -8,27 +8,27 @@ namespace Stein.ViewModels
     public sealed class DependencyViewModel
         : ViewModel
     {
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
 
-        private Uri _uri;
+        private Uri? _uri;
         
-        public Uri Uri
+        public Uri? Uri
         {
             get => _uri;
             set => SetProperty(ref _uri, value);
         }
 
-        private IViewModelCommand<DependencyViewModel> _openUriCommand;
+        private IViewModelCommand<DependencyViewModel>? _openUriCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<DependencyViewModel> OpenUriCommand
+        public IViewModelCommand<DependencyViewModel>? OpenUriCommand
         {
             get => _openUriCommand;
             set

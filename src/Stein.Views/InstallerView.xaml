@@ -18,37 +18,33 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="{adonisUi:Space 1}"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="{adonisUi:Space 1}"/>
-            <ColumnDefinition Width="{adonisUi:Space 17}"/>
-            <ColumnDefinition Width="{adonisUi:Space 1}"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="DateColumn"/>
+            <ColumnDefinition Width="{adonisUi:Space 1}"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Name & Version -->
-        <Grid Grid.Column="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!-- Name -->
+        <TextBlock Grid.Column="0"
+                FontWeight="Bold"
+                Text="{Binding FileName}"
+                ToolTip="{Binding FileName}"
+                TextTrimming="CharacterEllipsis"
+                VerticalAlignment="Center"/>
 
-            <TextBlock Grid.Column="0"
-                       FontWeight="Bold"
-                       Text="{Binding FileName}"
-                       TextTrimming="CharacterEllipsis"
-                       VerticalAlignment="Center"/>
-
-            <TextBlock Grid.Column="2"
-                       Text="{Binding Version}"
-                       Foreground="{DynamicResource {x:Static adonisUi:Brushes.DisabledForegroundBrush}}"
-                       VerticalAlignment="Center"/>
-        </Grid>
-
+        <!-- Created -->
+        <TextBlock Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding Created, Converter={c:ValueNullToInverseVisibilityConverter}}"
+                    Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}">
+            <i:Interaction.Behaviors>
+                <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
+            </i:Interaction.Behaviors>
+        </TextBlock>
+        
         <!-- AvailableOperations -->
-        <ListBox Grid.Column="2"
-                 ItemsSource="{Binding AvailableOperations}" 
-                 SelectedItem="{Binding SelectedOperation}">
+        <ListBox Grid.Column="4"
+                    ItemsSource="{Binding AvailableOperations}" 
+                    SelectedItem="{Binding SelectedOperation}">
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -62,23 +58,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
-        <!-- Custom Arguments -->
-        <TextBox Grid.Column="4"
-                 VerticalAlignment="Stretch"
-                 VerticalContentAlignment="Center"
-                 ToolTip="{x:Static localization:Strings.CustomArguments}"
-                 adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.CustomArguments}"
-                 Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <!-- Created -->
-        <TextBlock Grid.Column="6"
-                   VerticalAlignment="Center"
-                   Visibility="{Binding Created, Converter={c:ValueNullToInverseVisibilityConverter}}"
-                   Text="{Binding Created, Converter={steinconverters:DateTimeToRelativeStringConverter}}">
-            <i:Interaction.Behaviors>
-                <resources:PeriodicBindingUpdateBehavior Interval="0:00:05" Property="{x:Static TextBlock.TextProperty}" Mode="UpdateTarget" />
-            </i:Interaction.Behaviors>
-        </TextBlock>
+        <!-- Custom Arguments -->
+        <!--<TextBox Grid.Row="2"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Right"
+                     VerticalContentAlignment="Center"
+                     ToolTip="{x:Static localization:Strings.CustomArguments}"
+                     adonisExtensions:WatermarkExtension.Watermark="{x:Static localization:Strings.CustomArguments}"
+                     Text="{Binding CustomOperationArguments, UpdateSourceTrigger=PropertyChanged}"/>-->
     </Grid>
 </UserControl>

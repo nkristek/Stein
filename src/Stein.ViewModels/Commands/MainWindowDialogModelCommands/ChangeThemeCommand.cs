@@ -16,26 +16,23 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(MainWindowDialogModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowDialogModel? viewModel, object? parameter)
         {
+            if (viewModel == null)
+                return;
+
             if (parameter is string parameterAsString)
             {
                 viewModel.CurrentTheme = (Theme)Enum.Parse(typeof(Theme), parameterAsString);
             }
             else
             {
-                switch (viewModel.CurrentTheme)
+                viewModel.CurrentTheme = viewModel.CurrentTheme switch
                 {
-                    case Theme.Light:
-                        viewModel.CurrentTheme = Theme.Dark;
-                        break;
-                    case Theme.Dark:
-                        viewModel.CurrentTheme = Theme.Light;
-                        break;
-                    default:
-                        viewModel.CurrentTheme = Theme.Light;
-                        break;
-                }
+                    Theme.Light => Theme.Dark,
+                    Theme.Dark => Theme.Light,
+                    _ => Theme.Light,
+                };
             }
 
             await _viewModelService.SaveViewModelAsync(viewModel);

@@ -18,10 +18,10 @@ namespace Stein.ViewModels
             _themeService.ThemeChanged += (sender, args) => NotifyPropertyChanged(nameof(CurrentTheme));
         }
 
-        private InstallationViewModel _currentInstallation;
+        private InstallationViewModel? _currentInstallation;
         
         [IsDirtyIgnored]
-        public InstallationViewModel CurrentInstallation
+        public InstallationViewModel? CurrentInstallation
         {
             get => _currentInstallation;
             set
@@ -42,12 +42,12 @@ namespace Stein.ViewModels
             }
         }
 
-        private void CurrentInstallationOnPropertyChanging(object sender, PropertyChangingEventArgs e)
+        private void CurrentInstallationOnPropertyChanging(object? sender, PropertyChangingEventArgs? e)
         {
             NotifyPropertyChanging(nameof(CurrentInstallation));
         }
 
-        private void CurrentInstallationOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void CurrentInstallationOnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             NotifyPropertyChanged(nameof(CurrentInstallation));
         }
@@ -58,10 +58,10 @@ namespace Stein.ViewModels
             set => _themeService.SetTheme(value);
         }
         
-        private InstallationResultDialogModel _recentInstallationResult;
+        private InstallationResultDialogModel? _recentInstallationResult;
         
         [IsDirtyIgnored]
-        public InstallationResultDialogModel RecentInstallationResult
+        public InstallationResultDialogModel? RecentInstallationResult
         {
             get => _recentInstallationResult;
             set => SetProperty(ref _recentInstallationResult, value);
@@ -75,19 +75,19 @@ namespace Stein.ViewModels
             set => SetProperty(ref _application, value);
         }
 
-        private UpdateDialogModel _availableUpdate;
+        private UpdateDialogModel? _availableUpdate;
 
-        public UpdateDialogModel AvailableUpdate
+        public UpdateDialogModel? AvailableUpdate
         {
             get => _availableUpdate;
             set => SetProperty(ref _availableUpdate, value);
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _refreshApplicationsCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _refreshApplicationsCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> RefreshApplicationsCommand
+        public IViewModelCommand<MainWindowDialogModel>? RefreshApplicationsCommand
         {
             get => _refreshApplicationsCommand;
             set
@@ -102,11 +102,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _addApplicationCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _addApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> AddApplicationCommand
+        public IViewModelCommand<MainWindowDialogModel>? AddApplicationCommand
         {
             get => _addApplicationCommand;
             set
@@ -121,11 +121,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _showInfoDialogCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _showInfoDialogCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> ShowInfoDialogCommand
+        public IViewModelCommand<MainWindowDialogModel>? ShowInfoDialogCommand
         {
             get => _showInfoDialogCommand;
             set
@@ -140,11 +140,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _changeThemeCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _changeThemeCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> ChangeThemeCommand
+        public IViewModelCommand<MainWindowDialogModel>? ChangeThemeCommand
         {
             get => _changeThemeCommand;
             set
@@ -159,11 +159,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _showRecentInstallationResultCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _showRecentInstallationResultCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> ShowRecentInstallationResultCommand
+        public IViewModelCommand<MainWindowDialogModel>? ShowRecentInstallationResultCommand
         {
             get => _showRecentInstallationResultCommand;
             set
@@ -178,11 +178,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<MainWindowDialogModel> _showUpdateDialogCommand;
+        private IViewModelCommand<MainWindowDialogModel>? _showUpdateDialogCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<MainWindowDialogModel> ShowUpdateDialogCommand
+        public IViewModelCommand<MainWindowDialogModel>? ShowUpdateDialogCommand
         {
             get => _showUpdateDialogCommand;
             set

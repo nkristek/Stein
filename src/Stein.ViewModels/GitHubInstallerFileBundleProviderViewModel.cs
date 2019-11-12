@@ -19,10 +19,13 @@ namespace Stein.ViewModels
             ValidateRepository();
         }
 
-        private void GitHubInstallerFileBundleProviderViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void GitHubInstallerFileBundleProviderViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs? e)
         {
             if (e == null || String.IsNullOrEmpty(e.PropertyName))
+            {
                 Validate();
+                return;
+            }
 
             if (e.PropertyName == nameof(Repository))
                 ValidateRepository();
@@ -47,13 +50,13 @@ namespace Stein.ViewModels
         /// <inheritdoc />
         public override InstallerFileBundleProviderConfiguration CreateConfiguration()
         {
-            var dictionary = new Dictionary<string, string> { { nameof(Repository), Repository } };
+            var dictionary = new Dictionary<string, string?> { { nameof(Repository), Repository } };
             return new InstallerFileBundleProviderConfiguration(ProviderType, dictionary);
         }
 
-        private string _repository;
+        private string? _repository;
         
-        public string Repository
+        public string? Repository
         {
             get => _repository;
             set

@@ -7,9 +7,9 @@ namespace Stein.ViewModels
     public sealed class InstallerBundleViewModel
         : ViewModel
     {
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Stein.Presentation;
 
 namespace Stein.Views.Services
@@ -14,7 +15,34 @@ namespace Stein.Views.Services
             if (String.IsNullOrEmpty(uri))
                 throw new ArgumentNullException(nameof(uri));
 
-            Process.Start(new ProcessStartInfo(uri));
+            try
+            {
+                Process.Start(uri);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    uri = uri.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {uri}") 
+                    { 
+                        CreateNoWindow = true 
+                    });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", uri);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", uri);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         /// <inheritdoc />

@@ -10,19 +10,19 @@ namespace Stein.ViewModels
     {
         /// <inheritdoc />
         [PropertySource(nameof(Name))]
-        public override string Title => Name;
+        public override string? Title => Name;
 
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
 
-        private string _logFolderPath;
+        private string? _logFolderPath;
 
-        public string LogFolderPath
+        public string? LogFolderPath
         {
             get => _logFolderPath;
             set => SetProperty(ref _logFolderPath, value);
@@ -30,11 +30,11 @@ namespace Stein.ViewModels
         
         public ObservableCollection<InstallationResultViewModel> InstallationResults { get; } = new ObservableCollection<InstallationResultViewModel>();
 
-        private IViewModelCommand<InstallationResultDialogModel> _openLogFolderCommand;
+        private IViewModelCommand<InstallationResultDialogModel>? _openLogFolderCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<InstallationResultDialogModel> OpenLogFolderCommand
+        public IViewModelCommand<InstallationResultDialogModel>? OpenLogFolderCommand
         {
             get => _openLogFolderCommand;
             set

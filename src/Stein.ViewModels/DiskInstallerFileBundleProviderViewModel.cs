@@ -22,10 +22,13 @@ namespace Stein.ViewModels
             ValidatePath();
         }
 
-        private void DiskInstallerFileBundleProviderViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void DiskInstallerFileBundleProviderViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs? e)
         {
             if (e == null || String.IsNullOrEmpty(e.PropertyName))
+            {
                 Validate();
+                return;
+            }
 
             if (e.PropertyName == nameof(Path))
                 ValidatePath();
@@ -50,13 +53,13 @@ namespace Stein.ViewModels
         /// <inheritdoc />
         public override InstallerFileBundleProviderConfiguration CreateConfiguration()
         {
-            var dictionary = new Dictionary<string, string> { { nameof(Path), Path } };
+            var dictionary = new Dictionary<string, string?> { { nameof(Path), Path } };
             return new InstallerFileBundleProviderConfiguration(ProviderType, dictionary);
         }
 
-        private string _path;
+        private string? _path;
         
-        public string Path
+        public string? Path
         {
             get => _path;
             set
@@ -76,11 +79,11 @@ namespace Stein.ViewModels
             SetErrors(validationErrors, nameof(Path));
         }
 
-        private IViewModelCommand<DiskInstallerFileBundleProviderViewModel> _selectFolderCommand;
+        private IViewModelCommand<DiskInstallerFileBundleProviderViewModel>? _selectFolderCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<DiskInstallerFileBundleProviderViewModel> SelectFolderCommand
+        public IViewModelCommand<DiskInstallerFileBundleProviderViewModel>? SelectFolderCommand
         {
             get => _selectFolderCommand;
             set

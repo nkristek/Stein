@@ -17,7 +17,7 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -27,15 +27,16 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(MainWindowDialogModel viewModel, object parameter)
+        protected override bool CanExecute(MainWindowDialogModel? viewModel, object? parameter)
         {
-            return viewModel.CurrentInstallation == null && !viewModel.IsUpdating;
+            return viewModel != null && viewModel.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(MainWindowDialogModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(MainWindowDialogModel? viewModel, object? parameter)
         {
-            await _viewModelService.UpdateViewModelAsync(viewModel);
+            if (viewModel != null)
+                await _viewModelService.UpdateViewModelAsync(viewModel);
         }
     }
 }

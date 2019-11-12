@@ -36,7 +36,6 @@ namespace Stein
         {
             DispatcherUnhandledException += App_DispatcherUnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-            System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
@@ -142,10 +141,12 @@ namespace Stein
             {
                 Directory.Delete(AppTmpFolderPath, true);
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception exception)
             {
                 Log.Error("Deleting tmp folder failed", exception);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -175,15 +176,6 @@ namespace Stein
             HandleException(exception);
             if (!e.Observed)
                 e.SetObserved();
-        }
-
-        private void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            var exception = e.Exception;
-            if (exception == null)
-                return;
-
-            HandleException(exception);
         }
 
         private void HandleException(Exception exception)

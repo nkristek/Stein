@@ -8,9 +8,9 @@ namespace Stein.ViewModels
     public sealed class InstallerBundleDialogModel
         : DialogModel
     {
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set
@@ -28,6 +28,6 @@ namespace Stein.ViewModels
             }
         }
 
-        public ObservableCollection<InstallerViewModel> Installers => (Parent as InstallerBundleViewModel)?.Installers;
+        public ObservableCollection<InstallerViewModel>? Installers => (Parent as InstallerBundleViewModel)?.Installers;
     }
 }

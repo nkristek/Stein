@@ -25,10 +25,13 @@ namespace Stein.ViewModels
             ValidateSelectedProvider();
         }
 
-        private void ApplicationDialogModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ApplicationDialogModel_PropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null || String.IsNullOrEmpty(e.PropertyName))
+            {
                 Validate();
+                return;
+            }
 
             if (e.PropertyName == nameof(Name))
                 ValidateName();
@@ -48,9 +51,9 @@ namespace Stein.ViewModels
             set => SetProperty(ref _entityId, value);
         }
 
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
@@ -96,9 +99,9 @@ namespace Stein.ViewModels
             set => SetProperty(ref _automaticallyDeleteInstallationLogs, value);
         }
 
-        private string _keepNewestInstallationLogsString;
+        private string? _keepNewestInstallationLogsString;
         
-        public string KeepNewestInstallationLogsString
+        public string? KeepNewestInstallationLogsString
         {
             get => _keepNewestInstallationLogsString;
             set => SetProperty(ref _keepNewestInstallationLogsString, value);
@@ -137,9 +140,9 @@ namespace Stein.ViewModels
 
         public ObservableCollection<InstallerFileBundleProviderViewModel> AvailableProviders { get; } = new ObservableCollection<InstallerFileBundleProviderViewModel>();
 
-        private InstallerFileBundleProviderViewModel _selectedProvider;
+        private InstallerFileBundleProviderViewModel? _selectedProvider;
         
-        public InstallerFileBundleProviderViewModel SelectedProvider
+        public InstallerFileBundleProviderViewModel? SelectedProvider
         {
             get => _selectedProvider;
             set
@@ -170,21 +173,21 @@ namespace Stein.ViewModels
             SetErrors(validationErrors, nameof(SelectedProvider));
         }
 
-        private void SelectedProviderOnPropertyChanging(object sender, PropertyChangingEventArgs e)
+        private void SelectedProviderOnPropertyChanging(object? sender, PropertyChangingEventArgs? e)
         {
             NotifyPropertyChanging(nameof(SelectedProvider));
         }
 
-        private void SelectedProviderOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void SelectedProviderOnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             NotifyPropertyChanged(nameof(SelectedProvider));
         }
 
-        private IViewModelCommand<ApplicationDialogModel> _openLogFolderCommand;
+        private IViewModelCommand<ApplicationDialogModel>? _openLogFolderCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationDialogModel> OpenLogFolderCommand
+        public IViewModelCommand<ApplicationDialogModel>? OpenLogFolderCommand
         {
             get => _openLogFolderCommand;
             set

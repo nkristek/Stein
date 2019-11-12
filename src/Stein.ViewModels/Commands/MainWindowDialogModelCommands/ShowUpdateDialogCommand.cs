@@ -16,7 +16,7 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -25,15 +25,16 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(MainWindowDialogModel viewModel, object parameter)
+        protected override bool CanExecute(MainWindowDialogModel? viewModel, object? parameter)
         {
-            return viewModel.AvailableUpdate != null;
+            return viewModel?.AvailableUpdate != null;
         }
 
         /// <inheritdoc />
-        protected override void Execute(MainWindowDialogModel viewModel, object parameter)
+        protected override void Execute(MainWindowDialogModel? viewModel, object? parameter)
         {
-            _dialogService.ShowDialog(viewModel.AvailableUpdate);
+            if (viewModel?.AvailableUpdate is UpdateDialogModel update)
+                _dialogService.ShowDialog(update);
         }
     }
 }

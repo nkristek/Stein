@@ -16,7 +16,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -25,15 +25,16 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
+        protected override bool CanExecute(UpdateDialogModel? viewModel, object? parameter)
         {
-            return viewModel.UpdateUri != null;
+            return viewModel?.UpdateUri != null;
         }
 
         /// <inheritdoc />
-        protected override void Execute(UpdateDialogModel viewModel, object parameter)
+        protected override void Execute(UpdateDialogModel? viewModel, object? parameter)
         {
-            _uriService.OpenUri(viewModel.UpdateUri);
+            if (viewModel?.UpdateUri is Uri uri)
+                _uriService.OpenUri(uri);
         }
     }
 }

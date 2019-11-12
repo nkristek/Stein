@@ -97,7 +97,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -106,15 +106,18 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(UpdateDialogModel viewModel, object parameter)
+        protected override bool CanExecute(UpdateDialogModel? viewModel, object? parameter)
         {
-            return !IsCancelled && viewModel.UpdateAssets.Any(ua => ua.FileName != null && ua.FileName.Contains(GetCurrentPlatform()) && ua.FileName.EndsWith(".msi"));
+            return !IsCancelled && viewModel != null && viewModel.UpdateAssets.Any(ua => ua.FileName != null && ua.FileName.Contains(GetCurrentPlatform()) && ua.FileName.EndsWith(".msi"));
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(UpdateDialogModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(UpdateDialogModel? viewModel, object? parameter)
         {
-            string installerFilePath = null;
+            if (viewModel == null)
+                return;
+
+            string? installerFilePath = null;
             try
             {
                 viewModel.IsUpdateDownloading = true;
@@ -127,15 +130,21 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                     return;
 
                 installerFilePath = CreateInstallerFilePath(updateAssetViewModel, viewModel.ReleaseTag);
-                if (!_ioService.FileExists(installerFilePath))
-                    await DownloadInstallerFile(updateAssetViewModel.DownloadUri, installerFilePath);
-                StartInstall(installerFilePath);
+                if (!_ioService.FileExists(installerFilePath) && updateAssetViewModel.DownloadUri is Uri uri)
+                    await DownloadInstallerFile(uri, installerFilePath);
+
+#pragma warning disable 4014
+                // do not await here
+                _installService.PerformAsync(new Operation(installerFilePath, OperationType.Install));
+#pragma warning restore 4014
+
                 Environment.Exit(0);
             }
             catch (OperationCanceledException)
             {
                 if (installerFilePath != null)
                     _ioService.DeleteFile(installerFilePath);
+                throw;
             }
             finally
             {
@@ -148,9 +157,9 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             }
         }
 
-        private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel, string releaseName)
+        private string CreateInstallerFilePath(UpdateAssetViewModel updateAssetViewModel, string? releaseName)
         {
-            var downloadFolderPath = _ioService.PathCombine(_downloadFolderPath, releaseName);
+            var downloadFolderPath = releaseName is string release ? _ioService.PathCombine(_downloadFolderPath, release) : _downloadFolderPath;
             if (!_ioService.DirectoryExists(downloadFolderPath))
                 _ioService.CreateDirectory(downloadFolderPath);
             return _ioService.PathCombine(downloadFolderPath, updateAssetViewModel.FileName);
@@ -169,14 +178,6 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
             };
             using (httpClient)
                 await httpClient.DownloadAsync(downloadUri, destinationFilePath, progressReporter, CancellationTokenSource.Token);
-        }
-
-        private void StartInstall(string installerFilePath)
-        {
-#pragma warning disable 4014
-            // do not await here
-            _installService.PerformAsync(new Operation(installerFilePath, OperationType.Install));
-#pragma warning restore 4014
         }
 
         private static string GetCurrentPlatform()

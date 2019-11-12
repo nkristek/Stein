@@ -23,13 +23,13 @@ namespace Stein.Utility.XML
 
         [XmlText]
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
-        public string StringValue
+        public string? StringValue
         {
             get => Serialize(Value);
             set => Value = Deserialize(value) ?? DateTime.MinValue;
         }
 
-        public DateTimeXml() : this(DateTime.MinValue)
+        public DateTimeXml()
         {
         }
 
@@ -43,12 +43,12 @@ namespace Stein.Utility.XML
             return new DateTimeXml(dateTime);
         }
 
-        public static implicit operator DateTime(DateTimeXml dateTimeXml)
+        public static implicit operator DateTime(DateTimeXml? dateTimeXml)
         {
             return dateTimeXml?.Value ?? default;
         }
         
-        public override string ToString()
+        public override string? ToString()
         {
             return StringValue;
         }
@@ -58,9 +58,9 @@ namespace Stein.Utility.XML
             return dateTime.Ticks.ToString();
         }
 
-        private static DateTime? Deserialize(string value)
+        private static DateTime? Deserialize(string? value)
         {
-            if (!long.TryParse(value, out var valueAsLong))
+            if (String.IsNullOrEmpty(value) || !long.TryParse(value, out var valueAsLong))
                 return null;
 
             return new DateTime(valueAsLong);

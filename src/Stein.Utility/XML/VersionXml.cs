@@ -20,36 +20,36 @@ namespace Stein.Utility.XML
     public class VersionXml
     {
         [XmlIgnore]
-        public Version Value { get; set; }
+        public Version? Value { get; set; }
 
         [XmlText]
         [EditorBrowsable(EditorBrowsableState.Never), Browsable(false)]
-        public string StringValue
+        public string? StringValue
         {
             get => Value?.ToString();
-            set => Value = Version.TryParse(value, out var temp) ? temp : null;
+            set => Value = !String.IsNullOrEmpty(value) && Version.TryParse(value, out var temp) ? temp : null;
         }
 
         public VersionXml()
         {
         }
 
-        public VersionXml(Version version)
+        public VersionXml(Version? version)
         {
             Value = version;
         }
         
-        public static implicit operator Version(VersionXml versionXml)
+        public static implicit operator Version?(VersionXml? versionXml)
         {
             return versionXml?.Value;
         }
 
-        public static implicit operator VersionXml(Version version)
+        public static implicit operator VersionXml(Version? version)
         {
             return new VersionXml(version);
         }
 
-        public override string ToString()
+        public override string? ToString()
         {
             return StringValue;
         }

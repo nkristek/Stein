@@ -23,7 +23,7 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null 
                 || String.IsNullOrEmpty(e.PropertyName) 
@@ -32,15 +32,18 @@ namespace Stein.ViewModels.Commands.ApplicationDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(ApplicationDialogModel viewModel, object parameter)
+        protected override bool CanExecute(ApplicationDialogModel? viewModel, object? parameter)
         {
-            return !String.IsNullOrEmpty(viewModel.Name);
+            return !String.IsNullOrEmpty(viewModel?.Name);
         }
 
         /// <inheritdoc />
-        protected override void Execute(ApplicationDialogModel viewModel, object parameter)
+        protected override void Execute(ApplicationDialogModel? viewModel, object? parameter)
         {
-            var directoryName = GetLogFolderPath(viewModel.Name);
+            if (!(viewModel?.Name is string applicationName)) 
+                return;
+
+            var directoryName = GetLogFolderPath(applicationName);
             if (!_ioService.DirectoryExists(directoryName))
                 _ioService.CreateDirectory(directoryName);
             _uriService.OpenUri(directoryName);

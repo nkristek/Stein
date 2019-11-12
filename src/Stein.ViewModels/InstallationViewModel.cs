@@ -20,9 +20,9 @@ namespace Stein.ViewModels
             PropertyChanged += OnPropertyChanged;
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
-            if (e.PropertyName != nameof(Progress) && e.PropertyName != nameof(State))
+            if (e != null && e.PropertyName != nameof(Progress) && e.PropertyName != nameof(State))
                 return;
 
             switch (State)
@@ -41,9 +41,9 @@ namespace Stein.ViewModels
             }
         }
 
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
@@ -127,11 +127,11 @@ namespace Stein.ViewModels
             _cancellationTokenSource?.Dispose();
         }
 
-        private IViewModelCommand<InstallationViewModel> _cancelOperationCommand;
+        private IViewModelCommand<InstallationViewModel>? _cancelOperationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<InstallationViewModel> CancelOperationCommand
+        public IViewModelCommand<InstallationViewModel>? CancelOperationCommand
         {
             get => _cancelOperationCommand;
             set
