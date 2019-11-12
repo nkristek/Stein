@@ -9,33 +9,33 @@ namespace Stein.ViewModels
     public class UpdateDialogModel
         : DialogModel
     {
-        private Version _currentVersion;
+        private Version? _currentVersion;
 
-        public Version CurrentVersion
+        public Version? CurrentVersion
         {
             get => _currentVersion;
             set => SetProperty(ref _currentVersion, value);
         }
 
-        private Version _updateVersion;
+        private Version? _updateVersion;
 
-        public Version UpdateVersion
+        public Version? UpdateVersion
         {
             get => _updateVersion;
             set => SetProperty(ref _updateVersion, value);
         }
 
-        private Uri _updateUri;
+        private Uri? _updateUri;
 
-        public Uri UpdateUri
+        public Uri? UpdateUri
         {
             get => _updateUri;
             set => SetProperty(ref _updateUri, value);
         }
 
-        private string _releaseTag;
+        private string? _releaseTag;
 
-        public string ReleaseTag
+        public string? ReleaseTag
         {
             get => _releaseTag;
             set => SetProperty(ref _releaseTag, value);
@@ -59,11 +59,11 @@ namespace Stein.ViewModels
             set => SetProperty(ref _isUpdateCancelled, value);
         }
 
-        private IViewModelCommand<UpdateDialogModel> _openUpdateUriCommand;
+        private IViewModelCommand<UpdateDialogModel>? _openUpdateUriCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<UpdateDialogModel> OpenUpdateUriCommand
+        public IViewModelCommand<UpdateDialogModel>? OpenUpdateUriCommand
         {
             get => _openUpdateUriCommand;
             set
@@ -78,11 +78,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<UpdateDialogModel> _installUpdateCommand;
+        private IViewModelCommand<UpdateDialogModel>? _installUpdateCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<UpdateDialogModel> InstallUpdateCommand
+        public IViewModelCommand<UpdateDialogModel>? InstallUpdateCommand
         {
             get => _installUpdateCommand;
             set
@@ -97,11 +97,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<UpdateDialogModel> _cancelUpdateCommand;
+        private IViewModelCommand<UpdateDialogModel>? _cancelUpdateCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<UpdateDialogModel> CancelUpdateCommand
+        public IViewModelCommand<UpdateDialogModel>? CancelUpdateCommand
         {
             get => _cancelUpdateCommand;
             set

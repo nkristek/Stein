@@ -21,7 +21,7 @@ namespace Stein.Presentation
         /// <typeparam name="TViewModel">Subclass of <see cref="IViewModel"/> which should be saved.</typeparam>
         /// <param name="viewModel"><see cref="IViewModel"/> to save</param>
         /// <param name="entity">Entity of the <see cref="IViewModel"/> (optional)</param>
-        Task SaveViewModelAsync<TViewModel>(TViewModel? viewModel, object? entity = null) where TViewModel : class, IViewModel;
+        Task SaveViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel;
 
         /// <summary>
         /// Updates the given <see cref="IViewModel"/> and discard any changes made to it asynchronously.
@@ -29,7 +29,7 @@ namespace Stein.Presentation
         /// <typeparam name="TViewModel">Subclass of <see cref="IViewModel"/> which should be updated.</typeparam>
         /// <param name="viewModel"><see cref="IViewModel"/> to update</param>
         /// <param name="entity">Entity of the <see cref="IViewModel"/> (optional)</param>
-        Task UpdateViewModelAsync<TViewModel>(TViewModel? viewModel, object? entity = null) where TViewModel : class, IViewModel;
+        Task UpdateViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel;
 
         /// <summary>
         /// Deletes the corresponding persistent entity asynchronously.
@@ -37,6 +37,6 @@ namespace Stein.Presentation
         /// <typeparam name="TViewModel">Subclass of <see cref="IViewModel"/> which should be deleted.</typeparam>
         /// <param name="viewModel"><see cref="IViewModel"/> to delete</param>
         /// <param name="entity">Entity of the <see cref="IViewModel"/> (optional)</param>
-        Task DeleteViewModelAsync<TViewModel>(TViewModel? viewModel, object? entity = null) where TViewModel : class, IViewModel;
+        Task DeleteViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel;
     }
 }

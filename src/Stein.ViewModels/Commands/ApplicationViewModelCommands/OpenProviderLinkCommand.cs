@@ -16,7 +16,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -26,15 +26,16 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
+        protected override bool CanExecute(ApplicationViewModel? viewModel, object? parameter)
         {
-            return !String.IsNullOrEmpty(viewModel.ProviderLink) && !viewModel.IsUpdating;
+            return viewModel != null && !String.IsNullOrEmpty(viewModel.ProviderLink) && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
-        protected override void Execute(ApplicationViewModel viewModel, object parameter)
+        protected override void Execute(ApplicationViewModel? viewModel, object? parameter)
         {
-            _uriService.OpenUri(viewModel.ProviderLink);
+            if (viewModel?.ProviderLink is string link)
+                _uriService.OpenUri(link);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -29,14 +29,17 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
+        protected override bool CanExecute(ApplicationViewModel? viewModel, object? parameter)
         {
-            return viewModel.Parent is MainWindowDialogModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
+            return viewModel?.Parent is MainWindowDialogModel parent && parent.CurrentInstallation == null && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(ApplicationViewModel? viewModel, object? parameter)
         {
+            if (viewModel == null)
+                return;
+
             var dialogModel = _viewModelService.CreateViewModel<ApplicationDialogModel>(viewModel);
             if (_dialogService.ShowDialog(dialogModel) != true)
                 return;

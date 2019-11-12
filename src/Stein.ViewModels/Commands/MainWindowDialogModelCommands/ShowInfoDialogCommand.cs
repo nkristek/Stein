@@ -18,8 +18,11 @@ namespace Stein.ViewModels.Commands.MainWindowDialogModelCommands
         }
 
         /// <inheritdoc />
-        protected override void Execute(MainWindowDialogModel viewModel, object parameter)
+        protected override void Execute(MainWindowDialogModel? viewModel, object? parameter)
         {
+            if (viewModel == null)
+                return;
+
             var dialogModel = _viewModelService.CreateViewModel<AboutDialogModel>(viewModel);
             _dialogService.ShowDialog(dialogModel);
         }

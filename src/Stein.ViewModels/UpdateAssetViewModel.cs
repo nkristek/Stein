@@ -6,17 +6,17 @@ namespace Stein.ViewModels
     public class UpdateAssetViewModel
         : ViewModel
     {
-        private string _fileName;
+        private string? _fileName;
 
-        public string FileName
+        public string? FileName
         {
             get => _fileName;
             set => SetProperty(ref _fileName, value);
         }
 
-        private Uri _downloadUri;
+        private Uri? _downloadUri;
 
-        public Uri DownloadUri
+        public Uri? DownloadUri
         {
             get => _downloadUri;
             set => SetProperty(ref _downloadUri, value);

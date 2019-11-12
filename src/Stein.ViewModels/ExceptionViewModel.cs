@@ -20,25 +20,25 @@ namespace Stein.ViewModels
             set => SetProperty(ref _localizedReason, value);
         }
 
-        private string _typeName;
+        private string? _typeName;
         
-        public string TypeName
+        public string? TypeName
         {
             get => _typeName;
             set => SetProperty(ref _typeName, value);
         }
 
-        private string _message;
+        private string? _message;
         
-        public string Message
+        public string? Message
         {
             get => _message;
             set => SetProperty(ref _message, value);
         }
 
-        private string _stackTrace;
+        private string? _stackTrace;
         
-        public string StackTrace
+        public string? StackTrace
         {
             get => _stackTrace;
             set => SetProperty(ref _stackTrace, value);
@@ -70,11 +70,11 @@ namespace Stein.ViewModels
         
         public ObservableCollection<ExceptionViewModel> InnerExceptions { get; } = new ObservableCollection<ExceptionViewModel>();
 
-        private IViewModelCommand<ExceptionViewModel> _copyExceptionDetailsToClipboardCommand;
+        private IViewModelCommand<ExceptionViewModel>? _copyExceptionDetailsToClipboardCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ExceptionViewModel> CopyExceptionDetailsToClipboardCommand
+        public IViewModelCommand<ExceptionViewModel>? CopyExceptionDetailsToClipboardCommand
         {
             get => _copyExceptionDetailsToClipboardCommand;
             set

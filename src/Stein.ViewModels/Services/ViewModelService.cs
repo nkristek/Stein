@@ -57,8 +57,6 @@ namespace Stein.ViewModels.Services
 
         private readonly IIOService _ioService;
 
-        private readonly string _tmpFolderPath;
-
         private readonly string _downloadFolderPath;
 
         private readonly string _logFolderPath;
@@ -77,7 +75,8 @@ namespace Stein.ViewModels.Services
             _uriService = uriService ?? throw new ArgumentNullException(nameof(uriService));
             _clipboardService = clipboardService ?? throw new ArgumentNullException(nameof(clipboardService));
             _ioService = ioService ?? throw new ArgumentNullException(nameof(ioService));
-            _tmpFolderPath = !String.IsNullOrEmpty(tmpFolderPath) ? tmpFolderPath : throw new ArgumentNullException(nameof(tmpFolderPath));
+            if (String.IsNullOrEmpty(tmpFolderPath))
+                throw new ArgumentNullException(nameof(tmpFolderPath));
             _downloadFolderPath = GetDownloadFolderPath(tmpFolderPath);
             _logFolderPath = GetLogFolderPath(tmpFolderPath);
         }
@@ -99,43 +98,47 @@ namespace Stein.ViewModels.Services
         }
 
         /// <inheritdoc />
-        public TViewModel CreateViewModel<TViewModel>(IViewModel parent = null, object entity = null) where TViewModel : class, IViewModel
+        public TViewModel CreateViewModel<TViewModel>(IViewModel? parent = null, object? entity = null) where TViewModel : class, IViewModel
         {
             TViewModel viewModel;
 
             if (typeof(TViewModel) == typeof(MainWindowDialogModel))
-                viewModel = CreateMainWindowDialogModel(parent) as TViewModel;
+                viewModel = (CreateMainWindowDialogModel(parent) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
-                viewModel = CreateApplicationDialogModel(parent) as TViewModel;
+                viewModel = (CreateApplicationDialogModel(parent) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(InstallerBundleDialogModel))
-                viewModel = CreateInstallerBundleDialogModel(parent) as TViewModel;
+                viewModel = (CreateInstallerBundleDialogModel(parent!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(AboutDialogModel))
-                viewModel = CreateAboutDialogModel(parent) as TViewModel;
+                viewModel = (CreateAboutDialogModel(parent) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(ExceptionViewModel))
-                viewModel = CreateExceptionViewModel(parent, entity as Exception) as TViewModel;
+                viewModel = (CreateExceptionViewModel(parent, (entity as Exception)!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(ExceptionDialogModel))
-                viewModel = CreateExceptionDialogModel(parent, entity as Exception) as TViewModel;
+                viewModel = (CreateExceptionDialogModel(parent, entity as Exception) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(InstallationResultViewModel))
-                viewModel = CreateInstallationResultViewModel(parent) as TViewModel;
+                viewModel = (CreateInstallationResultViewModel((parent as InstallerViewModel)!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(InstallationResultDialogModel))
-                viewModel = CreateInstallationResultDialogModel(parent) as TViewModel;
+                viewModel = (CreateInstallationResultDialogModel((parent as InstallationViewModel)!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(InstallationViewModel))
-                viewModel = CreateInstallationViewModel(parent) as TViewModel;
+#pragma warning disable IDE0067 // Dispose objects before losing scope
+                viewModel = (CreateInstallationViewModel(parent) as TViewModel)!;
+#pragma warning restore IDE0067 // Dispose objects before losing scope
             else if (typeof(TViewModel) == typeof(UpdateDialogModel))
-                viewModel = CreateUpdateDialogModel(parent, entity as IUpdateResult) as TViewModel;
+                viewModel = (CreateUpdateDialogModel(parent, (entity as IUpdateResult)!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(UpdateAssetViewModel))
-                viewModel = CreateUpdateAssetViewModel(parent, entity as IUpdateAsset) as TViewModel;
+                viewModel = (CreateUpdateAssetViewModel(parent, (entity as IUpdateAsset)!) as TViewModel)!;
             else if (typeof(TViewModel) == typeof(WelcomeDialogModel))
-                viewModel = CreateWelcomeDialogModel(parent) as TViewModel;
+                viewModel = (CreateWelcomeDialogModel(parent) as TViewModel)!;
             else
                 throw new NotSupportedException(Strings.ViewModelNotSupported);
 
-            if (viewModel != null)
-                viewModel.IsDirty = false;
+            if (viewModel == null)
+                throw new NotSupportedException($"The created viewmodel is null (TViewModel={typeof(TViewModel).FullName}, entity is {(entity != null ? $"not null (Type={entity.GetType().FullName})" : "null")})");
+
+            viewModel.IsDirty = false;
             return viewModel;
         }
 
-        private UpdateDialogModel CreateUpdateDialogModel(IViewModel parent, IUpdateResult updateResult)
+        private UpdateDialogModel CreateUpdateDialogModel(IViewModel? parent, IUpdateResult updateResult)
         {
             if (updateResult == null)
                 throw new ArgumentNullException(nameof(updateResult));
@@ -158,7 +161,7 @@ namespace Stein.ViewModels.Services
             return dialogModel;
         }
 
-        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel parent, IUpdateAsset updateAsset)
+        private UpdateAssetViewModel CreateUpdateAssetViewModel(IViewModel? parent, IUpdateAsset updateAsset)
         {
             if (updateAsset == null)
                 throw new ArgumentNullException(nameof(updateAsset));
@@ -173,7 +176,7 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private WelcomeDialogModel CreateWelcomeDialogModel(IViewModel parent)
+        private WelcomeDialogModel CreateWelcomeDialogModel(IViewModel? parent)
         {
             return new WelcomeDialogModel
             {
@@ -182,7 +185,7 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private InstallationViewModel CreateInstallationViewModel(IViewModel parent)
+        private InstallationViewModel CreateInstallationViewModel(IViewModel? parent)
         {
             return new InstallationViewModel(_progressBarService)
             {
@@ -192,34 +195,34 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private InstallationResultViewModel CreateInstallationResultViewModel(IViewModel parent)
+        private InstallationResultViewModel CreateInstallationResultViewModel(InstallerViewModel parent)
         {
-            if (!(parent is InstallerViewModel installer))
-                throw new ArgumentException($"Argument has to be of type {nameof(InstallerViewModel)}", nameof(parent));
+            if (parent == null)
+                throw new ArgumentNullException(nameof(parent));
 
             return new InstallationResultViewModel
             {
                 Parent = parent,
-                InstallerName = installer.FileName,
+                InstallerName = parent.FileName,
                 IsDirty = false
             };
         }
 
-        private InstallationResultDialogModel CreateInstallationResultDialogModel(IViewModel parent)
+        private InstallationResultDialogModel CreateInstallationResultDialogModel(InstallationViewModel parent)
         {
-            if (!(parent is InstallationViewModel installationViewModel))
-                throw new ArgumentException($"Argument has to be of type {nameof(InstallationViewModel)}", nameof(parent));
+            if (parent == null)
+                throw new ArgumentNullException(nameof(parent));
 
             return new InstallationResultDialogModel
             {
-                Name = installationViewModel.Name,
+                Name = parent.Name,
                 Parent = parent,
                 OpenLogFolderCommand = new Commands.InstallationResultDialogModelCommands.OpenLogFolderCommand(_uriService, _ioService),
                 IsDirty = false
             };
         }
 
-        private ExceptionViewModel CreateExceptionViewModel(IViewModel parent, Exception exception)
+        private ExceptionViewModel CreateExceptionViewModel(IViewModel? parent, Exception exception)
         {
             if (exception == null)
                 throw new ArgumentNullException(nameof(exception));
@@ -248,14 +251,14 @@ namespace Stein.ViewModels.Services
             return exceptionViewModel;
         }
 
-        private ExceptionDialogModel CreateExceptionDialogModel(IViewModel parent, Exception exception)
+        private ExceptionDialogModel CreateExceptionDialogModel(IViewModel? parent, Exception? exception)
         {
             var exceptionViewModel = parent as ExceptionViewModel;
             if (exceptionViewModel == null && exception == null)
                 throw new ArgumentException($"Since no exception is provided via the entity parameter, parent has to be of type {nameof(ExceptionViewModel)}", nameof(parent));
 
             if (exceptionViewModel == null)
-                exceptionViewModel = CreateExceptionViewModel(parent, exception);
+                exceptionViewModel = CreateExceptionViewModel(parent, exception!);
 
             return new ExceptionDialogModel
             {
@@ -266,7 +269,7 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private MainWindowDialogModel CreateMainWindowDialogModel(IViewModel parent = null)
+        private MainWindowDialogModel CreateMainWindowDialogModel(IViewModel? parent = null)
         {
             var viewModel = new MainWindowDialogModel(_themeService)
             {
@@ -287,13 +290,13 @@ namespace Stein.ViewModels.Services
             return viewModel;
         }
 
-        private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(IViewModel parent)
+        private IEnumerable<ApplicationViewModel> CreateApplicationViewModels(IViewModel? parent)
         {
             foreach (var application in _configurationService.Configuration.Applications)
                 yield return CreateApplicationViewModel(application, parent);
         }
 
-        private ApplicationViewModel CreateApplicationViewModel(Application application, IViewModel parent = null)
+        private ApplicationViewModel CreateApplicationViewModel(Application application, IViewModel? parent = null)
         {
             if (application == null)
                 throw new ArgumentNullException(nameof(application));
@@ -328,7 +331,7 @@ namespace Stein.ViewModels.Services
             return id;
         }
         
-        private ApplicationDialogModel CreateApplicationDialogModel(IViewModel parent = null)
+        private ApplicationDialogModel CreateApplicationDialogModel(IViewModel? parent = null)
         {
             ApplicationDialogModel dialogModel;
             if (parent is ApplicationViewModel applicationViewModel)
@@ -386,7 +389,7 @@ namespace Stein.ViewModels.Services
             return dialogModel;
         }
         
-        private IEnumerable<InstallerFileBundleProviderViewModel> CreateAvailableProviderViewModels(IViewModel parent = null)
+        private IEnumerable<InstallerFileBundleProviderViewModel> CreateAvailableProviderViewModels(IViewModel? parent = null)
         {
             yield return new DiskInstallerFileBundleProviderViewModel
             {
@@ -417,7 +420,7 @@ namespace Stein.ViewModels.Services
             };
         }
 
-        private AboutDialogModel CreateAboutDialogModel(IViewModel parent = null)
+        private AboutDialogModel CreateAboutDialogModel(IViewModel? parent = null)
         {
             var assembly = Assembly.GetEntryAssembly();
             var assemblyName = assembly.GetName();
@@ -509,17 +512,25 @@ namespace Stein.ViewModels.Services
         }
         
         /// <inheritdoc />
-        public async Task SaveViewModelAsync<TViewModel>(TViewModel viewModel, object entity = null) where TViewModel : class, IViewModel
+        public async Task SaveViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel
         {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             if (!viewModel.IsDirty)
                 return;
 
-            if (typeof(TViewModel) == typeof(MainWindowDialogModel))
-                SaveMainWindowDialogModel(viewModel as MainWindowDialogModel);
-            else if (typeof(TViewModel) == typeof(ApplicationDialogModel))
-                SaveApplicationDialogModel(viewModel as ApplicationDialogModel);
-            else
-                throw new NotSupportedException(Strings.ViewModelNotSupported);
+            switch (viewModel)
+            {
+                case MainWindowDialogModel mainWindowDialogModel:
+                    SaveMainWindowDialogModel(mainWindowDialogModel);
+                    break;
+                case ApplicationDialogModel applicationDialogModel:
+                    SaveApplicationDialogModel(applicationDialogModel);
+                    break;
+                default:
+                    throw new NotSupportedException(Strings.ViewModelNotSupported);
+            }
 
             await _configurationService.SaveConfigurationAsync();
             viewModel.IsDirty = false;
@@ -527,12 +538,18 @@ namespace Stein.ViewModels.Services
 
         private void SaveMainWindowDialogModel(MainWindowDialogModel viewModel)
         {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             _configurationService.Configuration.SelectedTheme = viewModel.CurrentTheme;
             viewModel.IsDirty = false;
         }
         
         private void SaveApplicationDialogModel(ApplicationDialogModel applicationDialog)
         {
+            if (applicationDialog == null)
+                throw new ArgumentNullException(nameof(applicationDialog));
+
             if (applicationDialog.SelectedProvider == null)
                 throw new ArgumentException("The selected provider is null", nameof(applicationDialog));
 
@@ -572,18 +589,26 @@ namespace Stein.ViewModels.Services
         }
 
         /// <inheritdoc />
-        public async Task UpdateViewModelAsync<TViewModel>(TViewModel viewModel, object entity = null) where TViewModel : class, IViewModel
+        public async Task UpdateViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel
         {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             viewModel.IsUpdating = true;
 
             try
             {
-                if (typeof(TViewModel) == typeof(ApplicationViewModel))
-                    await UpdateApplicationViewModelAsync(viewModel as ApplicationViewModel);
-                else if (typeof(TViewModel) == typeof(MainWindowDialogModel))
-                    await UpdateMainWindowDialogModelAsync(viewModel as MainWindowDialogModel);
-                else
-                    throw new NotSupportedException(Strings.ViewModelNotSupported);
+                switch (viewModel)
+                {
+                    case ApplicationViewModel applicationViewModel:
+                        await UpdateApplicationViewModelAsync(applicationViewModel);
+                        break;
+                    case MainWindowDialogModel mainWindowDialogModel:
+                        await UpdateMainWindowDialogModelAsync(mainWindowDialogModel);
+                        break;
+                    default:
+                        throw new NotSupportedException(Strings.ViewModelNotSupported);
+                }
             }
             finally
             {
@@ -595,6 +620,9 @@ namespace Stein.ViewModels.Services
 
         private async Task UpdateMainWindowDialogModelAsync(MainWindowDialogModel viewModel)
         {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             // modifying/replacing the ObservableCollection freezes the UI for a short time, do it only when its absolutely necessary
             if (!viewModel.Applications.SequenceEqual(_configurationService.Configuration.Applications, (oldItem, newItem) => oldItem.EntityId == newItem.Id))
             {
@@ -607,16 +635,21 @@ namespace Stein.ViewModels.Services
             {
                 await Task.Run(() => _productService.RefreshInstalledProducts());
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception exception)
             {
                 Log.Error("Getting installed products failed", exception);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             await Task.WhenAll(viewModel.Applications.Select(async application => await UpdateViewModelAsync(application)));
         }
 
-        private async Task UpdateApplicationViewModelAsync(ApplicationViewModel viewModel, Application application = null)
+        private async Task UpdateApplicationViewModelAsync(ApplicationViewModel viewModel, Application? application = null)
         {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
             if (application == null)
             {
                 if (viewModel.EntityId.IsDefault())
@@ -644,67 +677,77 @@ namespace Stein.ViewModels.Services
                 if (configuration == null)
                     throw new Exception("No configuration is set");
 
-                using (var provider = _installerFileBundleProviderFactory.Create(configuration))
+                using var provider = _installerFileBundleProviderFactory.Create(configuration);
+                viewModel.ProviderLink = provider.ProviderLink;
+
+                var installerBundles = await provider.GetInstallerFileBundlesAsync();
+                foreach (var installerBundle in installerBundles)
                 {
-                    viewModel.ProviderLink = provider.ProviderLink;
-
-                    var installerBundles = await provider.GetInstallerFileBundlesAsync();
-                    foreach (var installerBundle in installerBundles)
+                    var bundleViewModel = new InstallerBundleViewModel
                     {
-                        var bundleViewModel = new InstallerBundleViewModel
+                        Parent = viewModel,
+                        Name = installerBundle.Name,
+                        Created = installerBundle.Created,
+                    };
+                    foreach (var installerFile in installerBundle.InstallerFiles)
+                    {
+                        var installerViewModel = new InstallerViewModel
                         {
-                            Parent = viewModel,
-                            Name = installerBundle.Name,
-                            Created = installerBundle.Created,
+                            Parent = bundleViewModel,
+                            FileName = installerFile.FileName,
+                            Created = installerFile.Created
                         };
-                        foreach (var installerFile in installerBundle.InstallerFiles)
+                        installerViewModel.InstallerFileProvider = new InstallerFileProvider(async (filePath, progress, cancellationToken) =>
                         {
-                            var installerViewModel = new InstallerViewModel
-                            {
-                                Parent = bundleViewModel,
-                                FileName = installerFile.FileName,
-                                Created = installerFile.Created
-                            };
-                            installerViewModel.InstallerFileProvider = new InstallerFileProvider(async (filePath, progress, cancellationToken) =>
-                            {
-                                await installerFile.SaveFileAsync(filePath, _msiService, progress, cancellationToken);
-                                installerViewModel.Name = installerFile.Name;
-                                installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
-                                installerViewModel.Version = installerFile.Version;
-                                installerViewModel.ProductCode = installerFile.ProductCode;
-                                installerViewModel.IsInstalled = _productService.IsProductInstalled(installerFile.ProductCode);
-                            });
-                            installerViewModel.IsDirty = false;
+                            await installerFile.SaveFileAsync(filePath, _msiService, progress, cancellationToken);
+                            installerViewModel.Name = installerFile.Name;
+                            installerViewModel.Culture = installerFile.Culture.IetfLanguageTag;
+                            installerViewModel.Version = installerFile.Version;
+                            installerViewModel.ProductCode = installerFile.ProductCode;
+                            installerViewModel.IsInstalled = _productService.IsProductInstalled(installerFile.ProductCode);
+                        });
+                        installerViewModel.IsDirty = false;
 
-                            bundleViewModel.Installers.Add(installerViewModel);
-                        }
-                        viewModel.InstallerBundles.Add(bundleViewModel);
-                        bundleViewModel.IsDirty = false;
+                        bundleViewModel.Installers.Add(installerViewModel);
                     }
+                    viewModel.InstallerBundles.Add(bundleViewModel);
+                    bundleViewModel.IsDirty = false;
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception exception)
             {
                 Log.Error("Getting installer file bundles failed", exception);
                 viewModel.InstallerBundles.Clear();
             }
-            
+#pragma warning restore CA1031 // Do not catch general exception types
+
             viewModel.SelectedInstallerBundle = viewModel.InstallerBundles.LastOrDefault();
         }
         
         /// <inheritdoc />
-        public async Task DeleteViewModelAsync<TViewModel>(TViewModel viewModel, object entity = null) where TViewModel : class, IViewModel
+        public async Task DeleteViewModelAsync<TViewModel>(TViewModel viewModel, object? entity = null) where TViewModel : class, IViewModel
         {
-            if (typeof(TViewModel) == typeof(ApplicationViewModel))
-                DeleteApplicationViewModel(viewModel as ApplicationViewModel);
-            else
-                throw new NotSupportedException(Strings.ViewModelNotSupported);
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
+            switch (viewModel)
+            {
+                case ApplicationViewModel applicationViewModel:
+                    DeleteApplicationViewModel(applicationViewModel);
+                    break;
+                default:
+                    throw new NotSupportedException(Strings.ViewModelNotSupported);
+            }
 
             await _configurationService.SaveConfigurationAsync();
         }
 
         private void DeleteApplicationViewModel(ApplicationViewModel application)
         {
+            if (application == null)
+                throw new ArgumentNullException(nameof(application));
+
             _configurationService.Configuration.Applications.RemoveAll(af => af.Id == application.EntityId);
         }
     }

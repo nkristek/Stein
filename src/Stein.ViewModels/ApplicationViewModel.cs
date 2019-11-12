@@ -17,9 +17,9 @@ namespace Stein.ViewModels
             set => SetProperty(ref _entityId, value);
         }
 
-        private string _name;
+        private string? _name;
         
-        public string Name
+        public string? Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
@@ -57,9 +57,9 @@ namespace Stein.ViewModels
             set => SetProperty(ref _automaticallyDeleteInstallationLogs, value);
         }
 
-        private string _keepNewestInstallationLogsString;
+        private string? _keepNewestInstallationLogsString;
         
-        public string KeepNewestInstallationLogsString
+        public string? KeepNewestInstallationLogsString
         {
             get => _keepNewestInstallationLogsString;
             set => SetProperty(ref _keepNewestInstallationLogsString, value);
@@ -79,25 +79,25 @@ namespace Stein.ViewModels
             set => SetProperty(ref _filterDuplicateInstallers, value);
         }
 
-        private string _providerType;
+        private string? _providerType;
 
-        public string ProviderType
+        public string? ProviderType
         {
             get => _providerType;
             set => SetProperty(ref _providerType, value);
         }
 
-        private string _providerLink;
+        private string? _providerLink;
 
-        public string ProviderLink
+        public string? ProviderLink
         {
             get => _providerLink;
             set => SetProperty(ref _providerLink, value);
         }
 
-        private InstallerBundleViewModel _selectedInstallerBundle;
+        private InstallerBundleViewModel? _selectedInstallerBundle;
 
-        public InstallerBundleViewModel SelectedInstallerBundle
+        public InstallerBundleViewModel? SelectedInstallerBundle
         {
             get => _selectedInstallerBundle;
             set => SetProperty(ref _selectedInstallerBundle, value);
@@ -105,11 +105,11 @@ namespace Stein.ViewModels
 
         public ObservableCollection<InstallerBundleViewModel> InstallerBundles { get; } = new ObservableCollection<InstallerBundleViewModel>();
 
-        private IViewModelCommand<ApplicationViewModel> _editApplicationCommand;
+        private IViewModelCommand<ApplicationViewModel>? _editApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> EditApplicationCommand
+        public IViewModelCommand<ApplicationViewModel>? EditApplicationCommand
         {
             get => _editApplicationCommand;
             set
@@ -124,11 +124,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<ApplicationViewModel> _deleteApplicationCommand;
+        private IViewModelCommand<ApplicationViewModel>? _deleteApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> DeleteApplicationCommand
+        public IViewModelCommand<ApplicationViewModel>? DeleteApplicationCommand
         {
             get => _deleteApplicationCommand;
             set
@@ -143,11 +143,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<ApplicationViewModel> _installApplicationCommand;
+        private IViewModelCommand<ApplicationViewModel>? _installApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> InstallApplicationCommand
+        public IViewModelCommand<ApplicationViewModel>? InstallApplicationCommand
         {
             get => _installApplicationCommand;
             set
@@ -162,11 +162,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<ApplicationViewModel> _uninstallApplicationCommand;
+        private IViewModelCommand<ApplicationViewModel>? _uninstallApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> UninstallApplicationCommand
+        public IViewModelCommand<ApplicationViewModel>? UninstallApplicationCommand
         {
             get => _uninstallApplicationCommand;
             set
@@ -181,11 +181,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<ApplicationViewModel> _customOperationApplicationCommand;
+        private IViewModelCommand<ApplicationViewModel>? _customOperationApplicationCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> CustomOperationApplicationCommand
+        public IViewModelCommand<ApplicationViewModel>? CustomOperationApplicationCommand
         {
             get => _customOperationApplicationCommand;
             set
@@ -200,11 +200,11 @@ namespace Stein.ViewModels
             }
         }
 
-        private IViewModelCommand<ApplicationViewModel> _openProviderLinkCommand;
+        private IViewModelCommand<ApplicationViewModel>? _openProviderLinkCommand;
 
         [IsDirtyIgnored]
         [IsReadOnlyIgnored]
-        public IViewModelCommand<ApplicationViewModel> OpenProviderLinkCommand
+        public IViewModelCommand<ApplicationViewModel>? OpenProviderLinkCommand
         {
             get => _openProviderLinkCommand;
             set

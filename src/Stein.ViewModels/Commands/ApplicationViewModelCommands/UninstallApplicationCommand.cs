@@ -38,7 +38,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override void OnContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnContextPropertyChanged(object? sender, PropertyChangedEventArgs? e)
         {
             if (e == null
                 || String.IsNullOrEmpty(e.PropertyName)
@@ -48,22 +48,22 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override bool CanExecute(ApplicationViewModel viewModel, object parameter)
+        protected override bool CanExecute(ApplicationViewModel? viewModel, object? parameter)
         {
-            if (!(viewModel.Parent is MainWindowDialogModel mainWindowDialogModel) || mainWindowDialogModel.CurrentInstallation != null)
+            if (!(viewModel?.Parent is MainWindowDialogModel mainWindowDialogModel) || mainWindowDialogModel.CurrentInstallation != null)
                 return false;
 
             return viewModel.SelectedInstallerBundle != null && viewModel.SelectedInstallerBundle.Installers.Any() && !viewModel.IsUpdating;
         }
 
         /// <inheritdoc />
-        protected override async Task ExecuteAsync(ApplicationViewModel viewModel, object parameter)
+        protected override async Task ExecuteAsync(ApplicationViewModel? viewModel, object? parameter)
         {
-            if (!(viewModel.Parent is MainWindowDialogModel mainWindowDialogModel))
+            if (!(viewModel?.Parent is MainWindowDialogModel mainWindowDialogModel))
                 return;
 
-            var installers = viewModel.SelectedInstallerBundle.Installers;
-            if (!installers.Any())
+            var installers = viewModel.SelectedInstallerBundle?.Installers;
+            if (installers == null || !installers.Any())
                 return;
 
             mainWindowDialogModel.CurrentInstallation = _viewModelService.CreateViewModel<InstallationViewModel>(mainWindowDialogModel);
@@ -95,7 +95,7 @@ namespace Stein.ViewModels.Commands.ApplicationViewModelCommands
                 mainWindowDialogModel.CurrentInstallation = null;
             }
 
-            mainWindowDialogModel.RefreshApplicationsCommand.Execute(null);
+            mainWindowDialogModel.RefreshApplicationsCommand?.Execute(null);
 
             if (mainWindowDialogModel.RecentInstallationResult.InstallationResults.Any(r => r.State != InstallationResultState.Success && r.State != InstallationResultState.Skipped))
                 _dialogService.ShowDialog(mainWindowDialogModel.RecentInstallationResult);

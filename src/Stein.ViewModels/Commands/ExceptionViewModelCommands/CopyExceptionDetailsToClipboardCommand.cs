@@ -15,9 +15,10 @@ namespace Stein.ViewModels.Commands.ExceptionViewModelCommands
         }
 
         /// <inheritdoc />
-        protected override void Execute(ExceptionViewModel viewModel, object parameter)
+        protected override void Execute(ExceptionViewModel? viewModel, object? parameter)
         {
-            _clipboardService.SetText(viewModel.ExceptionText);
+            if (viewModel?.ExceptionText is string text)
+                _clipboardService.SetText(text);
         }
     }
 }

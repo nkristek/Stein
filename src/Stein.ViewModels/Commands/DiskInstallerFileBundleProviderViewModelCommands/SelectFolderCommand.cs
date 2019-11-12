@@ -16,9 +16,9 @@ namespace Stein.ViewModels.Commands.DiskInstallerFileBundleProviderViewModelComm
         }
 
         /// <inheritdoc />
-        protected override void Execute(DiskInstallerFileBundleProviderViewModel viewModel, object parameter)
+        protected override void Execute(DiskInstallerFileBundleProviderViewModel? viewModel, object? parameter)
         {
-            if (_dialogService.ShowSelectFolderDialog(out var folderPath, Strings.SelectFolder) == true)
+            if (viewModel != null && _dialogService.ShowSelectFolderDialog(out var folderPath, Strings.SelectFolder) == true)
                 viewModel.Path = folderPath;
         }
     }
