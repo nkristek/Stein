@@ -16,6 +16,7 @@
              d:DataContext="{d:DesignInstance viewModels:ApplicationViewModel, IsDesignTimeCreatable=True}">
 
     <GroupBox Margin="{adonisUi:Space 0.5}" 
+              Padding="0"
               SnapsToDevicePixels="True"
               IsEnabled="{Binding IsUpdating, Converter={c:BoolToInverseBoolConverter}}"
               HorizontalAlignment="Stretch"
@@ -23,59 +24,61 @@
               adonisExtensions:GroupBoxExtension.HeaderBackground="{DynamicResource {x:Static adonisUi:Brushes.AccentBrush}}"
               adonisExtensions:CornerRadiusExtension.CornerRadius="4">
         <GroupBox.Header>
-            <Grid>
+            <Grid Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="{adonisUi:Space 1}"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ButtonColumn"/>
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
-                        Height="{adonisUi:Space 3}"
-                        Width="{adonisUi:Space 3}"
-                        Padding="{adonisUi:Space 0.5}"
-                        VerticalAlignment="Center"
+                        Padding="{adonisUi:Space 2,1.5}"
+                        Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
+                        VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
-                        Content="{Binding}"
+                        HorizontalContentAlignment="Center"
                         Command="{Binding OpenProviderLinkCommand}"
-                        ToolTip="{Binding ProviderLink}">
-                    <Button.Style>
-                        <Style TargetType="{x:Type Button}"
-                               BasedOn="{StaticResource {x:Static adonisUi:Styles.AccentButton}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProviderType}" 
-                                     Value="Disk">
-                                    <Setter Property="ContentTemplate" 
-                                            Value="{StaticResource HddIconVariant}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProviderType}" 
-                                             Value="GitHub">
-                                    <Setter Property="ContentTemplate" 
-                                            Value="{StaticResource GitHubIconVariant}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+                        ToolTip="{Binding ProviderLink}"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="4,0,0,0">
+                    <ContentControl Height="{adonisUi:Space 2}"
+                                    Width="{adonisUi:Space 2}"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True"
+                                    Focusable="False">
+                        <ContentControl.Style>
+                            <Style TargetType="{x:Type ContentControl}"
+                                   BasedOn="{StaticResource {x:Type ContentControl}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ProviderType}" 
+                                                 Value="Disk">
+                                        <Setter Property="ContentTemplate" 
+                                                Value="{StaticResource HddIconVariant}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ProviderType}" 
+                                                 Value="GitHub">
+                                        <Setter Property="ContentTemplate" 
+                                                Value="{StaticResource GitHubIconVariant}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
                 </Button>
 
-                <TextBlock Grid.Column="2"
-                           Margin="{adonisUi:Space 0.5,0}"
+                <TextBlock Grid.Column="1"
+                           Margin="{adonisUi:Space 1}"
                            Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
                            FontWeight="Bold"
                            FontSize="14"
                            VerticalAlignment="Center"
                            Text="{Binding Name}"/>
 
-                <ContentControl Grid.Column="4"
+                <ContentControl Grid.Column="2"
                                 VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
                                 Focusable="False"
                                 ContentTemplate="{DynamicResource {x:Static adonisUi:Templates.LoadingCircle}}"
                                 Foreground="{DynamicResource {x:Static adonisUi:Brushes.AccentForegroundBrush}}"
@@ -83,29 +86,42 @@
                                 Height="{adonisUi:Space 2}"
                                 Visibility="{Binding IsUpdating, Converter={c:BoolToVisibilityConverter}}"/>
 
-                <Button Grid.Column="7"
+                <Button Grid.Column="3"
+                        Padding="{adonisUi:Space 2,1.5}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Width="{adonisUi:Space 3}"
-                        Height="{adonisUi:Space 3}"
-                        Padding="{adonisUi:Space 0.5}"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
-                        ContentTemplate="{DynamicResource EditIconVariant}"
-                        Command="{Binding EditApplicationCommand}"/>
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding EditApplicationCommand}">
+                    <ContentControl Height="{adonisUi:Space 2}"
+                                    Width="{adonisUi:Space 2}"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True"
+                                    Focusable="False"
+                                    ContentTemplate="{StaticResource EditIconVariant}"/>
+                </Button>
 
-                <Button Grid.Column="9"
+                <Button Grid.Column="4"
+                        Padding="{adonisUi:Space 1.5}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.AccentButton}}"
-                        Width="{adonisUi:Space 3}"
-                        Height="{adonisUi:Space 3}"
-                        Padding="{adonisUi:Space 0.5}"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Stretch"
                         VerticalContentAlignment="Center"
-                        ContentTemplate="{DynamicResource DeleteIconVariant}"
-                        Command="{Binding DeleteApplicationCommand}"/>
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding DeleteApplicationCommand}"
+                        adonisExtensions:CornerRadiusExtension.CornerRadius="0,4,0,0"
+                        adonisExtensions:RippleExtension.BackgroundBrush="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}"
+                        adonisExtensions:RippleExtension.BorderBrush="{DynamicResource {x:Static adonisUi:Brushes.ErrorBrush}}">
+                    <ContentControl Height="{adonisUi:Space 2}"
+                                    Width="{adonisUi:Space 2}"
+                                    SnapsToDevicePixels="True"
+                                    UseLayoutRounding="True"
+                                    Focusable="False"
+                                    ContentTemplate="{StaticResource DeleteIconVariant}"/>
+                </Button>
             </Grid>
         </GroupBox.Header>
 
-        <Grid>
+        <Grid Margin="{adonisUi:Space 1}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="{adonisUi:Space 1}"/>
