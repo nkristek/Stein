@@ -18,58 +18,57 @@
                        WindowStartupLocation="CenterScreen">
 
     <controls:AdonisWindow.TitleBarContent>
-        <Grid Margin="{adonisUi:Space 1,0}"
+        <Grid Margin="{adonisUi:Space 1,0,0,0}"
               Visibility="{Binding ., Converter={steinConverters:TypeEqualsParameterToVisibilityConverter}, ConverterParameter={x:Type viewModels:MainWindowDialogModel}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="{adonisUi:Space 1}"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Add Folder button -->
             <Button Grid.Column="0"
                     VerticalAlignment="Center"
-                    Height="{adonisUi:Space 3}"
-                    Width="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
-                    ContentTemplate="{StaticResource AddIconVariant}"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                     Command="{Binding AddApplicationCommand}"
-                    ToolTip="{x:Static localization:Strings.Add}"/>
+                    ToolTip="{x:Static localization:Strings.Add}">
+                <ContentControl Height="{adonisUi:Space 2}"
+                                Width="{adonisUi:Space 2}"
+                                SnapsToDevicePixels="True"
+                                UseLayoutRounding="True"
+                                Focusable="False"
+                                ContentTemplate="{StaticResource AddIconVariant}"/>
+            </Button>
 
             <!-- Update dialog button -->
-            <Grid Grid.Column="3"
+            <Grid Grid.Column="2"
                   Visibility="{Binding ElementName=UpdateButton, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Button x:Name="UpdateButton"
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        Height="{adonisUi:Space 3}"
-                        Width="{adonisUi:Space 3}"
-                        Padding="{adonisUi:Space 0.5}"
-                        ContentTemplate="{StaticResource UpdateIconVariant}"
                         Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                         Command="{Binding ShowUpdateDialogCommand}"
-                        ToolTip="{x:Static localization:Strings.UpdateAvailable}"/>
+                        ToolTip="{x:Static localization:Strings.UpdateAvailable}">
+                    <ContentControl Height="{adonisUi:Space 2}"
+                                Width="{adonisUi:Space 2}"
+                                SnapsToDevicePixels="True"
+                                UseLayoutRounding="True"
+                                Focusable="False"
+                                ContentTemplate="{StaticResource UpdateIconVariant}"/>
+                </Button>
             </Grid>
             
             <!-- Refresh button -->
-            <Button Grid.Column="5"
+            <Button Grid.Column="3"
                     VerticalAlignment="Center"
-                    Height="{adonisUi:Space 3}"
-                    Width="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
                     Content="{Binding}"
                     Command="{Binding RefreshApplicationsCommand}"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
@@ -125,25 +124,31 @@
             </Button>
 
             <!-- Theme switch button -->
-            <Button Grid.Column="7"
-                    Height="{adonisUi:Space 3}"
-                    Width="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
-                    ContentTemplate="{StaticResource ThemeIconVariant}"
+            <Button Grid.Column="4"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                     Command="{Binding ChangeThemeCommand}"
-                    ToolTip="{x:Static localization:Strings.SwitchTheme}"/>
+                    ToolTip="{x:Static localization:Strings.SwitchTheme}">
+                <ContentControl Height="{adonisUi:Space 2}"
+                                Width="{adonisUi:Space 2}"
+                                SnapsToDevicePixels="True"
+                                UseLayoutRounding="True"
+                                Focusable="False"
+                                ContentTemplate="{StaticResource ThemeIconVariant}"/>
+            </Button>
 
             <!-- Info dialog button -->
-            <Button Grid.Column="9"
+            <Button Grid.Column="5"
                     VerticalAlignment="Center"
-                    Height="{adonisUi:Space 3}"
-                    Width="{adonisUi:Space 3}"
-                    Padding="{adonisUi:Space 0.5}"
-                    ContentTemplate="{StaticResource InfoIconVariant}"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                     Command="{Binding ShowInfoDialogCommand}"
-                    ToolTip="{x:Static localization:Strings.About}"/>
+                    ToolTip="{x:Static localization:Strings.About}">
+                <ContentControl Height="{adonisUi:Space 2}"
+                                Width="{adonisUi:Space 2}"
+                                SnapsToDevicePixels="True"
+                                UseLayoutRounding="True"
+                                Focusable="False"
+                                ContentTemplate="{StaticResource InfoIconVariant}"/>
+            </Button>
         </Grid>
     </controls:AdonisWindow.TitleBarContent>
 
