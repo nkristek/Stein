@@ -29,7 +29,7 @@ namespace Stein.Views.Resources
             if (Interval == default)
                 throw new ArgumentNullException(nameof(Interval));
             if (Interval < TimeSpan.Zero)
-                throw new ArgumentException("Negative intervals are not supported.", nameof(Interval));
+                throw new ArgumentOutOfRangeException(nameof(Interval), "Negative intervals are not supported.");
             if (Property == null)
                 throw new ArgumentNullException(nameof(Property));
 
