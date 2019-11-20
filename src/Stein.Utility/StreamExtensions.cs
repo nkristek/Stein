@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,12 +39,11 @@ namespace Stein.Utility
             int bytesRead;
             while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
             {
-                cancellationToken.ThrowIfCancellationRequested();
                 await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken);
-                cancellationToken.ThrowIfCancellationRequested();
                 totalBytesRead += bytesRead;
                 progress?.Report(totalBytesRead);
             }
+            await destination.FlushAsync(cancellationToken);
         }
     }
 }
