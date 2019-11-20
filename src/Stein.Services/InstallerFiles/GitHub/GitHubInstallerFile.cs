@@ -46,7 +46,7 @@ namespace Stein.Services.InstallerFiles.GitHub
                 };
                 using (var file = File.Create(filePath))
                 using (httpClient)
-                    await httpClient.DownloadAsync(DownloadUrl, file, progress, cancellationToken);
+                    await httpClient.DownloadAsync(DownloadUrl, file, progress, cancellationToken: cancellationToken);
                 await ReadMsiMetadata(filePath, msiService);
             }
             catch

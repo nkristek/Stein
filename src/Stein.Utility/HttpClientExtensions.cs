@@ -15,11 +15,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destinationFilePath">The file path to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destinationFilePath"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<double>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<double>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -31,7 +32,7 @@ namespace Stein.Utility
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
             using var file = File.Create(destinationFilePath);
-            await client.DownloadAsync(requestUri, file, progress, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, file, progress, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -41,11 +42,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destinationFilePath">The file path to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destinationFilePath"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<DownloadProgress>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, string requestUri, string destinationFilePath, IProgress<DownloadProgress>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -57,7 +59,7 @@ namespace Stein.Utility
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
             using var file = File.Create(destinationFilePath);
-            await client.DownloadAsync(requestUri, file, progress, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, file, progress, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -67,11 +69,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destination">The destination to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<double>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<double>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -86,7 +89,7 @@ namespace Stein.Utility
             if (progress != null)
                 progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double) p.BytesDownloaded / p.BytesTotal) : 0L));
 
-            await client.DownloadAsync(requestUri, destination, progressReporter, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, destination, progressReporter, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -96,11 +99,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destination">The destination to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<DownloadProgress>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, string requestUri, Stream destination, IProgress<DownloadProgress>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -113,7 +117,7 @@ namespace Stein.Utility
 
             using var response = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
-            await response.DownloadAsync(destination, progress, cancellationToken, bufferSize);
+            await response.DownloadAsync(destination, progress, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -123,11 +127,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destinationFilePath">The file path to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destinationFilePath"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<double>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<double>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -139,7 +144,7 @@ namespace Stein.Utility
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
             using var file = File.Create(destinationFilePath);
-            await client.DownloadAsync(requestUri, file, progress, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, file, progress, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -149,11 +154,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destinationFilePath">The file path to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destinationFilePath"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<DownloadProgress>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, string destinationFilePath, IProgress<DownloadProgress>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -165,7 +171,7 @@ namespace Stein.Utility
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
 
             using var file = File.Create(destinationFilePath);
-            await client.DownloadAsync(requestUri, file, progress, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, file, progress, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -175,11 +181,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destination">The destination to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<double>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<double>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -194,7 +201,7 @@ namespace Stein.Utility
             if (progress != null)
                 progressReporter = new Progress<DownloadProgress>(p => progress.Report(p.BytesTotal > 0L ? ((double)p.BytesDownloaded / p.BytesTotal) : 0L));
 
-            await client.DownloadAsync(requestUri, destination, progressReporter, cancellationToken, bufferSize);
+            await client.DownloadAsync(requestUri, destination, progressReporter, bufferSize, cancellationToken);
         }
 
         /// <summary>
@@ -204,11 +211,12 @@ namespace Stein.Utility
         /// <param name="requestUri">The URI of the file to download.</param>
         /// <param name="destination">The destination to download to.</param>
         /// <param name="progress">An optional progress tracker.</param>
+        /// <param name="bufferSize">The size of the buffer to use.</param>
         /// <param name="cancellationToken">A cancellation token to stop the download.</param>
         /// <returns>The <see cref="Task"/> which downloads the file asynchronously.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="client"/>, <paramref name="requestUri"/> or <paramref name="destination"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<DownloadProgress>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task DownloadAsync(this HttpClient client, Uri requestUri, Stream destination, IProgress<DownloadProgress>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -221,14 +229,12 @@ namespace Stein.Utility
 
             using var response = await client.GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
             response.EnsureSuccessStatusCode();
-            await response.DownloadAsync(destination, progress, cancellationToken, bufferSize);
+            await response.DownloadAsync(destination, progress, bufferSize, cancellationToken);
         }
 
-        private static async Task DownloadAsync(this HttpResponseMessage response, Stream destination, IProgress<DownloadProgress>? progress = null, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        private static async Task DownloadAsync(this HttpResponseMessage response, Stream destination, IProgress<DownloadProgress>? progress = null, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
-            cancellationToken.ThrowIfCancellationRequested();
             using var download = await response.Content.ReadAsStreamAsync();
-            cancellationToken.ThrowIfCancellationRequested();
 
             if (progress == null)
             {
@@ -242,7 +248,7 @@ namespace Stein.Utility
                 BytesDownloaded = bytesDownloaded,
                 BytesTotal = bytesTotal
             }));
-            await download.CopyToAsync(destination, progressReporter, cancellationToken, bufferSize);
+            await download.CopyToAsync(destination, progressReporter, bufferSize, cancellationToken);
         }
     }
 }

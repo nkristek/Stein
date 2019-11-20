@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,13 +13,13 @@ namespace Stein.Utility
         /// <param name="source">Source <see cref="Stream"/>.</param>
         /// <param name="destination">Destination <see cref="Stream"/>.</param>
         /// <param name="progress">Progress reporter.</param>
-        /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to cancel the operation.</param>
         /// <param name="bufferSize">Size of the buffer to use.</param>
+        /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to cancel the operation.</param>
         /// <returns>Asynchronous <see cref="Task"/> which copies the data.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/>, <paramref name="destination"/> or <paramref name="progress"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="source"/> can't read or <paramref name="destination"/> can't write.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize"/> is negative.</exception>
-        public static async Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, CancellationToken cancellationToken = default, int bufferSize = 81920)
+        public static async Task CopyToAsync(this Stream source, Stream destination, IProgress<long> progress, int bufferSize = 81920, CancellationToken cancellationToken = default)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));

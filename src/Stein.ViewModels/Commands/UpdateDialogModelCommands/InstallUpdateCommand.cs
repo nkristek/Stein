@@ -177,7 +177,7 @@ namespace Stein.ViewModels.Commands.UpdateDialogModelCommands
                 DefaultRequestHeaders = { { "User-Agent", "nkristek/Stein" } }
             };
             using (httpClient)
-                await httpClient.DownloadAsync(downloadUri, destinationFilePath, progressReporter, CancellationTokenSource.Token);
+                await httpClient.DownloadAsync(downloadUri, destinationFilePath, progressReporter, cancellationToken: CancellationTokenSource.Token);
         }
 
         private static string GetCurrentPlatform()

@@ -55,7 +55,7 @@ namespace Stein.Services.InstallerFiles.Disk
 
                     var totalBytes = sourceFile.Length;
                     var progressReporter = new Progress<long>(bytesCopied => progress.Report((double)bytesCopied / totalBytes));
-                    await sourceFile.CopyToAsync(targetFile, progressReporter, cancellationToken);
+                    await sourceFile.CopyToAsync(targetFile, progressReporter, cancellationToken: cancellationToken);
                 }
 
                 await ReadMsiMetadata(filePath, msiService);
