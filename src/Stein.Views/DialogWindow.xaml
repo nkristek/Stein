@@ -21,7 +21,6 @@
         <Grid Margin="{adonisUi:Space 1,0,0,0}"
               Visibility="{Binding ., Converter={steinConverters:TypeEqualsParameterToVisibilityConverter}, ConverterParameter={x:Type viewModels:MainWindowDialogModel}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -29,22 +28,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Add Folder button -->
-            <Button Grid.Column="0"
-                    VerticalAlignment="Center"
-                    Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
-                    Command="{Binding AddApplicationCommand}"
-                    ToolTip="{x:Static localization:Strings.Add}">
-                <ContentControl Height="{adonisUi:Space 2}"
-                                Width="{adonisUi:Space 2}"
-                                SnapsToDevicePixels="True"
-                                UseLayoutRounding="True"
-                                Focusable="False"
-                                ContentTemplate="{StaticResource AddIconVariant}"/>
-            </Button>
-
             <!-- Update dialog button -->
-            <Grid Grid.Column="2"
+            <Grid Grid.Column="1"
                   Visibility="{Binding ElementName=UpdateButton, Path=IsEnabled, Converter={c:BoolToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="{adonisUi:Space 1}"/>
@@ -67,7 +52,7 @@
             </Grid>
             
             <!-- Refresh button -->
-            <Button Grid.Column="3"
+            <Button Grid.Column="2"
                     VerticalAlignment="Center"
                     Content="{Binding}"
                     Command="{Binding RefreshApplicationsCommand}"
@@ -124,7 +109,7 @@
             </Button>
 
             <!-- Theme switch button -->
-            <Button Grid.Column="4"
+            <Button Grid.Column="3"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                     Command="{Binding ChangeThemeCommand}"
                     ToolTip="{x:Static localization:Strings.SwitchTheme}">
@@ -137,7 +122,7 @@
             </Button>
 
             <!-- Info dialog button -->
-            <Button Grid.Column="5"
+            <Button Grid.Column="4"
                     VerticalAlignment="Center"
                     Style="{DynamicResource {x:Static adonisUi:Styles.WindowButton}}"
                     Command="{Binding ShowInfoDialogCommand}"

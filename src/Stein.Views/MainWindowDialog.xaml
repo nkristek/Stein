@@ -1,14 +1,16 @@
 ﻿<UserControl x:Class="Stein.Views.MainWindowDialog"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
-        xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
-        xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
-        xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
-        mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowDialogModel, IsDesignTimeCreatable=True}">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:NKristek.Wpf.Converters;assembly=NKristek.Wpf.Converters"
+             xmlns:localization="clr-namespace:Stein.Localization;assembly=Stein.Localization"
+             xmlns:viewModels="clr-namespace:Stein.ViewModels;assembly=Stein.ViewModels"
+             xmlns:commands="clr-namespace:Stein.ViewModels.Commands.MainWindowDialogModelCommands;assembly=Stein.ViewModels"
+             xmlns:adonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+             xmlns:adonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainWindowDialogModel, IsDesignTimeCreatable=True}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,12 +22,55 @@
         <ItemsControl Grid.Row="0" 
                       Focusable="False"
                       Margin="{adonisUi:Space 0.5,1}"
-                      ItemsSource="{Binding Applications}"
                       ScrollViewer.CanContentScroll="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       VirtualizingStackPanel.ScrollUnit="Pixel">
 
+            <ItemsControl.Resources>
+                <CollectionViewSource x:Key="ApplicationsCollection" 
+                                      Source="{Binding Applications}"/>
+                
+                <Border x:Key="AddButton" 
+                        BorderThickness="2"
+                        CornerRadius="4"
+                        Margin="{adonisUi:Space 0.5}">
+                    <Border.BorderBrush>
+                        <VisualBrush>
+                            <VisualBrush.Visual>
+                                <Rectangle StrokeDashArray="4 2"
+                                           Stroke="{DynamicResource {x:Static adonisUi:Brushes.Layer1BackgroundBrush}}"
+                                           StrokeThickness="2"
+                                           RadiusX="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.TopRight}"
+                                           RadiusY="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=CornerRadius.BottomLeft}"
+                                           Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                                           Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Border.BorderBrush>
+
+                    <Button Padding="{adonisUi:Space 2}"
+                            Style="{DynamicResource {x:Static adonisUi:Styles.ToolbarButton}}"
+                            Command="{Binding AddApplicationCommand}"
+                            ToolTip="{x:Static localization:Strings.Add}"
+                            adonisExtensions:CornerRadiusExtension.CornerRadius="4">
+                        <ContentControl Height="{adonisUi:Space 3}"
+                                        Width="{adonisUi:Space 3}"
+                                        SnapsToDevicePixels="True"
+                                        UseLayoutRounding="True"
+                                        Focusable="False"
+                                        ContentTemplate="{StaticResource AddIconVariant}"/>
+                    </Button>
+                </Border>
+            </ItemsControl.Resources>
+            
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ApplicationsCollection}}"/>
+                    <ContentControl Content="{Binding Source={StaticResource AddButton}}"/>
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+            
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>
