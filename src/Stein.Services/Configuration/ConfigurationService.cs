@@ -72,9 +72,13 @@ namespace Stein.Services.Configuration
         {
             var fileNameWithHighestVersion = fileNames.Select(fileName =>
                 {
-                    var splitFileName = fileName.Split('.');
+                    // full file name may contains logins with dots... only file name check should be made
+                    string fileNameFromPath = Path.GetFileName(fileName);
+
+                    var splitFileName = fileNameFromPath.Split('.');
                     if (splitFileName.Length != 3)
                         return new Tuple<string, long?>(fileName, null);
+                    
                     var fileVersionString = String.Join(String.Empty, splitFileName[1].Skip(1));
                     return long.TryParse(fileVersionString, out var fileVersion)
                         ? new Tuple<string, long?>(fileName, fileVersion)
