@@ -63,9 +63,9 @@
 
   <!-- NuGet dependencies -->
   <ItemGroup>
-    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.12.1" />
+    <PackageReference Include="AdonisUI.ClassicTheme" Version="1.16.0" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Ninject" Version="3.3.4" />
-    <PackageReference Include="NKristek.Smaragd" Version="5.2.2" />
+    <PackageReference Include="NKristek.Smaragd" Version="5.2.3" />
   </ItemGroup>
 </Project>
