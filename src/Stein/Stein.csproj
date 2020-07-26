@@ -24,7 +24,7 @@
     <RootNamespace>Stein</RootNamespace>
     <AssemblyName>Stein</AssemblyName>
     <Description>This application makes it easier to install, uninstall or reinstall multiple MSI-installers</Description>
-    <Copyright>Copyright © 2019 Niclas Kristek</Copyright>
+    <Copyright>Copyright © 2020 Niclas Kristek</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nkristek/Stein</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nkristek/Stein.git</RepositoryUrl>

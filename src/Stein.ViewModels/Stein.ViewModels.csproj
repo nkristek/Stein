@@ -16,7 +16,7 @@
     <Authors>nkristek</Authors>
     <RootNamespace>Stein.ViewModels</RootNamespace>
     <AssemblyName>Stein.ViewModels</AssemblyName>
-    <Copyright>Copyright © 2019 Niclas Kristek</Copyright>
+    <Copyright>Copyright © 2020 Niclas Kristek</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/nkristek/Stein</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nkristek/Stein.git</RepositoryUrl>
