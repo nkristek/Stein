@@ -12,7 +12,7 @@
 
   <!-- Application metadata -->
   <PropertyGroup>
-    <Version>2.2</Version>
+    <Version>2.2.1</Version>
     <Company>nkristek</Company>
     <Authors>nkristek</Authors>
     <RootNamespace>Stein.Views</RootNamespace>
