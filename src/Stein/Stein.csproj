@@ -9,9 +9,11 @@
     <Nullable>disable</Nullable>
     <Features>strict</Features>
     <IsPackable>false</IsPackable>
-    <ApplicationManifest>App.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <StartupObject>Stein.App</StartupObject>
     <Platforms>x64;x86</Platforms>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)</OutDir>
   </PropertyGroup>
 
   <!-- Application metadata -->
